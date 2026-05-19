@@ -13,25 +13,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 0. API 키 설정 (선생님 전용)
     // ==========================================
-    window.showApiKeyModal = function() {
-        document.getElementById('api-key-modal').style.display = 'flex';
-    };
+    // [한글 주석] Apps Script URL (sync.js와 동일)
+    const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHFQhpwzADLC6JHfMdo4aJ6lUwXW4OFwfKOsQsTQjr07QFX3JJE27xrAJHZ1Zj-KI8/exec';
 
-    window.saveApiKey = function() {
-        const keyInput = document.getElementById('api-key-input').value.trim();
-        if (keyInput) {
-            localStorage.setItem('gemini_api_key', keyInput);
-            document.getElementById('api-key-modal').style.display = 'none';
-            alert('API 키가 저장되었습니다!');
-        } else {
-            alert('API 키를 입력해주세요.');
+    // [한글 주석] Apps Script에서 API 키 자동으로 가져오기
+    async function fetchApiKeyFromServer() {
+        // [한글 주석] 이미 로컬에 저장된 키가 있으면 재사용
+        const savedKey = localStorage.getItem('gemini_api_key');
+        // [한글 주석] 저장된 키가 존재하고 길이가 10자보다 크면 로컬 캐시 적용
+        if (savedKey && savedKey.length > 10) {
+            console.log('[API키] 로컬 캐시 사용');
+            return;
         }
-    };
-
-    // 앱 시작 시 API 키가 없으면 자동으로 모달 표시
-    if (!localStorage.getItem('gemini_api_key')) {
-        showApiKeyModal();
+        
+        try {
+            // [한글 주석] Apps Script 서버에 API 키 요청 전송
+            const res = await fetch(`${APP_SCRIPT_URL}?type=getApiKey`);
+            // [한글 주석] 응답받은 결과를 JSON 객체로 파싱
+            const data = await res.json();
+            // [한글 주석] 응답 데이터에 API 키가 포함되어 있을 경우 로컬 스토리지에 저장
+            if (data.apiKey) {
+                localStorage.setItem('gemini_api_key', data.apiKey);
+                console.log('[API키] 서버에서 가져오기 성공');
+            }
+        } catch (err) {
+            // [한글 주석] 에러 발생 시 에러 내용을 콘솔에 로깅
+            console.log('[API키] 가져오기 실패:', err);
+        }
     }
+
+    // [한글 주석] 앱 시작 시 API 키 자동 로드 실행
+    fetchApiKeyFromServer();
 
     // [한글 주석] 앱 시작 시 자동 동기화 시스템 초기화
     if (typeof initSync === 'function') {
