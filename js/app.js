@@ -504,3 +504,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+// [한글 주석] 기기 초기화 확인 팝업 1단계
+function showResetDeviceConfirm() {
+  const first = confirm(
+    '기기의 사용자가 바뀌었을 때를 위한 초기화 버튼입니다.\n\n' +
+    '기존에 모은 기록이 다 날아갑니다.\n\n' +
+    '정말 초기화 하시겠습니까?'
+  );
+  if (!first) return;
+
+  // [한글 주석] 2단계 확인
+  const second = confirm(
+    '마지막 확인입니다.\n\n' +
+    '모든 수집 기록, 걸음수, 아바타 설정이\n' +
+    '완전히 삭제됩니다.\n\n' +
+    '계속 하시겠습니까?'
+  );
+  if (!second) return;
+
+  // [한글 주석] localStorage 전체 삭제
+  localStorage.clear();
+
+  // [한글 주석] Service Worker 및 캐시 완전 삭제
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations()
+      .then(regs => regs.forEach(r => r.unregister()));
+  }
+  caches.keys().then(keys =>
+    keys.forEach(key => caches.delete(key))
+  );
+
+  // [한글 주석] 0.5초 후 새로고침
+  setTimeout(() => location.reload(true), 500);
+}
+
+// [한글 주석] 전역 노출
+window.showResetDeviceConfirm = showResetDeviceConfirm;
+
