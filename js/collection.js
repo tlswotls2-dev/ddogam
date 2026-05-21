@@ -158,6 +158,11 @@ function drawRandomItem() {
     if (isNew) {
         saveCollection(resultCard.id); // 새로운 발견일 경우만 storage.js 함수로 저장
         
+        // [한글 주석] 새 카드 수집 시 NEW! 이펙트 호출
+        if (typeof showNewCardEffect === 'function') {
+            showNewCardEffect(resultCard);
+        }
+        
         // 수집한 위치(GPS)도 함께 저장 (위치 권한이 없으면 조용히 건너뜀)
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -486,3 +491,71 @@ function playItemSound(rarity) {
     navigator.vibrate && navigator.vibrate([200, 100, 200, 100, 200, 100, 400]);
   }
 }
+
+// [한글 주석] 새 카드 수집 시 NEW! 이펙트 표시
+function showNewCardEffect(card) {
+  // [한글 주석] 기존 이펙트 있으면 제거
+  const existing = document.getElementById('new-card-effect');
+  if (existing) existing.remove();
+
+  const effect = document.createElement('div');
+  effect.id = 'new-card-effect';
+  effect.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99999;
+    pointer-events: none;
+    text-align: center;
+    animation: newCardEffectAnim 2s ease forwards;
+  `;
+
+  // [한글 주석] 희귀도별 색상
+  const rarityColor = {
+    epic:   '#ffd700',
+    rare:   '#4a9eff',
+    common: '#84ff00'
+  }[card.rarity] || '#84ff00';
+
+  const rarityText = {
+    epic:   '★★★ 전설 NEW!',
+    rare:   '★★ 희귀 NEW!',
+    common: '★ NEW!'
+  }[card.rarity] || 'NEW!';
+
+  effect.innerHTML = `
+    <div style="
+      background: rgba(0,0,0,0.85);
+      border: 3px solid ${rarityColor};
+      border-radius: 20px;
+      padding: 16px 32px;
+      box-shadow: 0 0 40px ${rarityColor}88;
+    ">
+      <div style="
+        color: ${rarityColor};
+        font-size: 28px;
+        font-weight: 900;
+        letter-spacing: 4px;
+        text-shadow: 0 0 20px ${rarityColor};
+      ">\${rarityText}</div>
+      <div style="
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        margin-top: 6px;
+      ">\${card.name}</div>
+    </div>
+  `;
+
+  document.body.appendChild(effect);
+
+  // [한글 주석] 2초 후 자동 제거
+  setTimeout(() => {
+    const el = document.getElementById('new-card-effect');
+    if (el) el.remove();
+  }, 2000);
+}
+
+// [한글 주석] 전역 노출
+window.showNewCardEffect = showNewCardEffect;

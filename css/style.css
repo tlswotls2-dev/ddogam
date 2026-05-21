@@ -2910,3 +2910,12 @@ button:active {
   top: 0; left: 0; right: 0; bottom: 0;
   pointer-events: none;
 }
+
+/* [한글 주석] 새 카드 NEW! 이펙트 애니메이션 */
+@keyframes newCardEffectAnim {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  20%  { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+  40%  { transform: translate(-50%, -50%) scale(1.0); }
+  70%  { opacity: 1; transform: translate(-50%, -50%) scale(1.0); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
