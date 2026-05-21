@@ -93,7 +93,7 @@ async function callGeminiAPI(userMessage) {
     const GEMINI_API_KEY = localStorage.getItem('gemini_api_key');
     if (!GEMINI_API_KEY) throw new Error("API Key missing");
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${GEMINI_API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     // [한글 주석] 강화된 시스템 프롬프트 - 또감 도감 300종 관련 질문만 답변
     let systemPrompt = `
