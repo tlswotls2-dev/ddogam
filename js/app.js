@@ -172,7 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const userData = JSON.parse(localStorage.getItem('userData') || '{}');
         const userInfoEl = document.getElementById('user-info-display');
         if (userInfoEl && userData.class && userData.number) {
-          userInfoEl.textContent = `${userData.class}반 ${userData.number}번`;
+          // [한글 주석] 반/번호 + 탐험가 빨간 하트 표시
+          userInfoEl.innerHTML = `${userData.class}반 ${userData.number}번 탐험가<span style="color:#ff4444;">♥</span>`;
         }
 
         // 메인 화면 데이터 및 기능 초기화

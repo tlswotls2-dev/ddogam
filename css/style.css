@@ -2919,3 +2919,113 @@ button:active {
   70%  { opacity: 1; transform: translate(-50%, -50%) scale(1.0); }
   100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
 }
+
+/* [한글 주석] 책 씬 전체 */
+.splash-book-scene {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* [한글 주석] 책 컨테이너 */
+.splash-book {
+  display: flex;
+  align-items: stretch;
+  width: 220px;
+  height: 160px;
+  border-radius: 4px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  opacity: 0;
+  animation: splashFadeIn 0.5s ease 0.2s forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+/* [한글 주석] 책 왼쪽 페이지 */
+.splash-book-left {
+  flex: 1;
+  background: linear-gradient(135deg, #f5f0e8, #ede8d8);
+  padding: 16px 12px;
+  border-radius: 4px 0 0 4px;
+}
+
+/* [한글 주석] 책 중앙 등 */
+.splash-book-spine {
+  width: 8px;
+  background: linear-gradient(to right, #8b6914, #c8914a, #8b6914);
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+/* [한글 주석] 책 오른쪽 페이지 */
+.splash-book-right {
+  flex: 1;
+  background: linear-gradient(135deg, #ede8d8, #f5f0e8);
+  padding: 16px 12px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* [한글 주석] 책 줄들 */
+.splash-book-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+.splash-book-line {
+  height: 3px;
+  background: #8b6914;
+  border-radius: 2px;
+  opacity: 0.4;
+}
+.splash-book-line.short { width: 60%; }
+
+/* [한글 주석] 페이지 넘기기 */
+.splash-page-turn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(135deg, #fff8ee, #f5f0e8);
+  transform-origin: left center;
+  transform: rotateY(0deg);
+  box-shadow: -4px 0 12px rgba(0,0,0,0.15);
+}
+.page-turning {
+  animation: pageTurn 1s ease forwards;
+}
+@keyframes pageTurn {
+  0%   { transform: rotateY(0deg);    opacity: 1; }
+  50%  { transform: rotateY(-60deg);  opacity: 0.8; box-shadow: -20px 0 30px rgba(0,0,0,0.3); }
+  100% { transform: rotateY(-170deg); opacity: 0.3; }
+}
+
+/* [한글 주석] 반짝반짝 파티클 */
+.splash-book-sparkles {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 200px;
+  pointer-events: none;
+}
+.splash-sparkle {
+  position: absolute;
+  font-size: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.splash-sparkle.s1 { top: 10%;  left: 5%; }
+.splash-sparkle.s2 { top: 0%;   left: 40%; }
+.splash-sparkle.s3 { top: 10%;  left: 80%; }
+.splash-sparkle.s4 { top: 60%;  left: 0%; }
+.splash-sparkle.s5 { top: 70%;  left: 55%; }
+.splash-sparkle.s6 { top: 55%;  left: 90%; }
+
+@keyframes sparkleFloat {
+  0%   { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-12px) scale(1.3); }
+}
