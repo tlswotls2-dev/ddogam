@@ -538,13 +538,13 @@ function showNewCardEffect(card) {
         font-weight: 900;
         letter-spacing: 4px;
         text-shadow: 0 0 20px ${rarityColor};
-      ">\${rarityText}</div>
+      ">${rarityText}</div>
       <div style="
         color: #fff;
         font-size: 16px;
         font-weight: 700;
         margin-top: 6px;
-      ">\${card.name}</div>
+      ">${card.name}</div>
     </div>
   `;
 
