@@ -93,10 +93,28 @@ async function callGeminiAPI(userMessage) {
     const GEMINI_API_KEY = localStorage.getItem('gemini_api_key');
     if (!GEMINI_API_KEY) throw new Error("API Key missing");
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-    // 시스템 프롬프트: AI의 역할과 제약 사항 정의
-    let systemPrompt = "너는 초등학교 3학년 학생들의 학습 도우미야. 학생이 수집한 동식물과 유물에 대한 질문에만 답해줘. 쉬운 말로 3문장 이내로 짧게 설명해줘. 관련 없는 질문은 정중히 거절해줘.";
+    // [한글 주석] 강화된 시스템 프롬프트 - 또감 도감 300종 관련 질문만 답변
+    let systemPrompt = `
+너는 초등학교 3학년 학생들을 위한 또감 학습 도우미야.
+반드시 아래 규칙을 지켜줘:
+
+[답변 가능한 질문]
+- 또감 도감에 수록된 식물 100종, 동물 100종, 유물 100종에 관한 질문
+- 학생이 수집한 카드에 대한 질문
+- 해당 동식물/유물의 특징, 서식지, 역사적 의미 등
+
+[절대 답변 불가]
+- 도감과 무관한 일상 대화, 숙제, 수학, 영어 등
+- 욕설, 폭력, 부적절한 내용
+- 또감 게임 공략, 치트키 등
+
+[답변 규칙]
+- 초등학교 3학년이 이해할 수 있는 쉬운 말 사용
+- 3문장 이내로 짧고 명확하게
+- 관련 없는 질문이면 반드시 "그 질문은 내가 답하기 어려워요! 수집한 동식물이나 유물에 대해 물어봐 주세요 🌿" 라고만 답해줘
+`;
     
     // 수집한 카드 이름들을 모아서 컨텍스트 생성 (학생 맞춤형 대답을 위해)
     let collectedNames = [];
@@ -112,8 +130,23 @@ async function callGeminiAPI(userMessage) {
         ? `이 학생은 현재 다음 항목들을 수집했어: ${collectedNames.join(', ')}.` 
         : "이 학생은 아직 수집한 항목이 없어.";
 
-    // 최종 프롬프트 조합
-    const promptText = `${systemPrompt}\n${contextStr}\n\n학생의 질문: ${userMessage}`;
+    // [한글 주석] 도감 전체 카드 목록을 컨텍스트로 추가
+    let allCardNames = '';
+    if (window.allCardsData && window.allCardsData.length > 0) {
+      const plantNames = window.allCardsData
+        .filter(c => c.category === 'plant')
+        .map(c => c.name).join(', ');
+      const animalNames = window.allCardsData
+        .filter(c => c.category === 'animal')
+        .map(c => c.name).join(', ');
+      const artifactNames = window.allCardsData
+        .filter(c => c.category === 'artifact')
+        .map(c => c.name).join(', ');
+      allCardNames = `\n\n[또감 도감 전체 목록]\n식물: ${plantNames}\n동물: ${animalNames}\n유물: ${artifactNames}`;
+    }
+
+    // [한글 주석] 최종 프롬프트에 전체 카드 목록 추가
+    const promptText = `${systemPrompt}\n${contextStr}${allCardNames}\n\n학생의 질문: ${userMessage}`;
 
     const requestBody = {
         contents: [{
