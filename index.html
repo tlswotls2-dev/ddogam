@@ -204,7 +204,11 @@
                 <span class="badge" id="current-category-badge">🌱 식물 탐험 중</span>
             </div>
             <div class="header-right">
-                <span class="step-count" id="step-count-display">오늘 0 걸음</span>
+                <span id="user-info-display" style="
+                  color:#a0c4ff;
+                  font-size:13px;
+                  font-weight:700;
+                "></span>
             </div>
         </div>
 
@@ -596,12 +600,7 @@
             <!-- 말풍선들이 동적으로 추가됨 -->
         </div>
 
-        <!-- 빠른 질문 버튼 3개 -->
-        <div class="chatbot-quick-actions">
-            <button onclick="sendQuickQuestion('🌱 식물')">🌱 식물에 대해 물어보기</button>
-            <button onclick="sendQuickQuestion('🦊 동물')">🦊 동물에 대해 물어보기</button>
-            <button onclick="sendQuickQuestion('🏺 유물')">🏺 유물에 대해 물어보기</button>
-        </div>
+
 
         <!-- 하단 메시지 텍스트 입력창 + 전송 버튼 -->
         <div class="chatbot-input-area">

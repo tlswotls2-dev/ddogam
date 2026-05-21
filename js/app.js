@@ -168,6 +168,13 @@ document.addEventListener('DOMContentLoaded', () => {
     window.proceedToMainScreen = function() {
         mainContainer.style.display = 'block'; // 메인 컨테이너 표시
         
+        // [한글 주석] 우측 상단에 반/번호 표시
+        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+        const userInfoEl = document.getElementById('user-info-display');
+        if (userInfoEl && userData.class && userData.number) {
+          userInfoEl.textContent = `${userData.class}반 ${userData.number}번`;
+        }
+
         // 메인 화면 데이터 및 기능 초기화
         if (typeof window.updateMainScreenData === 'function') {
             window.updateMainScreenData(); 
@@ -481,9 +488,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // pedometer.js 파일에 정의된 초기화 함수 호출
             initPedometer(
-                // 1. 걸음 수 업데이트 시 동작 (화면의 숫자 갱신)
+                // [한글 주석] 걸음수는 내부적으로만 관리 (화면 표시 안 함)
                 (steps) => {
-                    stepCountDisplay.textContent = `오늘 ${steps} 걸음`;
+                    // [한글 주석] UI 업데이트 없이 걸음수만 내부 저장
+                    console.log('[걸음수]', steps);
                 },
                 // 2. 안전 경고 발생 시 동작 (빨간 화면 표시)
                 () => {
