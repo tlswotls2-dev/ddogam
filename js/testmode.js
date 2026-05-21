@@ -306,6 +306,17 @@
             localStorage.setItem('userCollection', JSON.stringify(collection));
             localStorage.setItem('collectionDates', JSON.stringify(dates));
 
+            // [한글 주석] 아이템 전체 해금
+            const allItemIds = Object.keys(AVATAR_ITEMS);
+            localStorage.setItem('unlockedItems', JSON.stringify(allItemIds));
+
+            // [한글 주석] 펫 전체 해금
+            const allPetIds = PET_LIST.map(p => p.id);
+            localStorage.setItem('unlockedPets', JSON.stringify(allPetIds));
+
+            console.log('[테스트] 아이템 전체 해금:', allItemIds);
+            console.log('[테스트] 펫 전체 해금:', allPetIds);
+
             // 6. 해금 조건 강제 우회를 위한 전역 함수 재정의
             window.getUnlockedCategories = function() {
                 return ['plant', 'animal', 'artifact'];
