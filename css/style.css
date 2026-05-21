@@ -2691,9 +2691,7 @@ button:active {
 }
 
 /* [한글 주석] 스플래시 스크린 전체 */
-#splash-screen {
-  font-family: 'Noto Sans KR', sans-serif;
-}
+#splash-screen { font-family: 'Noto Sans KR', sans-serif; }
 
 /* [한글 주석] 스플래시 각 단계 */
 .splash-phase {
@@ -2701,95 +2699,205 @@ button:active {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 20px;
+  width: 100%;
 }
 
 /* [한글 주석] 큰 텍스트 */
 .splash-word {
-  font-size: 56px;
+  font-size: 52px;
   font-weight: 900;
   color: #fff;
   opacity: 0;
   transform: translateY(30px);
   animation: splashWordIn 0.6s ease forwards;
-  text-shadow: 0 0 30px rgba(132,255,0,0.5);
+  text-shadow: 0 0 30px rgba(132,255,0,0.6);
+  letter-spacing: 4px;
 }
-
 @keyframes splashWordIn {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* [한글 주석] 아바타 걷기 */
+/* [한글 주석] 1단계 아바타 걷기 */
 .splash-avatar-walk {
   width: 80px;
   height: 120px;
-  animation: splashWalk 0.4s steps(1) infinite;
+  animation: splashWalk 0.5s steps(1) infinite;
 }
-
 @keyframes splashWalk {
-  0%   { transform: translateX(-4px) scaleX(1); }
-  50%  { transform: translateX(4px) scaleX(-1); }
-  100% { transform: translateX(-4px) scaleX(1); }
+  0%   { transform: translateX(-6px); }
+  50%  { transform: translateX(6px); }
+  100% { transform: translateX(-6px); }
 }
 
-/* [한글 주석] 카드 팝업 */
-.splash-card-popup {
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
-  border: 2px solid #84ff00;
-  border-radius: 16px;
-  padding: 16px 24px;
-  text-align: center;
-  opacity: 0;
-  transform: scale(0.5);
-  animation: splashCardIn 0.5s ease forwards;
-  box-shadow: 0 0 20px rgba(132,255,0,0.3);
-}
-
-@keyframes splashCardIn {
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* [한글 주석] 카드→도감 화살표 */
-#splash-card-arrow {
-  font-size: 24px;
-  color: #ffd700;
-  opacity: 0;
-  animation: splashFadeIn 0.3s ease 0.6s forwards;
-}
-
-/* [한글 주석] 도감 아이콘 */
-#splash-dodam-icon {
-  font-size: 40px;
-  opacity: 0;
-  animation: splashBounceIn 0.5s ease 0.8s forwards;
-}
-
-@keyframes splashBounceIn {
-  0%   { opacity: 0; transform: scale(0.3); }
-  60%  { opacity: 1; transform: scale(1.2); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* [한글 주석] 전구 */
-#splash-lightbulb {
-  font-size: 60px;
-  opacity: 0;
-  animation: splashGlow 0.6s ease forwards;
-}
-
-@keyframes splashGlow {
-  0%   { opacity: 0; transform: scale(0.5); filter: brightness(1); }
-  50%  { opacity: 1; transform: scale(1.3); filter: brightness(2); }
-  100% { opacity: 1; transform: scale(1); filter: brightness(1.5); }
-}
-
-/* [한글 주석] 반짝임 */
-.splash-sparkles {
+/* [한글 주석] 2단계 수집 애니메이션 컨테이너 */
+.splash-collect-anim {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 16px;
-  font-size: 24px;
+  position: relative;
+}
+
+/* [한글 주석] 전설 카드 */
+.splash-epic-card {
+  background: linear-gradient(135deg, #1a0a2e, #2d1a4e);
+  border: 3px solid #ffd700;
+  border-radius: 20px;
+  padding: 20px 28px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(255,215,0,0.6), 0 0 80px rgba(255,215,0,0.3);
   opacity: 0;
-  animation: splashFadeIn 0.4s ease 0.5s forwards;
+  transform: scale(0.3) rotate(-10deg);
+  animation: epicCardAppear 0.6s cubic-bezier(0.175,0.885,0.32,1.275) 0.3s forwards;
+  position: relative;
+  z-index: 10;
+  transition: transform 0.7s ease, opacity 0.3s ease;
+}
+@keyframes epicCardAppear {
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* [한글 주석] 카드 도감으로 날아가기 */
+.splash-card-fly {
+  transform: scale(0.3) translate(60px, 120px) !important;
+  opacity: 0.3 !important;
+  transition: transform 0.7s ease, opacity 0.7s ease !important;
+}
+
+.splash-epic-rarity {
+  color: #ffd700;
+  font-size: 12px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.splash-epic-emoji { font-size: 50px; margin: 8px 0; }
+.splash-epic-name {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+.splash-epic-desc {
+  color: #ccc;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* [한글 주석] 도감 격자 */
+.splash-dodam-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 52px);
+  grid-template-rows: repeat(3, 52px);
+  gap: 6px;
+  opacity: 0;
+  animation: splashFadeIn 0.4s ease 0.2s forwards;
+}
+.splash-grid-cell {
+  background: rgba(255,255,255,0.05);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* [한글 주석] 도감 칸에 카드 착! */
+.splash-grid-target {
+  border-color: rgba(255,215,0,0.4);
+  color: #555;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+.splash-grid-filled {
+  background: linear-gradient(135deg, #1a0a2e, #2d1a4e) !important;
+  border-color: #ffd700 !important;
+  color: #fff !important;
+  font-size: 26px !important;
+  box-shadow: 0 0 20px rgba(255,215,0,0.6);
+  animation: gridFilledBounce 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+@keyframes gridFilledBounce {
+  0%   { transform: scale(0.3); }
+  60%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* [한글 주석] 3단계 배운다 씬 */
+.splash-learn-anim { width: 100%; display: flex; justify-content: center; }
+.splash-learn-scene {
+  position: relative;
+  width: 200px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* [한글 주석] 배운다 아바타 */
+#splash-avatar-learn {
+  width: 80px;
+  height: 120px;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: splashFadeIn 0.5s ease 0.2s forwards;
+}
+
+/* [한글 주석] 전구들 */
+.splash-bulbs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+}
+.splash-bulb {
+  font-size: 28px;
+  opacity: 0.2;
+  transition: all 0.3s ease;
+}
+.bulb-flash {
+  opacity: 1 !important;
+  animation: bulbFlash 0.6s ease infinite alternate;
+}
+@keyframes bulbFlash {
+  0%  { transform: scale(1);   filter: brightness(1); opacity: 0.7; }
+  100%{ transform: scale(1.4); filter: brightness(2); opacity: 1; }
+}
+
+/* [한글 주석] 파티클 별빛 */
+.splash-particles {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+}
+.splash-particle {
+  position: absolute;
+  font-size: 18px;
+  opacity: 0;
+  animation: particleFly 1.2s ease forwards;
+}
+.splash-particle:nth-child(1) { left: 10%;  top: 20%; animation-delay: 0.1s; }
+.splash-particle:nth-child(2) { left: 80%;  top: 10%; animation-delay: 0.3s; }
+.splash-particle:nth-child(3) { left: 20%;  top: 80%; animation-delay: 0.2s; }
+.splash-particle:nth-child(4) { left: 75%;  top: 70%; animation-delay: 0.4s; }
+.splash-particle:nth-child(5) { left: 50%;  top: 5%;  animation-delay: 0.5s; }
+@keyframes particleFly {
+  0%   { opacity: 0; transform: translateY(0) scale(0.5); }
+  50%  { opacity: 1; transform: translateY(-30px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
+}
+
+/* [한글 주석] 별 반짝임 */
+@keyframes starTwinkle {
+  from { opacity: 0.2; }
+  to   { opacity: 1; }
 }
 
 @keyframes splashFadeIn {

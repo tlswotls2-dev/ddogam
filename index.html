@@ -48,27 +48,55 @@
     </div>
   </div>
 
-  <!-- 단계 2: 수집하며 -->
+  <!-- [한글 주석] 단계 2: 수집하며 - 금동대향로 전설카드 → 도감 착 -->
   <div class="splash-phase" id="splash-phase-2" style="display:none;">
     <div class="splash-word" id="splash-word-2">수집하며</div>
-    <div class="splash-card-anim">
-      <div id="splash-card" class="splash-card-popup">
-        <div style="font-size:40px;">🌿</div>
-        <div style="color:#fff;font-size:14px;font-weight:700;margin-top:4px;">민들레</div>
-        <div style="color:#84ff00;font-size:11px;">★ 일반</div>
+    <div class="splash-collect-anim">
+      <!-- [한글 주석] 금동대향로 전설 카드 -->
+      <div id="splash-epic-card" class="splash-epic-card">
+        <div class="splash-epic-card-inner">
+          <div class="splash-epic-rarity">★★★ 전설</div>
+          <div class="splash-epic-emoji">🏺</div>
+          <div class="splash-epic-name">금동대향로</div>
+          <div class="splash-epic-desc">백제의 신비로운<br>황금 향로</div>
+        </div>
       </div>
-      <div id="splash-card-arrow">↓</div>
-      <div id="splash-dodam-icon">📖</div>
+      <!-- [한글 주석] 도감 격자 -->
+      <div id="splash-dodam-grid" class="splash-dodam-grid">
+        <div class="splash-grid-cell"></div>
+        <div class="splash-grid-cell"></div>
+        <div class="splash-grid-cell"></div>
+        <div class="splash-grid-cell"></div>
+        <div class="splash-grid-cell splash-grid-target" id="splash-grid-target">???</div>
+        <div class="splash-grid-cell"></div>
+        <div class=\"splash-grid-cell\"></div>
+        <div class=\"splash-grid-cell\"></div>
+        <div class=\"splash-grid-cell\"></div>
+      </div>
     </div>
   </div>
 
-  <!-- 단계 3: 배운다 -->
+  <!-- [한글 주석] 단계 3: 배운다 - 아바타 + 전구 반짝반짝 -->
   <div class="splash-phase" id="splash-phase-3" style="display:none;">
     <div class="splash-word" id="splash-word-3">배운다</div>
     <div class="splash-learn-anim">
-      <div id="splash-lightbulb">💡</div>
-      <div class="splash-sparkles">
-        <span>✨</span><span>⭐</span><span>✨</span>
+      <div class="splash-learn-scene">
+        <!-- [한글 주석] 아바타 -->
+        <div id="splash-avatar-learn"></div>
+        <!-- [한글 주석] 전구들 반짝반짝 -->
+        <div class="splash-bulbs">
+          <div class="splash-bulb" id="bulb1">💡</div>
+          <div class="splash-bulb" id="bulb2">💡</div>
+          <div class="splash-bulb" id="bulb3">💡</div>
+        </div>
+        <!-- [한글 주석] 별빛 파티클 -->
+        <div class="splash-particles">
+          <span class="splash-particle">✨</span>
+          <span class="splash-particle">⭐</span>
+          <span class="splash-particle">✨</span>
+          <span class="splash-particle">🌟</span>
+          <span class="splash-particle">✨</span>
+        </div>
       </div>
     </div>
   </div>
@@ -605,7 +633,7 @@
     </div>
 
 <script>
-// [한글 주석] 스플래시 스크린 컨트롤러
+// [한글 주석] 스플래시 스크린 컨트롤러 v2
 (function() {
   // [한글 주석] 별 생성
   const starsEl = document.getElementById('splash-stars');
@@ -613,58 +641,94 @@
     const s = document.createElement('div');
     s.style.cssText = `
       position:absolute;
-      width:2px;height:2px;
+      width:${Math.random()*3+1}px;
+      height:${Math.random()*3+1}px;
       background:#fff;
+      border-radius:50%;
       left:${Math.random()*100}%;
       top:${Math.random()*100}%;
       opacity:${Math.random()*0.8+0.2};
+      animation: starTwinkle ${Math.random()*2+1}s infinite alternate;
     `;
     starsEl.appendChild(s);
   }
 
-  // [한글 주석] 아바타 SVG 삽입 (간단한 픽셀 아바타)
+  // [한글 주석] 1단계 아바타 삽입
   const avatarEl = document.getElementById('splash-avatar');
-  if (avatarEl && typeof getAvatarSVG === 'function') {
-    const savedAvatar = localStorage.getItem('selectedAvatar') || 'boy_explorer';
-    avatarEl.innerHTML = getAvatarSVG(savedAvatar);
-  } else {
-    // [한글 주석] 기본 이모지 아바타
-    if (avatarEl) avatarEl.innerHTML = '<div style="font-size:60px;">🧒</div>';
-  }
+  const avatarLearnEl = document.getElementById('splash-avatar-learn');
+  const savedAvatar = localStorage.getItem('selectedAvatar') || 'boy_explorer';
 
-  // [한글 주석] 단계 전환 타이밍
+  function setAvatar(el) {
+    if (!el) return;
+    if (typeof getAvatarSVG === 'function') {
+      el.innerHTML = getAvatarSVG(savedAvatar);
+    } else {
+      el.innerHTML = '<div style="font-size:60px;">🧒</div>';
+    }
+  }
+  setAvatar(avatarEl);
+  setAvatar(avatarLearnEl);
+
   const phase1 = document.getElementById('splash-phase-1');
   const phase2 = document.getElementById('splash-phase-2');
   const phase3 = document.getElementById('splash-phase-3');
   const logoFinal = document.getElementById('splash-logo-final');
   const splash = document.getElementById('splash-screen');
 
-  // [한글 주석] 1단계: 걷고 (0~1.5초)
+  // [한글 주석] 1단계: 걷고 (0~1.8초)
   setTimeout(() => {
     phase1.style.display = 'none';
     phase2.style.display = 'flex';
-  }, 1500);
 
-  // [한글 주석] 2단계: 수집하며 (1.5~3초)
+    // [한글 주석] 카드 등장 후 도감으로 날아가는 애니메이션
+    setTimeout(() => {
+      const card = document.getElementById('splash-epic-card');
+      const target = document.getElementById('splash-grid-target');
+      if (!card || !target) return;
+
+      // [한글 주석] 카드가 도감 격자로 날아감
+      card.classList.add('splash-card-fly');
+
+      setTimeout(() => {
+        // [한글 주석] 도감 칸에 착! 표시
+        if (target) {
+          target.classList.add('splash-grid-filled');
+          target.innerHTML = '🏺';
+        }
+        if (card) card.style.opacity = '0';
+      }, 700);
+    }, 600);
+
+  }, 1800);
+
+  // [한글 주석] 2단계: 수집하며 (1.8~3.8초)
   setTimeout(() => {
     phase2.style.display = 'none';
     phase3.style.display = 'flex';
-  }, 3000);
 
-  // [한글 주석] 3단계: 배운다 (3~4.5초)
+    // [한글 주석] 전구 순차 반짝임
+    const bulbs = ['bulb1', 'bulb2', 'bulb3'];
+    bulbs.forEach((id, idx) => {
+      setTimeout(() => {
+        const b = document.getElementById(id);
+        if (b) b.classList.add('bulb-flash');
+      }, idx * 200);
+    });
+
+  }, 3800);
+
+  // [한글 주석] 3단계: 배운다 (3.8~5.3초)
   setTimeout(() => {
     phase3.style.display = 'none';
     logoFinal.style.display = 'block';
-  }, 4500);
+  }, 5300);
 
-  // [한글 주석] 로고 후 페이드아웃 → 로그인 화면 (5초)
+  // [한글 주석] 로고 후 페이드아웃 (6초)
   setTimeout(() => {
     splash.style.transition = 'opacity 0.8s ease';
     splash.style.opacity = '0';
-    setTimeout(() => {
-      splash.style.display = 'none';
-    }, 800);
-  }, 5000);
+    setTimeout(() => { splash.style.display = 'none'; }, 800);
+  }, 6000);
 })();
 </script>
 </body>
