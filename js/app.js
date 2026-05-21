@@ -45,11 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // [한글 주석] 앱 시작 시 API 키 자동 로드 실행
     fetchApiKeyFromServer();
 
-    // [한글 주석] 앱 시작 시 자동 동기화 시스템 초기화
-    if (typeof initSync === 'function') {
-        initSync();
-    }
-
     // ==========================================
     // 1. 로그인 기능 처리
     // ==========================================
@@ -103,6 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // [한글 주석] 선생님 로그인 성공 처리
                 localStorage.setItem('isTeacher', 'true');
+                // [한글 주석] 선생님은 동기화 불필요 (보상 폴링만 시작 안 함)
+                // initSync 호출 안 함
                 localStorage.setItem('teacherClass', classValue);
                 console.log(`선생님 로그인 성공: ${classValue}반`);
 
@@ -137,6 +134,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // [한글 주석] 학생 계정 표시 (isTeacher 명시적으로 false 저장)
             localStorage.setItem('isTeacher', 'false');
             saveUserData(userData);
+            
+            // [한글 주석] 로그인 성공 후 동기화 시스템 초기화
+            if (typeof initSync === 'function') {
+                initSync();
+            }
             
             console.log(`로그인 성공: ${classValue}반-${numberValue}번`);
             
