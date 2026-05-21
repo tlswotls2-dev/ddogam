@@ -9,21 +9,21 @@ const EQUIPPED_ITEMS_KEY = 'equippedItems';
 // 4종 아바타 목록 정의 (픽셀아트 SVG 캐릭터)
 const AVATAR_LIST = [
   { id: 'boy_explorer', name: '갈색 탐험가', isGirl: false },
-  { id: 'boy_police',   name: '파랑 경찰관', isGirl: false },
-  { id: 'girl_sakura',  name: '벚꽃 탐험가', isGirl: true  },
-  { id: 'girl_sports',  name: '스포츠 탐험가', isGirl: true }
+  { id: 'boy_police', name: '경찰 탐험가', isGirl: false },
+  { id: 'girl_sakura', name: '벚꽃 탐험가', isGirl: true },
+  { id: 'girl_sports', name: '스포츠 탐험가', isGirl: true }
 ];
 
 // 8종 펫 목록 정의
 const PET_LIST = [
-  { id: 'pet_none',       name: '없음',     emoji: '❌', condition: null },
-  { id: 'pet_chick',      name: '병아리',   emoji: '🐥', condition: { category: 'animal', count: 5 }  },
-  { id: 'pet_rabbit',     name: '토끼',     emoji: '🐰', condition: { category: 'animal', count: 15 } },
-  { id: 'pet_squirrel',   name: '다람쥐',   emoji: '🐿️', condition: { category: 'animal', count: 30 } },
-  { id: 'pet_butterfly',  name: '나비',     emoji: '🦋', condition: { category: 'animal', count: 50 } },
-  { id: 'pet_fox',        name: '여우',     emoji: '🦊', condition: { category: 'animal', count: 70 } },
-  { id: 'pet_deer',       name: '사슴',     emoji: '🦌', condition: { category: 'animal', count: 90 } },
-  { id: 'pet_crane',      name: '두루미',   emoji: '🦢', condition: { total: 200 }                    }
+  { id: 'pet_none', name: '없음', emoji: '❌', condition: null },
+  { id: 'pet_chick', name: '병아리', emoji: '🐥', condition: { category: 'animal', count: 5 } },
+  { id: 'pet_rabbit', name: '토끼', emoji: '🐰', condition: { category: 'animal', count: 15 } },
+  { id: 'pet_squirrel', name: '다람쥐', emoji: '🐿️', condition: { category: 'animal', count: 30 } },
+  { id: 'pet_butterfly', name: '나비', emoji: '🦋', condition: { category: 'animal', count: 50 } },
+  { id: 'pet_fox', name: '여우', emoji: '🦊', condition: { category: 'animal', count: 70 } },
+  { id: 'pet_deer', name: '사슴', emoji: '🦌', condition: { category: 'animal', count: 90 } },
+  { id: 'pet_crane', name: '두루미', emoji: '🦢', condition: { total: 200 } }
 ];
 
 // [한글 주석] 아바타 선택 저장 함수
@@ -42,8 +42,8 @@ function needsAvatarSelection() {
 }
 
 // [한글 주석] 하위 호환성 유지 (기존 코드가 gender 함수 호출 시 동작하도록 매핑)
-function needsGenderSelection() { 
-  return needsAvatarSelection(); 
+function needsGenderSelection() {
+  return needsAvatarSelection();
 }
 
 // [한글 주석] 선택된 아바타의 성별(isGirl 여부)에 따라 'girl' 또는 'boy'를 반환
@@ -57,16 +57,16 @@ function getSelectedGender() {
 // [한글 주석] 해금 아이템 정의 (슬롯별 조건 및 희귀도)
 // ==========================================
 const AVATAR_ITEMS = {
-  'leaf_hat': { slot:'hat', name:'나뭇잎 모자', condition:{category:'plant',count:10}, rarity:'common', emoji:'🌿' },
-  'flower_crown': { slot:'hat', name:'꽃 왕관', condition:{category:'plant',count:30}, rarity:'rare', emoji:'🌸' },
-  'king_crown': { slot:'hat', name:'조선 왕관', condition:{category:'artifact',count:30}, rarity:'rare', emoji:'👑' },
-  'gold_crown': { slot:'hat', name:'황금 왕관', condition:{category:'artifact',count:70}, rarity:'epic', emoji:'✨' },
-  'nature_cape': { slot:'cape', name:'자연 망토', condition:{category:'plant',count:50}, rarity:'rare', emoji:'🌳' },
-  'artifact_cape': { slot:'cape', name:'유물 망토', condition:{category:'artifact',count:50}, rarity:'rare', emoji:'🏺' },
-  'butterfly_wing': { slot:'wing', name:'나비 날개', condition:{category:'animal',count:10}, rarity:'common', emoji:'🦋' },
-  'sky_wing': { slot:'wing', name:'하늘 날개', condition:{category:'animal',count:50}, rarity:'epic', emoji:'🌤️' },
-  'explorer_badge': { slot:'badge', name:'탐험가 배지', condition:{total:100}, rarity:'rare', emoji:'🎖️' },
-  'legend_badge': { slot:'badge', name:'전설 탐험가', condition:{total:300}, rarity:'epic', emoji:'🏆' }
+  'leaf_hat': { slot: 'hat', name: '나뭇잎 모자', condition: { category: 'plant', count: 10 }, rarity: 'common', emoji: '🌿' },
+  'flower_crown': { slot: 'hat', name: '꽃 왕관', condition: { category: 'plant', count: 30 }, rarity: 'rare', emoji: '🌸' },
+  'king_crown': { slot: 'hat', name: '조선 왕관', condition: { category: 'artifact', count: 30 }, rarity: 'rare', emoji: '👑' },
+  'gold_crown': { slot: 'hat', name: '황금 왕관', condition: { category: 'artifact', count: 70 }, rarity: 'epic', emoji: '✨' },
+  'nature_cape': { slot: 'cape', name: '자연 망토', condition: { category: 'plant', count: 50 }, rarity: 'rare', emoji: '🌳' },
+  'artifact_cape': { slot: 'cape', name: '유물 망토', condition: { category: 'artifact', count: 50 }, rarity: 'rare', emoji: '🏺' },
+  'butterfly_wing': { slot: 'wing', name: '나비 날개', condition: { category: 'animal', count: 10 }, rarity: 'common', emoji: '🦋' },
+  'sky_wing': { slot: 'wing', name: '하늘 날개', condition: { category: 'animal', count: 50 }, rarity: 'epic', emoji: '🌤️' },
+  'explorer_badge': { slot: 'badge', name: '탐험가 배지', condition: { total: 100 }, rarity: 'rare', emoji: '🎖️' },
+  'legend_badge': { slot: 'badge', name: '전설 탐험가', condition: { total: 300 }, rarity: 'epic', emoji: '🏆' }
 };
 
 // ==========================================
@@ -104,9 +104,9 @@ function getAvatarSVG(avatarId) {
   if (avatarId === 'girl' || avatarId === 'girl_default') avatarId = 'girl_sakura';
 
   if (avatarId === 'boy_explorer') return getBoyExplorerSVG();
-  if (avatarId === 'boy_police')   return getBoyPoliceSVG();
-  if (avatarId === 'girl_sakura')  return getGirlSakuraSVG();
-  if (avatarId === 'girl_sports')  return getGirlSportsSVG();
+  if (avatarId === 'boy_police') return getBoyPoliceSVG();
+  if (avatarId === 'girl_sakura') return getGirlSakuraSVG();
+  if (avatarId === 'girl_sports') return getGirlSportsSVG();
   return getBoyExplorerSVG();
 }
 
@@ -385,7 +385,7 @@ function getGirlSportsSVG() {
 // ==========================================
 // [한글 주석] 아바타/성별 선택 호환성 관리자
 // ==========================================
-function selectGender(g) { 
+function selectGender(g) {
   // [한글 주석] 기존 selectGender 함수 호출 시 아바타 ID로 역추적하여 저장
   if (g === 'girl') selectAvatar('girl_sakura');
   else selectAvatar('boy_explorer');
@@ -395,9 +395,9 @@ let tempSelectedAvatarId = null;
 
 function showGenderSelectScreen() {
   const s = document.getElementById('gender-select-screen');
-  if (s) { 
-    s.style.display = 'flex'; 
-    renderAvatarPreviews(); 
+  if (s) {
+    s.style.display = 'flex';
+    renderAvatarPreviews();
   }
 }
 
@@ -405,16 +405,16 @@ function showGenderSelectScreen() {
 function renderAvatarPreviews() {
   const container = document.querySelector('.gender-options');
   if (!container) return;
-  
+
   container.innerHTML = '';
-  
+
   AVATAR_LIST.forEach(avatar => {
     const btn = document.createElement('button');
     btn.className = 'gender-btn';
     btn.type = 'button';
     btn.setAttribute('data-avatar-id', avatar.id);
     btn.onclick = () => handleAvatarSelect(avatar.id);
-    
+
     btn.innerHTML = `
       <div class="gender-avatar-preview" style="width: 80px; height: 120px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0 auto 8px;">
         ${getAvatarSVG(avatar.id)}
@@ -427,7 +427,7 @@ function renderAvatarPreviews() {
 
 function handleAvatarSelect(avatarId) {
   tempSelectedAvatarId = avatarId;
-  
+
   // [한글 주석] 선택한 아바타에 초록 테두리 강조 효과
   document.querySelectorAll('.gender-btn').forEach(btn => {
     const isSelected = btn.getAttribute('data-avatar-id') === avatarId;
@@ -474,7 +474,7 @@ function initAvatar() {
   el.style.cssText = 'width:120px;height:180px;font-size:unset;line-height:normal;image-rendering:pixelated;cursor:pointer;';
   // [한글 주석] 장착된 아이템 렌더링
   renderEquippedItems();
-  
+
   // [한글 주석] 메인 화면 아바타 옆 펫 표시
   renderPet();
 
@@ -612,7 +612,7 @@ function checkAndUnlockPets() {
     } else if (cond.category && cond.count) {
       met = (counts[cond.category] || 0) >= cond.count;
     }
-    
+
     if (met) {
       unlocked.push(pet.id);
       newPets.push(pet.name);
@@ -631,7 +631,7 @@ function renderPet() {
 
   const equippedPetId = getEquippedPet();
   const pet = PET_LIST.find(p => p.id === equippedPetId);
-  
+
   if (pet && pet.id !== 'pet_none') {
     petDisplay.textContent = pet.emoji;
     petDisplay.style.display = 'flex';
@@ -671,13 +671,13 @@ function showCustomizeScreen() {
   screen.style.display = 'flex';
   setTimeout(() => screen.classList.add('slide-in'), 10);
   currentCustomizeSlot = 'hat';
-  
+
   // [한글 주석] 초기 진입 시 복주머니 목록 숨김
   const bagList = document.getElementById('reward-bag-list');
   const allBagsBtn = document.getElementById('open-all-bags-btn');
   if (bagList) bagList.style.display = 'none';
   if (allBagsBtn) allBagsBtn.style.display = 'none';
-  
+
   renderCustomizeUI();
 }
 
@@ -690,7 +690,7 @@ function hideCustomizeScreen() {
 
 function switchCustomizeSlot(slot) {
   currentCustomizeSlot = slot;
-  
+
   // [한글 주석] 탭 활성화 갱신
   document.querySelectorAll('.customize-slot-tab').forEach(t => {
     t.classList.toggle('active', t.dataset.slot === slot);
@@ -713,7 +713,7 @@ function switchCustomizeSlot(slot) {
   if (itemList) itemList.style.display = 'block';
   if (bagList) bagList.style.display = 'none';
   if (allBagsBtn) allBagsBtn.style.display = 'none';
-  
+
   renderItemList();
 }
 
@@ -793,9 +793,9 @@ function renderItemList() {
         <div class="customize-item-info">
           <div class="customize-item-name">${pet.name}</div>
           ${isUnlocked
-            ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
-            : `<div class="customize-item-cond">🔒 ${condText}</div>`
-          }
+          ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
+          : `<div class="customize-item-cond">🔒 ${condText}</div>`
+        }
         </div>
       `;
 
@@ -811,7 +811,7 @@ function renderItemList() {
 
   } else {
     // [한글 주석] 기존 아이템 탭 처리
-    const slotItems = Object.entries(AVATAR_ITEMS).filter(([,v]) => v.slot === currentCustomizeSlot);
+    const slotItems = Object.entries(AVATAR_ITEMS).filter(([, v]) => v.slot === currentCustomizeSlot);
 
     slotItems.forEach(([itemId, item]) => {
       const isUnlocked = unlocked.includes(itemId);
@@ -842,9 +842,9 @@ function renderItemList() {
         <div class="customize-item-info">
           <div class="customize-item-name">${item.name}</div>
           ${isUnlocked
-            ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
-            : `<div class="customize-item-cond">🔒 ${condText}</div>`
-          }
+          ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
+          : `<div class="customize-item-cond">🔒 ${condText}</div>`
+        }
         </div>
       `;
 
@@ -1014,7 +1014,7 @@ function showBagOpenAnimation(reward, onComplete) {
   }, 1500);
 
   // [한글 주석] 받기 버튼 클릭 시 콜백
-  window.closeBagAnimation = function() {
+  window.closeBagAnimation = function () {
     const el = document.getElementById('bag-open-overlay');
     if (el) el.remove();
     if (onComplete) onComplete();

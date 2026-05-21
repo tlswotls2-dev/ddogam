@@ -26,6 +26,60 @@
 
 <body>
 
+    <!-- [한글 주석] 앱 시작 스플래시 스크린 -->
+<div id="splash-screen" style="
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:#0f1c30;
+  z-index:999999;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+">
+  <!-- 별 배경 -->
+  <div id="splash-stars"></div>
+
+  <!-- 단계 1: 걷고 -->
+  <div class="splash-phase" id="splash-phase-1">
+    <div class="splash-word" id="splash-word-1">걷고</div>
+    <div class="splash-avatar-walk">
+      <div id="splash-avatar"></div>
+    </div>
+  </div>
+
+  <!-- 단계 2: 수집하며 -->
+  <div class="splash-phase" id="splash-phase-2" style="display:none;">
+    <div class="splash-word" id="splash-word-2">수집하며</div>
+    <div class="splash-card-anim">
+      <div id="splash-card" class="splash-card-popup">
+        <div style="font-size:40px;">🌿</div>
+        <div style="color:#fff;font-size:14px;font-weight:700;margin-top:4px;">민들레</div>
+        <div style="color:#84ff00;font-size:11px;">★ 일반</div>
+      </div>
+      <div id="splash-card-arrow">↓</div>
+      <div id="splash-dodam-icon">📖</div>
+    </div>
+  </div>
+
+  <!-- 단계 3: 배운다 -->
+  <div class="splash-phase" id="splash-phase-3" style="display:none;">
+    <div class="splash-word" id="splash-word-3">배운다</div>
+    <div class="splash-learn-anim">
+      <div id="splash-lightbulb">💡</div>
+      <div class="splash-sparkles">
+        <span>✨</span><span>⭐</span><span>✨</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 또감 로고 마무리 -->
+  <div id="splash-logo-final" style="display:none;text-align:center;">
+    <div style="font-size:36px;font-weight:900;color:#ffd700;letter-spacing:8px;">또감</div>
+    <div style="color:#84ff00;font-size:13px;margin-top:8px;">다시 움직임으로, 도감 수집형 학습 플랫폼</div>
+  </div>
+</div>
+
     <!-- 로그인 화면 컨테이너 (처음 보여지는 화면) -->
     <div class="app-container" id="login-container">
         <div id="login-screen">
@@ -549,6 +603,70 @@
             🎉 새로운 발견! 화면을 탭하세요!
         </div>
     </div>
+
+<script>
+// [한글 주석] 스플래시 스크린 컨트롤러
+(function() {
+  // [한글 주석] 별 생성
+  const starsEl = document.getElementById('splash-stars');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.style.cssText = `
+      position:absolute;
+      width:2px;height:2px;
+      background:#fff;
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      opacity:${Math.random()*0.8+0.2};
+    `;
+    starsEl.appendChild(s);
+  }
+
+  // [한글 주석] 아바타 SVG 삽입 (간단한 픽셀 아바타)
+  const avatarEl = document.getElementById('splash-avatar');
+  if (avatarEl && typeof getAvatarSVG === 'function') {
+    const savedAvatar = localStorage.getItem('selectedAvatar') || 'boy_explorer';
+    avatarEl.innerHTML = getAvatarSVG(savedAvatar);
+  } else {
+    // [한글 주석] 기본 이모지 아바타
+    if (avatarEl) avatarEl.innerHTML = '<div style="font-size:60px;">🧒</div>';
+  }
+
+  // [한글 주석] 단계 전환 타이밍
+  const phase1 = document.getElementById('splash-phase-1');
+  const phase2 = document.getElementById('splash-phase-2');
+  const phase3 = document.getElementById('splash-phase-3');
+  const logoFinal = document.getElementById('splash-logo-final');
+  const splash = document.getElementById('splash-screen');
+
+  // [한글 주석] 1단계: 걷고 (0~1.5초)
+  setTimeout(() => {
+    phase1.style.display = 'none';
+    phase2.style.display = 'flex';
+  }, 1500);
+
+  // [한글 주석] 2단계: 수집하며 (1.5~3초)
+  setTimeout(() => {
+    phase2.style.display = 'none';
+    phase3.style.display = 'flex';
+  }, 3000);
+
+  // [한글 주석] 3단계: 배운다 (3~4.5초)
+  setTimeout(() => {
+    phase3.style.display = 'none';
+    logoFinal.style.display = 'block';
+  }, 4500);
+
+  // [한글 주석] 로고 후 페이드아웃 → 로그인 화면 (5초)
+  setTimeout(() => {
+    splash.style.transition = 'opacity 0.8s ease';
+    splash.style.opacity = '0';
+    setTimeout(() => {
+      splash.style.display = 'none';
+    }, 800);
+  }, 5000);
+})();
+</script>
 </body>
 
 </html>
