@@ -58,7 +58,15 @@ function renderDashboard(students) {
   const totalStudents = students.length;
   const totalCollected = students.reduce((sum, s) => sum + (Number(s.total) || 0), 0);
   const avgCollected = totalStudents > 0 ? Math.round(totalCollected / totalStudents) : 0;
-  const totalSteps = students.reduce((sum, s) => sum + (Number(s.steps) || 0), 0);
+
+  // [한글 주석] 오늘 접속 학생 수 계산 (마지막 동기화가 오늘인 학생)
+  const today = new Date().toLocaleDateString('ko-KR');
+  const todayActiveCount = students.filter(s => {
+    if (!s.lastSync || s.lastSync === '-') return false;
+    return s.lastSync.includes(today.split('.')[0]) &&
+           s.lastSync.includes(today.split('.')[1].trim()) &&
+           s.lastSync.includes(today.split('.')[2].trim());
+  }).length;
 
   // [한글 주석] 가장 많이 수집한 학생 찾기
   let topStudent = { name: '-', total: 0 };
@@ -72,7 +80,9 @@ function renderDashboard(students) {
   document.getElementById('stat-student-count').textContent = `${totalStudents}명`;
   document.getElementById('stat-avg-collect').textContent = `${avgCollected}개`;
   document.getElementById('stat-top-student').textContent = `${topStudent.name} (${topStudent.total}개)`;
-  document.getElementById('stat-total-steps').textContent = totalSteps.toLocaleString();
+
+  // [한글 주석] 오늘 접속 학생 수 표시
+  document.getElementById('stat-total-steps').textContent = `${todayActiveCount}명`;
 
   // ==========================================
   // [한글 주석] 2. 학생 카드 목록 렌더링
@@ -336,6 +346,114 @@ function showDashboardToast(message, type) {
   }, 3000);
 }
 
+// [한글 주석] 전체 학생 일괄 선물 모달
+function showBulkRewardModal() {
+  const existing = document.getElementById('reward-modal-overlay');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'reward-modal-overlay';
+  overlay.className = 'reward-modal-overlay';
+
+  // [한글 주석] 보상 종류 버튼 목록 (개별과 동일)
+  const rewardOptions = [
+    { emoji: '🎁', label: '전체 랜덤', type: 'random', category: 'all', rarity: 'all' },
+    { emoji: '🌱', label: '식물 일반', type: 'category', category: 'plant', rarity: 'common' },
+    { emoji: '🌸', label: '식물 희귀', type: 'category', category: 'plant', rarity: 'rare' },
+    { emoji: '🌺', label: '식물 전설', type: 'category', category: 'plant', rarity: 'epic' },
+    { emoji: '🦊', label: '동물 일반', type: 'category', category: 'animal', rarity: 'common' },
+    { emoji: '🦁', label: '동물 희귀', type: 'category', category: 'animal', rarity: 'rare' },
+    { emoji: '🐉', label: '동물 전설', type: 'category', category: 'animal', rarity: 'epic' },
+    { emoji: '🌰', label: '유물 일반', type: 'category', category: 'artifact', rarity: 'common' },
+    { emoji: '🏺', label: '유물 희귀', type: 'category', category: 'artifact', rarity: 'rare' },
+    { emoji: '👑', label: '유물 전설', type: 'category', category: 'artifact', rarity: 'epic' }
+  ];
+
+  const buttonsHTML = rewardOptions.map(opt => `
+    <button class="reward-option-btn" onclick="sendBulkReward('${opt.type}', '${opt.category}', '${opt.rarity}')">
+      <span class="reward-option-emoji">${opt.emoji}</span>
+      <span class="reward-option-label">${opt.label}</span>
+    </button>
+  `).join('');
+
+  const teacherClass = localStorage.getItem('teacherClass');
+
+  overlay.innerHTML = `
+    <div class="reward-modal-card">
+      <div class="reward-modal-header">
+        <h3>🎁 전체 일괄 선물</h3>
+        <p style="color:#ff9500;font-weight:700;">
+          ⚠️ ${teacherClass}반 전체 학생에게 보냅니다!
+        </p>
+      </div>
+      <div class="reward-options-grid">
+        ${buttonsHTML}
+      </div>
+      <button class="reward-modal-close" onclick="closeRewardModal()">취소</button>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => overlay.classList.add('show'));
+}
+
+// [한글 주석] 전체 학생 일괄 보상 전송
+async function sendBulkReward(rewardType, category, rarity) {
+  // [한글 주석] 현재 대시보드에 로드된 학생 목록 가져오기
+  const studentCards = document.querySelectorAll('.dashboard-student-card');
+  const teacherClass = localStorage.getItem('teacherClass');
+
+  if (studentCards.length === 0) {
+    showDashboardToast('학생 데이터가 없어요!', 'error');
+    return;
+  }
+
+  // [한글 주석] 확인 팝업
+  if (!confirm(`${teacherClass}반 전체 ${studentCards.length}명에게 선물을 보낼까요?`)) return;
+
+  // [한글 주석] 버튼 비활성화
+  const buttons = document.querySelectorAll('.reward-option-btn');
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+  });
+
+  // [한글 주석] 학생 번호 목록 추출
+  const studentNumbers = [];
+  studentCards.forEach(card => {
+    const numEl = card.querySelector('.dsc-number');
+    if (numEl) {
+      const num = numEl.textContent.replace('번', '').trim();
+      studentNumbers.push(num);
+    }
+  });
+
+  // [한글 주석] 순차적으로 전송 (서버 부하 방지)
+  let successCount = 0;
+  for (const studentNum of studentNumbers) {
+    const payload = {
+      type: 'sendReward',
+      class: teacherClass,
+      number: studentNum,
+      reward: { type: rewardType, category: category, rarity: rarity }
+    };
+    const formData = new FormData();
+    formData.append('payload', JSON.stringify(payload));
+
+    try {
+      await fetch(TEACHER_SCRIPT_URL, { method: 'POST', body: formData });
+      successCount++;
+      // [한글 주석] 서버 부하 방지용 딜레이 (0.3초 간격)
+      await new Promise(resolve => setTimeout(resolve, 300));
+    } catch (err) {
+      console.log(`[일괄선물] ${studentNum}번 전송 실패:`, err);
+    }
+  }
+
+  closeRewardModal();
+  showDashboardToast(`🎁 ${successCount}명에게 선물을 보냈어요!`, 'success');
+}
+
 // [한글 주석] 전역 노출 (app.js 및 index.html에서 호출 가능)
 window.initDashboard = initDashboard;
 window.showRewardModal = showRewardModal;
@@ -343,3 +461,5 @@ window.closeRewardModal = closeRewardModal;
 window.sendReward = sendReward;
 window.refreshDashboard = refreshDashboard;
 window.teacherLogout = teacherLogout;
+window.showBulkRewardModal = showBulkRewardModal;
+window.sendBulkReward = sendBulkReward;

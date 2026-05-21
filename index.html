@@ -424,6 +424,20 @@
         <div class="dashboard-header">
             <h1 id="dashboard-title" class="dashboard-title">📊 또감 대시보드</h1>
             <div class="dashboard-header-actions">
+                <!-- [한글 주석] 전체 일괄 선물 버튼 -->
+                <button onclick="showBulkRewardModal()" style="
+                  background: linear-gradient(135deg, #ff9500, #ff6b00);
+                  color: #fff;
+                  border: none;
+                  border-radius: 8px;
+                  padding: 8px 16px;
+                  font-size: 14px;
+                  font-weight: 700;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                ">🎁 전체 선물하기</button>
                 <button class="dashboard-btn dashboard-refresh-btn" onclick="refreshDashboard()">🔄 새로고침</button>
                 <button class="dashboard-btn dashboard-logout-btn" onclick="teacherLogout()">🚪 로그아웃</button>
             </div>
@@ -448,7 +462,8 @@
             </div>
             <div class="dashboard-stat-card">
                 <div class="stat-icon">👟</div>
-                <div class="stat-label">전체 걸음수</div>
+                <!-- [한글 주석] 오늘 접속 학생 수 라벨 -->
+                <div class="stat-label">오늘 접속</div>
                 <div class="stat-value" id="stat-total-steps">0</div>
             </div>
         </div>
