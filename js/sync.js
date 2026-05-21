@@ -58,7 +58,44 @@ window.addEventListener('offline', () => {
 async function syncToServer() {
   // [한글 주석] 하드코딩된 SCRIPT_URL을 사용하여 대기열에서 동기화되지 않은 항목 필터링
   const queue = getSyncQueue().filter(item => !item.synced);
-  if (queue.length === 0) return;
+// [한글 주석] 큐가 비어있어도 학생 정보는 항상 서버에 등록
+if (queue.length === 0) {
+  // [한글 주석] 수집 데이터 없어도 학생 현황은 전송 (신규 로그인 등록용)
+  const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+  if (!userData.class || !userData.number) return;
+
+  const collection = JSON.parse(localStorage.getItem('userCollection') || '[]');
+  const payload = {
+    type: 'sync',
+    student: {
+      class: userData.class,
+      number: userData.number,
+      name: userData.name || ''
+    },
+    events: [],
+    totalCollection: {
+      plant:    collection.filter(id => id.startsWith('plant_')).length,
+      animal:   collection.filter(id => id.startsWith('animal_')).length,
+      artifact: collection.filter(id => id.startsWith('artifact_')).length
+    },
+    steps: (() => {
+      const pedData = JSON.parse(localStorage.getItem('pedometerData') || '{}');
+      return pedData.steps || 0;
+    })(),
+    syncTime: new Date().toISOString()
+  };
+
+  const formData = new FormData();
+  formData.append('payload', JSON.stringify(payload));
+
+  try {
+    await fetch(SCRIPT_URL, { method: 'POST', body: formData });
+    console.log('[동기화] 학생 현황 등록 완료');
+  } catch (err) {
+    console.log('[동기화] 학생 현황 등록 실패:', err);
+  }
+  return;
+}
 
   // [한글 주석] 기존 userData에서 정보를 안전하게 추출
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
