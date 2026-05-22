@@ -24,6 +24,11 @@ async function loadQuizData() {
         const response = await fetch('data/quiz.json?v=' + Date.now());
         quizData = await response.json();
         console.log(`퀴즈 데이터 로드 완료: 식물 ${quizData.plant.length}문제, 동물 ${quizData.animal.length}문제`);
+
+        // [한글 주석] 일일 퀴즈 버튼 상태 초기화 (앱 로드 시)
+        setTimeout(() => {
+          if (typeof updateDailyQuizBtn === 'function') updateDailyQuizBtn();
+        }, 300);
     } catch (error) {
         console.error("퀴즈 데이터를 불러오는데 실패했습니다.", error);
     }
