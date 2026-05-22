@@ -758,7 +758,7 @@ window.hideHelpModal = hideHelpModal;
         }
         if (card) card.style.opacity = '0';
       }, 700);
-    }, 2000); // [한글 주석] 카드 2초 노출 후 날아감
+    }, 1500); // [한글 주석] 카드 1.5초 노출 후 날아감
 
   }, 2000); // [한글 주석] 걷고 2초
 
@@ -782,7 +782,7 @@ window.hideHelpModal = hideHelpModal;
       }, idx * 200);
     });
 
-  }, 5000); // [한글 주석] 수집하며 3초
+  }, 4500); // [한글 주석] 수집하며 2.5초 (카드 1.5초 + 도감착 1초)
 
   // [한글 주석] 3단계: 배운다 (5~7초, 총 2초)
   setTimeout(() => {
@@ -791,14 +791,14 @@ window.hideHelpModal = hideHelpModal;
     logoFinal.style.opacity = '0';
     logoFinal.style.transition = 'opacity 0.8s ease';
     setTimeout(() => { logoFinal.style.opacity = '1'; }, 50);
-  }, 7000); // [한글 주석] 배운다 2초
+  }, 6500); // [한글 주석] 배운다 2초
 
   // [한글 주석] 로고 2초 노출 후 페이드아웃 (9초)
   setTimeout(() => {
     splash.style.transition = 'opacity 0.8s ease';
     splash.style.opacity = '0';
     setTimeout(() => { splash.style.display = 'none'; }, 800);
-  }, 9000);
+  }, 8500); // [한글 주석] 로고 2초
 })();
 </script>
 
