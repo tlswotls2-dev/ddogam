@@ -1155,11 +1155,17 @@ function showBagOpenAnimation(reward, onComplete) {
   if (reward.type === 'random_all' || !reward.category) {
     card = allCards[Math.floor(Math.random() * allCards.length)];
   } else {
-    const filtered = allCards.filter(c => {
-      const catMatch = c.category === reward.category;
-      const rarMatch = !reward.rarity || c.rarity === reward.rarity;
-      return catMatch && rarMatch;
-    });
+    // [한글 주석] 카테고리 필터링
+    let filtered = allCards.filter(c => c.category === reward.category);
+
+    // [한글 주석] rarity가 'all'이 아닐 때만 희귀도 필터 추가 적용
+    if (reward.rarity && reward.rarity !== 'all') {
+      const rarFiltered = filtered.filter(c => c.rarity === reward.rarity);
+      // [한글 주석] 희귀도 필터 결과가 있으면 적용, 없으면 카테고리 필터만 유지
+      if (rarFiltered.length > 0) filtered = rarFiltered;
+    }
+
+    // [한글 주석] 해당 카테고리 카드가 없으면 전체에서 뽑기 (예외 처리)
     card = filtered.length > 0
       ? filtered[Math.floor(Math.random() * filtered.length)]
       : allCards[Math.floor(Math.random() * allCards.length)];
