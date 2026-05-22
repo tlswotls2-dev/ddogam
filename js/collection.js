@@ -201,13 +201,14 @@ function showCardChoicePopup(cards, onChoice) {
 
     const cardEl = document.createElement('div');
     cardEl.className = 'choice-card';
+    // [한글 주석] 뒤집기 전 카드는 희귀도 숨기기 위해 모두 동일한 색상으로 통일
     cardEl.style.cssText = `
       flex:1;
       max-width:106px;
       border-radius:14px;
-      border:2px solid ${cfg.border};
-      background:${cfg.bg};
-      box-shadow:0 0 12px ${cfg.glow};
+      border:2px solid #4a6fa5;
+      background:linear-gradient(135deg, #1a2234, #0f1525);
+      box-shadow:0 0 10px rgba(74,111,165,0.3);
       display:flex;flex-direction:column;
       overflow:hidden;
       cursor:pointer;
@@ -219,11 +220,11 @@ function showCardChoicePopup(cards, onChoice) {
     cardEl.innerHTML = `
       <!-- [한글 주석] 카드 상단 헤더 (카드 이름) -->
       <div class="choice-header" style="
-        background:${cfg.headerBg};
-        color:${cfg.labelColor};
+        background:#1a2234;
+        color:#4a6fa5;
         font-size:10px;font-weight:700;
         padding:5px 4px;text-align:center;
-        border-bottom:1px solid ${cfg.border};
+        border-bottom:1px solid #4a6fa5;
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
       ">???</div>
 
