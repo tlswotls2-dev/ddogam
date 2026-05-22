@@ -304,8 +304,17 @@ function renderWorkshop() {
     return;
   }
 
-  // [한글 주석] 선택된 카드 목록 (조합에 사용할 카드들)
-  let selectedForCraft = [];
+  // [한글 주석] 선택된 카드 목록 {cardId: 선택장수}
+  let selectedForCraft = {};
+
+  // [한글 주석] 선택 현황 업데이트 함수
+  function updateWorkshopUI() {
+    const totalSelected = Object.values(selectedForCraft).reduce((a, b) => a + b, 0);
+    const infoEl = document.getElementById('workshop-selected-info');
+    const btnEl = document.getElementById('workshop-craft-btn');
+    if (infoEl) infoEl.textContent = `선택: ${totalSelected} / 5장`;
+    if (btnEl) btnEl.style.display = totalSelected === 5 ? 'block' : 'none';
+  }
 
   // [한글 주석] 조합 안내 헤더
   const header = document.createElement('div');
@@ -415,36 +424,45 @@ function renderWorkshop() {
       ">✓</div>
     `;
 
-    // [한글 주석] 카드 선택/해제 클릭 이벤트
+    // [한글 주석] 카드 선택 클릭 이벤트
     cardEl.addEventListener('click', () => {
       const cardId = cardEl.dataset.cardId;
-      const overlay = cardEl.querySelector('.workshop-select-overlay');
-      const isSelected = selectedForCraft.includes(cardId);
+      const maxSelectable = count; // [한글 주석] 중복 수량만큼만 선택 가능
+      const currentSelected = selectedForCraft[cardId] || 0;
+      const totalSelected = Object.values(selectedForCraft).reduce((a, b) => a + b, 0);
 
-      if (isSelected) {
-        // [한글 주석] 선택 해제
-        selectedForCraft = selectedForCraft.filter(id => id !== cardId);
-        overlay.style.display = 'none';
-        cardEl.style.transform = 'scale(1)';
-      } else {
-        if (selectedForCraft.length >= 5) {
-          // [한글 주석] 이미 5장 선택됨
-          if (typeof showSyncToast === 'function') {
-            showSyncToast('5장만 선택할 수 있어요!', 'warning');
-          }
+      if (currentSelected === 0) {
+        // [한글 주석] 첫번째 클릭: 1장 선택
+        if (totalSelected >= 5) {
+          if (typeof showSyncToast === 'function') showSyncToast('5장만 선택할 수 있어요!', 'warning');
           return;
         }
-        // [한글 주석] 선택 추가 (같은 카드 중복 선택 허용 - count만큼)
-        selectedForCraft.push(cardId);
+        selectedForCraft[cardId] = 1;
+      } else if (currentSelected < maxSelectable && totalSelected < 5) {
+        // [한글 주석] 두번째 클릭: 1장 추가 (보유 수량 & 5장 한도 내에서)
+        selectedForCraft[cardId] = currentSelected + 1;
+      } else {
+        // [한글 주석] 마지막 클릭: 선택 취소
+        delete selectedForCraft[cardId];
+      }
+
+      // [한글 주석] 선택 오버레이 업데이트
+      const overlay = cardEl.querySelector('.workshop-select-overlay');
+      const selected = selectedForCraft[cardId] || 0;
+
+      if (selected === 0) {
+        // [한글 주석] 선택 해제
+        overlay.style.display = 'none';
+        overlay.textContent = '✓';
+        cardEl.style.transform = 'scale(1)';
+      } else {
+        // [한글 주석] 선택 장수 표시
         overlay.style.display = 'flex';
+        overlay.textContent = selected > 1 ? `✓ ×${selected}` : '✓';
         cardEl.style.transform = 'scale(0.95)';
       }
 
-      // [한글 주석] 선택 현황 업데이트
-      const infoEl = document.getElementById('workshop-selected-info');
-      const btnEl = document.getElementById('workshop-craft-btn');
-      if (infoEl) infoEl.textContent = `선택: ${selectedForCraft.length} / 5장`;
-      if (btnEl) btnEl.style.display = selectedForCraft.length === 5 ? 'block' : 'none';
+      updateWorkshopUI();
     });
 
     gridEl.appendChild(cardEl);
@@ -452,10 +470,16 @@ function renderWorkshop() {
 
   // [한글 주석] 조합 실행 함수 (전역으로 노출)
   window.startCrafting = function() {
-    if (selectedForCraft.length !== 5) return;
+    // [한글 주석] 선택된 카드 목록을 장수만큼 펼쳐서 배열로 변환
+    const selectedList = [];
+    Object.entries(selectedForCraft).forEach(([id, cnt]) => {
+      for (let i = 0; i < cnt; i++) selectedList.push(id);
+    });
+
+    if (selectedList.length !== 5) return;
 
     // [한글 주석] 선택된 카드들의 희귀도 분석
-    const selectedCards = selectedForCraft.map(id => allCards.find(c => c.id === id)).filter(Boolean);
+    const selectedCards = selectedList.map(id => allCards.find(c => c.id === id)).filter(Boolean);
     const epicCount   = selectedCards.filter(c => c.rarity === 'epic').length;
     const rareCount   = selectedCards.filter(c => c.rarity === 'rare').length;
 
@@ -508,7 +532,7 @@ function renderWorkshop() {
     if (!resultCard) return;
 
     // [한글 주석] 사용한 카드 차감
-    useDuplicateCards(selectedForCraft);
+    useDuplicateCards(selectedList);
 
     // [한글 주석] 결과 카드 획득 처리
     const isNew = !collection.includes(resultCard.id);
@@ -611,6 +635,11 @@ function showCraftResultPopup(card, isNew, resultRarity) {
 
   document.body.appendChild(overlay);
   if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+
+  // [한글 주석] 새 카드면 NEW! 이펙트 표시
+  if (isNew && typeof showNewCardEffect === 'function') {
+    setTimeout(() => showNewCardEffect(card), 300);
+  }
 }
 
 window.renderWorkshop = renderWorkshop;
