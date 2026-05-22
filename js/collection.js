@@ -89,36 +89,6 @@ async function loadCardsData() {
     }
 }
 
-/**
- * 현재 플레이어가 수집한 개수를 바탕으로 해금된 카테고리 목록을 반환합니다.
- * @returns {Array<string>} 해금된 카테고리 이름 배열 (예: ['plant', 'animal'])
- */
-function getUnlockedCategories() {
-    const collection = getCollection(); // storage.js의 함수 호출
-    
-    let plantCount = 0;
-    let animalCount = 0;
-    
-    // id 접두사로 카테고리별 개수 계산
-    collection.forEach(id => {
-        if (id.startsWith('plant_')) plantCount++;
-        else if (id.startsWith('animal_')) animalCount++;
-    });
-
-    const unlocked = ['plant']; // 1단계 '식물'은 기본 해금 상태
-
-    // 2단계 '동물' 해금 체크 (수집 조건 달성 및 퀴즈 통과 시)
-    if (plantCount >= UNLOCK_CONDITION_ANIMAL && isQuizPassed('animal')) {
-        unlocked.push('animal');
-        
-        // 3단계 '유물' 해금 체크 (수집 조건 달성 및 퀴즈 통과 시)
-        if (animalCount >= UNLOCK_CONDITION_ARTIFACT && isQuizPassed('artifact')) {
-            unlocked.push('artifact');
-        }
-    }
-    
-    return unlocked;
-}
 
 /**
  * [한글 주석] 카드 3장 선택 모드 팝업 표시
