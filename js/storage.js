@@ -211,9 +211,11 @@ function checkCategoryUnlockByLevel(level) {
 
 window.checkCategoryUnlockByLevel = checkCategoryUnlockByLevel;
 
-// [한글 주석] 해금된 카테고리 목록 반환 - 레벨 기반
+// [한글 주석] 해금된 카테고리 목록 반환 - 확정 레벨 기반
 function getUnlockedCategories() {
-  const level = getCurrentLevel();
+  const level = typeof getCurrentLevel === 'function'
+    ? getCurrentLevel()
+    : parseInt(localStorage.getItem('currentLevel') || '1');
   const categories = ['plant'];
   if (level >= 5)  categories.push('animal');
   if (level >= 10) categories.push('artifact');
