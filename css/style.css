@@ -2811,11 +2811,11 @@ button:active {
   to { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
-/* [한글 주석] 카드 도감으로 날아가기 */
+/* [한글 주석] 카드 빠르게 사라지기 (0.1초) */
 .splash-card-fly {
-  transform: scale(0.3) translate(60px, 120px) !important;
-  opacity: 0.3 !important;
-  transition: transform 0.7s ease, opacity 0.7s ease !important;
+  transform: scale(0.1) translate(60px, 120px) !important;
+  opacity: 0 !important;
+  transition: transform 0.1s ease, opacity 0.1s ease !important;
 }
 
 .splash-epic-rarity {
@@ -2866,17 +2866,19 @@ button:active {
   font-size: 14px;
   transition: all 0.3s ease;
 }
+/* [한글 주석] 도감 칸에 착! 바운스 애니메이션 */
 .splash-grid-filled {
   background: linear-gradient(135deg, #1a0a2e, #2d1a4e) !important;
   border-color: #ffd700 !important;
   color: #fff !important;
   font-size: 26px !important;
   box-shadow: 0 0 20px rgba(255,215,0,0.6);
-  animation: gridFilledBounce 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+  animation: gridFilledBounce 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
 }
+
 @keyframes gridFilledBounce {
   0%   { transform: scale(0.3); }
-  60%  { transform: scale(1.2); }
+  60%  { transform: scale(1.3); }
   100% { transform: scale(1); }
 }
 

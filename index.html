@@ -757,7 +757,8 @@ window.hideHelpModal = hideHelpModal;
           target.innerHTML = '🏺';
         }
         if (card) card.style.opacity = '0';
-      }, 700);
+      // [한글 주석] 카드 0.1초만에 사라지고 바로 도감착
+      }, 100);
     }, 1500); // [한글 주석] 카드 1.5초 노출 후 날아감
 
   }, 2000); // [한글 주석] 걷고 2초
