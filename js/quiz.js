@@ -522,3 +522,379 @@ function _showQuizFailToast() {
 window.showLevelUpQuiz = showLevelUpQuiz;
 window.handleLevelQuizAnswer = handleLevelQuizAnswer;
 window._completeLevelUp = _completeLevelUp;
+
+// ==========================================
+// [한글 주석] 일일 OX 퀴즈 시스템 (하루 1문제, 정답 시 복주머니 1개)
+// ==========================================
+
+// [한글 주석] 오늘 이미 시험 봤는지 확인 (자정 기준)
+function isDailyQuizDone() {
+  const lastTime = localStorage.getItem('dailyQuizTime');
+  if (!lastTime) return false;
+  const last = new Date(parseInt(lastTime));
+  const now = new Date();
+  return last.getFullYear() === now.getFullYear() &&
+         last.getMonth() === now.getMonth() &&
+         last.getDate() === now.getDate();
+}
+
+// [한글 주석] 일일 퀴즈 완료 시간 저장
+function saveDailyQuizTime() {
+  localStorage.setItem('dailyQuizTime', Date.now().toString());
+}
+
+// [한글 주석] 일일 퀴즈 버튼 상태 업데이트
+function updateDailyQuizBtn() {
+  const btn = document.getElementById('daily-quiz-btn');
+  if (!btn) return;
+  if (isDailyQuizDone()) {
+    btn.style.opacity = '0.4';
+    btn.style.cursor = 'not-allowed';
+    btn.innerHTML = '📝<br>완료<br>✅';
+  } else {
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+    btn.innerHTML = '📝<br>일일<br>시험';
+  }
+}
+
+// [한글 주석] OX 문제 1개 생성
+// 50% 확률로 정답 문장, 50% 확률로 다른 카드 설명 붙인 오답 문장
+function generateOXQuestion(card) {
+  const isTrue = Math.random() < 0.5;
+  const allCards = window.allCardsData || [];
+
+  if (isTrue) {
+    // [한글 주석] 정답 문장 - 카드 실제 설명 사용
+    return { text: `"${card.name}"\n\n${card.short_desc}`, answer: true };
+  } else {
+    // [한글 주석] 오답 문장 - 같은 카테고리 다른 카드 설명 사용
+    const others = allCards.filter(c =>
+      c.id !== card.id && c.short_desc && c.category === card.category
+    );
+    const wrongCard = others.length > 0
+      ? others[Math.floor(Math.random() * others.length)]
+      : null;
+    const wrongDesc = wrongCard ? wrongCard.short_desc : '알 수 없는 설명이에요.';
+    return { text: `"${card.name}"\n\n${wrongDesc}`, answer: false };
+  }
+}
+
+// [한글 주석] 일일 OX 퀴즈 시작
+function showDailyQuiz() {
+  // [한글 주석] 오늘 이미 시험 봤으면 안내 팝업
+  if (isDailyQuizDone()) {
+    _showDailyQuizDonePopup();
+    return;
+  }
+
+  const collection = typeof getCollection === 'function' ? getCollection() : [];
+  const allCards = window.allCardsData || [];
+  const unlockedCats = typeof getUnlockedCategories === 'function'
+    ? getUnlockedCategories() : ['plant'];
+
+  // [한글 주석] 해금된 카테고리 + short_desc 있는 수집 카드만
+  const collectedCards = collection
+    .map(id => allCards.find(c => c.id === id))
+    .filter(c => c && c.short_desc && unlockedCats.includes(c.category));
+
+  if (collectedCards.length === 0) {
+    alert('카드를 먼저 수집해야 시험을 볼 수 있어요!');
+    return;
+  }
+
+  // [한글 주석] 랜덤으로 카드 1장 선택해서 문제 1개 생성
+  const randomCard = collectedCards[Math.floor(Math.random() * collectedCards.length)];
+  const question = generateOXQuestion(randomCard);
+
+  _showOXQuizPopup(question);
+}
+
+// [한글 주석] OX 퀴즈 팝업 표시
+function _showOXQuizPopup(question) {
+  const existing = document.getElementById('daily-quiz-overlay');
+  if (existing) existing.remove();
+
+  const qEncoded = encodeURIComponent(JSON.stringify(question));
+
+  const overlay = document.createElement('div');
+  overlay.id = 'daily-quiz-overlay';
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.92);
+    z-index:99999;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    animation:fadeIn 0.3s ease;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
+      border:2px solid #6b8e3d;
+      border-radius:24px;
+      padding:24px 20px;
+      max-width:340px;width:100%;
+      box-shadow:0 0 40px rgba(141,176,92,0.3);
+    ">
+      <!-- [한글 주석] 헤더 -->
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="color:#8db05c;font-size:14px;font-weight:700;margin-bottom:4px;">
+          📝 오늘의 일일 시험
+        </div>
+        <div style="color:#aaa;font-size:11px;">
+          이 설명이 맞으면 ⭕, 틀리면 ❌
+        </div>
+      </div>
+
+      <!-- [한글 주석] 문제 박스 -->
+      <div style="
+        background:rgba(0,0,0,0.25);
+        border:1px solid #6b8e3d;
+        border-radius:16px;
+        padding:20px 16px;
+        margin-bottom:22px;
+        min-height:120px;
+        display:flex;align-items:center;justify-content:center;
+      ">
+        <div style="
+          color:#f0e6c8;font-size:14px;
+          line-height:1.8;text-align:center;
+          width:100%;white-space:pre-line;
+        ">${question.text}</div>
+      </div>
+
+      <!-- [한글 주석] OX 버튼 -->
+      <div style="display:flex;gap:14px;">
+        <button
+          id="ox-btn-o"
+          onclick="handleOXAnswer('o', '${qEncoded}')"
+          style="
+            flex:1;padding:20px;
+            background:rgba(132,255,0,0.1);
+            border:2px solid #84ff00;
+            border-radius:16px;
+            color:#84ff00;font-size:36px;
+            font-weight:900;cursor:pointer;
+            transition:all 0.2s;
+          ">⭕</button>
+        <button
+          id="ox-btn-x"
+          onclick="handleOXAnswer('x', '${qEncoded}')"
+          style="
+            flex:1;padding:20px;
+            background:rgba(255,68,68,0.1);
+            border:2px solid #ff4444;
+            border-radius:16px;
+            color:#ff4444;font-size:36px;
+            font-weight:900;cursor:pointer;
+            transition:all 0.2s;
+          ">❌</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+}
+
+// [한글 주석] OX 답 처리
+function handleOXAnswer(selected, qEncoded) {
+  const overlay = document.getElementById('daily-quiz-overlay');
+  if (!overlay || overlay.dataset.answered) return;
+  overlay.dataset.answered = 'true';
+
+  const question = JSON.parse(decodeURIComponent(qEncoded));
+  const selectedBool = selected === 'o';
+  const isCorrect = selectedBool === question.answer;
+
+  // [한글 주석] 버튼 비활성화
+  const oBtn = document.getElementById('ox-btn-o');
+  const xBtn = document.getElementById('ox-btn-x');
+  if (oBtn) oBtn.disabled = true;
+  if (xBtn) xBtn.disabled = true;
+
+  // [한글 주석] 정답/오답 피드백
+  if (isCorrect) {
+    const correctBtn = selectedBool ? oBtn : xBtn;
+    if (correctBtn) {
+      correctBtn.style.background = 'rgba(132,255,0,0.3)';
+      correctBtn.style.transform = 'scale(1.1)';
+    }
+  } else {
+    const wrongBtn = selectedBool ? oBtn : xBtn;
+    const rightBtn = question.answer ? oBtn : xBtn;
+    if (wrongBtn) {
+      wrongBtn.style.background = 'rgba(255,68,68,0.3)';
+      wrongBtn.style.transform = 'scale(0.95)';
+    }
+    if (rightBtn) {
+      rightBtn.style.background = 'rgba(132,255,0,0.2)';
+      rightBtn.style.border = '2px solid #84ff00';
+    }
+  }
+
+  // [한글 주석] 완료 시간 저장
+  saveDailyQuizTime();
+  updateDailyQuizBtn();
+
+  // [한글 주석] 0.9초 후 결과 팝업
+  setTimeout(() => {
+    overlay.remove();
+    _showOXResult(isCorrect);
+  }, 900);
+}
+
+// [한글 주석] OX 결과 팝업 + 복주머니 지급
+function _showOXResult(isCorrect) {
+  // [한글 주석] 정답 시 복주머니 1개 rewardBags에 추가
+  if (isCorrect) {
+    const existingBags = JSON.parse(localStorage.getItem('rewardBags') || '[]');
+    const now = new Date();
+    const timeStr = now.toLocaleDateString('ko-KR', {
+      year:'numeric', month:'long', day:'numeric',
+      hour:'2-digit', minute:'2-digit'
+    });
+    const unlockedCats = typeof getUnlockedCategories === 'function'
+      ? getUnlockedCategories() : ['plant'];
+    const randomCat = unlockedCats[Math.floor(Math.random() * unlockedCats.length)];
+
+    existingBags.push({
+      reward: { type:'category', category:randomCat, rarity:'all' },
+      receivedAt: timeStr,
+      source: 'daily_quiz'
+    });
+    localStorage.setItem('rewardBags', JSON.stringify(existingBags));
+
+    if (typeof updateRewardBadge === 'function') updateRewardBadge();
+  }
+
+  const overlay = document.createElement('div');
+  overlay.id = 'daily-result-overlay';
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.92);
+    z-index:99999;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    animation:fadeIn 0.3s ease;
+  `;
+
+  overlay.innerHTML = isCorrect ? `
+    <div style="
+      background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
+      border:2px solid #d4a017;
+      border-radius:24px;
+      padding:32px 24px;
+      max-width:300px;width:100%;
+      text-align:center;
+      box-shadow:0 0 40px rgba(212,160,23,0.4);
+    ">
+      <div style="font-size:52px;margin-bottom:10px;">🎉</div>
+      <div style="color:#d4a017;font-size:20px;font-weight:900;margin-bottom:8px;">정답!</div>
+      <div style="color:#f0e6c8;font-size:14px;margin-bottom:20px;line-height:1.6;">
+        훌륭해요! 복주머니 1개를 받았어요!
+      </div>
+      <div style="
+        background:rgba(255,215,0,0.1);
+        border:2px solid #ffd700;
+        border-radius:14px;
+        padding:16px;
+        margin-bottom:20px;
+        box-shadow:0 0 16px rgba(255,215,0,0.3);
+      ">
+        <div style="font-size:44px;">🎁</div>
+        <div style="color:#ffd700;font-size:12px;font-weight:700;margin-top:6px;">복주머니 획득!</div>
+        <div style="color:#888;font-size:11px;margin-top:4px;">아이템 탭 → 복주머니에서 열어봐요!</div>
+      </div>
+      <button onclick="document.getElementById('daily-result-overlay').remove()" style="
+        width:100%;
+        background:linear-gradient(135deg,#d4a017,#b3850e);
+        color:#1e2e1f;border:none;border-radius:14px;
+        padding:13px;font-size:15px;font-weight:900;cursor:pointer;
+      ">🎁 확인!</button>
+    </div>
+  ` : `
+    <div style="
+      background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
+      border:2px solid #6b8e3d;
+      border-radius:24px;
+      padding:32px 24px;
+      max-width:300px;width:100%;
+      text-align:center;
+      box-shadow:0 0 30px rgba(141,176,92,0.2);
+    ">
+      <div style="font-size:52px;margin-bottom:10px;">😅</div>
+      <div style="color:#ff8080;font-size:20px;font-weight:900;margin-bottom:8px;">아쉽!</div>
+      <div style="color:#f0e6c8;font-size:14px;margin-bottom:20px;line-height:1.6;">
+        내일 다시 도전해봐요!<br>
+        <span style="color:#8db05c;font-size:12px;">카드 정보를 잘 읽어두면 도움이 돼요 📖</span>
+      </div>
+      <button onclick="document.getElementById('daily-result-overlay').remove()" style="
+        width:100%;
+        background:linear-gradient(135deg,#8db05c,#6b8e3d);
+        color:#1e2e1f;border:none;border-radius:14px;
+        padding:13px;font-size:15px;font-weight:900;cursor:pointer;
+      ">확인</button>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  if (isCorrect && navigator.vibrate) navigator.vibrate([200, 100, 200]);
+}
+
+// [한글 주석] 이미 시험 본 경우 안내 팝업
+function _showDailyQuizDonePopup() {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setHours(24, 0, 0, 0);
+  const diffMs = midnight - now;
+  const diffH = Math.floor(diffMs / 3600000);
+  const diffM = Math.floor((diffMs % 3600000) / 60000);
+
+  const overlay = document.createElement('div');
+  overlay.id = 'daily-done-overlay';
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.85);
+    z-index:99999;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+  `;
+  overlay.innerHTML = `
+    <div style="
+      background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
+      border:2px solid #6b8e3d;
+      border-radius:24px;
+      padding:28px 24px;
+      max-width:300px;width:100%;
+      text-align:center;
+      box-shadow:0 0 30px rgba(141,176,92,0.3);
+    ">
+      <div style="font-size:44px;margin-bottom:12px;">✅</div>
+      <div style="color:#8db05c;font-size:16px;font-weight:900;margin-bottom:8px;">
+        오늘 시험 완료!
+      </div>
+      <div style="color:#d4c89c;font-size:13px;line-height:1.7;margin-bottom:20px;">
+        내일 자정 이후 다시 도전해요!<br>
+        <span style="color:#ffd700;">⏰ ${diffH}시간 ${diffM}분 후 초기화</span>
+      </div>
+      <button onclick="document.getElementById('daily-done-overlay').remove()" style="
+        width:100%;
+        background:linear-gradient(135deg,#8db05c,#6b8e3d);
+        color:#1e2e1f;border:none;border-radius:14px;
+        padding:12px;font-size:14px;font-weight:900;cursor:pointer;
+      ">확인</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+// [한글 주석] 앱 초기화 시 버튼 상태 업데이트
+if (typeof updateDailyQuizBtn === 'function') updateDailyQuizBtn();
+setTimeout(() => updateDailyQuizBtn(), 500);
+
+// [한글 주석] 전역 노출
+window.showDailyQuiz = showDailyQuiz;
+window.handleOXAnswer = handleOXAnswer;
+window.updateDailyQuizBtn = updateDailyQuizBtn;
+window.isDailyQuizDone = isDailyQuizDone;
