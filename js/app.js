@@ -232,28 +232,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 잠금 상태인 탭을 누르면 수집 개수를 확인하고 퀴즈를 띄우거나 경고 메시지를 표시합니다.
             if (tab.classList.contains('locked')) {
-                const collection = getCollection();
-                let pCount = 0;
-                let aCount = 0;
-                
-                collection.forEach(id => {
-                    if (id.startsWith('plant_')) pCount++;
-                    else if (id.startsWith('animal_')) aCount++;
-                });
-
+                // [한글 주석] 레벨 기반 해금 안내
+                const currentLevel = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
                 if (target === 'animal') {
-                    if (pCount < 90) {
-                        alert(`식물을 90개 이상 모아야 해요! (현재 ${pCount}개)`);
-                    } else {
-                        // 조건은 달성했지만 퀴즈를 통과하지 못한 경우
-                        if (typeof startQuiz === 'function') startQuiz('animal');
-                    }
+                  // [한글 주석] 동물은 레벨 5 필요
+                  const needed = 5 - currentLevel;
+                  if (needed > 0) {
+                    alert(`레벨 5가 되면 동물 탐험이 열려요!\n(현재 Lv.${currentLevel}, 레벨업 ${needed}번 더 필요해요)`);
+                  }
                 } else if (target === 'artifact') {
-                    if (aCount < 90) {
-                        alert(`동물을 90개 이상 모아야 해요! (현재 ${aCount}개)`);
-                    } else {
-                        if (typeof startQuiz === 'function') startQuiz('artifact');
-                    }
+                  // [한글 주석] 유물은 레벨 10 필요
+                  const needed = 10 - currentLevel;
+                  if (needed > 0) {
+                    alert(`레벨 10이 되면 유물 탐험이 열려요!\n(현재 Lv.${currentLevel}, 레벨업 ${needed}번 더 필요해요)`);
+                  }
                 }
                 return;
             }
@@ -268,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = tab.getAttribute('data-name');
             categoryBadge.textContent = `${emoji} ${name} 탐험 중`;
 
-            // 현재 카테고리 전역변수 업데이트
+            // [한글 주석] 현재 카테고리 전역 변수 업데이트 (아이템 뽑기에서 사용)
             window.currentCategory = target;
         });
     });
