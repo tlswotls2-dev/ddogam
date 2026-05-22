@@ -38,7 +38,13 @@ function saveCollection(cardId) {
         const newTotal = collection.length;
         const newLevel = checkLevelUp(prevTotal, newTotal);
         if (newLevel) {
-          showLevelUpPopup(newLevel);
+          // [한글 주석] 레벨업 전 퀴즈 도전
+          // 퀴즈 통과 시에만 레벨업 팝업 표시
+          if (typeof showLevelUpQuiz === 'function') {
+            showLevelUpQuiz(newLevel, cardId);
+          } else {
+            showLevelUpPopup(newLevel);
+          }
         }
 
         // [한글 주석] 메인화면 레벨 뱃지 업데이트
@@ -157,6 +163,32 @@ function checkLevelUp(prevTotal, newTotal) {
 
 window.calculateLevel = calculateLevel;
 window.checkLevelUp = checkLevelUp;
+
+// [한글 주석] 레벨별 카테고리 해금 체크
+function checkCategoryUnlockByLevel(level) {
+  // [한글 주석] 레벨 5 → 동물 해금, 레벨 10 → 유물 해금
+  const unlocks = [];
+  if (level >= 5)  unlocks.push('animal');
+  if (level >= 10) unlocks.push('artifact');
+
+  const current = JSON.parse(localStorage.getItem('unlockedCategories') || '["plant"]');
+  let changed = false;
+
+  unlocks.forEach(cat => {
+    if (!current.includes(cat)) {
+      current.push(cat);
+      changed = true;
+    }
+  });
+
+  if (changed) {
+    localStorage.setItem('unlockedCategories', JSON.stringify(current));
+    console.log('[레벨] 카테고리 해금:', current);
+  }
+  return changed;
+}
+
+window.checkCategoryUnlockByLevel = checkCategoryUnlockByLevel;
 
 // [한글 주석] 중복 카드 저장소 키
 const DUPLICATES_KEY = 'cardDuplicates';

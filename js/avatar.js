@@ -54,19 +54,19 @@ function getSelectedGender() {
 }
 
 // ==========================================
-// [한글 주석] 해금 아이템 정의 (슬롯별 조건 및 희귀도)
+// [한글 주석] 해금 아이템 정의 (슬롯별 조건 및 희귀도 - 레벨 기반)
 // ==========================================
 const AVATAR_ITEMS = {
-  'leaf_hat': { slot: 'hat', name: '나뭇잎 모자', condition: { category: 'plant', count: 10 }, rarity: 'common', emoji: '🌿' },
-  'flower_crown': { slot: 'hat', name: '꽃 왕관', condition: { category: 'plant', count: 30 }, rarity: 'rare', emoji: '🌸' },
-  'king_crown': { slot: 'hat', name: '조선 왕관', condition: { category: 'artifact', count: 30 }, rarity: 'rare', emoji: '👑' },
-  'gold_crown': { slot: 'hat', name: '황금 왕관', condition: { category: 'artifact', count: 70 }, rarity: 'epic', emoji: '✨' },
-  'nature_cape': { slot: 'cape', name: '자연 망토', condition: { category: 'plant', count: 50 }, rarity: 'rare', emoji: '🌳' },
-  'artifact_cape': { slot: 'cape', name: '유물 망토', condition: { category: 'artifact', count: 50 }, rarity: 'rare', emoji: '🏺' },
-  'butterfly_wing': { slot: 'wing', name: '나비 날개', condition: { category: 'animal', count: 10 }, rarity: 'common', emoji: '🦋' },
-  'sky_wing': { slot: 'wing', name: '하늘 날개', condition: { category: 'animal', count: 50 }, rarity: 'epic', emoji: '🌤️' },
-  'explorer_badge': { slot: 'badge', name: '탐험가 배지', condition: { total: 100 }, rarity: 'rare', emoji: '🎖️' },
-  'legend_badge': { slot: 'badge', name: '전설 탐험가', condition: { total: 300 }, rarity: 'epic', emoji: '🏆' }
+  'leaf_hat':       { slot:'hat',   name:'나뭇잎 모자',  condition:{ level:3  }, rarity:'common', emoji:'🌿' },
+  'flower_crown':   { slot:'hat',   name:'꽃 왕관',      condition:{ level:8  }, rarity:'rare',   emoji:'🌸' },
+  'king_crown':     { slot:'hat',   name:'조선 왕관',    condition:{ level:15 }, rarity:'rare',   emoji:'👑' },
+  'gold_crown':     { slot:'hat',   name:'황금 왕관',    condition:{ level:25 }, rarity:'epic',   emoji:'✨' },
+  'nature_cape':    { slot:'cape',  name:'자연 망토',    condition:{ level:10 }, rarity:'rare',   emoji:'🌳' },
+  'artifact_cape':  { slot:'cape',  name:'유물 망토',    condition:{ level:15 }, rarity:'rare',   emoji:'🏺' },
+  'butterfly_wing': { slot:'wing',  name:'나비 날개',    condition:{ level:5  }, rarity:'common', emoji:'🦋' },
+  'sky_wing':       { slot:'wing',  name:'하늘 날개',    condition:{ level:20 }, rarity:'epic',   emoji:'🌤️' },
+  'explorer_badge': { slot:'badge', name:'탐험가 배지',  condition:{ level:25 }, rarity:'rare',   emoji:'🎖️' },
+  'legend_badge':   { slot:'badge', name:'전설 탐험가',  condition:{ level:30 }, rarity:'epic',   emoji:'🏆' }
 };
 
 // ==========================================
@@ -730,15 +730,11 @@ function saveEquippedItems(obj) {
 // [한글 주석] 해금 체크 (수집 시마다 호출)
 // ==========================================
 function checkAndUnlockItems() {
+  // [한글 주석] 현재 레벨 계산
   const collection = typeof getCollection === 'function' ? getCollection() : [];
-  let pCount = 0, aCount = 0, arCount = 0;
-  collection.forEach(id => {
-    if (id.startsWith('plant_')) pCount++;
-    else if (id.startsWith('animal_')) aCount++;
-    else if (id.startsWith('artifact_')) arCount++;
-  });
-  const total = pCount + aCount + arCount;
-  const counts = { plant: pCount, animal: aCount, artifact: arCount };
+  const currentLevel = typeof calculateLevel === 'function'
+    ? calculateLevel(collection.length)
+    : 1;
 
   const unlocked = getUnlockedItems();
   let newItems = [];
@@ -746,13 +742,8 @@ function checkAndUnlockItems() {
   Object.keys(AVATAR_ITEMS).forEach(itemId => {
     if (unlocked.includes(itemId)) return;
     const cond = AVATAR_ITEMS[itemId].condition;
-    let met = false;
-    if (cond.total) {
-      met = total >= cond.total;
-    } else if (cond.category && cond.count) {
-      met = (counts[cond.category] || 0) >= cond.count;
-    }
-    if (met) {
+    // [한글 주석] 레벨 조건 체크
+    if (cond.level && currentLevel >= cond.level) {
       unlocked.push(itemId);
       newItems.push(AVATAR_ITEMS[itemId].name);
     }
@@ -1052,15 +1043,12 @@ function renderItemList() {
 
       div.style.borderColor = borderColor;
 
+      // [한글 주석] 잠금 조건 텍스트 - 레벨 기반
       let condText = '';
       if (!isUnlocked) {
-        if (item.condition.total) {
-          condText = `전체 ${item.condition.total}개 필요 (현재 ${total}개)`;
-        } else {
-          const catNames = { plant: '식물', animal: '동물', artifact: '유물' };
-          const cur = counts[item.condition.category] || 0;
-          condText = `${catNames[item.condition.category]} ${item.condition.count}개 필요 (현재 ${cur}개)`;
-        }
+        condText = item.condition.level
+          ? `Lv.${item.condition.level} 해금`
+          : '조건 미달';
       }
 
       div.innerHTML = `

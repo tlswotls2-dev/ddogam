@@ -1,6 +1,6 @@
 // js/quiz.js
-// 해금 퀴즈 시스템을 담당하는 파일입니다.
-// 20개 문제은행에서 랜덤 5문제를 선택하고, 보기 순서도 섞어 출제합니다.
+// [한글 주석] 카테고리 해금 퀴즈 시스템은 레벨업 퀴즈로 대체됨
+// [한글 주석] 레벨 5 → 동물 해금, 레벨 10 → 유물 해금 (storage.js 참고)
 
 // --- 퀴즈 설정 상수 ---
 const QUIZ_PASS_SCORE = 3;    // 통과 기준 정답 수 (5문제 중 3문제 이상 정답 시 통과)
@@ -227,3 +227,249 @@ function closeQuiz() {
         quizScreen.style.display = 'none';
     }, 300);
 }
+
+// ==========================================
+// [한글 주석] 레벨업 퀴즈 시스템
+// ==========================================
+
+// [한글 주석] 레벨업 퀴즈 표시
+function showLevelUpQuiz(newLevel, triggerCardId) {
+  // [한글 주석] 수집한 카드 목록에서 랜덤으로 문제 카드 선택
+  const collection = typeof getCollection === 'function' ? getCollection() : [];
+  const allCards = window.allCardsData || [];
+
+  // [한글 주석] 수집한 카드 중 상세 정보 있는 것만
+  const collectedCards = collection
+    .map(id => allCards.find(c => c.id === id))
+    .filter(c => c && c.short_desc);
+
+  if (collectedCards.length === 0) {
+    // [한글 주석] 문제 낼 카드 없으면 그냥 레벨업
+    _completeLevelUp(newLevel);
+    return;
+  }
+
+  // [한글 주석] 랜덤으로 문제 카드 선택
+  const questionCard = collectedCards[Math.floor(Math.random() * collectedCards.length)];
+
+  // [한글 주석] 정답 포함 4지선다 보기 생성
+  const choices = _generateChoices(questionCard, allCards, collection);
+
+  // [한글 주석] 퀴즈 팝업 표시
+  _showLevelQuizPopup(newLevel, questionCard, choices, triggerCardId);
+}
+
+// [한글 주석] 4지선다 보기 생성 (정답 + 오답 3개)
+function _generateChoices(correctCard, allCards, collection) {
+  // [한글 주석] 같은 카테고리에서 오답 3개 선택
+  const sameCategory = allCards.filter(c =>
+    c.category === correctCard.category &&
+    c.id !== correctCard.id &&
+    c.short_desc
+  );
+
+  // [한글 주석] 랜덤으로 오답 3개 선택
+  const shuffled = sameCategory.sort(() => Math.random() - 0.5);
+  const wrongs = shuffled.slice(0, 3);
+
+  // [한글 주석] 정답 포함 4개 섞기
+  const all = [correctCard, ...wrongs].sort(() => Math.random() - 0.5);
+  return all;
+}
+
+// [한글 주석] 레벨업 퀴즈 팝업 표시
+function _showLevelQuizPopup(newLevel, questionCard, choices, triggerCardId) {
+  const existing = document.getElementById('levelup-quiz-overlay');
+  if (existing) existing.remove();
+
+  // [한글 주석] 카드 이미지 HTML
+  const cardImgHTML = typeof getCardImageHTML === 'function'
+    ? getCardImageHTML(questionCard, 90)
+    : `<div style="font-size:48px;">${questionCard.emoji}</div>`;
+
+  const rarityColors = {
+    common: '#84ff00',
+    rare: '#4a9eff',
+    epic: '#ffd700'
+  };
+  const rColor = rarityColors[questionCard.rarity] || '#84ff00';
+
+  const overlay = document.createElement('div');
+  overlay.id = 'levelup-quiz-overlay';
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.92);
+    z-index:99999;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    padding:20px;
+    animation:fadeIn 0.3s ease;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      background:linear-gradient(135deg,#1a2234,#0f1525);
+      border:2px solid #ffd700;
+      border-radius:24px;
+      padding:24px 20px;
+      max-width:340px;width:100%;
+      box-shadow:0 0 40px rgba(255,215,0,0.3);
+    ">
+      <!-- [한글 주석] 헤더 -->
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="font-size:13px;color:#ffd700;font-weight:700;margin-bottom:4px;">
+          🎯 Lv.${newLevel} 달성 퀴즈!
+        </div>
+        <div style="font-size:11px;color:#aaa;">
+          맞추면 레벨업! 틀리면 다음 기회에 도전해요
+        </div>
+      </div>
+
+      <!-- [한글 주석] 카드 이미지 + 이름 -->
+      <div style="
+        display:flex;align-items:center;gap:14px;
+        background:rgba(0,0,0,0.3);
+        border:1px solid ${rColor};
+        border-radius:16px;
+        padding:12px;
+        margin-bottom:14px;
+      ">
+        <div style="
+          width:80px;height:80px;flex-shrink:0;
+          border-radius:10px;overflow:hidden;
+          display:flex;align-items:center;justify-content:center;
+          background:rgba(0,0,0,0.2);
+        ">${cardImgHTML}</div>
+        <div>
+          <div style="color:${rColor};font-size:11px;font-weight:700;margin-bottom:4px;">
+            이 카드의 설명은?
+          </div>
+          <div style="color:#fff;font-size:16px;font-weight:900;">
+            ${questionCard.name}
+          </div>
+        </div>
+      </div>
+
+      <!-- [한글 주석] 4지선다 보기 -->
+      <div id="quiz-choices" style="display:flex;flex-direction:column;gap:8px;margin-bottom:4px;">
+        ${choices.map((c, i) => `
+          <button
+            class="level-quiz-choice"
+            data-correct="${c.id === questionCard.id}"
+            data-card-id="${c.id}"
+            onclick="handleLevelQuizAnswer(this, '${questionCard.id}', ${newLevel}, '${triggerCardId}')"
+            style="
+              background:rgba(255,255,255,0.05);
+              border:1px solid rgba(255,255,255,0.15);
+              border-radius:12px;
+              padding:10px 14px;
+              color:#f0e6c8;
+              font-size:12px;
+              text-align:left;
+              cursor:pointer;
+              transition:all 0.2s;
+              line-height:1.4;
+            "
+          >${['①','②','③','④'][i]} ${c.short_desc}</button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+}
+
+// [한글 주석] 퀴즈 답 선택 처리
+function handleLevelQuizAnswer(btn, correctCardId, newLevel, triggerCardId) {
+  // [한글 주석] 이미 답 선택했으면 무시
+  const overlay = document.getElementById('levelup-quiz-overlay');
+  if (!overlay || overlay.dataset.answered) return;
+  overlay.dataset.answered = 'true';
+
+  const isCorrect = btn.dataset.correct === 'true';
+  const allBtns = overlay.querySelectorAll('.level-quiz-choice');
+
+  // [한글 주석] 정답/오답 색상 표시
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b.dataset.correct === 'true') {
+      b.style.background = 'rgba(132,255,0,0.2)';
+      b.style.border = '2px solid #84ff00';
+      b.style.color = '#84ff00';
+    } else if (b === btn && !isCorrect) {
+      b.style.background = 'rgba(255,68,68,0.2)';
+      b.style.border = '2px solid #ff4444';
+      b.style.color = '#ff4444';
+    }
+  });
+
+  setTimeout(() => {
+    overlay.remove();
+    if (isCorrect) {
+      // [한글 주석] 정답 → 레벨업 완료
+      _completeLevelUp(newLevel);
+    } else {
+      // [한글 주석] 오답 → 레벨업 실패 토스트
+      _showQuizFailToast();
+    }
+  }, 1000);
+}
+
+// [한글 주석] 레벨업 완료 처리
+function _completeLevelUp(newLevel) {
+  // [한글 주석] 레벨 저장
+  const collection = typeof getCollection === 'function' ? getCollection() : [];
+  localStorage.setItem('currentLevel', newLevel);
+
+  // [한글 주석] 카테고리 해금 체크
+  if (typeof checkCategoryUnlockByLevel === 'function') {
+    const unlocked = checkCategoryUnlockByLevel(newLevel);
+    if (unlocked) {
+      // [한글 주석] 카테고리 해금 알림
+      let msg = '';
+      if (newLevel >= 10) msg = '🏺 유물 탐험이 해금됐어요!';
+      else if (newLevel >= 5) msg = '🦊 동물 탐험이 해금됐어요!';
+      if (msg) {
+        setTimeout(() => {
+          const toast = document.createElement('div');
+          toast.className = 'item-unlock-toast';
+          toast.textContent = msg;
+          document.body.appendChild(toast);
+          setTimeout(() => toast.classList.add('show'), 10);
+          setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 400);
+          }, 3500);
+        }, 500);
+      }
+    }
+  }
+
+  // [한글 주석] 아이템 해금 체크
+  if (typeof checkAndUnlockItems === 'function') checkAndUnlockItems();
+
+  // [한글 주석] 레벨업 축하 팝업
+  if (typeof showLevelUpPopup === 'function') showLevelUpPopup(newLevel);
+
+  // [한글 주석] 메인화면 업데이트
+  if (typeof updateLevelBadge === 'function') updateLevelBadge();
+  if (typeof window.updateMainScreenData === 'function') window.updateMainScreenData();
+}
+
+// [한글 주석] 퀴즈 실패 토스트
+function _showQuizFailToast() {
+  const toast = document.createElement('div');
+  toast.className = 'item-unlock-toast';
+  toast.style.background = 'linear-gradient(135deg,#ff4444,#cc0000)';
+  toast.textContent = '❌ 아쉽! 다음 카드를 모으면 다시 도전해요!';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.classList.add('show'), 10);
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+window.showLevelUpQuiz = showLevelUpQuiz;
+window.handleLevelQuizAnswer = handleLevelQuizAnswer;
+window._completeLevelUp = _completeLevelUp;
