@@ -256,7 +256,7 @@ function showCardChoicePopup(cards, onChoice) {
       ">
         <!-- [한글 주석] 희귀도 라벨 -->
         <div style="
-          color:${cfg.labelColor};
+          color:#4a6fa5;
           font-size:9px;font-weight:700;
           text-align:center;
         ">???</div>
