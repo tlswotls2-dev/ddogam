@@ -336,7 +336,7 @@
             }
             if (artifactTab) {
                 artifactTab.classList.remove('locked');
-                artifactTab.textContent = '🌰 유물';
+                artifactTab.textContent = '🏺 유물';
             }
 
             // 9. 도감 탭 강제 해금
@@ -348,7 +348,7 @@
             }
             if (dodamArtifactTab) {
                 dodamArtifactTab.classList.remove('locked');
-                dodamArtifactTab.textContent = '🌰 유물';
+                dodamArtifactTab.textContent = '🏺 유물';
             }
 
             alert("🔓 모든 카테고리, 퀴즈 및 도감이 강제로 해금되었습니다!");

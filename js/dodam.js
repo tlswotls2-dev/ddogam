@@ -69,7 +69,7 @@ function renderDodamTabs() {
             tab.classList.remove('locked');
             if (cat === 'plant') tab.textContent = '🌱 식물';
             if (cat === 'animal') tab.textContent = '🦊 동물';
-            if (cat === 'artifact') tab.textContent = '🌰 유물';
+            if (cat === 'artifact') tab.textContent = '🏺 유물';
         } else {
             tab.classList.add('locked');
             if (cat === 'animal') tab.textContent = '🔒 동물';
@@ -210,7 +210,8 @@ function showDodamDetail(card, dateString) {
     popupEmojiEl.innerHTML = getCardImageHTML(card, 68);
     document.getElementById('popup-name').textContent = card.name;
     document.getElementById('popup-short-desc').textContent = card.short_desc || '새로운 발견입니다!';
-    document.getElementById('popup-habitat').textContent = `📍 서식지: ${card.habitat || '알 수 없음'}`;
+    // [한글 주석] 도감 카드 서식지/시대/장소 라벨 스마트 표시
+    document.getElementById('popup-habitat').textContent = window.getHabitatLabel(card);
     
     // 뒷면 데이터 바인딩
     document.getElementById('popup-back-name').textContent = card.name;
@@ -235,7 +236,7 @@ function showDodamDetail(card, dateString) {
     const catBadge = document.getElementById('popup-category-badge');
     if (card.category === 'plant') { catBadge.textContent = '🌱 식물'; catBadge.className = 'badge-category-plant'; }
     else if (card.category === 'animal') { catBadge.textContent = '🦊 동물'; catBadge.className = 'badge-category-animal'; }
-    else if (card.category === 'artifact') { catBadge.textContent = '🌰 유물'; catBadge.className = 'badge-category-artifact'; }
+    else if (card.category === 'artifact') { catBadge.textContent = '🏺 유물'; catBadge.className = 'badge-category-artifact'; }
     
     // 도감에서 볼 때는 이모지 반짝임 끄기
     document.getElementById('popup-emoji-container').classList.remove('new-discovery-anim');

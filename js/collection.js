@@ -253,7 +253,29 @@ function showCardPopup(cardParam, isNew) {
     popupEmojiEl.innerHTML = getCardImageHTML(card, 68);
     document.getElementById('popup-name').textContent = card.name;
     document.getElementById('popup-short-desc').textContent = card.short_desc || '새로운 발견입니다!';
-    document.getElementById('popup-habitat').textContent = `📍 서식지: ${card.habitat || '알 수 없음'}`;
+    // [한글 주석] 카테고리별 서식지 라벨 스마트 교체
+    // 유물이면 habitat 내용에 따라 라벨 자동 결정
+    window.getHabitatLabel = function(card) {
+        if (card.category !== 'artifact') {
+            return `📍 서식지: ${card.habitat || '알 수 없음'}`;
+        }
+        const h = card.habitat || '';
+        // [한글 주석] 시대 키워드 포함 여부 확인
+        const eraKeywords = ['시대', 'BC', 'AD', '세기', '년대', '왕조', '조선', '고려', '신라', '백제', '가야', '고구려', '조선시대', '고려시대'];
+        const placeKeywords = ['도', '시', '군', '구', '읍', '면', '리', '산', '강', '궁', '절', '사', '성', '터'];
+        const locationKeywords = ['박물관', '소장', '전시', '국립', '보관'];
+
+        const isEra = eraKeywords.some(k => h.includes(k));
+        const isLocation = locationKeywords.some(k => h.includes(k));
+        const isPlace = placeKeywords.some(k => h.includes(k));
+
+        if (isEra) return `🏛️ 시대: ${h}`;
+        if (isLocation) return `📌 현재위치: ${h}`;
+        if (isPlace) return `📍 발견장소: ${h}`;
+        return `🏛️ 정보: ${h}`;
+    };
+
+    document.getElementById('popup-habitat').textContent = window.getHabitatLabel(card);
     
     // 뒷면 데이터 바인딩
     document.getElementById('popup-back-name').textContent = card.name;
@@ -278,7 +300,7 @@ function showCardPopup(cardParam, isNew) {
     const catBadge = document.getElementById('popup-category-badge');
     if (card.category === 'plant') { catBadge.textContent = '🌱 식물'; catBadge.className = 'badge-category-plant'; }
     else if (card.category === 'animal') { catBadge.textContent = '🦊 동물'; catBadge.className = 'badge-category-animal'; }
-    else if (card.category === 'artifact') { catBadge.textContent = '🌰 유물'; catBadge.className = 'badge-category-artifact'; }
+    else if (card.category === 'artifact') { catBadge.textContent = '🏺 유물'; catBadge.className = 'badge-category-artifact'; }
     
     // 새로운 발견 시 이모지 반짝임 애니메이션
     const emojiContainer = document.getElementById('popup-emoji-container');

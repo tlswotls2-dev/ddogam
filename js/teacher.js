@@ -144,7 +144,7 @@ function renderDashboard(students) {
           <span class="dsc-progress-count">${animalCount}</span>
         </div>
         <div class="dsc-progress-row">
-          <span class="dsc-progress-label">🌰</span>
+          <span class="dsc-progress-label">🏺</span>
           <div class="dsc-progress-bg">
             <div class="dsc-progress-fill dsc-fill-artifact" style="width: ${Math.min(artifactCount, 100)}%;"></div>
           </div>
@@ -195,7 +195,7 @@ function showRewardModal(classNum, studentNum, studentName) {
     { emoji: '🦊', label: '동물 일반', type: 'category', category: 'animal', rarity: 'common' },
     { emoji: '🦁', label: '동물 희귀', type: 'category', category: 'animal', rarity: 'rare' },
     { emoji: '🐉', label: '동물 전설', type: 'category', category: 'animal', rarity: 'epic' },
-    { emoji: '🌰', label: '유물 일반', type: 'category', category: 'artifact', rarity: 'common' },
+    { emoji: '🏺', label: '유물 일반', type: 'category', category: 'artifact', rarity: 'common' },
     { emoji: '🏺', label: '유물 희귀', type: 'category', category: 'artifact', rarity: 'rare' },
     { emoji: '👑', label: '유물 전설', type: 'category', category: 'artifact', rarity: 'epic' }
   ];
@@ -364,7 +364,7 @@ function showBulkRewardModal() {
     { emoji: '🦊', label: '동물 일반', type: 'category', category: 'animal', rarity: 'common' },
     { emoji: '🦁', label: '동물 희귀', type: 'category', category: 'animal', rarity: 'rare' },
     { emoji: '🐉', label: '동물 전설', type: 'category', category: 'animal', rarity: 'epic' },
-    { emoji: '🌰', label: '유물 일반', type: 'category', category: 'artifact', rarity: 'common' },
+    { emoji: '🏺', label: '유물 일반', type: 'category', category: 'artifact', rarity: 'common' },
     { emoji: '🏺', label: '유물 희귀', type: 'category', category: 'artifact', rarity: 'rare' },
     { emoji: '👑', label: '유물 전설', type: 'category', category: 'artifact', rarity: 'epic' }
   ];

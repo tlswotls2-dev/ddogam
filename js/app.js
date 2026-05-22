@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 동물 90개 이상이고 유물 퀴즈를 통과했으면 탭 해금 및 텍스트 변경
         if (animalCount >= 90 && isQuizPassed('artifact') && artifactTab) {
             artifactTab.classList.remove('locked');
-            artifactTab.textContent = '🌰 유물';
+            artifactTab.textContent = '🏺 유물';
         }
     };
 
