@@ -1,17 +1,17 @@
 /* ==========================================================
-   또감 - 세련된 우주/탐험 테마 스타일시트 [전체 통합본]
+   또감 - 우드&모스(자연/숲) 컨셉 스타일시트 [전체 통합본]
    ========================================================== */
 
-/* 1. 디자인 시스템 변수 정의 */
+/* 1. 디자인 시스템 변수 정의 (숲/자연 테마) */
 :root {
-    --bg-color: #0f1c30;       /* 딥 네이비 (우주 배경) */
-    --panel-bg: #223754;       /* 패널 배경색 */
-    --accent-color: #84ff00;   /* 주 강조색 (밝은 초록) */
-    --secondary-color: #4a9eff;/* 보조색 (하늘 파랑) */
-    --text-color: #ffffff;     /* 기본 텍스트 색 */
-    --border-color: #4a6fa5;   /* 기본 테두리 색 */
-    --border-radius: 12px;     /* 공통 둥근 모서리 */
-    --font-main: 'Noto Sans KR', sans-serif; /* 메인 폰트 */
+    --bg-color: #2c3e2d;           /* 짙은 숲 녹색 배경 */
+    --panel-bg: #3d5239;           /* 패널 배경 (이끼 녹색) */
+    --accent-color: #8db05c;       /* 주 강조색 (연한 녹색) */
+    --secondary-color: #d4a017;    /* 보조색 (황금빛) */
+    --text-color: #f0e6c8;         /* 기본 텍스트 (따뜻한 크림) */
+    --border-color: #6b8e3d;       /* 테두리 (이끼 녹색) */
+    --border-radius: 14px;         /* 공통 둥근 모서리 */
+    --font-main: 'Noto Sans KR', sans-serif;
 }
 
 /* 2. 전역 초기화 및 기본 스타일 */
@@ -22,8 +22,9 @@
     font-family: var(--font-main);
 }
 
+/* 숲 느낌의 세로 그라데이션 배경 */
 body {
-    background-color: var(--bg-color);
+    background: linear-gradient(180deg, #2c3e2d 0%, #3d5239 50%, #2c3e2d 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -47,61 +48,66 @@ button:active {
     transform: translateY(3px) !important;
 }
 
-/* 세련된 우주 스타일 스크롤바 */
+/* 숲 테마 스크롤바 (이끼 녹색 계열) */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 ::-webkit-scrollbar-track {
-    background: #0a1321;
+    background: #1e2e1f; /* 어두운 숲 바닥색 */
 }
 ::-webkit-scrollbar-thumb {
-    background: var(--border-color);
+    background: #6b8e3d; /* 이끼 녹색 */
     border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary-color);
+    background: #8db05c; /* 연한 녹색 (호버 시 밝아짐) */
 }
 
 /* ==========================================================
    3. 로그인 화면 (#login-screen)
    ========================================================== */
 
-/* 로그인 화면을 감싸는 전체 컨테이너 */
+/* 로그인 화면을 감싸는 전체 컨테이너 (숲 그라데이션 + 둥근 카드) */
 .app-container {
     width: 100%;
     max-width: 400px;
-    background-color: var(--bg-color);
+    background: linear-gradient(180deg, #2c3e2d, #3d5239);
     padding: 40px 24px;
     text-align: center;
     margin: 20px auto;
     position: relative;
+    border-radius: 24px;
+    border: 1px solid #6b8e3d;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
 }
 
+/* 로그인 화면 내부 (투명 배경으로 부모 그라데이션 활용) */
 #login-screen {
-    background-color: var(--bg-color);
+    background: transparent;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
 }
 
-/* 메인 타이틀 로고 (우주 탐사선 명판 느낌) */
+/* 메인 타이틀 로고 (숲속 이끼 빛 느낌) */
 .logo {
-    color: var(--accent-color);
+    color: #8db05c;
     font-size: 3rem;
     font-weight: 900;
-    text-shadow: 0 0 20px rgba(132, 255, 0, 0.5);
+    text-shadow: 0 0 20px rgba(141,176,92,0.5), 0 2px 4px rgba(0,0,0,0.3);
     margin-bottom: 8px;
-    letter-spacing: -1px;
+    letter-spacing: 2px;
 }
 
-/* 부제목 (하늘 파랑) */
+/* 부제목 (따뜻한 크림/골드 톤) */
 .subtitle {
-    font-size: 1rem;
-    color: #a0c4ff;
+    font-size: 0.95rem;
+    color: #d4c89c;
     margin-bottom: 35px;
-    font-weight: 700;
+    font-weight: 500;
+    opacity: 0.85;
 }
 
 /* 입력 그룹 스타일 */
@@ -111,40 +117,43 @@ button:active {
     text-align: left;
 }
 
+/* 입력 라벨 (이끼 녹색 강조) */
 .input-group label {
     display: block;
     margin-bottom: 8px;
     font-size: 0.9rem;
-    color: var(--secondary-color);
+    color: #8db05c;
     font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
-/* 셀렉트박스 및 인풋창 현대화 */
+/* 셀렉트박스 및 인풋창 (숲 그라데이션 배경) */
 .input-group input,
 .input-group select {
     width: 100%;
-    background-color: var(--panel-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 10px;
-    color: var(--text-color);
+    background: linear-gradient(180deg, #3d5239, #2c3e2d);
+    border: 1px solid #6b8e3d;
+    border-radius: 12px;
+    color: #f0e6c8;
     font-family: var(--font-main);
     padding: 14px;
     font-size: 1.1rem;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
-/* 입력칸 포커스 시 네온 그린 발광 */
+/* 입력칸 포커스 시 이끼 녹색 발광 */
 .input-group input:focus,
 .input-group select:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 10px rgba(132, 255, 0, 0.25);
+    border-color: #8db05c;
+    box-shadow: 0 0 12px rgba(141,176,92,0.3);
 }
 
-/* 학급 선택 드롭다운 옵션 스타일 */
+/* 학급 선택 드롭다운 옵션 스타일 (이끼 녹색 배경) */
 .input-group select option {
-    background-color: var(--panel-bg);
-    color: var(--text-color);
+    background-color: #3d5239;
+    color: #f0e6c8;
 }
 
 /* 상태 메시지 구역 */
@@ -161,19 +170,21 @@ button:active {
     color: var(--accent-color);
 }
 
-/* 탐험 시작 버튼 (우주선 출발 버튼 테마) */
+/* 탐험 시작 버튼 (황금빛 우드 테마) */
 #loginForm .start-btn {
     width: 100%;
-    background-color: var(--accent-color);
-    color: #000000;
-    border-radius: 12px;
+    background: linear-gradient(135deg, #d4a017, #b3850e);
+    color: #2c3e2d;
+    border-radius: 14px;
     font-size: 1.3rem;
     font-weight: 900;
     padding: 16px;
     margin-top: 15px;
-    box-shadow: 0 5px 0 #54a100;
+    box-shadow: 0 5px 0 #8a5f0a, 0 8px 20px rgba(212,160,23,0.3);
+    letter-spacing: 1px;
 }
 
+/* 로그인 버튼 클릭 시 눌림 효과 */
 #loginForm .start-btn:active {
     transform: translateY(5px) !important;
     box-shadow: none !important;
@@ -191,11 +202,11 @@ button:active {
     font-weight: 700;
 }
 
-/* 선생님 전용 API 설정 모달 */
+/* 선생님 전용 API 설정 모달 (어두운 숲 오버레이) */
 .api-key-modal {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(15, 28, 48, 0.9);
+    background-color: rgba(20, 30, 20, 0.92);
     z-index: 10000;
     display: flex;
     justify-content: center;
@@ -260,17 +271,17 @@ button:active {
    4. 메인 화면 (#main-container / #main-screen)
    ========================================================== */
 
-/* 메인 화면 전체 뷰포트 프레임 */
+/* 메인 화면 전체 뷰포트 프레임 (숲 그라데이션) */
 #main-container {
     width: 100%;
     max-width: 400px;
     height: 100vh;
     position: relative;
-    background-color: var(--bg-color);
+    background: linear-gradient(180deg, #2c3e2d 0%, #3d5239 40%, #4a6a4b 100%);
     overflow: hidden;
     margin: 0 auto;
     border: 3px solid var(--border-color);
-    box-shadow: 0 0 30px rgba(74, 111, 165, 0.25);
+    box-shadow: 0 0 30px rgba(107, 142, 61, 0.25);
 }
 
 /* 밤하늘 별 효과 (둥근 별로 세련되게 처리) */
@@ -289,7 +300,7 @@ button:active {
     to { opacity: 1; transform: scale(1.2); }
 }
 
-/* 상단 헤더 영역 */
+/* 상단 헤더 영역 (숲 배경 반투명) */
 .header-area, .main-header {
     position: relative;
     z-index: 10;
@@ -297,7 +308,7 @@ button:active {
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    background-color: rgba(15, 28, 48, 0.95);
+    background-color: rgba(44, 62, 45, 0.95);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--border-color);
 }
@@ -308,11 +319,12 @@ button:active {
     gap: 10px;
 }
 
+/* 로고 아이콘 (이끼 녹색 발광) */
 .logo-small {
     font-size: 1.1rem;
     font-weight: 900;
     color: var(--accent-color);
-    text-shadow: 0 0 10px rgba(132, 255, 0, 0.3);
+    text-shadow: 0 0 10px rgba(141, 176, 92, 0.3);
 }
 
 /* 카테고리 알림 배지 */
@@ -326,9 +338,9 @@ button:active {
     font-weight: 700;
 }
 
-/* 걸음 수 디스플레이 */
+/* 걸음 수 디스플레이 (황금빛 강조) */
 .header-right .step-count {
-    color: #ff9500;
+    color: #d4a017;
     font-size: 0.8rem;
     font-weight: 900;
     background-color: var(--panel-bg);
@@ -347,45 +359,47 @@ button:active {
     padding: 12px 14px;
 }
 
+/* 카테고리 탭 버튼 (이끼 녹색/크림 톤) */
 .tab, .tab-btn {
     flex: 1;
     background-color: var(--panel-bg);
     border: 2px solid var(--border-color);
     border-radius: 10px;
-    color: #a0c4ff;
+    color: #d4c89c;
     padding: 12px 6px;
     font-size: 0.9rem;
     font-weight: 700;
     text-align: center;
 }
 
-/* 활성화 탭 (그린 스페이스 테마) */
+/* 활성화 탭 (이끼 녹색 강조) */
 .tab.active, .tab-btn.active {
-    background-color: var(--accent-color);
-    color: #000000;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 12px rgba(132, 255, 0, 0.3);
+    background: #8db05c;
+    color: #2c3e2d;
+    border-color: #8db05c;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(141, 176, 92, 0.3);
 }
 
-/* 잠금 탭 (어두운 테마) */
+/* 잠금 탭 (어두운 숲 테마) */
 .tab.locked, .tab-btn.locked {
-    background-color: #1a2a40;
-    color: #4a5568;
-    border-color: #1a2a40;
+    background-color: #1e2e1f;
+    color: #5a6b5c;
+    border-color: #1e2e1f;
     cursor: not-allowed;
     box-shadow: none;
 }
 
-/* 수집 상태 정보 카드 */
+/* 수집 상태 정보 카드 (숲 패널 배경) */
 .status-card, .collection-card {
     position: relative;
     z-index: 10;
     margin: 4px 14px 12px 14px;
-    background-color: var(--panel-bg);
-    border: 1px solid var(--border-color);
+    background: linear-gradient(180deg, #3d5239, #2c3e2d);
+    border: 1px solid #6b8e3d;
     border-radius: var(--border-radius);
     padding: 16px 14px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.3);
 }
 
 .status-card h3 {
@@ -396,11 +410,11 @@ button:active {
     text-align: left;
 }
 
-/* 진행 바 컨테이너 */
+/* 진행 바 컨테이너 (어두운 숲 바닥) */
 .progress-bar-container, .small-bar-bg {
     width: 100%;
     height: 14px;
-    background-color: #0a1321;
+    background-color: #1e2e1f;
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -414,16 +428,16 @@ button:active {
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 게이지 채우기 컬러 테마 */
-.fill-plant { background-color: var(--accent-color); }
-.fill-animal { background-color: #ff9500; }
-.fill-artifact { background-color: #9b59ff; }
+/* 게이지 채우기 컴러 테마 (숲/자연 컨셉) */
+.fill-plant { background: linear-gradient(90deg, #8db05c, #d4a017); } /* 식물: 녹색~황금 그라데이션 */
+.fill-animal { background-color: #d4a017; } /* 동물: 황금빛 */
+.fill-artifact { background-color: #8db05c; } /* 유물: 연한 녹색 */
 
-/* 수집 수치 정보 */
+/* 수집 수치 정보 (황금빛 강조) */
 .progress-text {
     text-align: right;
     font-size: 0.85rem;
-    color: #ff9500;
+    color: #d4a017;
     margin-bottom: 14px;
     font-weight: 900;
 }
@@ -459,7 +473,7 @@ button:active {
 .status-item span:last-child {
     min-width: 60px;
     text-align: right;
-    color: #a0c4ff;
+    color: #d4c89c; /* 따뜻한 크림색 */
     font-weight: 700;
     font-size: 0.8rem;
 }
@@ -559,21 +573,22 @@ button:active {
     z-index: 10;
 }
 
+/* 오른쪽 세로 사이드 버튼 (숲 그라데이션 + 이끼 테두리) */
 .side-btn, .icon-btn {
     width: 56px;
     height: 56px;
-    background-color: var(--panel-bg);
-    border: 2px solid var(--border-color);
+    background: linear-gradient(180deg, #3d5239, #2c3e2d);
+    border: 1px solid #6b8e3d;
     border-radius: var(--border-radius);
-    color: #a0c4ff;
+    color: #d4c89c;
     font-size: 0.75rem;
     font-weight: 700;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    line-height: 1.1;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    line-height: 1.3;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 /* 사이드 버튼 내 이모지 최적화 */
@@ -598,10 +613,11 @@ button:active {
     z-index: 10;
 }
 
-/* AI 학습 도우미 버튼 (퍼플 우주 테마) */
+/* AI 학습 도우미 버튼 (숲 녹색 테마) */
 .action-btn.btn-ai, .chat-btn {
-    background-color: #7b2fff;
-    color: #ffffff;
+    background: linear-gradient(135deg, #4a6a4b, #3d5239);
+    color: #d4c89c;
+    border: 1px solid #6b8e3d;
     border-radius: var(--border-radius);
     height: 48px;
     display: flex;
@@ -610,7 +626,7 @@ button:active {
     gap: 8px;
     padding: 0 16px;
     font-weight: 900;
-    box-shadow: 0 4px 0 #4a0099;
+    box-shadow: 0 4px 0 #2c3e2d;
 }
 
 .action-btn.btn-ai .btn-emoji {
@@ -626,10 +642,10 @@ button:active {
     box-shadow: none !important;
 }
 
-/* 슈즈 탐험 출발! 버튼 (오렌지 태양 광원 테마) */
+/* 슈즈 탐험 출발! 버튼 (황금빛 테마) */
 .action-btn.btn-explore, .explore-btn {
-    background-color: #ff9500;
-    color: #ffffff;
+    background: linear-gradient(135deg, #d4a017, #b3850e);
+    color: #2c3e2d;
     border-radius: 16px;
     width: 68px;
     height: 68px;
@@ -639,7 +655,7 @@ button:active {
     align-items: center;
     justify-content: center;
     line-height: 1.1;
-    box-shadow: 0 5px 0 #8b5200;
+    box-shadow: 0 5px 0 #8a5f0a, 0 4px 12px rgba(212,160,23,0.4);
     font-size: 0.75rem;
 }
 
@@ -656,16 +672,17 @@ button:active {
 /* ==========================================================
    5. 안전 경고 오버레이 (.safety-overlay)
    ========================================================== */
+/* 안전 경고 오버레이 (어두운 숲 필터) */
 .safety-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(15, 28, 48, 0.96); /* 어두운 네이비 필터 */
+    background-color: rgba(20, 30, 20, 0.96); /* 어두운 숲 필터 */
     z-index: 9999;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    border: 4px solid #ff4444; /* 세련된 위험 외곽 테두리 */
+    border: 4px solid #ff4444; /* 위험 외곽 테두리 */
 }
 
 .safety-message {
@@ -687,10 +704,11 @@ button:active {
 /* ==========================================================
    6. 카드 상세 정보 팝업 (.shared-card-overlay)
    ========================================================== */
+/* 카드 상세 정보 팝업 오버레이 (어두운 숲 필터) */
 .shared-card-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(10, 19, 33, 0.92); /* 반투명 딥 블루 필터 */
+    background-color: rgba(20, 30, 20, 0.92); /* 반투명 숲 필터 */
     backdrop-filter: blur(10px);
     z-index: 10001;
     display: flex;
@@ -903,6 +921,7 @@ button:active {
 /* ==========================================================
    7. 도감 화면 (#dodam-screen)
    ========================================================== */
+/* 도감 화면 (숲 그라데이션 배경) */
 #dodam-screen {
     position: fixed;
     top: 0; left: 50%;
@@ -910,7 +929,7 @@ button:active {
     width: 100%;
     max-width: 400px;
     height: 100vh;
-    background-color: var(--bg-color);
+    background: linear-gradient(180deg, #2c3e2d, #3d5239);
     z-index: 200;
     display: none;
     flex-direction: column;
@@ -952,6 +971,7 @@ button:active {
     gap: 8px;
 }
 
+/* 도감 탭 버튼 (크림색 텍스트) */
 .dodam-tab {
     flex: 1;
     padding: 10px 4px;
@@ -960,20 +980,23 @@ button:active {
     background-color: var(--panel-bg);
     border: 2px solid var(--border-color);
     border-radius: 8px;
-    color: #a0c4ff;
+    color: #d4c89c;
     cursor: pointer;
 }
 
+/* 도감 활성 탭 (이끼 녹색 강조) */
 .dodam-tab.active {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-    color: #000000;
+    background: #8db05c;
+    border-color: #8db05c;
+    color: #2c3e2d;
+    font-weight: 700;
 }
 
+/* 도감 잠금 탭 (어두운 숲) */
 .dodam-tab.locked {
-    background-color: #1a2a40;
-    color: #4a5568;
-    border-color: #1a2a40;
+    background-color: #1e2e1f;
+    color: #5a6b5c;
+    border-color: #1e2e1f;
     cursor: not-allowed;
 }
 
@@ -982,18 +1005,20 @@ button:active {
     padding: 6px 14px 14px 14px;
 }
 
+/* 도감 진행 요약 텍스트 (황금빛) */
 .dodam-summary-text {
     font-size: 0.85rem;
-    color: #ff9500;
+    color: #d4a017;
     margin-bottom: 6px;
     text-align: right;
     font-weight: 900;
 }
 
+/* 도감 진행바 배경 (어두운 숲 바닥) */
 .dodam-progress-bg {
     width: 100%;
     height: 12px;
-    background-color: #0a1321;
+    background-color: #1e2e1f;
     border-radius: 10px;
     overflow: hidden;
 }
@@ -1545,10 +1570,11 @@ button:active {
 /* ==========================================================
    10. 탐험 모드 오버레이 (#exploration-overlay)
    ========================================================== */
+/* 탐험 모드 오버레이 (어두운 숲 밀폐 오버레이) */
 .exploration-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(15, 28, 48, 0.97); /* 딥 블루 밀폐 오버레이 */
+    background-color: rgba(20, 30, 20, 0.97); /* 어두운 숲 밀폐 오버레이 */
     z-index: 9000;
     display: flex;
     flex-direction: column;
@@ -1573,6 +1599,7 @@ button:active {
     letter-spacing: 1px;
 }
 
+/* 탐험 중앙 카드 (숲 반투명 배경) */
 .explore-center {
     display: flex;
     flex-direction: column;
@@ -1581,21 +1608,23 @@ button:active {
     border-radius: 16px;
     padding: 30px 20px;
     width: 90%;
-    background-color: rgba(34, 55, 84, 0.6);
+    background-color: rgba(61, 82, 57, 0.6);
 }
 
+/* 탐험 메시지 큰 글씨 (이끼 녹색 발광) */
 .explore-msg-large {
     font-size: 1.25rem;
     font-weight: 900;
     color: var(--accent-color);
     line-height: 1.6;
     word-break: keep-all;
-    text-shadow: 0 0 10px rgba(132, 255, 0, 0.3);
+    text-shadow: 0 0 10px rgba(141, 176, 92, 0.3);
 }
 
+/* 탐험 메시지 작은 글씨 (크림색) */
 .explore-msg-small {
     font-size: 0.9rem;
-    color: #a0c4ff;
+    color: #d4c89c;
     font-weight: 700;
 }
 
@@ -1692,31 +1721,32 @@ button:active {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* AI 말풍선 (미스터리 보라) */
+/* AI 말풍선 (숲 녹색 테마) */
 .ai-bubble {
-    background-color: #2d1f5e;
-    color: #ffffff;
+    background-color: #2c3e2d;
+    color: #f0e6c8;
     border-radius: 12px;
     border-top-left-radius: 0;
     align-self: flex-start;
+    border: 1px solid #6b8e3d;
 }
 
-/* 사용자 학생 말풍선 (딥 그린) */
+/* 사용자 학생 말풍선 (질은 녹색) */
 .user-bubble {
-    background-color: #0a2200;
-    color: #ffffff;
+    background-color: #1e3a1f;
+    color: #f0e6c8;
     border-radius: 12px;
     border-top-right-radius: 0;
     border: 1px solid var(--accent-color);
     align-self: flex-end;
 }
 
-/* 퀵 액션 질문 리스트 */
+/* 퀵 액션 질문 리스트 (어두운 숲 배경) */
 .chatbot-quick-actions {
     display: flex;
     gap: 8px;
     padding: 10px 14px;
-    background-color: #0a1321;
+    background-color: #1e2e1f;
     overflow-x: auto;
     white-space: nowrap;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -1747,12 +1777,13 @@ button:active {
     border-top: 1px solid var(--border-color);
 }
 
+/* 챗봇 입력상자 (어두운 숲 배경) */
 .chatbot-input-area input {
     flex: 1;
-    background-color: #0a1321;
+    background-color: #1e2e1f;
     border: 1px solid var(--border-color);
     border-radius: 10px;
-    color: #ffffff;
+    color: #f0e6c8;
     padding: 14px;
     font-size: 1rem;
     outline: none;
@@ -1762,14 +1793,15 @@ button:active {
     border-color: var(--accent-color);
 }
 
+/* 챗봇 전송 버튼 (황금빛 테마) */
 .chatbot-send-btn {
-    background-color: #7b2fff;
-    color: #ffffff;
+    background: linear-gradient(135deg, #d4a017, #b3850e);
+    color: #2c3e2d;
     border-radius: 10px;
     padding: 0 20px;
     font-size: 0.95rem;
     font-weight: 900;
-    box-shadow: 0 4px 0 #4a0099;
+    box-shadow: 0 4px 0 #8a5f0a;
 }
 
 .chatbot-send-btn:active {
@@ -1812,9 +1844,10 @@ button:active {
     font-weight: 900;
 }
 
+/* 성별 선택 타이틀 텍스트 (크림색) */
 .gender-subtitle {
     font-size: 0.85rem;
-    color: #a0c4ff;
+    color: #d4c89c;
     margin-bottom: 20px;
     line-height: 1.4;
 }
@@ -1830,26 +1863,26 @@ button:active {
     padding-right: 4px;
 }
 
-/* 스크롤바 미학 설계 */
+/* 스크롤바 미학 설계 (숲 테마) */
 .gender-options::-webkit-scrollbar {
     width: 6px;
 }
 .gender-options::-webkit-scrollbar-track {
-    background: #0d1a2d;
+    background: #1e2e1f; /* 어두운 숲 바닥 */
     border-radius: 3px;
 }
 .gender-options::-webkit-scrollbar-thumb {
-    background: var(--border-color);
+    background: #6b8e3d; /* 이끼 녹색 */
     border-radius: 3px;
 }
 .gender-options::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary-color);
+    background: #8db05c; /* 연한 녹색 */
 }
 
-/* 개별 아바타 카드 선택 영역 */
+/* 개별 아바타 카드 선택 영역 (숲 테마) */
 .gender-btn {
     width: 100%;
-    background-color: #162235;
+    background-color: #1e2e1f;
     border: 2px solid var(--border-color);
     border-radius: 12px;
     padding: 12px 8px;
@@ -1861,23 +1894,24 @@ button:active {
     transition: all 0.2s ease;
 }
 
+/* 아바타 호버 시 황금빛 테두리 */
 .gender-btn:hover {
     border-color: var(--secondary-color);
-    box-shadow: 0 0 10px rgba(74, 158, 255, 0.2);
+    box-shadow: 0 0 10px rgba(212, 160, 23, 0.2);
 }
 
-/* 아바타 선택 시 테두리 강조 (#84ff00) */
+/* 아바타 선택 시 이끼 녹색 테두리 강조 */
 .gender-btn.selected {
     border-color: var(--accent-color) !important;
-    box-shadow: 0 0 15px rgba(132, 255, 0, 0.4) !important;
-    background-color: #1a2f4c;
+    box-shadow: 0 0 15px rgba(141, 176, 92, 0.4) !important;
+    background-color: #2c3e2d;
 }
 
-/* 아바타 선택 박스 */
+/* 아바타 선택 박스 (어두운 숲 배경) */
 .gender-avatar-preview {
     width: 80px;
     height: 120px;
-    background-color: #0a1321;
+    background-color: #1e2e1f;
     border: 1px dashed var(--border-color);
     border-radius: 8px;
     display: flex;
@@ -1900,18 +1934,18 @@ button:active {
     font-weight: 700;
 }
 
-/* 선택 완료 버튼 스타일 */
+/* 선택 완료 버튼 (황금빛 테마) */
 .confirm-avatar-btn {
     width: 100%;
-    background-color: var(--accent-color);
-    color: #000000;
+    background: linear-gradient(135deg, #d4a017, #b3850e);
+    color: #2c3e2d;
     border: none;
     border-radius: 12px;
     padding: 14px 20px;
     font-size: 1.1rem;
     font-weight: 900;
     cursor: pointer;
-    box-shadow: 0 5px 0 #54a100;
+    box-shadow: 0 5px 0 #8a5f0a;
     transition: all 0.1s ease;
     outline: none;
     margin-top: auto;
@@ -1923,7 +1957,7 @@ button:active {
 
 .confirm-avatar-btn:active {
     transform: translateY(3px);
-    box-shadow: 0 2px 0 #54a100;
+    box-shadow: 0 2px 0 #8a5f0a;
 }
 
 
@@ -1955,9 +1989,10 @@ button:active {
     flex: 1; display: flex; flex-direction: column; overflow: hidden;
 }
 
+/* 꾸미기 미리보기 영역 (어두운 숲 배경) */
 .customize-preview-area {
     display: flex; justify-content: center; align-items: center;
-    padding: 24px; background-color: #0a1321; border-bottom: 1px solid var(--border-color);
+    padding: 24px; background-color: #1e2e1f; border-bottom: 1px solid var(--border-color);
 }
 
 .customize-avatar-box {
@@ -1976,14 +2011,16 @@ button:active {
     background-color: var(--panel-bg); border-bottom: 1px solid var(--border-color);
 }
 
+/* 꾸미기 슬롯 탭 (숲 테마) */
 .customize-slot-tab {
     flex: 1; padding: 10px 2px; font-size: 0.8rem; font-weight: 700;
-    background-color: #162235; border: 1px solid var(--border-color);
-    border-radius: 8px; color: #a0c4ff; cursor: pointer; text-align: center;
+    background-color: #1e2e1f; border: 1px solid var(--border-color);
+    border-radius: 8px; color: #d4c89c; cursor: pointer; text-align: center;
 }
 
+/* 꾸미기 활성 슬롯 탭 (이끼 녹색) */
 .customize-slot-tab.active {
-    background-color: var(--accent-color); border-color: var(--accent-color); color: #000000;
+    background: #8db05c; border-color: #8db05c; color: #2c3e2d;
 }
 
 /* 아이템 세부 카드 그리드 */
@@ -1998,29 +2035,32 @@ button:active {
     border-radius: 12px; cursor: pointer; transition: border-color 0.2s;
 }
 
+/* 잠금된 아이템 (어두운 숲) */
 .customize-item.locked {
-    background-color: #1a2a40; opacity: 0.5; cursor: not-allowed; border-style: dashed;
+    background-color: #1e2e1f; opacity: 0.5; cursor: not-allowed; border-style: dashed;
 }
 
+/* 장착 중인 아이템 (질은 녹색 발광) */
 .customize-item.equipped {
-    background-color: #0a2200; border-color: var(--accent-color);
-    box-shadow: 0 0 10px rgba(132, 255, 0, 0.25);
+    background-color: #1e3a1f; border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(141, 176, 92, 0.25);
 }
 
 .customize-item-emoji { font-size: 28px; width: 40px; text-align: center; flex-shrink: 0; }
 .customize-item-info { flex: 1; }
 .customize-item-name { font-size: 0.95rem; color: #ffffff; font-weight: 900; margin-bottom: 4px; }
 .customize-item-status { font-size: 0.8rem; color: var(--accent-color); font-weight: 700; }
-.customize-item-cond { font-size: 0.75rem; color: #a0c4ff; line-height: 1.4; }
+.customize-item-cond { font-size: 0.75rem; color: #d4c89c; line-height: 1.4; } /* 조건 텍스트 (크림색) */
 
 .customize-footer {
     padding: 14px; background-color: var(--panel-bg); border-top: 1px solid var(--border-color);
 }
 
+/* 꾸미기 완료 버튼 (황금빛 테마) */
 .customize-done-btn {
-    width: 100%; background-color: var(--accent-color); color: #000000;
+    width: 100%; background: linear-gradient(135deg, #d4a017, #b3850e); color: #2c3e2d;
     border-radius: 12px; font-size: 1.15rem; padding: 16px; font-weight: 900;
-    box-shadow: 0 4px 0 #54a100;
+    box-shadow: 0 4px 0 #8a5f0a;
 }
 
 .customize-done-btn:active {
@@ -2068,11 +2108,11 @@ button:active {
     transform: scale(1.1);
 }
 
-/* 클러스터 팝업 전체 화면 오버레이 */
+/* 클러스터 팝업 전체 화면 오버레이 (어두운 숲 필터) */
 .cluster-popup {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(15, 28, 48, 0.85);
+    background-color: rgba(20, 30, 20, 0.85);
     z-index: 20000; /* 매우 높게 */
     display: flex;
     align-items: center;
@@ -2080,11 +2120,12 @@ button:active {
     backdrop-filter: blur(4px);
 }
 
+/* 클러스터 팝업 내부 카드 (숲 배경) */
 .cluster-popup-inner {
     width: 90%;
     max-width: 360px;
-    background-color: #223754;
-    border: 2px solid #4a6fa5;
+    background-color: #3d5239;
+    border: 2px solid #6b8e3d;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
@@ -2111,17 +2152,17 @@ button:active {
     padding-right: 4px;
 }
 
-/* 클러스터 팝업 스크롤바 */
+/* 클러스터 팝업 스크롤바 (숲 테마) */
 .cluster-popup-list::-webkit-scrollbar { width: 6px; }
-.cluster-popup-list::-webkit-scrollbar-track { background: #0d1a2d; border-radius: 3px; }
-.cluster-popup-list::-webkit-scrollbar-thumb { background: #4a6fa5; border-radius: 3px; }
+.cluster-popup-list::-webkit-scrollbar-track { background: #1e2e1f; border-radius: 3px; }
+.cluster-popup-list::-webkit-scrollbar-thumb { background: #6b8e3d; border-radius: 3px; }
 
-/* 팝업 내 개별 카드 아이템 */
+/* 팝업 내 개별 카드 아이템 (어두운 숲 배경) */
 .cluster-popup-item {
     display: flex;
     align-items: center;
-    background-color: #1a2a40;
-    border: 1px solid #4a6fa5;
+    background-color: #2c3e2d;
+    border: 1px solid #6b8e3d;
     border-radius: 8px;
     padding: 8px 12px;
     gap: 12px;
@@ -2145,9 +2186,10 @@ button:active {
     font-weight: 700;
 }
 
+/* 카드 수집 날짜 (크림색) */
 .cluster-item-date {
     font-size: 0.75rem;
-    color: #a0c4ff;
+    color: #d4c89c;
 }
 
 .cluster-item-badge {
@@ -2158,17 +2200,18 @@ button:active {
     white-space: nowrap;
 }
 
+/* 클러스터 팝업 닫기 버튼 (이끼 녹색) */
 .cluster-popup-close-btn {
     width: 100%;
-    background-color: #4a6fa5;
-    color: #ffffff;
+    background-color: #6b8e3d;
+    color: #f0e6c8;
     border: none;
     border-radius: 8px;
     padding: 12px;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 0 #2c4a75;
+    box-shadow: 0 4px 0 #4a6a2d;
     transition: all 0.1s ease;
 }
 
@@ -2181,17 +2224,17 @@ button:active {
    17. 선생님 대시보드 스타일 (PC 최적화)
    ========================================================== */
 
-/* [한글 주석] 대시보드 전체 화면 컨테이너 */
+/* [한글 주석] 대시보드 전체 화면 컨테이너 (숲 배경) */
 .teacher-dashboard-screen {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #0f1c30;
+    background-color: #2c3e2d;
     z-index: 10000;
     overflow-y: auto;
     font-family: 'Noto Sans KR', sans-serif;
 }
 
-/* [한글 주석] 대시보드 상단 헤더 */
+/* [한글 주석] 대시보드 상단 헤더 (숲 패널 배경) */
 .dashboard-header {
     display: flex;
     align-items: center;
@@ -2199,8 +2242,8 @@ button:active {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px 32px;
-    background-color: #223754;
-    border-bottom: 2px solid #4a6fa5;
+    background-color: #3d5239;
+    border-bottom: 2px solid #6b8e3d;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -2231,12 +2274,13 @@ button:active {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+/* [한글 주석] 새로고침 버튼 (이끼 녹색) */
 .dashboard-refresh-btn {
-    background-color: #4a6fa5;
-    color: #ffffff;
+    background-color: #6b8e3d;
+    color: #f0e6c8;
 }
 .dashboard-refresh-btn:hover {
-    background-color: #5a8fd5;
+    background-color: #8db05c;
     transform: translateY(-1px);
 }
 
@@ -2259,9 +2303,10 @@ button:active {
     padding: 0 32px;
 }
 
+/* [한글 주석] 통계 카드 (숲 패널 배경) */
 .dashboard-stat-card {
-    background-color: #223754;
-    border: 1px solid #4a6fa5;
+    background-color: #3d5239;
+    border: 1px solid #6b8e3d;
     border-radius: 12px;
     padding: 20px;
     text-align: center;
@@ -2269,7 +2314,7 @@ button:active {
 }
 .dashboard-stat-card:hover {
     transform: translateY(-2px);
-    border-color: #84ff00;
+    border-color: #8db05c;
 }
 
 .stat-icon {
@@ -2277,9 +2322,10 @@ button:active {
     margin-bottom: 8px;
 }
 
+/* [한글 주석] 통계 라벨 (크림색) */
 .stat-label {
     font-size: 0.85rem;
-    color: #a0c4ff;
+    color: #d4c89c;
     font-weight: 700;
     margin-bottom: 6px;
 }
@@ -2300,10 +2346,10 @@ button:active {
     padding: 0 32px;
 }
 
-/* [한글 주석] 개별 학생 카드 */
+/* [한글 주석] 개별 학생 카드 (어두운 숲 배경) */
 .dashboard-student-card {
-    background-color: #1a2a40;
-    border: 2px solid #2a4a6a;
+    background-color: #2c3e2d;
+    border: 2px solid #4a6a4b;
     border-radius: 12px;
     padding: 18px;
     transition: all 0.2s ease;
@@ -2311,9 +2357,10 @@ button:active {
     flex-direction: column;
     gap: 12px;
 }
+/* [한글 주석] 학생 카드 호버 시 이끼 녹색 강조 */
 .dashboard-student-card:hover {
-    border-color: #84ff00;
-    box-shadow: 0 4px 16px rgba(132, 255, 0, 0.15);
+    border-color: #8db05c;
+    box-shadow: 0 4px 16px rgba(141, 176, 92, 0.15);
     transform: translateY(-2px);
 }
 
@@ -2324,9 +2371,10 @@ button:active {
     gap: 10px;
 }
 
+/* [한글 주석] 학생 번호 배지 (이끼 녹색) */
 .dsc-number {
-    background-color: #4a6fa5;
-    color: #fff;
+    background-color: #6b8e3d;
+    color: #f0e6c8;
     font-size: 0.8rem;
     font-weight: 900;
     padding: 3px 10px;
@@ -2360,10 +2408,11 @@ button:active {
     flex-shrink: 0;
 }
 
+/* [한글 주석] 진행바 배경 (어두운 숲) */
 .dsc-progress-bg {
     flex: 1;
     height: 8px;
-    background-color: #0d1a2d;
+    background-color: #1e2e1f;
     border-radius: 4px;
     overflow: hidden;
 }
@@ -2374,14 +2423,15 @@ button:active {
     transition: width 0.5s ease;
 }
 
-/* [한글 주석] 진행바 카테고리별 색상 */
-.dsc-fill-plant { background-color: #84ff00; }
-.dsc-fill-animal { background-color: #ff9500; }
-.dsc-fill-artifact { background-color: #9b59ff; }
+/* [한글 주석] 진행바 카테고리별 색상 (숲 테마) */
+.dsc-fill-plant { background-color: #8db05c; } /* 식물: 연한 녹색 */
+.dsc-fill-animal { background-color: #d4a017; } /* 동물: 황금빛 */
+.dsc-fill-artifact { background-color: #6b8e3d; } /* 유물: 이끼 녹색 */
 
+/* [한글 주석] 진행바 수치 (크림색) */
 .dsc-progress-count {
     font-size: 0.75rem;
-    color: #a0c4ff;
+    color: #d4c89c;
     font-weight: 700;
     width: 24px;
     text-align: right;
@@ -2395,25 +2445,27 @@ button:active {
     gap: 4px;
 }
 
+/* [한글 주석] 하단 통계 텍스트 (크림색) */
 .dsc-stats {
     display: flex;
     justify-content: space-between;
     font-size: 0.8rem;
-    color: #a0c4ff;
+    color: #d4c89c;
     font-weight: 700;
 }
 
+/* [한글 주석] 동기화 시간 (담장 녹색) */
 .dsc-sync-time {
     font-size: 0.72rem;
-    color: #6a8ab0;
+    color: #7a9a6b;
 }
 
-/* [한글 주석] 선물하기 버튼 */
+/* [한글 주석] 선물하기 버튼 (황금빛 테마) */
 .dsc-reward-btn {
     width: 100%;
     padding: 10px;
-    background-color: #ff9500;
-    color: #000000;
+    background: linear-gradient(135deg, #d4a017, #b3850e);
+    color: #2c3e2d;
     border: none;
     border-radius: 8px;
     font-size: 0.9rem;
@@ -2421,10 +2473,10 @@ button:active {
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Noto Sans KR', sans-serif;
-    box-shadow: 0 3px 0 #cc7700;
+    box-shadow: 0 3px 0 #8a5f0a;
 }
 .dsc-reward-btn:hover {
-    background-color: #ffaa33;
+    filter: brightness(1.1);
     transform: translateY(-1px);
 }
 .dsc-reward-btn:active {
@@ -2432,12 +2484,12 @@ button:active {
     box-shadow: none;
 }
 
-/* [한글 주석] 대시보드 로딩 및 빈 상태 */
+/* [한글 주석] 대시보드 로딩 및 빈 상태 (크림색) */
 .dashboard-loading, .dashboard-empty {
     grid-column: 1 / -1;
     text-align: center;
     padding: 60px 20px;
-    color: #a0c4ff;
+    color: #d4c89c;
     font-size: 1.1rem;
     font-weight: 700;
 }
@@ -2463,10 +2515,10 @@ button:active {
     opacity: 1;
 }
 
-/* [한글 주석] 모달 카드 본체 */
+/* [한글 주석] 복주머니 보상 모달 카드 본체 (숲 패널 배경) */
 .reward-modal-card {
-    background-color: #223754;
-    border: 2px solid #4a6fa5;
+    background-color: #3d5239;
+    border: 2px solid #6b8e3d;
     border-radius: 16px;
     padding: 28px 24px;
     width: 90%;
@@ -2491,9 +2543,10 @@ button:active {
     margin: 0 0 8px;
     text-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
 }
+/* [한글 주석] 모달 헤더 설명 (크림색) */
 .reward-modal-header p {
     font-size: 0.9rem;
-    color: #a0c4ff;
+    color: #d4c89c;
     margin: 0;
     font-weight: 700;
 }
@@ -2506,14 +2559,14 @@ button:active {
     margin-bottom: 20px;
 }
 
-/* [한글 주석] 개별 보상 버튼 */
+/* [한글 주석] 개별 보상 버튼 (어두운 숲 배경) */
 .reward-option-btn {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 12px 14px;
-    background-color: #1a2a40;
-    border: 2px solid #2a4a6a;
+    background-color: #2c3e2d;
+    border: 2px solid #4a6a4b;
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -2521,7 +2574,7 @@ button:active {
 }
 .reward-option-btn:hover {
     border-color: #ffd700;
-    background-color: #223754;
+    background-color: #3d5239;
     transform: translateY(-1px);
 }
 .reward-option-btn:active {
@@ -2538,12 +2591,12 @@ button:active {
     color: #ffffff;
 }
 
-/* [한글 주석] 모달 닫기(취소) 버튼 */
+/* [한글 주석] 모달 닫기(취소) 버튼 (이끼 녹색) */
 .reward-modal-close {
     width: 100%;
     padding: 12px;
-    background-color: #4a6fa5;
-    color: #ffffff;
+    background-color: #6b8e3d;
+    color: #f0e6c8;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
@@ -2553,7 +2606,7 @@ button:active {
     font-family: 'Noto Sans KR', sans-serif;
 }
 .reward-modal-close:hover {
-    background-color: #5a8fd5;
+    background-color: #8db05c;
 }
 
 /* ==========================================================

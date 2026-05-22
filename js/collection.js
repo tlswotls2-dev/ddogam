@@ -518,10 +518,11 @@ function showNewCardEffect(card) {
     common: '#84ff00'
   }[card.rarity] || '#84ff00';
 
+  // [한글 주석] 희귀도 텍스트 - 별과 등급명 사이 줄바꿈
   const rarityText = {
-    epic:   '★★★ 전설 NEW!',
-    rare:   '★★ 희귀 NEW!',
-    common: '★ NEW!'
+    epic:   '★★★<br>전설 NEW!',
+    rare:   '★★<br>희귀 NEW!',
+    common: '★<br>일반 NEW!'
   }[card.rarity] || 'NEW!';
 
   effect.innerHTML = `

@@ -125,6 +125,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // [한글 주석] 학생 로그인 처리 (기존 로직)
             // ==========================================
             
+            // [한글 주석] 학생 비밀번호 고정값 (변경 원하면 이 숫자만 바꾸면 됩니다)
+            const STUDENT_PASSWORD = '1234';
+
+            // [한글 주석] 학생 비밀번호 확인
+            if (passwordValue !== STUDENT_PASSWORD) {
+              messageDisplay.textContent = '비밀번호가 올바르지 않습니다!';
+              messageDisplay.classList.add('error');
+              return;
+            }
+
             // 5. 사용자 데이터 로컬 저장소에 저장 (storage.js)
             const userData = {
                 class: classValue,
