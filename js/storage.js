@@ -157,3 +157,59 @@ function checkLevelUp(prevTotal, newTotal) {
 
 window.calculateLevel = calculateLevel;
 window.checkLevelUp = checkLevelUp;
+
+// [한글 주석] 중복 카드 저장소 키
+const DUPLICATES_KEY = 'cardDuplicates';
+
+// [한글 주석] 중복 카드 목록 가져오기 {cardId: 중복수량}
+function getDuplicates() {
+  return JSON.parse(localStorage.getItem(DUPLICATES_KEY) || '{}');
+}
+
+// [한글 주석] 중복 카드 저장
+function saveDuplicates(data) {
+  localStorage.setItem(DUPLICATES_KEY, JSON.stringify(data));
+}
+
+// [한글 주석] 카드 수집 시 중복 처리
+// 이미 있는 카드면 중복 카운트 증가, 없는 카드면 도감에 추가
+function addCardWithDuplicate(cardId) {
+  const collection = getCollection();
+  if (collection.includes(cardId)) {
+    // [한글 주석] 이미 있는 카드 → 중복 저장소에 추가
+    const dups = getDuplicates();
+    dups[cardId] = (dups[cardId] || 0) + 1;
+    saveDuplicates(dups);
+    return 'duplicate'; // [한글 주석] 중복 카드
+  } else {
+    // [한글 주석] 없는 카드 → 도감에 추가
+    saveCollection(cardId);
+    return 'new'; // [한글 주석] 새 카드
+  }
+}
+
+// [한글 주석] 조합소용 카드 목록 (중복이 1개 이상인 카드들)
+function getWorkshopCards() {
+  const dups = getDuplicates();
+  return Object.entries(dups)
+    .filter(([id, count]) => count >= 1)
+    .map(([id, count]) => ({ id, count }));
+}
+
+// [한글 주석] 중복 카드 사용 (조합 시 차감)
+function useDuplicateCards(cardIds) {
+  const dups = getDuplicates();
+  cardIds.forEach(id => {
+    if (dups[id] > 0) {
+      dups[id]--;
+      if (dups[id] === 0) delete dups[id];
+    }
+  });
+  saveDuplicates(dups);
+}
+
+window.getDuplicates = getDuplicates;
+window.saveDuplicates = saveDuplicates;
+window.addCardWithDuplicate = addCardWithDuplicate;
+window.getWorkshopCards = getWorkshopCards;
+window.useDuplicateCards = useDuplicateCards;

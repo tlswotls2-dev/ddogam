@@ -405,10 +405,12 @@ function drawRandomItem() {
 
       // [한글 주석] 선택 팝업 표시 - 선택 완료 시 일반 획득 로직 실행
       showCardChoicePopup(choiceCards, (selectedCard) => {
-        // [한글 주석] 선택한 카드를 resultCard로 설정해 기존 저장 로직 재사용
-        const isNew = !getCollection().includes(selectedCard.id);
+        // [한글 주석] 중복 카드 처리 - 이미 있으면 조합소로
+        const cardResult = typeof addCardWithDuplicate === 'function'
+          ? addCardWithDuplicate(selectedCard.id)
+          : 'new';
+        const isNew = cardResult === 'new';
         if (isNew) {
-          saveCollection(selectedCard.id);
           if (typeof showNewCardEffect === 'function') {
             showNewCardEffect(selectedCard);
           }
@@ -449,9 +451,12 @@ function drawRandomItem() {
     }
 
     // [한글 주석] 6. 결과 저장 및 팝업 띄우기 (일반 모드)
-    const isNew = !collection.includes(resultCard.id);
+    // [한글 주석] 중복 카드 처리 - 이미 있으면 조합소로
+    const cardResult = typeof addCardWithDuplicate === 'function'
+      ? addCardWithDuplicate(resultCard.id)
+      : 'new';
+    const isNew = cardResult === 'new';
     if (isNew) {
-        saveCollection(resultCard.id); // 새로운 발견일 경우만 storage.js 함수로 저장
         
         // [한글 주석] 새 카드 수집 시 NEW! 이펙트 호출
         if (typeof showNewCardEffect === 'function') {

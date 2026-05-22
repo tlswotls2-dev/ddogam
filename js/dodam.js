@@ -41,6 +41,14 @@ function hideDodam() {
  * @param {string} category 'plant', 'animal', 'artifact' 중 하나
  */
 function switchDodamTab(category) {
+    // [한글 주석] 조합소 탭이면 별도 렌더링
+    if (category === 'workshop') {
+      document.querySelectorAll('.dodam-tab').forEach(t => t.classList.remove('active'));
+      document.querySelector('[data-category="workshop"]').classList.add('active');
+      renderWorkshop();
+      return;
+    }
+
     const unlocked = getUnlockedCategories(); // collection.js의 함수 사용
     
     // 아직 해금되지 않은 카테고리라면 거부
@@ -261,3 +269,349 @@ function closeDodamDetail() {
         document.getElementById('shared-card-overlay').style.display = 'none';
     }
 }
+
+// [한글 주석] 조합소 렌더링
+function renderWorkshop() {
+  const gridEl = document.getElementById('dodam-grid');
+  gridEl.innerHTML = '';
+
+  // [한글 주석] 수집 현황 요약 업데이트
+  document.querySelector('.dodam-summary-text').textContent = '중복 카드 조합소';
+  document.getElementById('dodam-progress').style.width = '0%';
+
+  const workshopCards = typeof getWorkshopCards === 'function' ? getWorkshopCards() : [];
+  const allCards = window.allCardsData || [];
+
+  // [한글 주석] 조합소가 비어있을 때
+  if (workshopCards.length === 0) {
+    gridEl.innerHTML = `
+      <div style="
+        grid-column:1/-1;
+        text-align:center;padding:40px 20px;
+        color:#888;
+      ">
+        <div style="font-size:48px;margin-bottom:12px;">⚗️</div>
+        <div style="font-size:15px;font-weight:700;color:#aaa;margin-bottom:8px;">
+          조합소가 비어있어요
+        </div>
+        <div style="font-size:12px;line-height:1.6;">
+          이미 가진 카드를 또 수집하면<br>
+          여기에 쌍여요!<br>
+          <span style="color:#ffd700;">5장</span>을 모아 새 카드로 조합해봐요 ✨
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // [한글 주석] 선택된 카드 목록 (조합에 사용할 카드들)
+  let selectedForCraft = [];
+
+  // [한글 주석] 조합 안내 헤더
+  const header = document.createElement('div');
+  header.style.cssText = `
+    grid-column:1/-1;
+    background:rgba(255,215,0,0.08);
+    border:1px solid rgba(255,215,0,0.3);
+    border-radius:12px;
+    padding:12px 16px;
+    margin-bottom:4px;
+  `;
+  header.innerHTML = `
+    <div style="color:#ffd700;font-size:13px;font-weight:700;margin-bottom:4px;">
+      ⚗️ 카드 조합소
+    </div>
+    <div style="color:#aaa;font-size:11px;line-height:1.5;">
+      중복 카드 <span style="color:#ffd700;">5장</span>을 선택해 새 카드로 조합해요!<br>
+      조합 규칙에 따라 다른 희귀도 카드가 나와요 🎲
+    </div>
+    <div id="workshop-selected-info" style="
+      margin-top:8px;
+      color:#84ff00;font-size:12px;font-weight:700;
+    ">선택: 0 / 5장</div>
+    <button id="workshop-craft-btn" onclick="startCrafting()" style="
+      display:none;
+      width:100%;margin-top:8px;
+      background:linear-gradient(135deg,#ffd700,#ff9500);
+      color:#000;border:none;border-radius:10px;
+      padding:10px;font-size:14px;font-weight:900;
+      cursor:pointer;
+    ">✨ 조합하기!</button>
+  `;
+  gridEl.appendChild(header);
+
+  // [한글 주석] 중복 카드 목록 렌더링
+  workshopCards.forEach(({ id, count }) => {
+    const card = allCards.find(c => c.id === id);
+    if (!card) return;
+
+    const rarityConfig = {
+      common: { border:'#84ff00', label:'★ 일반', color:'#84ff00' },
+      rare:   { border:'#4a9eff', label:'★★ 희귀', color:'#4a9eff' },
+      epic:   { border:'#ffd700', label:'★★★ 전설', color:'#ffd700' }
+    };
+    const cfg = rarityConfig[card.rarity] || rarityConfig.common;
+
+    const cardEl = document.createElement('div');
+    cardEl.className = 'dodam-card workshop-card';
+    cardEl.dataset.cardId = id;
+    cardEl.style.cssText = `
+      border:2px solid ${cfg.border};
+      background:linear-gradient(135deg,#1a1a2e,#16213e);
+      border-radius:12px;
+      cursor:pointer;
+      position:relative;
+      transition:transform 0.2s, box-shadow 0.2s;
+      overflow:hidden;
+    `;
+
+    cardEl.innerHTML = `
+      <!-- [한글 주석] 중복 수량 뼓지 -->
+      <div style="
+        position:absolute;top:4px;right:4px;
+        background:#ff4444;color:#fff;
+        font-size:10px;font-weight:900;
+        border-radius:50%;width:18px;height:18px;
+        display:flex;align-items:center;justify-content:center;
+        z-index:2;
+      ">×${count}</div>
+
+      <!-- [한글 주석] 카드 이름 -->
+      <div style="
+        background:rgba(0,0,0,0.3);
+        color:${cfg.color};font-size:10px;font-weight:700;
+        padding:4px;text-align:center;
+        border-bottom:1px solid ${cfg.border};
+      ">${card.name}</div>
+
+      <!-- [한글 주석] 카드 이미지 -->
+      <div style="
+        width:100%;aspect-ratio:1;
+        display:flex;align-items:center;justify-content:center;
+        overflow:hidden;
+      ">
+        ${typeof getCardImageHTML === 'function'
+          ? getCardImageHTML(card, 60)
+          : '<div style="font-size:28px;">' + card.emoji + '</div>'}
+      </div>
+
+      <!-- [한글 주석] 희귀도 -->
+      <div style="
+        color:${cfg.color};font-size:9px;font-weight:700;
+        text-align:center;padding:3px;
+        border-top:1px solid ${cfg.border};
+      ">${cfg.label}</div>
+
+      <!-- [한글 주석] 선택 오버레이 -->
+      <div class="workshop-select-overlay" style="
+        display:none;
+        position:absolute;top:0;left:0;right:0;bottom:0;
+        background:rgba(255,215,0,0.25);
+        border:3px solid #ffd700;
+        border-radius:10px;
+        z-index:3;
+        align-items:center;justify-content:center;
+        font-size:24px;
+      ">✓</div>
+    `;
+
+    // [한글 주석] 카드 선택/해제 클릭 이벤트
+    cardEl.addEventListener('click', () => {
+      const cardId = cardEl.dataset.cardId;
+      const overlay = cardEl.querySelector('.workshop-select-overlay');
+      const isSelected = selectedForCraft.includes(cardId);
+
+      if (isSelected) {
+        // [한글 주석] 선택 해제
+        selectedForCraft = selectedForCraft.filter(id => id !== cardId);
+        overlay.style.display = 'none';
+        cardEl.style.transform = 'scale(1)';
+      } else {
+        if (selectedForCraft.length >= 5) {
+          // [한글 주석] 이미 5장 선택됨
+          if (typeof showSyncToast === 'function') {
+            showSyncToast('5장만 선택할 수 있어요!', 'warning');
+          }
+          return;
+        }
+        // [한글 주석] 선택 추가 (같은 카드 중복 선택 허용 - count만큼)
+        selectedForCraft.push(cardId);
+        overlay.style.display = 'flex';
+        cardEl.style.transform = 'scale(0.95)';
+      }
+
+      // [한글 주석] 선택 현황 업데이트
+      const infoEl = document.getElementById('workshop-selected-info');
+      const btnEl = document.getElementById('workshop-craft-btn');
+      if (infoEl) infoEl.textContent = `선택: ${selectedForCraft.length} / 5장`;
+      if (btnEl) btnEl.style.display = selectedForCraft.length === 5 ? 'block' : 'none';
+    });
+
+    gridEl.appendChild(cardEl);
+  });
+
+  // [한글 주석] 조합 실행 함수 (전역으로 노출)
+  window.startCrafting = function() {
+    if (selectedForCraft.length !== 5) return;
+
+    // [한글 주석] 선택된 카드들의 희귀도 분석
+    const selectedCards = selectedForCraft.map(id => allCards.find(c => c.id === id)).filter(Boolean);
+    const epicCount   = selectedCards.filter(c => c.rarity === 'epic').length;
+    const rareCount   = selectedCards.filter(c => c.rarity === 'rare').length;
+
+    // [한글 주석] 조합 규칙에 따라 결과 희귀도 결정
+    let resultRarity;
+    const rand = Math.random() * 100;
+
+    if (epicCount >= 1) {
+      // [한글 주석] 규칙 1: 전설 1장 이상 → 무조건 전설
+      resultRarity = 'epic';
+    } else if (rareCount >= 4) {
+      // [한글 주석] 규칙 2: 희귀 4~5장 → 전설 50%, 희귀 50%
+      resultRarity = rand < 50 ? 'epic' : 'rare';
+    } else if (rareCount === 3) {
+      // [한글 주석] 규칙 3: 희귀 3장 + 일반 2장 → 희귀 100%
+      resultRarity = 'rare';
+    } else if (rareCount >= 1) {
+      // [한글 주석] 규칙 4: 희귀 1~2장 + 일반 3~4장 → 희귀 60%, 일반 40%
+      resultRarity = rand < 60 ? 'rare' : 'common';
+    } else {
+      // [한글 주석] 규칙 5: 일반 5장 → 일반 75%, 희귀 15%, 전설 10%
+      if (rand < 75) resultRarity = 'common';
+      else if (rand < 90) resultRarity = 'rare';
+      else resultRarity = 'epic';
+    }
+
+    // [한글 주석] 해금된 카테고리 확인
+    const unlockedCategories = typeof getUnlockedCategories === 'function'
+      ? getUnlockedCategories()
+      : ['plant'];
+
+    // [한글 주석] 결과 희귀도 + 해금된 카테고리 내 내가 없는 카드 풀
+    const collection = getCollection();
+    let candidatePool = allCards.filter(c =>
+      c.rarity === resultRarity &&
+      unlockedCategories.includes(c.category) &&
+      !collection.includes(c.id)
+    );
+
+    // [한글 주석] 없는 카드가 없으면 중복 허용
+    if (candidatePool.length === 0) {
+      candidatePool = allCards.filter(c =>
+        c.rarity === resultRarity &&
+        unlockedCategories.includes(c.category)
+      );
+    }
+
+    // [한글 주석] 최종 결과 카드 랜덤 선택
+    const resultCard = candidatePool[Math.floor(Math.random() * candidatePool.length)];
+    if (!resultCard) return;
+
+    // [한글 주석] 사용한 카드 차감
+    useDuplicateCards(selectedForCraft);
+
+    // [한글 주석] 결과 카드 획득 처리
+    const isNew = !collection.includes(resultCard.id);
+    if (isNew) saveCollection(resultCard.id);
+
+    // [한글 주석] 조합 결과 팝업 표시
+    showCraftResultPopup(resultCard, isNew, resultRarity);
+
+    // [한글 주석] 조합소 새로고침
+    setTimeout(() => {
+      renderWorkshop();
+      if (typeof window.updateMainScreenData === 'function') window.updateMainScreenData();
+      if (typeof updateLevelBadge === 'function') updateLevelBadge();
+    }, 2500);
+  };
+}
+
+// [한글 주석] 조합 결과 팝업
+function showCraftResultPopup(card, isNew, resultRarity) {
+  const existing = document.getElementById('craft-result-overlay');
+  if (existing) existing.remove();
+
+  const rarityConfig = {
+    common: { color:'#84ff00', label:'★ 일반', glow:'rgba(132,255,0,0.4)' },
+    rare:   { color:'#4a9eff', label:'★★ 희귀', glow:'rgba(74,158,255,0.4)' },
+    epic:   { color:'#ffd700', label:'★★★ 전설', glow:'rgba(255,215,0,0.5)' }
+  };
+  const cfg = rarityConfig[card.rarity] || rarityConfig.common;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'craft-result-overlay';
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.9);
+    z-index:99999;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    padding:24px;
+    animation:fadeIn 0.3s ease;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      background:linear-gradient(135deg,#1a1a2e,#16213e);
+      border:3px solid ${cfg.color};
+      border-radius:24px;
+      padding:28px 24px;
+      text-align:center;
+      max-width:300px;width:90%;
+      box-shadow:0 0 40px ${cfg.glow};
+      animation:bounceIn 0.5s ease;
+    ">
+      <div style="font-size:28px;margin-bottom:4px;">⚗️</div>
+      <div style="color:${cfg.color};font-size:16px;font-weight:900;margin-bottom:4px;">
+        조합 성공!
+      </div>
+      <div style="color:#aaa;font-size:11px;margin-bottom:16px;">
+        ${isNew ? '새로운 카드를 얻었어요!' : '이미 있는 카드지만 획득했어요!'}
+      </div>
+
+      <!-- [한글 주석] 결과 카드 -->
+      <div style="
+        background:rgba(0,0,0,0.3);
+        border:2px solid ${cfg.color};
+        border-radius:16px;
+        padding:16px;
+        margin-bottom:16px;
+        box-shadow:0 0 20px ${cfg.glow};
+      ">
+        <div style="
+          width:100px;height:100px;
+          margin:0 auto 8px;
+          border-radius:12px;overflow:hidden;
+          display:flex;align-items:center;justify-content:center;
+        ">
+          ${typeof getCardImageHTML === 'function'
+            ? getCardImageHTML(card, 100)
+            : '<div style="font-size:48px;">' + card.emoji + '</div>'}
+        </div>
+        <div style="color:#fff;font-size:16px;font-weight:700;margin-bottom:4px;">
+          ${card.name}
+        </div>
+        <div style="color:${cfg.color};font-size:12px;margin-bottom:6px;">
+          ${cfg.label}
+        </div>
+        <div style="color:#ccc;font-size:11px;line-height:1.5;">
+          ${card.short_desc || ''}
+        </div>
+      </div>
+
+      <button onclick="document.getElementById('craft-result-overlay').remove()" style="
+        background:${cfg.color};
+        color:#000;border:none;border-radius:12px;
+        padding:12px 40px;
+        font-size:15px;font-weight:900;
+        cursor:pointer;width:100%;
+      ">🎉 확인!</button>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+}
+
+window.renderWorkshop = renderWorkshop;
+window.showCraftResultPopup = showCraftResultPopup;

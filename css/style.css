@@ -3102,3 +3102,8 @@ button:active {
   100% { transform: scale(1.15); opacity: 1;   }
 }
 
+/* [한글 주석] 조합소 카드 hover 효과 */
+.workshop-card:hover {
+  transform: scale(1.04) !important;
+  box-shadow: 0 4px 16px rgba(255,215,0,0.2) !important;
+}
