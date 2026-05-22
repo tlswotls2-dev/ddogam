@@ -315,13 +315,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const animalTab = document.querySelector('.tab[data-target="animal"]');
         const artifactTab = document.querySelector('.tab[data-target="artifact"]');
         
-        // 식물 90개 이상이고 동물 퀴즈를 통과했으면 탭 해금 및 텍스트 변경
-        if (plantCount >= 90 && isQuizPassed('animal') && animalTab) {
+        // [한글 주석] 레벨 기반 탭 해금 (레벨5 → 동물, 레벨10 → 유물)
+        const currentLevel = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
+        if (currentLevel >= 5 && animalTab) {
             animalTab.classList.remove('locked');
-            animalTab.textContent = '🦊 동물'; 
+            animalTab.textContent = '🦊 동물';
         }
-        // 동물 90개 이상이고 유물 퀴즈를 통과했으면 탭 해금 및 텍스트 변경
-        if (animalCount >= 90 && isQuizPassed('artifact') && artifactTab) {
+        if (currentLevel >= 10 && artifactTab) {
             artifactTab.classList.remove('locked');
             artifactTab.textContent = '🏺 유물';
         }

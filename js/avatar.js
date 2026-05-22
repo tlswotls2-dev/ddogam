@@ -730,10 +730,9 @@ function saveEquippedItems(obj) {
 // [한글 주석] 해금 체크 (수집 시마다 호출)
 // ==========================================
 function checkAndUnlockItems() {
-  // [한글 주석] 현재 레벨 계산
-  const collection = typeof getCollection === 'function' ? getCollection() : [];
-  const currentLevel = typeof calculateLevel === 'function'
-    ? calculateLevel(collection.length)
+  // [한글 주석] 퀴즈 통과 후 확정된 레벨 사용 (카드 수 기반 레벨 사용 금지)
+  const currentLevel = typeof getCurrentLevel === 'function'
+    ? getCurrentLevel()
     : 1;
 
   const unlocked = getUnlockedItems();
@@ -1241,11 +1240,10 @@ window.openOneBag = openOneBag;
 window.openAllBags = openAllBags;
 window.renderRewardBagList = renderRewardBagList;
 
-// [한글 주석] 메인화면 레벨 뱃지 텍스트 업데이트
+// [한글 주석] 메인화면 레벨 뱃지 - 퀴즈 통과 후 확정된 레벨만 표시
 function updateLevelBadge() {
-  const collection = typeof getCollection === 'function' ? getCollection() : [];
-  const total = collection.length;
-  const level = Math.min(30, Math.floor(total / 10) + 1);
+  // [한글 주석] 카드 수가 아닌 확정 저장된 레벨 사용
+  const level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
   const badge = document.getElementById('level-badge');
   if (badge) badge.textContent = `Lv.${level}`;
 }
