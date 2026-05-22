@@ -1,11 +1,37 @@
 // js/collection.js
 
 // --- 랜덤 수집 확률 및 해금 조건 상수 모음 ---
+// [한글 주석] 희귀도별 등장 확률 (합계 100%)
 const RARITY_CHANCE = {
-    common: 0.60, // 일반 등급 등장 확률 (60%)
-    rare: 0.30,   // 희귀 등급 등장 확률 (30%)
-    epic: 0.10    // 전설 등급 등장 확률 (10%)
+    common: 0.65, // [한글 주석] 일반 등급 등장 확률 (65%)
+    rare: 0.25,   // [한글 주석] 희귀 등급 등장 확률 (25%)
+    epic: 0.10    // [한글 주석] 전설 등급 등장 확률 (10%)
 };
+
+// [한글 주석] 희귀도별 가중 랜덤 뽑기
+// 일반 65%, 희귀 25%, 전설 10%
+function getWeightedRandomCard(cards) {
+  const rand = Math.random() * 100;
+  let rarityPool;
+
+  if (rand < 65) {
+    // [한글 주석] 65% - 일반 카드
+    rarityPool = cards.filter(c => c.rarity === 'common');
+  } else if (rand < 90) {
+    // [한글 주석] 25% - 희귀 카드
+    rarityPool = cards.filter(c => c.rarity === 'rare');
+  } else {
+    // [한글 주석] 10% - 전설 카드
+    rarityPool = cards.filter(c => c.rarity === 'epic');
+  }
+
+  // [한글 주석] 해당 희귀도 카드 없으면 전체에서 랜덤
+  if (!rarityPool || rarityPool.length === 0) {
+    rarityPool = cards;
+  }
+
+  return rarityPool[Math.floor(Math.random() * rarityPool.length)];
+}
 
 const UNLOCK_CONDITION_ANIMAL = 90;   // 식물 90개 이상 수집 시 동물 해금
 const UNLOCK_CONDITION_ARTIFACT = 90; // 동물 90개 이상 수집 시 유물 해금
@@ -114,42 +140,34 @@ function drawRandomItem() {
         activeCategory = 'plant';
     }
     
-    // 1. 현재 카테고리에 속하는 카드들만 필터링하여 뽑기 풀에 포함
+    // [한글 주석] 1. 현재 카테고리에 속하는 카드들만 필터링하여 뽑기 풀에 포함
     const availableCards = window.allCardsData.filter(card => card.category === activeCategory);
     
-    // 2. 카드 등급(Rarity) 랜덤 결정
-    const rarityRand = Math.random();
-    let selectedRarity = 'common';
+    // [한글 주석] 2. 희귀도별 가중 랜덤 뽑기 함수를 사용하여 카드 등급 결정 (common 65%, rare 25%, epic 10%)
+    const selectedCard = getWeightedRandomCard(availableCards);
+    const selectedRarity = selectedCard.rarity;
     
-    if (rarityRand < RARITY_CHANCE.epic) {
-        selectedRarity = 'epic'; // 0 ~ 0.1 구간 (10%)
-    } else if (rarityRand < RARITY_CHANCE.epic + RARITY_CHANCE.rare) {
-        selectedRarity = 'rare'; // 0.1 ~ 0.4 구간 (30%)
-    } else {
-        selectedRarity = 'common'; // 나머지 (60%)
-    }
-    
-    // 3. 선택된 등급에 해당하는 카드만 2차 필터링
+    // [한글 주석] 3. 선택된 등급에 해당하는 카드 중에서 미수집 카드에 가중치를 부여
     let candidateCards = availableCards.filter(card => card.rarity === selectedRarity);
     
-    // (예외 처리) 만약 해당 등급의 카드가 하나도 없다면 전체 사용가능 카드로 대체
+    // [한글 주석] (예외 처리) 만약 해당 등급의 카드가 하나도 없다면 전체 사용가능 카드로 대체
     if (candidateCards.length === 0) {
         candidateCards = availableCards;
     }
     
-    // 4. 수집 여부에 따른 등장 확률 가중치 조절
+    // [한글 주석] 4. 수집 여부에 따른 등장 확률 가중치 조절
     const collection = getCollection();
     const weightedCards = [];
     
     candidateCards.forEach(card => {
-        // 이미 수집한 카드는 1개의 제비표, 안 모은 카드는 5개의 제비표를 넣어 확률을 높임
+        // [한글 주석] 이미 수집한 카드는 1개의 제비표, 안 모은 카드는 5개의 제비표를 넣어 확률을 높임
         const weight = collection.includes(card.id) ? 1 : 5;
         for (let i = 0; i < weight; i++) {
             weightedCards.push(card);
         }
     });
     
-    // 5. 최종 랜덤 뽑기
+    // [한글 주석] 5. 최종 랜덤 뽑기
     const randomIndex = Math.floor(Math.random() * weightedCards.length);
     const resultCard = weightedCards[randomIndex];
     
