@@ -123,6 +123,7 @@ function getUnlockedCategories() {
 /**
  * [한글 주석] 카드 3장 선택 모드 팝업 표시
  * 3장의 카드 중 1장을 골라 도감에 추가하는 인터랙티브 팝업입니다.
+ * 실제 이미지와 희귀도별 디자인(일반/희귀/전설)을 적용합니다.
  * @param {Array} cards - 선택지로 보여줄 카드 3장 배열
  * @param {Function} onChoice - 카드 선택 완료 시 호출될 콜백 함수
  */
@@ -130,6 +131,34 @@ function showCardChoicePopup(cards, onChoice) {
   // [한글 주석] 기존 팝업 있으면 제거
   const existing = document.getElementById('card-choice-overlay');
   if (existing) existing.remove();
+
+  // [한글 주석] 희귀도별 색상 설정
+  const rarityConfig = {
+    common: {
+      border: '#84ff00',
+      glow: 'rgba(132,255,0,0.4)',
+      bg: 'linear-gradient(135deg, #1a2e1a, #0f1c0f)',
+      label: '★ 일반',
+      labelColor: '#84ff00',
+      headerBg: '#1a3a1a'
+    },
+    rare: {
+      border: '#4a9eff',
+      glow: 'rgba(74,158,255,0.4)',
+      bg: 'linear-gradient(135deg, #1a1f3a, #0f1525)',
+      label: '★★ 희귀',
+      labelColor: '#4a9eff',
+      headerBg: '#1a2a4a'
+    },
+    epic: {
+      border: '#ffd700',
+      glow: 'rgba(255,215,0,0.5)',
+      bg: 'linear-gradient(135deg, #2a1a0a, #1a0f05)',
+      label: '★★★ 전설',
+      labelColor: '#ffd700',
+      headerBg: '#3a2a0a'
+    }
+  };
 
   // [한글 주석] 오버레이 생성
   const overlay = document.createElement('div');
@@ -142,109 +171,156 @@ function showCardChoicePopup(cards, onChoice) {
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    padding:20px;
-    gap:16px;
+    padding:16px;
+    gap:12px;
   `;
 
   // [한글 주석] 팝업 내부 HTML 구성
   overlay.innerHTML = `
     <div style="
-      color:#ffd700;
-      font-size:18px;
-      font-weight:900;
+      color:#ffd700;font-size:18px;font-weight:900;
       text-align:center;
-      margin-bottom:4px;
       text-shadow:0 0 20px rgba(255,215,0,0.5);
     ">✨ 카드를 선택하세요! ✨</div>
-    <div style="
-      color:#aaa;
-      font-size:13px;
-      text-align:center;
-      margin-bottom:8px;
-    ">1장을 골라 도감에 추가해요</div>
+    <div style="color:#aaa;font-size:12px;text-align:center;margin-bottom:4px;">
+      1장을 골라 도감에 추가해요
+    </div>
     <div id="card-choice-row" style="
-      display:flex;
-      gap:12px;
+      display:flex;gap:10px;
       justify-content:center;
-      width:100%;
+      width:100%;max-width:360px;
     "></div>
   `;
 
   document.body.appendChild(overlay);
-
   const row = document.getElementById('card-choice-row');
 
-  // [한글 주석] 카드 3장 생성
+  // [한글 주석] 카드 3장 생성 (각 카드마다 희귀도별 디자인 적용)
   cards.forEach((card, idx) => {
+    const cfg = rarityConfig[card.rarity] || rarityConfig.common;
+
     const cardEl = document.createElement('div');
     cardEl.className = 'choice-card';
-    cardEl.setAttribute('data-idx', idx);
     cardEl.style.cssText = `
       flex:1;
-      max-width:100px;
-      min-height:140px;
-      background:linear-gradient(135deg,#1a1a2e,#16213e);
-      border:2px solid #4a9eff;
-      border-radius:16px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
+      max-width:106px;
+      border-radius:14px;
+      border:2px solid ${cfg.border};
+      background:${cfg.bg};
+      box-shadow:0 0 12px ${cfg.glow};
+      display:flex;flex-direction:column;
+      overflow:hidden;
       cursor:pointer;
       transition:transform 0.2s, box-shadow 0.2s;
       position:relative;
-      overflow:hidden;
     `;
 
-    // [한글 주석] 앞면 (물음표 - 처음엔 뒤집혀 있음)
+    // [한글 주석] 카드 HTML - 도감 스타일 (이미지 + 희귀도 라벨)
     cardEl.innerHTML = `
-      <div class="choice-card-inner" style="
-        width:100%;height:100%;
-        display:flex;flex-direction:column;
-        align-items:center;justify-content:center;
-        gap:6px;padding:8px;
+      <!-- [한글 주석] 카드 상단 헤더 (카드 이름) -->
+      <div class="choice-header" style="
+        background:${cfg.headerBg};
+        color:${cfg.labelColor};
+        font-size:10px;font-weight:700;
+        padding:5px 4px;text-align:center;
+        border-bottom:1px solid ${cfg.border};
+        white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      ">???</div>
+
+      <!-- [한글 주석] 카드 이미지 영역 -->
+      <div class="choice-img-wrap" style="
+        width:100%;aspect-ratio:1;
+        display:flex;align-items:center;justify-content:center;
+        background:rgba(0,0,0,0.3);
+        position:relative;overflow:hidden;
+        font-size:36px;
       ">
-        <div class="choice-question" style="font-size:36px;">❓</div>
-        <div class="choice-front" style="display:none;flex-direction:column;align-items:center;gap:4px;width:100%;">
-          <div style="font-size:32px;">${card.emoji}</div>
-          <div style="
-            color:#fff;font-size:11px;font-weight:700;
-            text-align:center;line-height:1.3;
-          ">${card.name}</div>
-          <div style="
-            color:${card.rarity === 'epic' ? '#ffd700' : card.rarity === 'rare' ? '#4a9eff' : '#84ff00'};
-            font-size:10px;
-          ">${card.rarity === 'epic' ? '★★★' : card.rarity === 'rare' ? '★★' : '★'}</div>
+        <!-- [한글 주석] 물음표 (선택 전) -->
+        <div class="choice-question" style="
+          font-size:36px;
+          animation:choicePulse 1s ease infinite alternate;
+        ">❓</div>
+        <!-- [한글 주석] 실제 이미지 (선택 후 공개) -->
+        <div class="choice-img-front" style="display:none;width:100%;height:100%;">
+          ${typeof getCardImageHTML === 'function'
+            ? getCardImageHTML(card, 80)
+            : '<div style="font-size:36px;">' + card.emoji + '</div>'}
         </div>
+      </div>
+
+      <!-- [한글 주석] 카드 하단 (희귀도 + 설명) -->
+      <div class="choice-footer" style="
+        padding:5px 4px;
+        display:flex;flex-direction:column;gap:2px;
+      ">
+        <!-- [한글 주석] 희귀도 라벨 -->
+        <div style="
+          color:${cfg.labelColor};
+          font-size:9px;font-weight:700;
+          text-align:center;
+        ">???</div>
+        <!-- [한글 주석] 짧은 설명 -->
+        <div class="choice-desc" style="
+          color:#999;font-size:9px;
+          text-align:center;line-height:1.3;
+          display:-webkit-box;
+          -webkit-line-clamp:2;
+          -webkit-box-orient:vertical;
+          overflow:hidden;
+        ">탭해서 선택</div>
       </div>
     `;
 
-    // [한글 주석] 카드 탭하면 선택
+    // [한글 주석] 카드 선택 이벤트
     cardEl.addEventListener('click', () => {
       // [한글 주석] 이미 선택 중이면 무시
       if (overlay.dataset.choosing) return;
       overlay.dataset.choosing = 'true';
 
-      // [한글 주석] 선택한 카드 테두리 강조
-      cardEl.style.border = '3px solid #ffd700';
-      cardEl.style.boxShadow = '0 0 20px rgba(255,215,0,0.6)';
-      cardEl.style.transform = 'scale(1.05)';
-
       // [한글 주석] 모든 카드 앞면 공개
       document.querySelectorAll('.choice-card').forEach((el, i) => {
         const question = el.querySelector('.choice-question');
-        const front = el.querySelector('.choice-front');
+        const imgFront = el.querySelector('.choice-img-front');
+        const header = el.querySelector('.choice-header');
+        const footer = el.querySelector('.choice-footer');
+        const desc = el.querySelector('.choice-desc');
+        const c = cards[i];
+        const cf = rarityConfig[c.rarity] || rarityConfig.common;
+
+        // [한글 주석] 물음표 숨기고 이미지 공개
         if (question) question.style.display = 'none';
-        if (front) front.style.display = 'flex';
+        if (imgFront) imgFront.style.display = 'flex';
+
+        // [한글 주석] 카드 이름/희귀도 공개
+        if (header) {
+          header.textContent = c.name;
+          header.style.color = cf.labelColor;
+        }
+        if (footer) {
+          const rarityLabel = footer.querySelector('div:first-child');
+          if (rarityLabel) {
+            rarityLabel.textContent = cf.label;
+            rarityLabel.style.color = cf.labelColor;
+          }
+        }
+        if (desc) {
+          desc.textContent = c.short_desc || c.habitat || '';
+        }
 
         // [한글 주석] 선택 안 된 카드는 흐리게
         if (i !== idx) {
-          el.style.opacity = '0.4';
-          el.style.border = '2px solid #333';
+          el.style.opacity = '0.35';
+          el.style.filter = 'grayscale(50%)';
+          el.style.transform = 'scale(0.95)';
+        } else {
+          // [한글 주석] 선택된 카드 강조
+          el.style.border = '3px solid ' + cf.border;
+          el.style.boxShadow = '0 0 30px ' + cf.glow + ', 0 0 60px ' + cf.glow;
+          el.style.transform = 'scale(1.06)';
         }
       });
 
-      // [한글 주석] 1초 후 팝업 닫고 선택 카드 처리
+      // [한글 주석] 1.2초 후 팝업 닫고 선택 카드 처리
       setTimeout(() => {
         overlay.remove();
         onChoice(card);
