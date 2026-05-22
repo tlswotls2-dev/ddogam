@@ -121,7 +121,142 @@ function getUnlockedCategories() {
 }
 
 /**
- * 랜덤으로 아이템 1개를 뽑는 메인 로직입니다. (걸음 수를 달성했을 때 호출됨)
+ * [한글 주석] 카드 3장 선택 모드 팝업 표시
+ * 3장의 카드 중 1장을 골라 도감에 추가하는 인터랙티브 팝업입니다.
+ * @param {Array} cards - 선택지로 보여줄 카드 3장 배열
+ * @param {Function} onChoice - 카드 선택 완료 시 호출될 콜백 함수
+ */
+function showCardChoicePopup(cards, onChoice) {
+  // [한글 주석] 기존 팝업 있으면 제거
+  const existing = document.getElementById('card-choice-overlay');
+  if (existing) existing.remove();
+
+  // [한글 주석] 오버레이 생성
+  const overlay = document.createElement('div');
+  overlay.id = 'card-choice-overlay';
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.92);
+    z-index:99999;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    gap:16px;
+  `;
+
+  // [한글 주석] 팝업 내부 HTML 구성
+  overlay.innerHTML = `
+    <div style="
+      color:#ffd700;
+      font-size:18px;
+      font-weight:900;
+      text-align:center;
+      margin-bottom:4px;
+      text-shadow:0 0 20px rgba(255,215,0,0.5);
+    ">✨ 카드를 선택하세요! ✨</div>
+    <div style="
+      color:#aaa;
+      font-size:13px;
+      text-align:center;
+      margin-bottom:8px;
+    ">1장을 골라 도감에 추가해요</div>
+    <div id="card-choice-row" style="
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      width:100%;
+    "></div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  const row = document.getElementById('card-choice-row');
+
+  // [한글 주석] 카드 3장 생성
+  cards.forEach((card, idx) => {
+    const cardEl = document.createElement('div');
+    cardEl.className = 'choice-card';
+    cardEl.setAttribute('data-idx', idx);
+    cardEl.style.cssText = `
+      flex:1;
+      max-width:100px;
+      min-height:140px;
+      background:linear-gradient(135deg,#1a1a2e,#16213e);
+      border:2px solid #4a9eff;
+      border-radius:16px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:transform 0.2s, box-shadow 0.2s;
+      position:relative;
+      overflow:hidden;
+    `;
+
+    // [한글 주석] 앞면 (물음표 - 처음엔 뒤집혀 있음)
+    cardEl.innerHTML = `
+      <div class="choice-card-inner" style="
+        width:100%;height:100%;
+        display:flex;flex-direction:column;
+        align-items:center;justify-content:center;
+        gap:6px;padding:8px;
+      ">
+        <div class="choice-question" style="font-size:36px;">❓</div>
+        <div class="choice-front" style="display:none;flex-direction:column;align-items:center;gap:4px;width:100%;">
+          <div style="font-size:32px;">${card.emoji}</div>
+          <div style="
+            color:#fff;font-size:11px;font-weight:700;
+            text-align:center;line-height:1.3;
+          ">${card.name}</div>
+          <div style="
+            color:${card.rarity === 'epic' ? '#ffd700' : card.rarity === 'rare' ? '#4a9eff' : '#84ff00'};
+            font-size:10px;
+          ">${card.rarity === 'epic' ? '★★★' : card.rarity === 'rare' ? '★★' : '★'}</div>
+        </div>
+      </div>
+    `;
+
+    // [한글 주석] 카드 탭하면 선택
+    cardEl.addEventListener('click', () => {
+      // [한글 주석] 이미 선택 중이면 무시
+      if (overlay.dataset.choosing) return;
+      overlay.dataset.choosing = 'true';
+
+      // [한글 주석] 선택한 카드 테두리 강조
+      cardEl.style.border = '3px solid #ffd700';
+      cardEl.style.boxShadow = '0 0 20px rgba(255,215,0,0.6)';
+      cardEl.style.transform = 'scale(1.05)';
+
+      // [한글 주석] 모든 카드 앞면 공개
+      document.querySelectorAll('.choice-card').forEach((el, i) => {
+        const question = el.querySelector('.choice-question');
+        const front = el.querySelector('.choice-front');
+        if (question) question.style.display = 'none';
+        if (front) front.style.display = 'flex';
+
+        // [한글 주석] 선택 안 된 카드는 흐리게
+        if (i !== idx) {
+          el.style.opacity = '0.4';
+          el.style.border = '2px solid #333';
+        }
+      });
+
+      // [한글 주석] 1초 후 팝업 닫고 선택 카드 처리
+      setTimeout(() => {
+        overlay.remove();
+        onChoice(card);
+      }, 1200);
+    });
+
+    row.appendChild(cardEl);
+  });
+}
+
+/**
+ * [한글 주석] 랜덤으로 아이템 1개를 뽑는 메인 로직입니다. (걸음 수를 달성했을 때 호출됨)
  */
 function drawRandomItem() {
     // 데이터가 아직 로드되지 않았다면 무시 (초기화 보장)
@@ -171,7 +306,72 @@ function drawRandomItem() {
     const randomIndex = Math.floor(Math.random() * weightedCards.length);
     const resultCard = weightedCards[randomIndex];
     
-    // 6. 결과 저장 및 팝업 띄우기
+    // [한글 주석] 30% 확률로 카드 3장 선택 모드 발동
+    const isChoiceMode = Math.random() < 0.30;
+
+    if (isChoiceMode) {
+      // [한글 주석] 카드 3장 뽑기 (각각 독립적으로 가중 랜덤)
+      const choiceCards = [];
+      const usedIds = new Set();
+
+      for (let i = 0; i < 3; i++) {
+        let picked = getWeightedRandomCard(availableCards);
+        // [한글 주석] 중복 카드 방지 (최대 10회 시도)
+        let attempts = 0;
+        while (usedIds.has(picked.id) && attempts < 10) {
+          picked = getWeightedRandomCard(availableCards);
+          attempts++;
+        }
+        usedIds.add(picked.id);
+        choiceCards.push(picked);
+      }
+
+      // [한글 주석] 선택 팝업 표시 - 선택 완료 시 일반 획득 로직 실행
+      showCardChoicePopup(choiceCards, (selectedCard) => {
+        // [한글 주석] 선택한 카드를 resultCard로 설정해 기존 저장 로직 재사용
+        const isNew = !getCollection().includes(selectedCard.id);
+        if (isNew) {
+          saveCollection(selectedCard.id);
+          if (typeof showNewCardEffect === 'function') {
+            showNewCardEffect(selectedCard);
+          }
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                saveCollectionLocation(selectedCard.id, position.coords.latitude, position.coords.longitude);
+                if (typeof addCollectionMarker === 'function') {
+                  addCollectionMarker(position.coords.latitude, position.coords.longitude, selectedCard);
+                }
+              },
+              () => console.log('위치 정보 없이 카드 저장'),
+              { enableHighAccuracy: true, timeout: 5000 }
+            );
+          }
+        }
+
+        // [한글 주석] 효과음 재생
+        if (localStorage.getItem('soundMode') !== 'off') {
+          try {
+            playItemSound(selectedCard.rarity || 'common');
+          } catch(e) {
+            console.log('소리 재생 실패:', e);
+          }
+        }
+
+        // [한글 주석] 기존 카드 팝업 표시
+        showCardPopup(selectedCard, isNew);
+
+        // [한글 주석] 해금 조건 체크
+        if (isNew && typeof checkAndUnlockItems === 'function') checkAndUnlockItems();
+        if (isNew && typeof checkAndUnlockPets === 'function') checkAndUnlockPets();
+        if (typeof window.updateMainScreenData === 'function') window.updateMainScreenData();
+        if (typeof updateLevelBadge === 'function') updateLevelBadge();
+      });
+
+      return; // [한글 주석] 선택 모드면 여기서 종료
+    }
+
+    // [한글 주석] 6. 결과 저장 및 팝업 띄우기 (일반 모드)
     const isNew = !collection.includes(resultCard.id);
     if (isNew) {
         saveCollection(resultCard.id); // 새로운 발견일 경우만 storage.js 함수로 저장
