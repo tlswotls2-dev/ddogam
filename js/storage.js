@@ -33,22 +33,27 @@ function saveCollection(cardId) {
         // 업데이트된 컬렉션을 다시 문자열로 변환하여 저장
         localStorage.setItem('userCollection', JSON.stringify(collection));
 
-        // [한글 주석] 레벨업 체크 및 축하 팝업
+        // [한글 주석] 대기 중인 레벨업 퀴즈가 있으면 먼저 처리
+        const pendingLevel = localStorage.getItem('pendingLevel');
+        if (pendingLevel) {
+          localStorage.removeItem('pendingLevel');
+          if (typeof showLevelUpQuiz === 'function') {
+            showLevelUpQuiz(parseInt(pendingLevel), cardId);
+          }
+          return; // [한글 주석] 대기 퀴즈 처리 후 나머지 로직 skip
+        }
+
+        // [한글 주석] 일반 레벨업 체크
         const prevTotal = collection.length - 1;
         const newTotal = collection.length;
         const newLevel = checkLevelUp(prevTotal, newTotal);
         if (newLevel) {
-          // [한글 주석] 레벨업 전 퀴즈 도전
-          // 퀴즈 통과 시에만 레벨업 팝업 표시
           if (typeof showLevelUpQuiz === 'function') {
             showLevelUpQuiz(newLevel, cardId);
           } else {
             showLevelUpPopup(newLevel);
           }
         }
-
-        // [한글 주석] 메인화면 레벨 뱃지 업데이트
-        if (typeof updateLevelBadge === 'function') updateLevelBadge();
 
         // 도감을 위한 수집 날짜 저장
         const dates = getCollectionDates();
@@ -149,18 +154,34 @@ function isQuizPassed(category) {
     return getQuizPassed().includes(category);
 }
 
-// [한글 주석] 수집 카드 수로 레벨 계산 (10개당 1레벨, 최대 30레벨)
+// [한글 주석] 실제 확정된 레벨 가져오기 (퀴즈 통과 후 저장된 값)
+function getCurrentLevel() {
+  return parseInt(localStorage.getItem('currentLevel') || '1');
+}
+
+// [한글 주석] 실제 확정된 레벨 저장
+function saveCurrentLevel(level) {
+  localStorage.setItem('currentLevel', String(level));
+}
+
+// [한글 주석] 카드 수로 도달 가능한 레벨 계산 (10개당 1레벨, 최대 30)
 function calculateLevel(totalCount) {
   return Math.min(30, Math.floor(totalCount / 10) + 1);
 }
 
-// [한글 주석] 레벨업 체크 (카드 추가 전후 레벨 비교)
+// [한글 주석] 레벨업 체크 - 카드 수 기반 목표 레벨이 현재 확정 레벨보다 높으면 퀴즈 트리거
 function checkLevelUp(prevTotal, newTotal) {
-  const prevLevel = calculateLevel(prevTotal);
-  const newLevel = calculateLevel(newTotal);
-  return newLevel > prevLevel ? newLevel : null;
+  const targetLevel = calculateLevel(newTotal);
+  const confirmedLevel = getCurrentLevel();
+  // [한글 주석] 목표 레벨이 확정 레벨보다 높으면 레벨업 도전
+  if (targetLevel > confirmedLevel) {
+    return confirmedLevel + 1; // [한글 주석] 한 단계씩 올라감
+  }
+  return null;
 }
 
+window.getCurrentLevel = getCurrentLevel;
+window.saveCurrentLevel = saveCurrentLevel;
 window.calculateLevel = calculateLevel;
 window.checkLevelUp = checkLevelUp;
 
@@ -189,6 +210,17 @@ function checkCategoryUnlockByLevel(level) {
 }
 
 window.checkCategoryUnlockByLevel = checkCategoryUnlockByLevel;
+
+// [한글 주석] 해금된 카테고리 목록 반환 - 레벨 기반
+function getUnlockedCategories() {
+  const level = getCurrentLevel();
+  const categories = ['plant'];
+  if (level >= 5)  categories.push('animal');
+  if (level >= 10) categories.push('artifact');
+  return categories;
+}
+
+window.getUnlockedCategories = getUnlockedCategories;
 
 // [한글 주석] 중복 카드 저장소 키
 const DUPLICATES_KEY = 'cardDuplicates';
