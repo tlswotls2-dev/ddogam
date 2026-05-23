@@ -25,52 +25,45 @@ function startTutorial() {
 // [한글 주석] 튜토리얼 단계 정의
 const TUTORIAL_STEPS = [
   {
-    // [한글 주석] 1단계: 탐험 버튼 하이라이트 (클릭 안됨)
+    // [한글 주석] 1단계: 탐험 버튼 하이라이트 (클릭 차단)
     targetId: 'btn-explore',
-    message: '👟 탐험 버튼을 누르면\n탐험이 시작돼요!',
-    clickToNext: false,
-    blockOthers: false,
-    blockTarget: true,   // [한글 주석] 타겟 버튼 클릭 차단
+    message: '👟 탐험 버튼을 누르고\n걷다보면 카드가 나와요!',
+    blockTarget: true,
     position: 'top',
     showSkip: true,
     showPrev: false,
     showNext: true
   },
   {
-    // [한글 주석] 3단계(원래): 카드 강제 출현 + 자세히보기 하이라이트
+    // [한글 주석] 2단계: 카드 출현 + 자세히보기 하이라이트 (확인 버튼 차단)
     targetId: 'btn-detail',
-    message: '✨ 카드가 나타났어요!\n식물의 모습과 간단한 정보를\n볼 수 있어요.',
-    clickToNext: false,
-    blockOthers: false,
-    blockTarget: false,  // [한글 주석] 자세히보기 버튼 실제 클릭 가능
-    position: 'top-minimal', // [한글 주석] 카드 가리지 않게 최상단
+    message: '✨ 카드가 나타났어요!\n식물의 모습과 간단한 정보를\n볼 수 있어요.\n자세히 보기를 눌러봐요!',
+    blockTarget: false,
+    blockOthersInCard: true, // [한글 주석] 카드의 확인 버튼 차단
+    position: 'top-minimal',
     action: 'showTutorialCard',
     showSkip: false,
     showPrev: true,
-    showNext: false,     // [한글 주석] 다음 버튼 없음, 자세히보기 누르면 진행
-    nextOnTargetClick: true // [한글 주석] 타겟 클릭 시 다음 단계
+    showNext: false,
+    nextOnTargetClick: true
   },
   {
-    // [한글 주석] 4단계(원래): 자세한 정보 + 확인 하이라이트
+    // [한글 주석] 3단계: 자세한 정보 + 확인 버튼 하이라이트
     targetId: 'btn-close',
     message: '📚 더 많은 정보를 볼 수도\n있답니다. 확인을 누르세요.',
-    clickToNext: false,
-    blockOthers: false,
-    blockTarget: false,  // [한글 주석] 확인 버튼 실제 클릭 가능
+    blockTarget: false,
     position: 'top',
     showSkip: false,
     showPrev: true,
     showNext: false,
-    nextOnTargetClick: true // [한글 주석] 확인 버튼 클릭 시 다음 단계
+    nextOnTargetClick: true
   },
   {
-    // [한글 주석] 7단계(원래): 도움말 버튼 안내
+    // [한글 주석] 4단계: 도움말 버튼 하이라이트 (클릭 차단, 팝업만 중앙)
     targetId: 'help-btn',
     message: '❓ 도움말 버튼이에요!\n게임 방법을 자세히 알 수 있어요.',
-    clickToNext: false,
-    blockOthers: false,
-    blockTarget: false,
-    position: 'center',  // [한글 주석] 중앙에 표시
+    blockTarget: true,
+    position: 'center-only', // [한글 주석] 팝업만 중앙, 버튼은 원위치
     showSkip: false,
     showPrev: false,
     showNext: true
@@ -79,8 +72,7 @@ const TUTORIAL_STEPS = [
     // [한글 주석] 마지막 단계: 마무리
     targetId: null,
     message: '🎉 튜토리얼 완료!\n더 자세한 게임 방법은\n도움말을 참고해요!\n\n이제 탐험을 시작해봐요! 🌿',
-    clickToNext: false,
-    blockOthers: false,
+    blockTarget: false,
     position: 'center',
     showSkip: false,
     showPrev: false,
@@ -192,6 +184,17 @@ function _showTutorialStep(stepIdx) {
     }
   }
 
+  // [한글 주석] 카드 내 확인 버튼 차단 (2단계용)
+  if (step.blockOthersInCard) {
+    const closeBtn = document.getElementById('btn-close')
+      || document.querySelector('.btn-close');
+    if (closeBtn) {
+      closeBtn.style.pointerEvents = 'none';
+      closeBtn.style.opacity = '0.4';
+      overlay._blockedCloseBtn = closeBtn;
+    }
+  }
+
   // [한글 주석] 메시지 박스 위치 결정
   let msgStyle = '';
   const msgWidth = 260;
@@ -217,7 +220,8 @@ function _showTutorialStep(stepIdx) {
       left:50%;
       transform:translateX(-50%);
     `;
-  } else if (step.position === 'right' && targetRect) {
+  } else if (step.position === 'center-only') {
+    // [한글 주석] 팝업만 중앙에 표시 - 타겟 버튼은 원래 위치에 하이라이트
     msgStyle = `
       position:fixed;
       top:50%;left:50%;
@@ -356,6 +360,18 @@ function _removeTutorialOverlay() {
   }
   const msg = document.getElementById('tutorial-msg');
   if (msg) msg.remove();
+  // [한글 주석] 차단된 확인 버튼 복구
+  const overlay2 = document.getElementById('tutorial-overlay');
+  if (overlay2 && overlay2._blockedCloseBtn) {
+    overlay2._blockedCloseBtn.style.pointerEvents = '';
+    overlay2._blockedCloseBtn.style.opacity = '';
+  }
+  // [한글 주석] 타겟 버튼 스타일 복구
+  document.querySelectorAll('[style*="999995"]').forEach(el => {
+    el.style.zIndex = '';
+    el.style.pointerEvents = '';
+    el.style.position = '';
+  });
 }
 
 // [한글 주석] 튜토리얼 건너뛰기
