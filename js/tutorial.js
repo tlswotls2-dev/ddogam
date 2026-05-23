@@ -67,7 +67,7 @@ const TUTORIAL_STEPS = [
   {
     // [한글 주석] 마지막 단계: 마무리
     targetSelector: null,
-    message: '🎉 튜토리얼 완료!\n더 자세한 게임 방법은\n도움말을 참고해요!\n\n이제 탐험을 시작해봐요! 🌿',
+    message: '🎉 튜토리얼 완료!\n또감의 세계에 오신 것을\n환영합니다!\n\n이제 탐험을 시작해봐요! 🌿',
     blockTarget: false,
     position: 'center',
     showSkip: false,
@@ -168,8 +168,8 @@ function _showTutorialStep(stepIdx) {
             <rect width="100%" height="100%" fill="white"/>
             <rect x="${targetRect.left - p}"
                   y="${targetRect.top - p}"
-                  width="${targetRect.width + p*2}"
-                  height="${targetRect.height + p*2}"
+                  width="${targetRect.width + p * 2}"
+                  height="${targetRect.height + p * 2}"
                   fill="black" rx="16"/>
           </mask>
         </defs>
@@ -178,8 +178,8 @@ function _showTutorialStep(stepIdx) {
           mask="url(#tutorial-mask)"/>
         <rect x="${targetRect.left - p - 2}"
               y="${targetRect.top - p - 2}"
-              width="${targetRect.width + p*2 + 4}"
-              height="${targetRect.height + p*2 + 4}"
+              width="${targetRect.width + p * 2 + 4}"
+              height="${targetRect.height + p * 2 + 4}"
               fill="none" stroke="#ffd700"
               stroke-width="2.5" rx="17" opacity="0.9"/>
       </svg>
@@ -195,8 +195,8 @@ function _showTutorialStep(stepIdx) {
             <rect width="100%" height="100%" fill="white"/>
             <rect x="${targetRect.left - p}"
                   y="${targetRect.top - p}"
-                  width="${targetRect.width + p*2}"
-                  height="${targetRect.height + p*2}"
+                  width="${targetRect.width + p * 2}"
+                  height="${targetRect.height + p * 2}"
                   fill="black" rx="16"/>
           </mask>
         </defs>
@@ -205,8 +205,8 @@ function _showTutorialStep(stepIdx) {
           mask="url(#tutorial-mask)"/>
         <rect x="${targetRect.left - p - 2}"
               y="${targetRect.top - p - 2}"
-              width="${targetRect.width + p*2 + 4}"
-              height="${targetRect.height + p*2 + 4}"
+              width="${targetRect.width + p * 2 + 4}"
+              height="${targetRect.height + p * 2 + 4}"
               fill="none" stroke="#ffd700"
               stroke-width="2.5" rx="17" opacity="0.9"/>
       </svg>
