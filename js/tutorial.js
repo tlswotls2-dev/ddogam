@@ -22,14 +22,14 @@ function startTutorial() {
 // ==========================================
 // [한글 주석] 튜토리얼 단계 정의
 // ==========================================
+// [한글 주석] 튜토리얼 단계 - 모든 단계 다음 버튼으로 진행
 const TUTORIAL_STEPS = [
   {
     // [한글 주석] 1단계: 탐험 버튼 안내
-    // [한글 주석] 탐험 버튼은 id 없이 class로만 존재
     targetId: 'btn-explore',
     message: '👟 탐험 버튼을 눌러봐요!\n걷다 보면 카드가 나타나요.',
-    clickToNext: true,   // [한글 주석] 타겟 버튼 클릭 시 다음 단계
-    blockOthers: true,   // [한글 주석] 다른 영역 클릭 차단
+    clickToNext: false,
+    blockOthers: true,
     position: 'top'
   },
   {
@@ -38,7 +38,7 @@ const TUTORIAL_STEPS = [
     message: '🚶 스마트기기를 들고\n주변을 걸으면 카드가 나타나요!\n(튜토리얼에서는 바로 보여드릴게요)',
     clickToNext: false,
     blockOthers: false,
-    autoNext: 2500,      // [한글 주석] 2.5초 후 자동으로 다음
+    autoNext: 2500,
     position: 'center'
   },
   {
@@ -49,10 +49,10 @@ const TUTORIAL_STEPS = [
     blockOthers: false,
     autoNext: 1000,
     position: 'center',
-    action: 'showTutorialCard'  // [한글 주석] 카드 팝업 강제 출현
+    action: 'showTutorialCard'
   },
   {
-    // [한글 주석] 4단계: 카드 정보 안내 (카드 팝업 떠있는 상태)
+    // [한글 주석] 4단계: 카드 정보 안내
     targetId: null,
     message: '🌿 식물의 모습과\n간단한 정보를 볼 수 있어요!',
     clickToNext: false,
@@ -63,9 +63,9 @@ const TUTORIAL_STEPS = [
   {
     // [한글 주석] 5단계: 자세히 보기 버튼 하이라이트
     targetId: 'btn-detail',
-    message: '📖 자세히 보기를 눌러봐요!',
-    clickToNext: true,
-    blockOthers: true,
+    message: '📖 자세히 보기를 누르면\n더 많은 정보를 볼 수 있어요!',
+    clickToNext: false,
+    blockOthers: false,
     position: 'top'
   },
   {
@@ -80,19 +80,18 @@ const TUTORIAL_STEPS = [
   {
     // [한글 주석] 7단계: 닫기 버튼 하이라이트
     targetId: 'btn-close',
-    message: '✅ 확인 버튼으로 닫아요!',
-    clickToNext: true,
-    blockOthers: true,
+    message: '✅ 확인 버튼으로\n카드를 닫을 수 있어요!',
+    clickToNext: false,
+    blockOthers: false,
     position: 'top'
   },
   {
     // [한글 주석] 8단계: 도움말 버튼 안내
     targetId: 'help-btn',
-    // [한글 주석] help-btn은 id로 존재하므로 유지
-    message: '❓ 도움말 버튼이에요!',
+    message: '❓ 도움말 버튼이에요!\n게임 방법을 자세히 알 수 있어요.',
     clickToNext: false,
     blockOthers: false,
-    autoNext: 2000,
+    autoNext: 2500,
     position: 'right'
   },
   {
