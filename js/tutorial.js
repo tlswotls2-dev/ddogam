@@ -465,6 +465,7 @@ function _tutorialShowDetail() {
         border-radius:12px;padding:14px;margin-bottom:16px;
       ">${card.detail_desc || card.short_desc || ''}</div>
       <button id="tutorial-close-btn"
+        onclick="_tutorialCloseDetail()"
         style="width:100%;
           background:linear-gradient(135deg,#8db05c,#6b8e3d);
           color:#1e2e1f;border:none;border-radius:12px;
