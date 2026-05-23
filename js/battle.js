@@ -686,7 +686,8 @@ function _startQuizTimer() {
     battleState.quizTimer = null;
   }
 
-  let remaining = 120; // [한글 주석] 2분 = 120초
+  // [한글 주석] 3분 = 180초 (5문제 전체 제한시간)
+  let remaining = 180;
   battleState.quizTimer = setInterval(() => {
     remaining--;
 
@@ -898,7 +899,8 @@ async function _finishBattleQuiz(isTimeout = false) {
     opponentNumber: battleState.opponentNumber,
     myScore: battleState.myScore,
     opponentScore: '',
-    result: 'pending'
+    // [한글 주석] 퀴즈 완료 표시 (done/timeout으로 저장해야 상대가 완료된 결과만 조회)
+    result: isTimeout ? 'timeout' : 'done'
   }));
 
   try {
