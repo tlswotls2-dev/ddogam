@@ -213,6 +213,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // 만보기 및 센서 초기화
         initAppPedometer();
+        
+        // [한글 주석] 최초 로그인 시 튜토리얼 실행
+        if (typeof startTutorial === 'function') {
+            setTimeout(() => {
+                startTutorial();
+            }, 500); // UI 안정화 후 실행
+        }
     };
 
     // ==========================================
