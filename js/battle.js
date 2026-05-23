@@ -18,7 +18,8 @@ let battleState = {
   pollInterval: null,   // 폴링 인터벌
   studyCards: [],       // 공부용 카드 목록
   currentCardIdx: 0,    // 현재 보는 카드 인덱스
-  showingBack: false    // 카드 앞/뒷면 상태
+  showingBack: false,   // 카드 앞/뒷면 상태
+  quizTimer: null       // [한글 주석] 퀴즈 제한 타이머
 };
 
 // ==========================================
@@ -677,6 +678,51 @@ function _generateBattleChoices(correctCard, allCatCards) {
   return [correctCard, ...wrongs].sort(() => Math.random() - 0.5);
 }
 
+// [한글 주석] 퀴즈 2분 제한 타이머
+function _startQuizTimer() {
+  // [한글 주석] 기존 타이머 있으면 제거
+  if (battleState.quizTimer) {
+    clearInterval(battleState.quizTimer);
+    battleState.quizTimer = null;
+  }
+
+  let remaining = 120; // [한글 주석] 2분 = 120초
+  battleState.quizTimer = setInterval(() => {
+    remaining--;
+
+    // [한글 주석] 타이머 표시 업데이트
+    const timerEl = document.getElementById('battle-quiz-timer');
+    if (timerEl) {
+      const m = Math.floor(remaining / 60);
+      const s = remaining % 60;
+      timerEl.textContent = `⏱ ${m}:${String(s).padStart(2,'0')}`;
+      // [한글 주석] 30초 이하면 빨간색으로
+      timerEl.style.color = remaining <= 30 ? '#ff4444' : '#aaa';
+    }
+
+    if (remaining <= 0) {
+      // [한글 주석] 시간 초과 → 패배 처리
+      clearInterval(battleState.quizTimer);
+      battleState.quizTimer = null;
+      const overlay = document.getElementById('battle-quiz-overlay');
+      if (overlay) overlay.remove();
+      // [한글 주석] 시간 초과 토스트
+      const toast = document.createElement('div');
+      toast.className = 'item-unlock-toast';
+      toast.style.background = 'linear-gradient(135deg,#ff4444,#cc0000)';
+      toast.textContent = '⏱ 시간 초과! 패배했어요.';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 10);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+      }, 2500);
+      // [한글 주석] 패배로 결과 처리
+      _finishBattleQuiz(true); // [한글 주석] true = 시간초과 패배
+    }
+  }, 1000);
+}
+
 // [한글 주석] 배틀 퀴즈 화면 렌더링
 function _renderBattleQuiz() {
   const existing = document.getElementById('battle-quiz-overlay');
@@ -727,7 +773,10 @@ function _renderBattleQuiz() {
       <!-- [한글 주석] 헤더 -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <div style="color:#ff8080;font-size:12px;font-weight:700;">⚔️ 배틀 퀴즈</div>
-        <div style="color:#aaa;font-size:12px;">${battleState.currentQ+1} / ${total}</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div id="battle-quiz-timer" style="color:#aaa;font-size:11px;">⏱ 2:00</div>
+          <div style="color:#aaa;font-size:12px;">${battleState.currentQ+1} / ${total}</div>
+        </div>
       </div>
 
       <!-- [한글 주석] 진행바 -->
@@ -783,6 +832,9 @@ function _renderBattleQuiz() {
   `;
 
   document.body.appendChild(overlay);
+
+  // [한글 주석] 퀴즈 2분 제한 타이머 시작
+  _startQuizTimer();
 }
 
 // [한글 주석] 배틀 퀴즈 답 선택
@@ -812,16 +864,32 @@ function handleBattleQuizAnswer(btn) {
     battleState.currentQ++;
     const existing = document.getElementById('battle-quiz-overlay');
     if (existing) existing.remove();
-    _renderBattleQuiz();
+
+    if (battleState.currentQ >= battleState.questions.length) {
+      // [한글 주석] 퀴즈 타이머 정지
+      if (battleState.quizTimer) {
+        clearInterval(battleState.quizTimer);
+        battleState.quizTimer = null;
+      }
+      _finishBattleQuiz();
+    } else {
+      _renderBattleQuiz();
+    }
   }, 900);
 }
 
-// [한글 주석] 퀴즈 5문제 완료 → 결과 처리
-async function _finishBattleQuiz() {
-  battleState.phase = 'result';
+// [한글 주석] 퀴즈 완료 → 결과 처리
+async function _finishBattleQuiz(isTimeout = false) {
+  // [한글 주석] 퀴즈 타이머 정지
+  if (battleState.quizTimer) {
+    clearInterval(battleState.quizTimer);
+    battleState.quizTimer = null;
+  }
 
-  // [한글 주석] 내 결과 먼저 서버에 저장
+  battleState.phase = 'result';
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+
+  // [한글 주석] 내 결과를 서버에 저장
   const formData = new FormData();
   formData.append('payload', JSON.stringify({
     type: 'battleResult',
@@ -829,7 +897,8 @@ async function _finishBattleQuiz() {
     number: userData.number,
     opponentNumber: battleState.opponentNumber,
     myScore: battleState.myScore,
-    result: 'pending' // [한글 주석] 상대 점수 확인 후 업데이트
+    opponentScore: '',
+    result: 'pending'
   }));
 
   try {
@@ -838,10 +907,12 @@ async function _finishBattleQuiz() {
     console.log('[배틀] 결과 저장 실패:', e);
   }
 
-  // [한글 주석] 상대방 결과 대기 (최대 30초, 3초마다 확인)
+  // [한글 주석] 상대방 결과 대기 팝업
   _showWaitingResultPopup();
+
+  // [한글 주석] 최대 60초, 3초마다 상대 결과 확인
   let attempts = 0;
-  const maxAttempts = 10;
+  const maxAttempts = 20;
 
   const checkInterval = setInterval(async () => {
     attempts++;
@@ -859,7 +930,20 @@ async function _finishBattleQuiz() {
         const opponentScore = Number(data.opponentScore);
         const existing = document.getElementById('battle-wait-result-overlay');
         if (existing) existing.remove();
-        _showBattleResult(battleState.myScore, opponentScore);
+
+        // [한글 주석] 승패 판정
+        let result;
+        if (isTimeout) {
+          result = 'lose'; // [한글 주석] 시간초과는 무조건 패배
+        } else if (battleState.myScore > opponentScore) {
+          result = 'win';
+        } else if (battleState.myScore < opponentScore) {
+          result = 'lose';
+        } else {
+          result = 'draw';
+        }
+
+        _showBattleResult(battleState.myScore, opponentScore, result);
         return;
       }
     } catch(e) {
@@ -868,10 +952,10 @@ async function _finishBattleQuiz() {
 
     if (attempts >= maxAttempts) {
       clearInterval(checkInterval);
-      // [한글 주석] 상대 결과 없으면 내 점수만으로 처리
       const existing = document.getElementById('battle-wait-result-overlay');
       if (existing) existing.remove();
-      _showBattleResult(battleState.myScore, -1);
+      // [한글 주석] 60초 넘어도 상대 결과 없으면 내 점수로만 표시
+      _showBattleResult(battleState.myScore, -1, isTimeout ? 'lose' : 'unknown');
     }
   }, 3000);
 }
@@ -907,34 +991,28 @@ function _showWaitingResultPopup() {
 }
 
 // [한글 주석] 배틀 최종 결과 팝업
-function _showBattleResult(myScore, opponentScore) {
-  let result, resultLabel, resultColor, rewardMsg;
+function _showBattleResult(myScore, opponentScore, result) {
+  let resultLabel, resultColor, rewardMsg;
 
-  if (opponentScore === -1) {
-    // [한글 주석] 상대 결과 없음 (타임아웃)
-    result = 'unknown';
-    resultLabel = '결과 확인 불가';
-    resultColor = '#aaa';
-    rewardMsg = '상대방 결과를 가져오지 못했어요.';
-  } else if (myScore > opponentScore) {
-    result = 'win';
+  if (result === 'win') {
     resultLabel = '🏆 승리!';
     resultColor = '#ffd700';
     rewardMsg = '복주머니 1개를 획득했어요!';
-    // [한글 주석] 복주머니 지급
     _grantBattleReward('win');
-  } else if (myScore < opponentScore) {
-    result = 'lose';
+  } else if (result === 'lose') {
     resultLabel = '😔 패배';
     resultColor = '#ff4444';
     rewardMsg = '다음엔 더 잘할 수 있어요!';
-  } else {
-    result = 'draw';
+  } else if (result === 'draw') {
     resultLabel = '🤝 무승부!';
     resultColor = '#4a9eff';
     rewardMsg = '복주머니 조각 1개를 획득했어요!';
-    // [한글 주석] 복주머니 조각 지급
     _grantBattleReward('draw');
+  } else {
+    // [한글 주석] unknown - 상대 결과 못 받은 경우
+    resultLabel = '⚔️ 완료';
+    resultColor = '#aaa';
+    rewardMsg = '상대방 결과를 확인하지 못했어요.';
   }
 
   const overlay = document.createElement('div');
@@ -961,12 +1039,7 @@ function _showBattleResult(myScore, opponentScore) {
       <div style="color:${resultColor};font-size:28px;font-weight:900;margin-bottom:12px;">
         ${resultLabel}
       </div>
-
-      <!-- [한글 주석] 점수 비교 -->
-      <div style="
-        display:flex;gap:12px;justify-content:center;
-        margin-bottom:16px;
-      ">
+      <div style="display:flex;gap:12px;justify-content:center;margin-bottom:16px;">
         <div style="
           flex:1;background:rgba(0,0,0,0.3);
           border:1px solid ${resultColor};border-radius:14px;
@@ -989,11 +1062,7 @@ function _showBattleResult(myScore, opponentScore) {
           <div style="color:#aaa;font-size:10px;">/ 5</div>
         </div>
       </div>
-
-      <div style="color:#d4c89c;font-size:13px;margin-bottom:20px;">
-        ${rewardMsg}
-      </div>
-
+      <div style="color:#d4c89c;font-size:13px;margin-bottom:20px;">${rewardMsg}</div>
       <button onclick="document.getElementById('battle-result-overlay').remove()" style="
         width:100%;
         background:linear-gradient(135deg,${resultColor},${resultColor}aa);
@@ -1007,7 +1076,7 @@ function _showBattleResult(myScore, opponentScore) {
   battleState.phase = 'idle';
 
   if (result === 'win' && navigator.vibrate) {
-    navigator.vibrate([200, 100, 200, 100, 300]);
+    navigator.vibrate([200,100,200,100,300]);
   }
 }
 
