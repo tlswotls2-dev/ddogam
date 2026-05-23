@@ -99,17 +99,34 @@ function _showTutorialStep(stepIdx) {
   _tutorialCurrentStep = stepIdx;
   const step = TUTORIAL_STEPS[stepIdx];
 
-  // [한글 주석] 액션 처리
+  // [한글 주석] 액션 처리 - 카드 생성 후 위치 재계산 필요
   if (step.action === 'showTutorialCard') {
     _spawnTutorialCard();
+    // [한글 주석] 카드가 DOM에 추가된 후 재렌더링
+    setTimeout(() => {
+      _removeTutorialOverlay();
+      _tutorialCurrentStep = stepIdx;
+      const step2 = TUTORIAL_STEPS[stepIdx];
+      // [한글 주석] action 제거 후 다시 렌더링 (무한루프 방지)
+      const tempStep = Object.assign({}, step2, { action: null });
+      TUTORIAL_STEPS[stepIdx] = tempStep;
+      _showTutorialStep(stepIdx);
+      TUTORIAL_STEPS[stepIdx] = step2;
+    }, 300);
+    return;
   }
 
   // [한글 주석] 타겟 요소 위치 계산
   let targetRect = null;
   let targetEl = null;
   if (step.targetId) {
+    // [한글 주석] 튜토리얼 카드 팝업 안에서도 찾기
     targetEl = document.getElementById(step.targetId)
-      || document.querySelector('.' + step.targetId);
+      || document.querySelector('.' + step.targetId)
+      || document.querySelector('#tutorial-card-popup #' + step.targetId)
+      || document.querySelector('#tutorial-card-popup .' + step.targetId)
+      || document.querySelector('#tutorial-detail-area #' + step.targetId)
+      || document.querySelector('#tutorial-detail-area .' + step.targetId);
     if (targetEl) targetRect = targetEl.getBoundingClientRect();
   }
 
@@ -164,7 +181,8 @@ function _showTutorialStep(stepIdx) {
 
   // [한글 주석] 타겟 버튼 z-index 올리기 + 클릭 가능 여부 설정
   if (targetEl) {
-    targetEl.style.position = 'relative';
+    // [한글 주석] position은 건드리지 않고 z-index만 올리기
+    // (help-btn처럼 absolute인 요소는 position 변경 시 위치가 틀어짐)
     targetEl.style.zIndex = '999995';
     if (step.blockTarget) {
       // [한글 주석] 클릭 차단
@@ -184,9 +202,11 @@ function _showTutorialStep(stepIdx) {
     }
   }
 
-  // [한글 주석] 카드 내 확인 버튼 차단 (2단계용)
+  // [한글 주석] 카드 내 확인 버튼 차단 (2단계용 - 튜토리얼 카드 팝업 안에서 찾기)
   if (step.blockOthersInCard) {
-    const closeBtn = document.getElementById('btn-close')
+    const closeBtn = document.querySelector('#tutorial-card-popup #btn-close')
+      || document.querySelector('#tutorial-card-popup .btn-close')
+      || document.getElementById('btn-close')
       || document.querySelector('.btn-close');
     if (closeBtn) {
       closeBtn.style.pointerEvents = 'none';
@@ -366,11 +386,10 @@ function _removeTutorialOverlay() {
     overlay2._blockedCloseBtn.style.pointerEvents = '';
     overlay2._blockedCloseBtn.style.opacity = '';
   }
-  // [한글 주석] 타겟 버튼 스타일 복구
+  // [한글 주석] 타겟 버튼 스타일 복구 (position은 건드리지 않음)
   document.querySelectorAll('[style*="999995"]').forEach(el => {
     el.style.zIndex = '';
     el.style.pointerEvents = '';
-    el.style.position = '';
   });
 }
 
