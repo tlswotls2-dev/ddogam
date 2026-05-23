@@ -558,16 +558,10 @@ function showResetDeviceConfirm() {
 // [한글 주석] 전역 노출
 window.showResetDeviceConfirm = showResetDeviceConfirm;
 
-// [한글 주석] 아바타 클릭 시 아바타 선택창으로 이동
+// [한글 주석] 아바타 클릭 시 아바타 선택창으로 이동 (카드 데이터 유지)
 function onAvatarClick() {
-  // [한글 주석] 아이템 화면 열고 아바타 탭으로 이동
-  if (typeof showCustomizeScreen === 'function') {
-    showCustomizeScreen();
-    // [한글 주석] 아바타 탭 클릭
-    setTimeout(() => {
-      const avatarTab = document.querySelector('.customize-tab[data-slot="avatar"]');
-      if (avatarTab) avatarTab.click();
-    }, 100);
+  if (typeof showGenderSelectScreen === 'function') {
+    showGenderSelectScreen();
   }
 }
 window.onAvatarClick = onAvatarClick;
