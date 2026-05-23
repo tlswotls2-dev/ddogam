@@ -500,9 +500,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 // 2. 안전 경고 발생 시 동작 (빨간 화면 표시)
                 () => {
-                    // [한글 주석] 안전 경고 팝업 - 이동 중 화면 보지 않도록 안내
-                    const msg = '⚠️ 안전 주의!\n\n움직일 때에는 화면을 보지 않아요.\n화면을 조작할 땐 안전한 곳에 멈춰서 해요.\n탐험 버튼을 누르고 걸어야\n카드가 나타나요! 🌿';
-                    alert(msg);
+                    // [한글 주석] 진동 알림 (기존 방식 유지)
+                    if (navigator.vibrate) navigator.vibrate([300, 100, 300]);
+                    // [한글 주석] 안전 오버레이 표시 (기존 디자인 유지, 내용만 변경)
                     safetyOverlay.style.display = 'flex';
                 },
                 // 3. 안전 경고 해제 시 동작 (빨간 화면 숨김)
@@ -558,13 +558,16 @@ function showResetDeviceConfirm() {
 // [한글 주석] 전역 노출
 window.showResetDeviceConfirm = showResetDeviceConfirm;
 
-// [한글 주석] 아바타 클릭 시 아바타 선택창으로 이동 (카드 데이터 유지)
+// [한글 주석] 아바타 클릭 시 아바타 선택창으로 이동
 function onAvatarClick() {
-  // [한글 주석] 아바타 선택 화면 표시
-  if (typeof showAvatarSelect === 'function') {
-    showAvatarSelect();
-  } else if (typeof showCustomize === 'function') {
-    showCustomize('avatar');
+  // [한글 주석] 아이템 화면 열고 아바타 탭으로 이동
+  if (typeof showCustomizeScreen === 'function') {
+    showCustomizeScreen();
+    // [한글 주석] 아바타 탭 클릭
+    setTimeout(() => {
+      const avatarTab = document.querySelector('.customize-tab[data-slot="avatar"]');
+      if (avatarTab) avatarTab.click();
+    }, 100);
   }
 }
 window.onAvatarClick = onAvatarClick;
