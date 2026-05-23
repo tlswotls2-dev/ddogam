@@ -22,72 +22,69 @@ function startTutorial() {
 // ==========================================
 // [한글 주석] 튜토리얼 단계 정의
 // ==========================================
-// [한글 주석] 튜토리얼 단계 - 모든 단계 다음 버튼으로 진행 (자동 진행 autoNext 제거)
+// [한글 주석] 튜토리얼 단계 정의
 const TUTORIAL_STEPS = [
   {
-    // [한글 주석] 1단계: 탐험 버튼 안내
+    // [한글 주석] 1단계: 탐험 버튼 하이라이트 (클릭 안됨)
     targetId: 'btn-explore',
-    message: '👟 탐험 버튼을 눌러봐요!\n걷다 보면 카드가 나타나요.',
+    message: '👟 탐험 버튼을 누르면\n탐험이 시작돼요!',
     clickToNext: false,
     blockOthers: false,
-    position: 'top'
+    blockTarget: true,   // [한글 주석] 타겟 버튼 클릭 차단
+    position: 'top',
+    showSkip: true,
+    showPrev: false,
+    showNext: true
   },
   {
-    // [한글 주석] 2단계: 걷기 안내
-    targetId: null,
-    message: '🚶 스마트기기를 들고\n주변을 걸으면 카드가 나타나요!\n튜토리얼에서는 바로 보여드릴게요.',
-    clickToNext: false,
-    blockOthers: false,
-    position: 'center'
-  },
-  {
-    // [한글 주석] 3단계: 카드 강제 출현
-    targetId: null,
+    // [한글 주석] 3단계(원래): 카드 강제 출현 + 자세히보기 하이라이트
+    targetId: 'btn-detail',
     message: '✨ 카드가 나타났어요!\n식물의 모습과 간단한 정보를\n볼 수 있어요.',
     clickToNext: false,
     blockOthers: false,
-    position: 'center',
-    action: 'showTutorialCard'
+    blockTarget: false,  // [한글 주석] 자세히보기 버튼 실제 클릭 가능
+    position: 'top-minimal', // [한글 주석] 카드 가리지 않게 최상단
+    action: 'showTutorialCard',
+    showSkip: false,
+    showPrev: true,
+    showNext: false,     // [한글 주석] 다음 버튼 없음, 자세히보기 누르면 진행
+    nextOnTargetClick: true // [한글 주석] 타겟 클릭 시 다음 단계
   },
   {
-    // [한글 주석] 4단계: 자세히 보기 버튼 하이라이트
-    targetId: 'btn-detail',
-    message: '📖 자세히 보기를 누르면\n더 많은 정보를 볼 수 있어요!',
-    clickToNext: false,
-    blockOthers: false,
-    position: 'top'
-  },
-  {
-    // [한글 주석] 5단계: 자세한 정보 안내
-    targetId: null,
-    message: '📚 카드의 자세한 정보도\n이렇게 확인할 수 있어요!',
-    clickToNext: false,
-    blockOthers: false,
-    position: 'top'
-  },
-  {
-    // [한글 주석] 6단계: 닫기 버튼 하이라이트
+    // [한글 주석] 4단계(원래): 자세한 정보 + 확인 하이라이트
     targetId: 'btn-close',
-    message: '✅ 확인 버튼으로\n카드를 닫을 수 있어요!',
+    message: '📚 더 많은 정보를 볼 수도\n있답니다. 확인을 누르세요.',
     clickToNext: false,
     blockOthers: false,
-    position: 'top'
+    blockTarget: false,  // [한글 주석] 확인 버튼 실제 클릭 가능
+    position: 'top',
+    showSkip: false,
+    showPrev: true,
+    showNext: false,
+    nextOnTargetClick: true // [한글 주석] 확인 버튼 클릭 시 다음 단계
   },
   {
-    // [한글 주석] 7단계: 도움말 버튼 안내
+    // [한글 주석] 7단계(원래): 도움말 버튼 안내
     targetId: 'help-btn',
     message: '❓ 도움말 버튼이에요!\n게임 방법을 자세히 알 수 있어요.',
     clickToNext: false,
     blockOthers: false,
-    position: 'right'
+    blockTarget: false,
+    position: 'center',  // [한글 주석] 중앙에 표시
+    showSkip: false,
+    showPrev: false,
+    showNext: true
   },
   {
-    // [한글 주석] 8단계: 마무리
+    // [한글 주석] 마지막 단계: 마무리
     targetId: null,
     message: '🎉 튜토리얼 완료!\n더 자세한 게임 방법은\n도움말을 참고해요!\n\n이제 탐험을 시작해봐요! 🌿',
     clickToNext: false,
     blockOthers: false,
     position: 'center',
+    showSkip: false,
+    showPrev: false,
+    showNext: false,
     isLast: true
   }
 ];
@@ -100,7 +97,6 @@ let _tutorialCardData = null;
 // [한글 주석] 튜토리얼 단계 표시
 // ==========================================
 function _showTutorialStep(stepIdx) {
-  // [한글 주석] 기존 오버레이 제거
   _removeTutorialOverlay();
 
   if (stepIdx >= TUTORIAL_STEPS.length) {
@@ -111,18 +107,18 @@ function _showTutorialStep(stepIdx) {
   _tutorialCurrentStep = stepIdx;
   const step = TUTORIAL_STEPS[stepIdx];
 
-  // [한글 주석] 액션 처리 (카드 강제 출현 등)
+  // [한글 주석] 액션 처리
   if (step.action === 'showTutorialCard') {
     _spawnTutorialCard();
   }
 
   // [한글 주석] 타겟 요소 위치 계산
   let targetRect = null;
+  let targetEl = null;
   if (step.targetId) {
-    // [한글 주석] id로 먼저 찾고 없으면 class로 찾기
-    const el = document.getElementById(step.targetId)
+    targetEl = document.getElementById(step.targetId)
       || document.querySelector('.' + step.targetId);
-    if (el) targetRect = el.getBoundingClientRect();
+    if (targetEl) targetRect = targetEl.getBoundingClientRect();
   }
 
   // [한글 주석] 오버레이 생성
@@ -131,10 +127,10 @@ function _showTutorialStep(stepIdx) {
   overlay.style.cssText = `
     position:fixed;top:0;left:0;right:0;bottom:0;
     z-index:999990;
-    pointer-events:${step.blockOthers ? 'all' : 'none'};
+    pointer-events:none;
   `;
 
-  // [한글 주석] SVG 마스크로 타겟만 밝게 표시
+  // [한글 주석] SVG 마스크로 타겟만 밝게
   if (targetRect) {
     const padding = 12;
     const rx = targetRect.left - padding;
@@ -143,7 +139,7 @@ function _showTutorialStep(stepIdx) {
     const rh = targetRect.height + padding * 2;
 
     overlay.innerHTML = `
-      <svg width="100%" height="100%" style="position:absolute;top:0;left:0;">
+      <svg width="100%" height="100%" style="position:absolute;top:0;left:0;pointer-events:none;">
         <defs>
           <mask id="tutorial-mask">
             <rect width="100%" height="100%" fill="white"/>
@@ -163,32 +159,58 @@ function _showTutorialStep(stepIdx) {
       </svg>
     `;
   } else {
-    // [한글 주석] 타겟 없으면 전체 어둡게
     overlay.innerHTML = `
       <div style="
         position:absolute;top:0;left:0;right:0;bottom:0;
         background:rgba(0,0,0,0.55);
+        pointer-events:none;
       "></div>
     `;
   }
 
   document.body.appendChild(overlay);
 
-  // [한글 주석] 말풍선 메시지 박스
-  const msgBox = document.createElement('div');
-  msgBox.id = 'tutorial-msg';
+  // [한글 주석] 타겟 버튼 z-index 올리기 + 클릭 가능 여부 설정
+  if (targetEl) {
+    targetEl.style.position = 'relative';
+    targetEl.style.zIndex = '999995';
+    if (step.blockTarget) {
+      // [한글 주석] 클릭 차단
+      targetEl.style.pointerEvents = 'none';
+    } else {
+      targetEl.style.pointerEvents = 'all';
+    }
 
-  // [한글 주석] 메시지 위치 결정
+    // [한글 주석] 타겟 클릭 시 다음 단계
+    if (step.nextOnTargetClick) {
+      const handler = () => {
+        targetEl.removeEventListener('click', handler);
+        setTimeout(() => _nextTutorialStep(), 400);
+      };
+      targetEl.addEventListener('click', handler);
+      overlay._targetHandler = { el: targetEl, fn: handler };
+    }
+  }
+
+  // [한글 주석] 메시지 박스 위치 결정
   let msgStyle = '';
+  const msgWidth = 260;
+
   if (step.position === 'center' || !targetRect) {
     msgStyle = `
       position:fixed;
       top:50%;left:50%;
       transform:translate(-50%,-50%);
     `;
+  } else if (step.position === 'top-minimal') {
+    // [한글 주석] 카드 가리지 않게 화면 최상단
+    msgStyle = `
+      position:fixed;
+      top:12px;left:50%;
+      transform:translateX(-50%);
+    `;
   } else if (step.position === 'top' && targetRect) {
-    // [한글 주석] 타겟 위에 표시
-    const msgTop = Math.max(10, targetRect.top - 160);
+    const msgTop = Math.max(12, targetRect.top - 170);
     msgStyle = `
       position:fixed;
       top:${msgTop}px;
@@ -198,59 +220,87 @@ function _showTutorialStep(stepIdx) {
   } else if (step.position === 'right' && targetRect) {
     msgStyle = `
       position:fixed;
-      top:${targetRect.top}px;
-      left:${Math.min(targetRect.right + 12, window.innerWidth - 220)}px;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%);
     `;
   }
 
-  const isLast = step.isLast;
-  const canSkip = stepIdx < TUTORIAL_STEPS.length - 1;
+  // [한글 주석] 버튼 구성
+  const prevBtn = step.showPrev ? `
+    <button onclick="_prevTutorialStep()" style="
+      background:rgba(255,255,255,0.08);
+      color:#d4c89c;border:1px solid #6b8e3d;
+      border-radius:10px;padding:8px 14px;
+      font-size:11px;cursor:pointer;
+      pointer-events:all;
+    ">← 이전</button>
+  ` : '';
 
+  const nextBtn = step.showNext ? `
+    <button onclick="_nextTutorialStep()" style="
+      background:linear-gradient(135deg,#d4a017,#b3850e);
+      color:#1e2e1f;border:none;
+      border-radius:10px;padding:8px 18px;
+      font-size:12px;font-weight:700;cursor:pointer;
+      pointer-events:all;
+    ">${step.isLast ? '시작하기! 🌿' : '다음 →'}</button>
+  ` : '';
+
+  const skipBtn = step.showSkip ? `
+    <button onclick="skipTutorial()" style="
+      background:rgba(255,255,255,0.08);
+      color:#888;border:1px solid #555;
+      border-radius:10px;padding:8px 14px;
+      font-size:11px;cursor:pointer;
+      pointer-events:all;
+    ">건너뛰기</button>
+  ` : '';
+
+  const lastBtn = step.isLast ? `
+    <button onclick="_nextTutorialStep()" style="
+      background:linear-gradient(135deg,#8db05c,#6b8e3d);
+      color:#1e2e1f;border:none;
+      border-radius:10px;padding:8px 24px;
+      font-size:13px;font-weight:700;cursor:pointer;
+      pointer-events:all;
+    ">시작하기! 🌿</button>
+  ` : '';
+
+  // [한글 주석] 메시지 박스
+  const msgBox = document.createElement('div');
+  msgBox.id = 'tutorial-msg';
   msgBox.style.cssText = `
     ${msgStyle}
     z-index:999999;
     background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
     border:2px solid #ffd700;
     border-radius:20px;
-    padding:18px 20px;
-    max-width:260px;
+    padding:16px 18px;
+    max-width:${msgWidth}px;
     width:85vw;
     box-shadow:0 0 30px rgba(255,215,0,0.3);
     text-align:center;
     animation:fadeIn 0.3s ease;
+    pointer-events:all;
   `;
 
   msgBox.innerHTML = `
-    <!-- [한글 주석] 튜토리얼 헤더 -->
+    <!-- [한글 주석] 헤더 -->
     <div style="
-      color:#ffd700;font-size:11px;font-weight:700;
-      letter-spacing:2px;margin-bottom:10px;
-      opacity:0.8;
+      color:#ffd700;font-size:10px;font-weight:700;
+      letter-spacing:2px;margin-bottom:8px;opacity:0.8;
     ">📋 튜토리얼 ${stepIdx + 1} / ${TUTORIAL_STEPS.length}</div>
 
+    <!-- [한글 주석] 메시지 -->
     <div style="
       color:#f0e6c8;font-size:13px;
       line-height:1.8;white-space:pre-line;
-      margin-bottom:14px;
+      margin-bottom:12px;
     ">${step.message}</div>
 
-    <div style="display:flex;gap:8px;justify-content:center;">
-      ${canSkip ? `
-        <button onclick="skipTutorial()" style="
-          background:rgba(255,255,255,0.08);
-          color:#888;border:1px solid #555;
-          border-radius:10px;padding:8px 14px;
-          font-size:11px;cursor:pointer;
-        ">건너뛰기</button>
-      ` : ''}
-      ${step.clickToNext ? '' : `
-        <button onclick="_nextTutorialStep()" style="
-          background:linear-gradient(135deg,#d4a017,#b3850e);
-          color:#1e2e1f;border:none;
-          border-radius:10px;padding:8px 18px;
-          font-size:12px;font-weight:700;cursor:pointer;
-        ">${isLast ? '시작하기! 🌿' : '다음 →'}</button>
-      `}
+    <!-- [한글 주석] 버튼 영역 -->
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      ${skipBtn}${prevBtn}${nextBtn}${lastBtn}
     </div>
 
     <!-- [한글 주석] 진행 표시 -->
@@ -263,42 +313,12 @@ function _showTutorialStep(stepIdx) {
           width:${i === stepIdx ? '14px' : '6px'};height:6px;
           background:${i === stepIdx ? '#ffd700' : 'rgba(255,255,255,0.2)'};
           border-radius:3px;
-          transition:all 0.3s;
         "></div>
       `).join('')}
     </div>
   `;
 
   document.body.appendChild(msgBox);
-
-  // [한글 주석] 타겟 버튼 클릭 시 다음 단계로
-  if (step.clickToNext && step.targetId) {
-    // [한글 주석] id로 먼저 찾고 없으면 class로 찾기
-    const targetEl = document.getElementById(step.targetId)
-      || document.querySelector('.' + step.targetId);
-    if (targetEl) {
-      targetEl.style.position = 'relative';
-      targetEl.style.zIndex = '999995';
-      targetEl.style.pointerEvents = 'all';
-
-      const handler = () => {
-        targetEl.removeEventListener('click', handler);
-        targetEl.style.zIndex = '';
-        targetEl.style.pointerEvents = '';
-        setTimeout(() => _nextTutorialStep(), 400);
-      };
-      targetEl.addEventListener('click', handler);
-      // [한글 주석] 핸들러 저장 (cleanup용)
-      overlay._targetHandler = { el: targetEl, fn: handler };
-    }
-  }
-
-  // [한글 주석] 자동 다음 단계
-  if (step.autoNext) {
-    _tutorialAutoTimer = setTimeout(() => {
-      _nextTutorialStep();
-    }, step.autoNext);
-  }
 }
 
 // [한글 주석] 다음 단계로
@@ -309,6 +329,19 @@ function _nextTutorialStep() {
   }
   _showTutorialStep(_tutorialCurrentStep + 1);
 }
+
+// [한글 주석] 이전 단계로
+function _prevTutorialStep() {
+  if (_tutorialCurrentStep > 0) {
+    // [한글 주석] 튜토리얼 카드 팝업 닫기
+    const cardPopup = document.getElementById('tutorial-card-popup');
+    if (cardPopup) cardPopup.remove();
+    const detailArea = document.getElementById('tutorial-detail-area');
+    if (detailArea) detailArea.remove();
+    _showTutorialStep(_tutorialCurrentStep - 1);
+  }
+}
+window._prevTutorialStep = _prevTutorialStep;
 
 // [한글 주석] 오버레이 제거
 function _removeTutorialOverlay() {
