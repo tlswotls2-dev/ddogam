@@ -19,7 +19,8 @@ let battleState = {
   studyCards: [],       // 공부용 카드 목록
   currentCardIdx: 0,    // 현재 보는 카드 인덱스
   showingBack: false,   // 카드 앞/뒷면 상태
-  quizTimer: null       // [한글 주석] 퀴즈 제한 타이머
+  quizTimer: null,      // [한글 주석] 퀴즈 제한 타이머
+  matchTime: null       // [한글 주석] 매칭 고유 시간 (결과 조회 식별용)
 };
 
 // ==========================================
@@ -512,6 +513,8 @@ async function _checkBattleMatch() {
     const data = await res.json();
     if (data.matched) {
       battleState.opponentNumber = data.opponentNumber;
+      // [한글 주석] 매칭 고유 시간 저장
+      if (data.matchTime) battleState.matchTime = data.matchTime;
       return true;
     }
   } catch(e) {
@@ -900,7 +903,9 @@ async function _finishBattleQuiz(isTimeout = false) {
     myScore: battleState.myScore,
     opponentScore: '',
     // [한글 주석] 퀴즈 완료 표시 (done/timeout으로 저장해야 상대가 완료된 결과만 조회)
-    result: isTimeout ? 'timeout' : 'done'
+    result: isTimeout ? 'timeout' : 'done',
+    // [한글 주석] 매칭 고유 시간 (결과 조회 식별용)
+    matchTime: battleState.matchTime || 0
   }));
 
   try {
@@ -923,7 +928,9 @@ async function _finishBattleQuiz(isTimeout = false) {
         `${BATTLE_SCRIPT_URL}?type=checkBattleResult` +
         `&class=${userData.class}` +
         `&number=${userData.number}` +
-        `&opponentNumber=${battleState.opponentNumber}`
+        `&opponentNumber=${battleState.opponentNumber}` +
+        // [한글 주석] 매칭 고유 시간 전달
+        `&matchTime=${battleState.matchTime || 0}`
       );
       const data = await res.json();
 
