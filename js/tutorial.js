@@ -21,9 +21,11 @@ function startTutorial() {
 const TUTORIAL_STEPS = [
   {
     // [한글 주석] 1단계: 탐험 버튼 하이라이트 (클릭 차단)
+    // [한글 주석] blockOthers: true가 설정되어 다른 영역 클릭이 차단됩니다.
     targetSelector: '.btn-explore',
     message: '👟 탐험 버튼을 누르고\n걷다보면 카드가 나와요!',
     blockTarget: true,
+    blockOthers: true,
     position: 'top',
     showSkip: true,
     showPrev: false,
@@ -56,9 +58,11 @@ const TUTORIAL_STEPS = [
   },
   {
     // [한글 주석] 4단계: 도움말 버튼 하이라이트 (클릭 차단, 팝업만 중앙)
+    // [한글 주석] blockOthers: true가 설정되어 다른 영역 클릭이 차단됩니다.
     targetSelector: '#help-btn',
     message: '❓ 도움말 버튼이에요!\n게임 방법을 자세히 알 수 있어요.',
     blockTarget: true,
+    blockOthers: true,
     position: 'center-only',
     showSkip: false,
     showPrev: false,
@@ -66,9 +70,11 @@ const TUTORIAL_STEPS = [
   },
   {
     // [한글 주석] 마지막 단계: 마무리
+    // [한글 주석] blockOthers: true가 설정되어 다른 영역 클릭이 차단됩니다.
     targetSelector: null,
     message: '🎉 튜토리얼 완료!\n또감의 세계에 오신 것을\n환영합니다!\n\n이제 탐험을 시작해봐요! 🌿',
     blockTarget: false,
+    blockOthers: true,
     position: 'center',
     showSkip: false,
     showPrev: false,
@@ -136,7 +142,8 @@ function _showTutorialStep(stepIdx) {
 
   // [한글 주석] 타겟 버튼 z-index + 클릭 가능 여부
   if (targetEl) {
-    targetEl.style.zIndex = '999995';
+    // [한글 주석] 오버레이(999990)보다 높은 z-index로 타겟만 클릭 가능하게
+    targetEl.style.zIndex = '999996';
     targetEl.style.pointerEvents = step.blockTarget ? 'none' : 'all';
 
     if (step.nextOnTargetClick) {
@@ -152,9 +159,11 @@ function _showTutorialStep(stepIdx) {
   // [한글 주석] 오버레이 생성
   const overlay = document.createElement('div');
   overlay.id = 'tutorial-overlay';
+  // [한글 주석] blockOthers가 true면 오버레이가 클릭 이벤트 차단
   overlay.style.cssText = `
     position:fixed;top:0;left:0;right:0;bottom:0;
-    z-index:999990;pointer-events:none;
+    z-index:999990;
+    pointer-events:${step.blockOthers ? 'all' : 'none'};
   `;
 
   // [한글 주석] SVG 마스크 - 타겟만 밝게
