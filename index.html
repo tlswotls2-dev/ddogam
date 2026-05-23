@@ -167,14 +167,19 @@
       </form>
 
       <!-- [한글 주석] 기기 초기화 버튼 (기존 API 키 변경 버튼 제거 후 추가) -->
+      <!-- [한글 주석] 기기 초기화 버튼 - 실수 방지를 위해 아래 여백 충분히 확보 -->
       <button onclick="showResetDeviceConfirm()" style="
               background: none;
-              border: none;
-              color: #555;
+              border: 1px solid #8b2020;
+              border-radius: 8px;
+              color: #cc2222;
               font-size: 12px;
+              font-weight: 700;
               cursor: pointer;
-              margin-top: 12px;
-              text-decoration: underline;
+              margin-top: 32px;
+              margin-bottom: 24px;
+              padding: 8px 20px;
+              text-decoration: none;
             ">🔄 기기 초기화</button>
     </div>
   </div>
