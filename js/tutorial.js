@@ -22,46 +22,35 @@ function startTutorial() {
 // ==========================================
 // [한글 주석] 튜토리얼 단계 정의
 // ==========================================
-// [한글 주석] 튜토리얼 단계 - 모든 단계 다음 버튼으로 진행
+// [한글 주석] 튜토리얼 단계 - 모든 단계 다음 버튼으로 진행 (자동 진행 autoNext 제거)
 const TUTORIAL_STEPS = [
   {
     // [한글 주석] 1단계: 탐험 버튼 안내
     targetId: 'btn-explore',
     message: '👟 탐험 버튼을 눌러봐요!\n걷다 보면 카드가 나타나요.',
     clickToNext: false,
-    blockOthers: true,
+    blockOthers: false,
     position: 'top'
   },
   {
     // [한글 주석] 2단계: 걷기 안내
     targetId: null,
-    message: '🚶 스마트기기를 들고\n주변을 걸으면 카드가 나타나요!\n(튜토리얼에서는 바로 보여드릴게요)',
+    message: '🚶 스마트기기를 들고\n주변을 걸으면 카드가 나타나요!\n튜토리얼에서는 바로 보여드릴게요.',
     clickToNext: false,
     blockOthers: false,
-    autoNext: 2500,
     position: 'center'
   },
   {
     // [한글 주석] 3단계: 카드 강제 출현
     targetId: null,
-    message: '✨ 카드가 나타났어요!',
+    message: '✨ 카드가 나타났어요!\n식물의 모습과 간단한 정보를\n볼 수 있어요.',
     clickToNext: false,
     blockOthers: false,
-    autoNext: 1000,
     position: 'center',
     action: 'showTutorialCard'
   },
   {
-    // [한글 주석] 4단계: 카드 정보 안내
-    targetId: null,
-    message: '🌿 식물의 모습과\n간단한 정보를 볼 수 있어요!',
-    clickToNext: false,
-    blockOthers: false,
-    autoNext: 2500,
-    position: 'top'
-  },
-  {
-    // [한글 주석] 5단계: 자세히 보기 버튼 하이라이트
+    // [한글 주석] 4단계: 자세히 보기 버튼 하이라이트
     targetId: 'btn-detail',
     message: '📖 자세히 보기를 누르면\n더 많은 정보를 볼 수 있어요!',
     clickToNext: false,
@@ -69,16 +58,15 @@ const TUTORIAL_STEPS = [
     position: 'top'
   },
   {
-    // [한글 주석] 6단계: 자세한 정보 안내
+    // [한글 주석] 5단계: 자세한 정보 안내
     targetId: null,
-    message: '📚 카드의 자세한 정보도\n알 수 있어요!',
+    message: '📚 카드의 자세한 정보도\n이렇게 확인할 수 있어요!',
     clickToNext: false,
     blockOthers: false,
-    autoNext: 2500,
     position: 'top'
   },
   {
-    // [한글 주석] 7단계: 닫기 버튼 하이라이트
+    // [한글 주석] 6단계: 닫기 버튼 하이라이트
     targetId: 'btn-close',
     message: '✅ 확인 버튼으로\n카드를 닫을 수 있어요!',
     clickToNext: false,
@@ -86,18 +74,17 @@ const TUTORIAL_STEPS = [
     position: 'top'
   },
   {
-    // [한글 주석] 8단계: 도움말 버튼 안내
+    // [한글 주석] 7단계: 도움말 버튼 안내
     targetId: 'help-btn',
     message: '❓ 도움말 버튼이에요!\n게임 방법을 자세히 알 수 있어요.',
     clickToNext: false,
     blockOthers: false,
-    autoNext: 2500,
     position: 'right'
   },
   {
-    // [한글 주석] 9단계: 마무리
+    // [한글 주석] 8단계: 마무리
     targetId: null,
-    message: '🎉 튜토리얼 완료!\n더 자세한 게임 방법은\n도움말을 참고해요!\n\n이제 탐험을 시작해봐요!',
+    message: '🎉 튜토리얼 완료!\n더 자세한 게임 방법은\n도움말을 참고해요!\n\n이제 탐험을 시작해봐요! 🌿',
     clickToNext: false,
     blockOthers: false,
     position: 'center',
@@ -234,6 +221,13 @@ function _showTutorialStep(stepIdx) {
   `;
 
   msgBox.innerHTML = `
+    <!-- [한글 주석] 튜토리얼 헤더 -->
+    <div style="
+      color:#ffd700;font-size:11px;font-weight:700;
+      letter-spacing:2px;margin-bottom:10px;
+      opacity:0.8;
+    ">📋 튜토리얼 ${stepIdx + 1} / ${TUTORIAL_STEPS.length}</div>
+
     <div style="
       color:#f0e6c8;font-size:13px;
       line-height:1.8;white-space:pre-line;
