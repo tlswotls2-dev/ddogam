@@ -76,243 +76,275 @@ function getItemSVG(itemId) {
   const items = {
 
     // ==========================================
-    // [한글 주석] 모자류 - 머리 위에 제대로 된 모양으로
+    // [한글 주석] 모자류 - 머리(y=0~13) 위에 정확히 맞춤
     // ==========================================
 
-    // [한글 주석] 나뭇잎 모자 - 넓은 잎사귀 모양
+    // [한글 주석] 나뭇잎 모자 - 아바타 머리 크기에 맞춘 잎사귀 모자
     'leaf_hat': `<g>
-      <!-- 모자 챙 -->
-      <ellipse cx="30" cy="10" rx="18" ry="4" fill="#2d8a3a"/>
-      <!-- 모자 몸통 -->
-      <rect x="18" y="2" width="24" height="9" fill="#3aaa4a" rx="3"/>
-      <!-- 잎맥 장식 -->
-      <line x1="30" y1="3" x2="30" y2="10" stroke="#7fff00" stroke-width="1" opacity="0.8"/>
-      <line x1="22" y1="6" x2="38" y2="6" stroke="#7fff00" stroke-width="1" opacity="0.6"/>
-      <!-- 꽃 장식 -->
-      <circle cx="30" cy="3" r="2" fill="#7fff00"/>
-      <circle cx="26" cy="5" r="1.5" fill="#84ff00" opacity="0.8"/>
-      <circle cx="34" cy="5" r="1.5" fill="#84ff00" opacity="0.8"/>
+      <!-- [한글 주석] 모자 챙 - 머리 너비(x=7~53)에 맞춤 -->
+      <ellipse cx="30" cy="10" rx="23" ry="5" fill="#1a6a25"/>
+      <!-- [한글 주석] 모자 몸통 -->
+      <rect x="14" y="1" width="32" height="10" fill="#2d8a3a" rx="3"/>
+      <!-- [한글 주석] 모자 상단 둥글게 -->
+      <ellipse cx="30" cy="1" rx="16" ry="3" fill="#3aaa4a"/>
+      <!-- [한글 주석] 잎맥 장식 -->
+      <line x1="30" y1="1" x2="30" y2="10" stroke="#7fff00" stroke-width="1.5" opacity="0.8"/>
+      <line x1="16" y1="5" x2="44" y2="5" stroke="#7fff00" stroke-width="1" opacity="0.6"/>
+      <line x1="18" y1="3" x2="26" y2="8" stroke="#7fff00" stroke-width="1" opacity="0.5"/>
+      <line x1="42" y1="3" x2="34" y2="8" stroke="#7fff00" stroke-width="1" opacity="0.5"/>
+      <!-- [한글 주석] 꽃 장식 -->
+      <circle cx="30" cy="1" r="2.5" fill="#84ff00"/>
+      <circle cx="22" cy="4" r="1.5" fill="#7fff00" opacity="0.8"/>
+      <circle cx="38" cy="4" r="1.5" fill="#7fff00" opacity="0.8"/>
     </g>`,
 
-    // [한글 주석] 꽃 왕관 - 꽃들이 빙 둘러싼 왕관
+    // [한글 주석] 꽃 왕관 - 머리 전체를 감싸는 꽃 왕관
     'flower_crown': `<g>
-      <!-- 왕관 밴드 -->
-      <rect x="14" y="8" width="32" height="5" fill="#ffaacc" rx="2"/>
-      <!-- 꽃들 -->
-      <circle cx="16" cy="7" r="4" fill="#ff69b4"/>
-      <circle cx="16" cy="7" r="2" fill="#fff"/>
-      <circle cx="23" cy="4" r="4" fill="#ff99cc"/>
-      <circle cx="23" cy="4" r="2" fill="#ffeeee"/>
-      <circle cx="30" cy="3" r="5" fill="#ff69b4"/>
-      <circle cx="30" cy="3" r="2.5" fill="#fff"/>
-      <circle cx="37" cy="4" r="4" fill="#ff99cc"/>
-      <circle cx="37" cy="4" r="2" fill="#ffeeee"/>
-      <circle cx="44" cy="7" r="4" fill="#ff69b4"/>
-      <circle cx="44" cy="7" r="2" fill="#fff"/>
-      <!-- 꽃술 -->
-      <circle cx="30" cy="3" r="1" fill="#ffd700"/>
+      <!-- [한글 주석] 왕관 밴드 - 머리 너비에 맞춤 -->
+      <rect x="10" y="9" width="40" height="5" fill="#ffaacc" rx="2"/>
+      <!-- [한글 주석] 꽃 5송이 - 머리 위에 고르게 배치 -->
+      <circle cx="11" cy="8" r="4" fill="#ff69b4"/>
+      <circle cx="11" cy="8" r="2" fill="#fff"/>
+      <circle cx="11" cy="8" r="1" fill="#ffd700"/>
+      <circle cx="19" cy="5" r="4.5" fill="#ff99cc"/>
+      <circle cx="19" cy="5" r="2.5" fill="#ffeeee"/>
+      <circle cx="19" cy="5" r="1" fill="#ffd700"/>
+      <circle cx="30" cy="3" r="5.5" fill="#ff69b4"/>
+      <circle cx="30" cy="3" r="3" fill="#fff"/>
+      <circle cx="30" cy="3" r="1.5" fill="#ffd700"/>
+      <circle cx="41" cy="5" r="4.5" fill="#ff99cc"/>
+      <circle cx="41" cy="5" r="2.5" fill="#ffeeee"/>
+      <circle cx="41" cy="5" r="1" fill="#ffd700"/>
+      <circle cx="49" cy="8" r="4" fill="#ff69b4"/>
+      <circle cx="49" cy="8" r="2" fill="#fff"/>
+      <circle cx="49" cy="8" r="1" fill="#ffd700"/>
+      <!-- [한글 주석] 잎새 -->
+      <ellipse cx="25" cy="7" rx="3" ry="2" fill="#7fff00" opacity="0.7" transform="rotate(-30,25,7)"/>
+      <ellipse cx="35" cy="7" rx="3" ry="2" fill="#7fff00" opacity="0.7" transform="rotate(30,35,7)"/>
     </g>`,
 
-    // [한글 주석] 조선 왕관 - 익선관 스타일
+    // [한글 주석] 조선 왕관 - 익선관 스타일 (머리 위 높이 맞춤)
     'king_crown': `<g>
-      <!-- 왕관 베이스 -->
-      <rect x="13" y="7" width="34" height="7" fill="#ffd700" rx="2"/>
-      <!-- 왕관 포인트 3개 -->
-      <polygon points="18,7 21,0 24,7" fill="#ffd700"/>
-      <polygon points="27,7 30,-1 33,7" fill="#ffd700"/>
-      <polygon points="36,7 39,0 42,7" fill="#ffd700"/>
-      <!-- 보석들 -->
-      <circle cx="21" cy="2" r="2" fill="#ff4444"/>
-      <circle cx="30" cy="1" r="2.5" fill="#4a9eff"/>
-      <circle cx="39" cy="2" r="2" fill="#ff4444"/>
-      <!-- 왕관 장식선 -->
-      <rect x="13" y="11" width="34" height="2" fill="#ffaa00" rx="1"/>
-      <!-- 작은 보석들 -->
-      <circle cx="18" cy="10" r="1.5" fill="#ff69b4"/>
-      <circle cx="25" cy="10" r="1.5" fill="#7fff00"/>
-      <circle cx="30" cy="10" r="1.5" fill="#ff4444"/>
-      <circle cx="35" cy="10" r="1.5" fill="#7fff00"/>
-      <circle cx="42" cy="10" r="1.5" fill="#ff69b4"/>
+      <!-- [한글 주석] 왕관 베이스 - 머리 너비에 딱 맞춤 -->
+      <rect x="9" y="7" width="42" height="7" fill="#ffd700" rx="2"/>
+      <!-- [한글 주석] 왕관 포인트 3개 - 머리 위로 높이 올림 -->
+      <polygon points="15,7 19,-2 23,7" fill="#ffd700"/>
+      <polygon points="26,7 30,-4 34,7" fill="#ffd700"/>
+      <polygon points="37,7 41,-2 45,7" fill="#ffd700"/>
+      <!-- [한글 주석] 포인트 보석 -->
+      <circle cx="19" cy="0" r="2.5" fill="#ff4444"/>
+      <circle cx="30" cy="-2" r="3" fill="#4a9eff"/>
+      <circle cx="41" cy="0" r="2.5" fill="#ff4444"/>
+      <!-- [한글 주석] 왕관 장식선 -->
+      <rect x="9" y="11" width="42" height="2" fill="#ffaa00" rx="1"/>
+      <!-- [한글 주석] 베이스 보석들 -->
+      <circle cx="15" cy="10" r="2" fill="#ff69b4"/>
+      <circle cx="22" cy="10" r="2" fill="#7fff00"/>
+      <circle cx="30" cy="10" r="2" fill="#ff4444"/>
+      <circle cx="38" cy="10" r="2" fill="#7fff00"/>
+      <circle cx="45" cy="10" r="2" fill="#ff69b4"/>
+      <!-- [한글 주석] 광택 효과 -->
+      <rect x="9" y="7" width="42" height="2" fill="#fff8aa" opacity="0.5"/>
     </g>`,
 
-    // [한글 주석] 황금 왕관 - 화려한 전설급 왕관
+    // [한글 주석] 황금 왕관 - 전설급 5포인트 대형 왕관
     'gold_crown': `<g>
-      <!-- 왕관 베이스 (두껍게) -->
-      <rect x="11" y="8" width="38" height="8" fill="#ffd700" rx="3"/>
-      <!-- 왕관 포인트 5개 -->
-      <polygon points="13,8 16,0 19,8" fill="#ffd700"/>
-      <polygon points="20,8 24,1 28,8" fill="#ffd700"/>
-      <polygon points="27,8 30,-2 33,8" fill="#ffd700"/>
-      <polygon points="32,8 36,1 40,8" fill="#ffd700"/>
-      <polygon points="41,8 44,0 47,8" fill="#ffd700"/>
-      <!-- 왕관 테두리 (빛나는 효과) -->
-      <rect x="11" y="8" width="38" height="2" fill="#fff8aa" opacity="0.6"/>
-      <!-- 메인 보석 (가운데) -->
-      <circle cx="30" cy="0" r="3" fill="#ff4444"/>
-      <circle cx="30" cy="0" r="1.5" fill="#ff9999"/>
-      <!-- 사이드 보석들 -->
-      <circle cx="16" cy="2" r="2" fill="#4a9eff"/>
-      <circle cx="24" cy="3" r="2" fill="#7fff00"/>
-      <circle cx="36" cy="3" r="2" fill="#7fff00"/>
-      <circle cx="44" cy="2" r="2" fill="#4a9eff"/>
-      <!-- 베이스 장식 -->
-      <rect x="11" y="13" width="38" height="2" fill="#ffaa00"/>
-      <circle cx="16" cy="11" r="2" fill="#ff69b4"/>
-      <circle cx="23" cy="11" r="2" fill="#4a9eff"/>
+      <!-- [한글 주석] 왕관 베이스 (두껍고 넓게) -->
+      <rect x="8" y="7" width="44" height="8" fill="#ffd700" rx="3"/>
+      <!-- [한글 주석] 포인트 5개 - 머리 위로 크게 -->
+      <polygon points="10,7 13,-2 16,7" fill="#ffd700"/>
+      <polygon points="18,7 22,-1 26,7" fill="#ffd700"/>
+      <polygon points="27,7 30,-5 33,7" fill="#ffd700"/>
+      <polygon points="34,7 38,-1 42,7" fill="#ffd700"/>
+      <polygon points="44,7 47,-2 50,7" fill="#ffd700"/>
+      <!-- [한글 주석] 광택 -->
+      <rect x="8" y="7" width="44" height="2" fill="#fff8aa" opacity="0.7"/>
+      <!-- [한글 주석] 중앙 대형 보석 -->
+      <circle cx="30" cy="-3" r="3.5" fill="#ff4444"/>
+      <circle cx="30" cy="-3" r="2" fill="#ff9999"/>
+      <!-- [한글 주석] 사이드 보석 -->
+      <circle cx="13" cy="0" r="2" fill="#4a9eff"/>
+      <circle cx="22" cy="1" r="2" fill="#7fff00"/>
+      <circle cx="38" cy="1" r="2" fill="#7fff00"/>
+      <circle cx="47" cy="0" r="2" fill="#4a9eff"/>
+      <!-- [한글 주석] 베이스 장식선 -->
+      <rect x="8" y="12" width="44" height="2.5" fill="#ffaa00"/>
+      <!-- [한글 주석] 베이스 보석 -->
+      <circle cx="14" cy="11" r="2" fill="#ff69b4"/>
+      <circle cx="22" cy="11" r="2" fill="#4a9eff"/>
       <circle cx="30" cy="11" r="2" fill="#ff4444"/>
-      <circle cx="37" cy="11" r="2" fill="#4a9eff"/>
-      <circle cx="44" cy="11" r="2" fill="#ff69b4"/>
-      <!-- 반짝임 효과 -->
-      <circle cx="14" cy="5" r="1" fill="#fff" opacity="0.8"/>
-      <circle cx="46" cy="5" r="1" fill="#fff" opacity="0.8"/>
+      <circle cx="38" cy="11" r="2" fill="#4a9eff"/>
+      <circle cx="46" cy="11" r="2" fill="#ff69b4"/>
+      <!-- [한글 주석] 반짝임 -->
+      <circle cx="10" cy="4" r="1.5" fill="#fff" opacity="0.8"/>
+      <circle cx="50" cy="4" r="1.5" fill="#fff" opacity="0.8"/>
+      <circle cx="30" cy="8" r="1" fill="#fff" opacity="0.6"/>
     </g>`,
 
     // ==========================================
-    // [한글 주석] 망토류 - 넓고 길게 다리까지
+    // [한글 주석] 망토류 - 어깨(y=36)부터 발끝(y=100)까지 넓게
     // ==========================================
 
-    // [한글 주석] 자연 망토 - 넓은 초록 망토
+    // [한글 주석] 자연 망토 - 어깨에서 발끝까지 넓은 초록 망토
     'nature_cape': `<g>
-      <!-- 왼쪽 망토 (어깨부터 발목까지) -->
-      <path d="M2,32 L10,32 L14,85 L2,85 Z" fill="#2d8a3a" opacity="0.85"/>
-      <!-- 오른쪽 망토 -->
-      <path d="M50,32 L58,32 L58,85 L46,85 Z" fill="#2d8a3a" opacity="0.85"/>
-      <!-- 망토 테두리 장식 -->
-      <path d="M2,32 L10,32 L14,85" fill="none" stroke="#7fff00" stroke-width="1.5" opacity="0.7"/>
-      <path d="M50,32 L58,32 L58,85" fill="none" stroke="#7fff00" stroke-width="1.5" opacity="0.7"/>
-      <!-- 잎사귀 패턴 -->
-      <ellipse cx="6" cy="45" rx="3" ry="5" fill="#7fff00" opacity="0.5" transform="rotate(-20,6,45)"/>
-      <ellipse cx="7" cy="60" rx="3" ry="5" fill="#84ff00" opacity="0.5" transform="rotate(15,7,60)"/>
-      <ellipse cx="5" cy="74" rx="3" ry="5" fill="#7fff00" opacity="0.5" transform="rotate(-10,5,74)"/>
-      <ellipse cx="54" cy="45" rx="3" ry="5" fill="#7fff00" opacity="0.5" transform="rotate(20,54,45)"/>
-      <ellipse cx="53" cy="60" rx="3" ry="5" fill="#84ff00" opacity="0.5" transform="rotate(-15,53,60)"/>
-      <ellipse cx="55" cy="74" rx="3" ry="5" fill="#7fff00" opacity="0.5" transform="rotate(10,55,74)"/>
-      <!-- 망토 끝 장식 -->
-      <rect x="2" y="83" width="12" height="2" fill="#7fff00" rx="1"/>
-      <rect x="46" y="83" width="12" height="2" fill="#7fff00" rx="1"/>
+      <!-- [한글 주석] 왼쪽 망토 - viewBox 밖까지 넓게 -->
+      <path d="M-2,37 L11,36 L14,100 L-2,100 Z" fill="#2d8a3a" opacity="0.9"/>
+      <!-- [한글 주석] 오른쪽 망토 -->
+      <path d="M62,37 L49,36 L46,100 L62,100 Z" fill="#2d8a3a" opacity="0.9"/>
+      <!-- [한글 주석] 망토 안쪽 색상 (입체감) -->
+      <path d="M2,38 L11,37 L13,100 L2,100 Z" fill="#3aaa4a" opacity="0.4"/>
+      <path d="M58,38 L49,37 L47,100 L58,100 Z" fill="#3aaa4a" opacity="0.4"/>
+      <!-- [한글 주석] 테두리 장식 -->
+      <path d="M-2,37 L11,36 L14,100" fill="none" stroke="#7fff00" stroke-width="2" opacity="0.8"/>
+      <path d="M62,37 L49,36 L46,100" fill="none" stroke="#7fff00" stroke-width="2" opacity="0.8"/>
+      <!-- [한글 주석] 잎사귀 패턴 -->
+      <ellipse cx="3" cy="50" rx="4" ry="6" fill="#7fff00" opacity="0.5" transform="rotate(-20,3,50)"/>
+      <ellipse cx="4" cy="65" rx="4" ry="6" fill="#84ff00" opacity="0.5" transform="rotate(15,4,65)"/>
+      <ellipse cx="3" cy="80" rx="4" ry="6" fill="#7fff00" opacity="0.5" transform="rotate(-10,3,80)"/>
+      <ellipse cx="57" cy="50" rx="4" ry="6" fill="#7fff00" opacity="0.5" transform="rotate(20,57,50)"/>
+      <ellipse cx="56" cy="65" rx="4" ry="6" fill="#84ff00" opacity="0.5" transform="rotate(-15,56,65)"/>
+      <ellipse cx="57" cy="80" rx="4" ry="6" fill="#7fff00" opacity="0.5" transform="rotate(10,57,80)"/>
+      <!-- [한글 주석] 망토 끝 장식 -->
+      <rect x="-2" y="97" width="16" height="3" fill="#7fff00" rx="1"/>
+      <rect x="46" y="97" width="16" height="3" fill="#7fff00" rx="1"/>
     </g>`,
 
-    // [한글 주석] 유물 망토 - 황금 문양 망토
+    // [한글 주석] 유물 망토 - 황금 문양의 넓은 갈색 망토
     'artifact_cape': `<g>
-      <!-- 왼쪽 망토 -->
-      <path d="M2,32 L10,32 L14,85 L2,85 Z" fill="#8B6914" opacity="0.85"/>
-      <!-- 오른쪽 망토 -->
-      <path d="M50,32 L58,32 L58,85 L46,85 Z" fill="#8B6914" opacity="0.85"/>
-      <!-- 황금 테두리 -->
-      <path d="M2,32 L10,32 L14,85" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.8"/>
-      <path d="M50,32 L58,32 L58,85" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.8"/>
-      <!-- 유물 문양 패턴 -->
-      <circle cx="6" cy="44" r="3" fill="none" stroke="#ffd700" stroke-width="1" opacity="0.7"/>
-      <circle cx="6" cy="44" r="1" fill="#ffd700" opacity="0.7"/>
-      <circle cx="6" cy="58" r="3" fill="none" stroke="#ffd700" stroke-width="1" opacity="0.7"/>
-      <circle cx="6" cy="58" r="1" fill="#ffd700" opacity="0.7"/>
-      <circle cx="6" cy="72" r="3" fill="none" stroke="#ffd700" stroke-width="1" opacity="0.7"/>
-      <circle cx="6" cy="72" r="1" fill="#ffd700" opacity="0.7"/>
-      <circle cx="54" cy="44" r="3" fill="none" stroke="#ffd700" stroke-width="1" opacity="0.7"/>
-      <circle cx="54" cy="44" r="1" fill="#ffd700" opacity="0.7"/>
-      <circle cx="54" cy="58" r="3" fill="none" stroke="#ffd700" stroke-width="1" opacity="0.7"/>
-      <circle cx="54" cy="58" r="1" fill="#ffd700" opacity="0.7"/>
-      <circle cx="54" cy="72" r="3" fill="none" stroke="#ffd700" stroke-width="1" opacity="0.7"/>
-      <circle cx="54" cy="72" r="1" fill="#ffd700" opacity="0.7"/>
-      <!-- 망토 끝 황금 장식 -->
-      <rect x="2" y="83" width="12" height="3" fill="#ffd700" rx="1"/>
-      <rect x="46" y="83" width="12" height="3" fill="#ffd700" rx="1"/>
+      <!-- [한글 주석] 왼쪽 망토 -->
+      <path d="M-2,37 L11,36 L14,100 L-2,100 Z" fill="#8B6914" opacity="0.9"/>
+      <!-- [한글 주석] 오른쪽 망토 -->
+      <path d="M62,37 L49,36 L46,100 L62,100 Z" fill="#8B6914" opacity="0.9"/>
+      <!-- [한글 주석] 안쪽 색상 -->
+      <path d="M2,38 L11,37 L13,100 L2,100 Z" fill="#c8a040" opacity="0.3"/>
+      <path d="M58,38 L49,37 L47,100 L58,100 Z" fill="#c8a040" opacity="0.3"/>
+      <!-- [한글 주석] 황금 테두리 -->
+      <path d="M-2,37 L11,36 L14,100" fill="none" stroke="#ffd700" stroke-width="2.5" opacity="0.9"/>
+      <path d="M62,37 L49,36 L46,100" fill="none" stroke="#ffd700" stroke-width="2.5" opacity="0.9"/>
+      <!-- [한글 주석] 황금 문양 (왼쪽) -->
+      <circle cx="4" cy="48" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
+      <circle cx="4" cy="48" r="1.5" fill="#ffd700" opacity="0.8"/>
+      <circle cx="4" cy="63" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
+      <circle cx="4" cy="63" r="1.5" fill="#ffd700" opacity="0.8"/>
+      <circle cx="4" cy="78" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
+      <circle cx="4" cy="78" r="1.5" fill="#ffd700" opacity="0.8"/>
+      <!-- [한글 주석] 황금 문양 (오른쪽) -->
+      <circle cx="56" cy="48" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
+      <circle cx="56" cy="48" r="1.5" fill="#ffd700" opacity="0.8"/>
+      <circle cx="56" cy="63" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
+      <circle cx="56" cy="63" r="1.5" fill="#ffd700" opacity="0.8"/>
+      <circle cx="56" cy="78" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
+      <circle cx="56" cy="78" r="1.5" fill="#ffd700" opacity="0.8"/>
+      <!-- [한글 주석] 황금 끝 장식 -->
+      <rect x="-2" y="97" width="16" height="3" fill="#ffd700" rx="1"/>
+      <rect x="46" y="97" width="16" height="3" fill="#ffd700" rx="1"/>
     </g>`,
 
     // ==========================================
-    // [한글 주석] 날개류 - 크고 화려하게
+    // [한글 주석] 날개류 - 어깨(y=40)에서 크고 화려하게
     // ==========================================
 
-    // [한글 주석] 나비 날개 - 크고 화려한 나비 날개
+    // [한글 주석] 나비 날개 - 어깨에서 크게 펼쳐지는 나비 날개
     'butterfly_wing': `<g>
-      <!-- 왼쪽 위 날개 (크게) -->
-      <ellipse cx="4" cy="36" rx="12" ry="16" fill="#87CEEB" opacity="0.75" transform="rotate(-20,4,36)"/>
-      <!-- 왼쪽 아래 날개 -->
-      <ellipse cx="6" cy="56" rx="9" ry="12" fill="#4a9eff" opacity="0.65" transform="rotate(15,6,56)"/>
-      <!-- 오른쪽 위 날개 -->
-      <ellipse cx="56" cy="36" rx="12" ry="16" fill="#87CEEB" opacity="0.75" transform="rotate(20,56,36)"/>
-      <!-- 오른쪽 아래 날개 -->
-      <ellipse cx="54" cy="56" rx="9" ry="12" fill="#4a9eff" opacity="0.65" transform="rotate(-15,54,56)"/>
-      <!-- 날개 문양 (왼쪽) -->
-      <ellipse cx="4" cy="34" rx="5" ry="7" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.6" transform="rotate(-20,4,34)"/>
-      <circle cx="3" cy="32" r="2" fill="#ffd700" opacity="0.5"/>
-      <!-- 날개 문양 (오른쪽) -->
-      <ellipse cx="56" cy="34" rx="5" ry="7" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.6" transform="rotate(20,56,34)"/>
-      <circle cx="57" cy="32" r="2" fill="#ffd700" opacity="0.5"/>
-      <!-- 날개 끝 점들 -->
-      <circle cx="-2" cy="28" r="1.5" fill="#87CEEB" opacity="0.8"/>
-      <circle cx="62" cy="28" r="1.5" fill="#87CEEB" opacity="0.8"/>
+      <!-- [한글 주석] 왼쪽 위 날개 (크게 viewBox 밖으로) -->
+      <ellipse cx="2" cy="38" rx="16" ry="20" fill="#87CEEB" opacity="0.8" transform="rotate(-25,2,38)"/>
+      <!-- [한글 주석] 왼쪽 아래 날개 -->
+      <ellipse cx="4" cy="60" rx="12" ry="15" fill="#4a9eff" opacity="0.7" transform="rotate(20,4,60)"/>
+      <!-- [한글 주석] 오른쪽 위 날개 -->
+      <ellipse cx="58" cy="38" rx="16" ry="20" fill="#87CEEB" opacity="0.8" transform="rotate(25,58,38)"/>
+      <!-- [한글 주석] 오른쪽 아래 날개 -->
+      <ellipse cx="56" cy="60" rx="12" ry="15" fill="#4a9eff" opacity="0.7" transform="rotate(-20,56,60)"/>
+      <!-- [한글 주석] 날개 문양 왼쪽 -->
+      <ellipse cx="2" cy="36" rx="7" ry="9" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.7" transform="rotate(-25,2,36)"/>
+      <circle cx="0" cy="32" r="2.5" fill="#ffd700" opacity="0.7"/>
+      <circle cx="-3" cy="42" r="1.5" fill="#ff69b4" opacity="0.6"/>
+      <!-- [한글 주석] 날개 문양 오른쪽 -->
+      <ellipse cx="58" cy="36" rx="7" ry="9" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.7" transform="rotate(25,58,36)"/>
+      <circle cx="60" cy="32" r="2.5" fill="#ffd700" opacity="0.7"/>
+      <circle cx="63" cy="42" r="1.5" fill="#ff69b4" opacity="0.6"/>
+      <!-- [한글 주석] 날개 연결 -->
+      <ellipse cx="10" cy="42" rx="4" ry="3" fill="#4a9eff" opacity="0.5"/>
+      <ellipse cx="50" cy="42" rx="4" ry="3" fill="#4a9eff" opacity="0.5"/>
     </g>`,
 
-    // [한글 주석] 하늘 날개 - 전설급 천사 날개
+    // [한글 주석] 하늘 날개 - 전설급 대형 천사 날개
     'sky_wing': `<g>
-      <!-- 왼쪽 큰 날개 -->
-      <path d="M10,38 C-10,20 -15,50 -5,65 C0,70 8,60 10,55 Z" fill="#ffffff" opacity="0.85"/>
-      <!-- 왼쪽 날개 깃털 레이어 -->
-      <path d="M10,40 C-5,25 -8,45 2,58 Z" fill="#e8f4ff" opacity="0.7"/>
-      <path d="M10,42 C0,30 -2,48 5,57 Z" fill="#ffffff" opacity="0.6"/>
-      <!-- 오른쪽 큰 날개 -->
-      <path d="M50,38 C70,20 75,50 65,65 C60,70 52,60 50,55 Z" fill="#ffffff" opacity="0.85"/>
-      <!-- 오른쪽 날개 깃털 레이어 -->
-      <path d="M50,40 C65,25 68,45 58,58 Z" fill="#e8f4ff" opacity="0.7"/>
-      <path d="M50,42 C60,30 62,48 55,57 Z" fill="#ffffff" opacity="0.6"/>
-      <!-- 날개 빛나는 효과 -->
-      <path d="M10,38 C-10,20 -15,50 -5,65" fill="none" stroke="#4a9eff" stroke-width="1.5" opacity="0.5"/>
-      <path d="M50,38 C70,20 75,50 65,65" fill="none" stroke="#4a9eff" stroke-width="1.5" opacity="0.5"/>
-      <!-- 빛 반짝임 -->
-      <circle cx="-3" cy="30" r="2" fill="#fff" opacity="0.9"/>
-      <circle cx="63" cy="30" r="2" fill="#fff" opacity="0.9"/>
-      <circle cx="-8" cy="48" r="1.5" fill="#4a9eff" opacity="0.7"/>
-      <circle cx="68" cy="48" r="1.5" fill="#4a9eff" opacity="0.7"/>
+      <!-- [한글 주석] 왼쪽 큰 날개 (viewBox 밖으로 크게) -->
+      <path d="M10,42 C-14,20 -20,58 -8,74 C-2,80 8,67 10,60 Z" fill="#ffffff" opacity="0.9"/>
+      <!-- [한글 주석] 왼쪽 날개 깃털 레이어 -->
+      <path d="M10,44 C-5,28 -8,52 3,65 Z" fill="#e8f4ff" opacity="0.7"/>
+      <path d="M10,48 C0,34 -1,54 6,64 Z" fill="#ffffff" opacity="0.6"/>
+      <path d="M10,52 C2,40 2,56 7,63 Z" fill="#d0eaff" opacity="0.5"/>
+      <!-- [한글 주석] 오른쪽 큰 날개 -->
+      <path d="M50,42 C74,20 80,58 68,74 C62,80 52,67 50,60 Z" fill="#ffffff" opacity="0.9"/>
+      <!-- [한글 주석] 오른쪽 날개 깃털 레이어 -->
+      <path d="M50,44 C65,28 68,52 57,65 Z" fill="#e8f4ff" opacity="0.7"/>
+      <path d="M50,48 C60,34 61,54 54,64 Z" fill="#ffffff" opacity="0.6"/>
+      <path d="M50,52 C58,40 58,56 53,63 Z" fill="#d0eaff" opacity="0.5"/>
+      <!-- [한글 주석] 날개 테두리 빛나는 효과 -->
+      <path d="M10,42 C-14,20 -20,58 -8,74" fill="none" stroke="#4a9eff" stroke-width="1.5" opacity="0.6"/>
+      <path d="M50,42 C74,20 80,58 68,74" fill="none" stroke="#4a9eff" stroke-width="1.5" opacity="0.6"/>
+      <!-- [한글 주석] 반짝임 효과 -->
+      <circle cx="-6" cy="28" r="2.5" fill="#fff" opacity="0.9"/>
+      <circle cx="66" cy="28" r="2.5" fill="#fff" opacity="0.9"/>
+      <circle cx="-12" cy="50" r="1.5" fill="#4a9eff" opacity="0.7"/>
+      <circle cx="72" cy="50" r="1.5" fill="#4a9eff" opacity="0.7"/>
+      <circle cx="-5" cy="65" r="1.5" fill="#fff" opacity="0.6"/>
+      <circle cx="65" cy="65" r="1.5" fill="#fff" opacity="0.6"/>
     </g>`,
 
     // ==========================================
-    // [한글 주석] 배지류 - 명확하고 화려하게
+    // [한글 주석] 배지류 - 가슴 위치에 크고 선명하게
     // ==========================================
 
-    // [한글 주석] 탐험가 배지 - 별 모양 메달 (가슴에 크게)
+    // [한글 주석] 탐험가 배지 - 별 모양 메달 (가슴 중앙)
     'explorer_badge': `<g>
-      <!-- 메달 리본 -->
-      <rect x="27" y="32" width="6" height="8" fill="#4a9eff" rx="1"/>
-      <rect x="26" y="32" width="3" height="5" fill="#2277cc"/>
-      <!-- 별 모양 배지 -->
-      <polygon points="30,42 32,48 38,48 33,52 35,58 30,54 25,58 27,52 22,48 28,48"
+      <!-- [한글 주석] 메달 리본 -->
+      <rect x="27" y="34" width="6" height="8" fill="#4a9eff" rx="1"/>
+      <rect x="26" y="34" width="3" height="6" fill="#2277cc"/>
+      <polygon points="27,34 30,31 33,34" fill="#4a9eff"/>
+      <!-- [한글 주석] 별 모양 배지 (크게) -->
+      <polygon points="30,44 32.5,51 40,51 34,55.5 36.5,62.5 30,58 23.5,62.5 26,55.5 20,51 27.5,51"
                fill="#ffd700" stroke="#ffaa00" stroke-width="1"/>
-      <!-- 별 중앙 장식 -->
-      <circle cx="30" cy="50" r="4" fill="#ff9500"/>
-      <circle cx="30" cy="50" r="2" fill="#ffd700"/>
-      <!-- 반짝임 -->
-      <circle cx="25" cy="44" r="1" fill="#fff" opacity="0.8"/>
-      <circle cx="35" cy="44" r="1" fill="#fff" opacity="0.8"/>
+      <!-- [한글 주석] 별 중앙 원형 장식 -->
+      <circle cx="30" cy="53" r="5" fill="#ff9500"/>
+      <circle cx="30" cy="53" r="3" fill="#ffd700"/>
+      <circle cx="30" cy="53" r="1.5" fill="#fff" opacity="0.8"/>
+      <!-- [한글 주석] 반짝임 -->
+      <circle cx="23" cy="46" r="1.5" fill="#fff" opacity="0.8"/>
+      <circle cx="37" cy="46" r="1.5" fill="#fff" opacity="0.8"/>
+      <circle cx="21" cy="54" r="1" fill="#fff" opacity="0.6"/>
+      <circle cx="39" cy="54" r="1" fill="#fff" opacity="0.6"/>
     </g>`,
 
     // [한글 주석] 전설 탐험가 트로피 - 아바타 옆에 크게!
     'legend_badge': `<g>
-      <!-- 트로피 컵 (아바타 오른쪽 옆에 크게) -->
-      <!-- 트로피 받침대 -->
-      <rect x="38" y="88" width="18" height="4" fill="#ffd700" rx="2"/>
-      <rect x="41" y="82" width="12" height="7" fill="#ffd700"/>
-      <!-- 트로피 몸통 -->
-      <path d="M38,50 Q36,65 40,75 L56,75 Q60,65 58,50 Z" fill="#ffd700"/>
-      <!-- 트로피 광택 -->
-      <path d="M40,52 Q38,65 41,73" fill="none" stroke="#fff8aa" stroke-width="2" opacity="0.6"/>
-      <!-- 트로피 손잡이 왼쪽 -->
-      <path d="M38,55 Q30,55 30,63 Q30,70 38,68" fill="none" stroke="#ffd700" stroke-width="4"/>
-      <!-- 트로피 손잡이 오른쪽 -->
-      <path d="M58,55 Q66,55 66,63 Q66,70 58,68" fill="none" stroke="#ffd700" stroke-width="4"/>
-      <!-- 트로피 별 장식 -->
-      <polygon points="48,56 49.5,61 55,61 50.5,64 52,69 48,66 44,69 45.5,64 41,61 46.5,61"
-               fill="#fff" opacity="0.9"/>
-      <!-- 트로피 테두리 -->
-      <path d="M38,50 Q36,65 40,75 L56,75 Q60,65 58,50 Z" fill="none" stroke="#ffaa00" stroke-width="1.5"/>
-      <!-- 빛나는 효과 -->
-      <circle cx="43" cy="54" r="2" fill="#fff" opacity="0.7"/>
-      <circle cx="62" cy="52" r="1.5" fill="#fff" opacity="0.8"/>
-      <circle cx="66" cy="60" r="1.5" fill="#ffd700" opacity="0.9"/>
-      <!-- 반짝임 파티클 -->
-      <circle cx="68" cy="48" r="1" fill="#ffd700" opacity="0.8"/>
-      <circle cx="70" cy="55" r="1" fill="#fff" opacity="0.7"/>
-      <circle cx="69" cy="65" r="1" fill="#ffd700" opacity="0.8"/>
+      <!-- [한글 주석] 트로피 받침대 -->
+      <rect x="37" y="90" width="22" height="5" fill="#ffd700" rx="3"/>
+      <rect x="40" y="82" width="16" height="9" fill="#ffd700"/>
+      <!-- [한글 주석] 트로피 몸통 (크게) -->
+      <path d="M36,45 Q33,62 38,76 L58,76 Q63,62 60,45 Z" fill="#ffd700"/>
+      <!-- [한글 주석] 트로피 광택 -->
+      <path d="M38,47 Q35,62 39,74" fill="none" stroke="#fff8aa" stroke-width="2.5" opacity="0.7"/>
+      <!-- [한글 주석] 트로피 왼쪽 손잡이 -->
+      <path d="M36,50 Q26,50 26,60 Q26,68 36,67" fill="none" stroke="#ffd700" stroke-width="5" stroke-linecap="round"/>
+      <!-- [한글 주석] 트로피 오른쪽 손잡이 -->
+      <path d="M60,50 Q70,50 70,60 Q70,68 60,67" fill="none" stroke="#ffd700" stroke-width="5" stroke-linecap="round"/>
+      <!-- [한글 주석] 트로피 별 장식 (크게) -->
+      <polygon points="48,52 50,58 56,58 51,62 53,68 48,64 43,68 45,62 40,58 46,58"
+               fill="#fff" opacity="0.95"/>
+      <!-- [한글 주석] 트로피 테두리 -->
+      <path d="M36,45 Q33,62 38,76 L58,76 Q63,62 60,45 Z" fill="none" stroke="#ffaa00" stroke-width="2"/>
+      <!-- [한글 주석] 빛나는 효과 -->
+      <circle cx="41" cy="50" r="2.5" fill="#fff" opacity="0.8"/>
+      <circle cx="64" cy="48" r="2" fill="#fff" opacity="0.8"/>
+      <circle cx="69" cy="58" r="2" fill="#ffd700" opacity="0.9"/>
+      <!-- [한글 주석] 반짝임 파티클 -->
+      <circle cx="71" cy="44" r="1.5" fill="#ffd700" opacity="0.8"/>
+      <circle cx="73" cy="55" r="1.5" fill="#fff" opacity="0.7"/>
+      <circle cx="72" cy="67" r="1.5" fill="#ffd700" opacity="0.8"/>
+      <circle cx="25" cy="48" r="1.5" fill="#ffd700" opacity="0.7"/>
+      <circle cx="23" cy="60" r="1" fill="#fff" opacity="0.6"/>
     </g>`
   };
   return items[itemId] || '';
