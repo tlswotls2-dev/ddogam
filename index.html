@@ -270,6 +270,29 @@
             </div>
         </div>
 
+        <!-- [한글 주석] 배틀 모드 버튼 -->
+        <button id="battle-mode-btn" onclick="showBattleMode()" style="
+          position:absolute;
+          left:14px;
+          bottom:216px;
+          width:56px;
+          height:56px;
+          background:linear-gradient(180deg,#3d2020,#2c1010);
+          border:1px solid #8b3a3a;
+          border-radius:var(--border-radius);
+          color:#ff8080;
+          font-size:0.75rem;
+          font-weight:700;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          justify-content:center;
+          line-height:1.1;
+          box-shadow:0 4px 8px rgba(0,0,0,0.3);
+          cursor:pointer;
+          z-index:10;
+        ">⚔️<br>배틀</button>
+
         <!-- [한글 주석] 일일 시험 버튼 -->
         <button id="daily-quiz-btn" onclick="showDailyQuiz()" style="
           position:absolute;
@@ -436,6 +459,7 @@
     <!-- [한글 주석] 선생님 대시보드 시스템 -->
     <script src="js/teacher.js"></script>
     <script src="js/app.js?v=4"></script>
+    <script src="js/battle.js?v=1"></script>
     <script src="js/testmode.js?v=3"></script>
 
     <!-- ========================================== -->

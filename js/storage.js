@@ -279,3 +279,77 @@ window.saveDuplicates = saveDuplicates;
 window.addCardWithDuplicate = addCardWithDuplicate;
 window.getWorkshopCards = getWorkshopCards;
 window.useDuplicateCards = useDuplicateCards;
+
+// ==========================================
+// [한글 주석] 복주머니 조각 시스템
+// 조각 2개 모이면 자동으로 복주머니 1개로 변환
+// ==========================================
+
+// [한글 주석] 복주머니 조각 개수 가져오기
+function getBagFragments() {
+  return parseInt(localStorage.getItem('bagFragments') || '0');
+}
+
+// [한글 주석] 복주머니 조각 추가 + 자동 변환 체크
+function addBagFragment() {
+  let fragments = getBagFragments() + 1;
+
+  if (fragments >= 2) {
+    // [한글 주석] 조각 2개 → 복주머니 1개 자동 변환
+    fragments = fragments - 2;
+    localStorage.setItem('bagFragments', String(fragments));
+
+    // [한글 주석] 복주머니 1개 추가
+    const bags = JSON.parse(localStorage.getItem('rewardBags') || '[]');
+    const now = new Date();
+    const timeStr = now.toLocaleDateString('ko-KR', {
+      year:'numeric', month:'long', day:'numeric',
+      hour:'2-digit', minute:'2-digit'
+    });
+    const unlockedCats = typeof getUnlockedCategories === 'function'
+      ? getUnlockedCategories() : ['plant'];
+    const randomCat = unlockedCats[Math.floor(Math.random() * unlockedCats.length)];
+
+    bags.push({
+      reward: { type:'category', category:randomCat, rarity:'all' },
+      receivedAt: timeStr,
+      source: 'battle_draw'
+    });
+    localStorage.setItem('rewardBags', JSON.stringify(bags));
+
+    // [한글 주석] 복주머니 뱃지 업데이트
+    if (typeof updateRewardBadge === 'function') updateRewardBadge();
+
+    // [한글 주석] 조각 → 복주머니 변환 토스트
+    _showFragmentConvertToast();
+    return true; // [한글 주석] 변환됨
+  }
+
+  localStorage.setItem('bagFragments', String(fragments));
+  return false; // [한글 주석] 아직 조각만 있음
+}
+
+// [한글 주석] 조각 → 복주머니 변환 토스트 알림
+function _showFragmentConvertToast() {
+  const toast = document.createElement('div');
+  toast.className = 'item-unlock-toast';
+  toast.style.background = 'linear-gradient(135deg,#ffd700,#ff9500)';
+  toast.style.color = '#1e2e1f';
+  toast.textContent = '🎁 복주머니 조각 2개 → 복주머니 1개로 변환됐어요!';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.classList.add('show'), 10);
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, 3500);
+}
+
+// [한글 주석] 복주머니 조각 UI 업데이트
+function updateFragmentBadge() {
+  const el = document.getElementById('fragment-count');
+  if (el) el.textContent = getBagFragments();
+}
+
+window.getBagFragments = getBagFragments;
+window.addBagFragment = addBagFragment;
+window.updateFragmentBadge = updateFragmentBadge;
