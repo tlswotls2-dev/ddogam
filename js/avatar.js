@@ -101,23 +101,6 @@ function selectGender(g) {
 }
 
 // ==========================================
-// [한글 주석] 해금 아이템 정의 (슬롯별 조건 및 희귀도 - 레벨 기반)
-// ==========================================
-const AVATAR_ITEMS = {
-  'leaf_hat':       { slot:'hat',   name:'나뭇잎 모자',  condition:{ level:3  }, rarity:'common', emoji:'🌿' },
-  'flower_crown':   { slot:'hat',   name:'꽃 왕관',      condition:{ level:8  }, rarity:'rare',   emoji:'🌸' },
-  'king_crown':     { slot:'hat',   name:'조선 왕관',    condition:{ level:15 }, rarity:'rare',   emoji:'👑' },
-  'gold_crown':     { slot:'hat',   name:'황금 왕관',    condition:{ level:25 }, rarity:'epic',   emoji:'✨' },
-  'nature_cape':    { slot:'cape',  name:'자연 망토',    condition:{ level:10 }, rarity:'rare',   emoji:'🌳' },
-  'artifact_cape':  { slot:'cape',  name:'유물 망토',    condition:{ level:15 }, rarity:'rare',   emoji:'🏺' },
-  'butterfly_wing': { slot:'wing',  name:'나비 날개',    condition:{ level:5  }, rarity:'common', emoji:'🦋' },
-  'sky_wing':       { slot:'wing',  name:'하늘 날개',    condition:{ level:20 }, rarity:'epic',   emoji:'🌤️' },
-  'explorer_badge': { slot:'badge', name:'탐험가 배지',  condition:{ level:25 }, rarity:'rare',   emoji:'🎖️' },
-  'legend_badge':   { slot:'badge', name:'전설 탐험가',  condition:{ level:30 }, rarity:'epic',   emoji:'🏆' }
-};
-
-
-// ==========================================
 // ==========================================
 // [한글 주석] 아바타 렌더링 함수
 // ==========================================
