@@ -7,6 +7,8 @@
 let _loginAudio = null;
 let _mainAudio = null;
 let _exploreAudio = null;
+// [한글 주석] 배틀 배경음 Audio 요소
+let _battleAudio = null;
 
 let _audioCtx = null;
 let _isMuted = false;
@@ -38,6 +40,13 @@ function toggleMute() {
   _isMuted = !_isMuted;
   localStorage.setItem('soundMuted', _isMuted ? 'true' : 'false');
   _updateMuteBtn();
+
+  if (_loginAudio) _loginAudio.muted = _isMuted;
+  if (_mainAudio) _mainAudio.muted = _isMuted;
+  if (_exploreAudio) _exploreAudio.muted = _isMuted;
+  // [한글 주석] 배틀 BGM 음소거 처리
+  if (_battleAudio) _battleAudio.muted = _isMuted;
+
   if (_isMuted) {
     stopBGM();
   } else {
@@ -146,6 +155,11 @@ function stopBGM() {
     _exploreAudio.pause();
     _exploreAudio.currentTime = 0;
   }
+  // [한글 주석] 배틀 BGM 정지
+  if (_battleAudio) {
+    _battleAudio.pause();
+    _battleAudio.currentTime = 0;
+  }
 
   _bgmPlaying = false;
   if (_bgmSource) {
@@ -167,31 +181,17 @@ function playExploreBGM() {
   _exploreAudio.play().catch(e => console.log('[사운드] 탐험 BGM 재생 실패:', e));
 }
 
-// [한글 주석] 배틀 배경음 (긴장감)
+// [한글 주석] 배틀 화면 배경음 (mp3 파일 사용)
 function playBattleBGM() {
+  if (_isMuted) return;
   stopBGM();
-  if (_isMuted || !_audioCtx) return;
-  _bgmPlaying = true;
-
-  const battleNotes = [220.00, 246.94, 261.63, 220.00, 196.00, 220.00];
-  let idx = 0;
-
-  function playBattleNote() {
-    if (!_bgmPlaying || _isMuted || !_audioCtx) return;
-    const osc = _audioCtx.createOscillator();
-    const gainNode = _audioCtx.createGain();
-    osc.type = 'sawtooth';
-    osc.frequency.value = battleNotes[idx % battleNotes.length];
-    gainNode.gain.setValueAtTime(0.08, _audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, _audioCtx.currentTime + 0.3);
-    osc.connect(gainNode);
-    gainNode.connect(_bgmGain);
-    osc.start(_audioCtx.currentTime);
-    osc.stop(_audioCtx.currentTime + 0.35);
-    idx++;
-    if (_bgmPlaying) setTimeout(playBattleNote, 350);
+  if (!_battleAudio) {
+    _battleAudio = new Audio('audio/battle.mp3');
+    _battleAudio.loop = true;
+    _battleAudio.volume = 0.5;
   }
-  playBattleNote();
+  _battleAudio.currentTime = 0;
+  _battleAudio.play().catch(e => console.log('[사운드] 배틀 BGM 재생 실패:', e));
 }
 
 // ==========================================

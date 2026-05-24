@@ -27,6 +27,10 @@ let battleState = {
 // [한글 주석] 배틀 모드 진입 팝업
 // ==========================================
 function showBattleMode() {
+  // [한글 주석] 배틀 모드 진입 시 메인 BGM 멈추고 배틀 BGM 시작
+  if (typeof stopBGM === 'function') stopBGM();
+  if (typeof playBattleBGM === 'function') playBattleBGM();
+
   // [한글 주석] 로그인 확인
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
   if (!userData.class || !userData.number) {
@@ -176,6 +180,12 @@ async function _fetchBattleCount() {
 
 // [한글 주석] 배틀 오버레이 닫기
 function closeBattleOverlay() {
+  // [한글 주석] 배틀 모드 닫을 때 메인 BGM 복귀 (단, 공부 화면으로 진입할 때의 호출인 경우는 제외)
+  if (battleState.phase !== 'studying') {
+    if (typeof stopBGM === 'function') stopBGM();
+    setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 300);
+  }
+
   const overlay = document.getElementById('battle-overlay');
   if (overlay) overlay.remove();
 }
@@ -184,6 +194,10 @@ function closeBattleOverlay() {
 // [한글 주석] 공부 화면 (1분 카드 학습)
 // ==========================================
 function startBattleStudy(category) {
+  // [한글 주석] 공부 시간에는 음악 없음
+  if (typeof stopBGM === 'function') stopBGM();
+
+  battleState.phase = 'studying';
   closeBattleOverlay();
 
   const allCards = window.allCardsData || [];
@@ -628,7 +642,7 @@ function _startBattleQuiz() {
 
 // [한글 주석] 매칭 성공 팝업
 function _showMatchedPopup() {
-  // [한글 주석] 매칭 성공 효과음 + 배틀 배경음 시작
+  // [한글 주석] 매칭 성공 효과음 + 배틀 BGM 재시작
   if (typeof playSfxMatched === 'function') playSfxMatched();
   setTimeout(() => { if (typeof playBattleBGM === 'function') playBattleBGM(); }, 800);
 
@@ -1012,6 +1026,10 @@ function _showWaitingResultPopup() {
 
 // [한글 주석] 배틀 최종 결과 팝업
 function _showBattleResult(myScore, opponentScore, result) {
+  // [한글 주석] 배틀 종료 후 메인 BGM 복귀
+  if (typeof stopBGM === 'function') stopBGM();
+  setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 1000);
+
   let resultLabel, resultColor, rewardMsg;
 
   if (result === 'win') {
@@ -1020,9 +1038,8 @@ function _showBattleResult(myScore, opponentScore, result) {
     rewardMsg = '복주머니 1개를 획득했어요!';
     _grantBattleReward('win');
 
-    // [한글 주석] 배틀 승리 효과음 + 메인 배경음 복귀
+    // [한글 주석] 배틀 승리 효과음
     if (typeof playSfxBattleWin === 'function') playSfxBattleWin();
-    setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 1000);
   } else if (result === 'lose') {
     resultLabel = '😔 패배';
     resultColor = '#ff4444';
@@ -1037,14 +1054,6 @@ function _showBattleResult(myScore, opponentScore, result) {
     resultLabel = '⚔️ 완료';
     resultColor = '#aaa';
     rewardMsg = '상대방 결과를 확인하지 못했어요.';
-  }
-
-  if (result !== 'win') {
-    // [한글 주석] 배틀 종료 후 메인 배경음 복귀
-    setTimeout(() => {
-      if (typeof stopBGM === 'function') stopBGM();
-      setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 300);
-    }, 500);
   }
 
   const overlay = document.createElement('div');
