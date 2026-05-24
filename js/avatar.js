@@ -52,7 +52,6 @@ const OUTFIT_LIST = [
   { id: 'outfit_suit_black',     name: '검정 정장',       unlockLevel: 23, rarity: 'epic',   emoji: '🖤' },
   { id: 'outfit_dress_purple',   name: '보라 드레스',     unlockLevel: 23, rarity: 'epic',   emoji: '👗' },
   { id: 'outfit_dress_pink',     name: '핑크 드레스',     unlockLevel: 23, rarity: 'epic',   emoji: '💗' },
-  { id: 'outfit_pantssuit_black',name: '블랙 팬츠수트',   unlockLevel: 23, rarity: 'epic',   emoji: '🕴️' },
 ];
 
 // [한글 주석] 펫 목록
@@ -266,7 +265,7 @@ function _renderAvatarWithItems(container, avatarId, outfitId, equipped) {
     layers.push(`${IMG_BASE}hair_${avatarId}.png`);
   }
 
-  // [한글 주석] 2. 액세서리 레이어들 (검 제외)
+  // [한글 주석] 2. 액세서리 레이어들 (검 제외 - 검은 별도 배치)
   Object.entries(equipped).forEach(([slot, itemId]) => {
     if (itemId && AVATAR_ITEMS[itemId] && slot !== 'weapon') {
       layers.push(`${IMG_BASE}item_${itemId}.png`);
@@ -288,18 +287,16 @@ function _renderAvatarWithItems(container, avatarId, outfitId, equipped) {
     container.appendChild(img);
   });
 
-  // [한글 주석] 검 장착 시 아바타 옆에 살랑살랑 흔들리는 검 표시
+  // [한글 주석] 검 장착 시 아바타 오른쪽 아래에 고정 배치
   if (equipped.weapon === 'sword') {
     const swordWrapper = document.createElement('div');
     swordWrapper.style.cssText = `
       position:absolute;
-      top:10%;
-      right:-40%;
-      width:50%;
-      height:60%;
+      bottom:5%;
+      right:-30%;
+      width:45%;
+      height:35%;
       z-index:${layers.length + 2};
-      animation:swordSwing 1.2s ease-in-out infinite;
-      transform-origin:bottom left;
     `;
     const swordImg = document.createElement('img');
     swordImg.src = `${IMG_BASE}item_sword_only.png`;

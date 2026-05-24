@@ -3205,12 +3205,3 @@ button:active {
   line-height: 1.7;
   text-align: left;
 }
-
-/* [한글 주석] 검 살랑살랑 흔들리는 애니메이션 */
-@keyframes swordSwing {
-  0%   { transform: rotate(-15deg); }
-  30%  { transform: rotate(10deg); }
-  60%  { transform: rotate(-8deg); }
-  80%  { transform: rotate(6deg); }
-  100% { transform: rotate(-15deg); }
-}
