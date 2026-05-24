@@ -266,9 +266,9 @@ function _renderAvatarWithItems(container, avatarId, outfitId, equipped) {
     layers.push(`${IMG_BASE}hair_${avatarId}.png`);
   }
 
-  // [한글 주석] 2. 액세서리 레이어들
-  Object.values(equipped).forEach(itemId => {
-    if (itemId && AVATAR_ITEMS[itemId]) {
+  // [한글 주석] 2. 액세서리 레이어들 (검 제외)
+  Object.entries(equipped).forEach(([slot, itemId]) => {
+    if (itemId && AVATAR_ITEMS[itemId] && slot !== 'weapon') {
       layers.push(`${IMG_BASE}item_${itemId}.png`);
     }
   });
@@ -278,15 +278,40 @@ function _renderAvatarWithItems(container, avatarId, outfitId, equipped) {
     const img = document.createElement('img');
     img.src = src;
     img.style.cssText = `
-  position:absolute;top:0;left:0;
-  width:100%;height:100%;
-  object-fit:contain;
-  image-rendering:pixelated;
-  z-index:${i + 1};
-`;
+      position:absolute;top:0;left:0;
+      width:100%;height:100%;
+      object-fit:contain;
+      image-rendering:pixelated;
+      z-index:${i + 1};
+    `;
     img.onerror = () => { img.style.display = 'none'; };
     container.appendChild(img);
   });
+
+  // [한글 주석] 검 장착 시 아바타 옆에 살랑살랑 흔들리는 검 표시
+  if (equipped.weapon === 'sword') {
+    const swordWrapper = document.createElement('div');
+    swordWrapper.style.cssText = `
+      position:absolute;
+      top:10%;
+      right:-40%;
+      width:50%;
+      height:60%;
+      z-index:${layers.length + 2};
+      animation:swordSwing 1.2s ease-in-out infinite;
+      transform-origin:bottom left;
+    `;
+    const swordImg = document.createElement('img');
+    swordImg.src = `${IMG_BASE}item_sword_only.png`;
+    swordImg.style.cssText = `
+      width:100%;height:100%;
+      object-fit:contain;
+      image-rendering:pixelated;
+    `;
+    swordImg.onerror = () => { swordWrapper.style.display = 'none'; };
+    swordWrapper.appendChild(swordImg);
+    container.appendChild(swordWrapper);
+  }
 }
 
 // ==========================================
