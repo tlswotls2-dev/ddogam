@@ -2,55 +2,102 @@
 // avatar.js - 도트 아바타, 성별 선택, 꾸미기 시스템
 // ==========================================
 
-const GENDER_STORAGE_KEY = 'selectedGender';
 const UNLOCKED_ITEMS_KEY = 'unlockedItems';
 const EQUIPPED_ITEMS_KEY = 'equippedItems';
+const UNLOCKED_AVATARS_KEY = 'unlockedAvatars';
 
-// 4종 아바타 목록 정의 (픽셀아트 SVG 캐릭터)
+// [한글 주석] 이미지 기본 경로
+const IMG_BASE = 'images/avatars/';
+
+// [한글 주석] 8종 아바타 정의
 const AVATAR_LIST = [
-  { id: 'boy_explorer', name: '갈색 탐험가', isGirl: false },
-  { id: 'boy_police', name: '경찰 탐험가', isGirl: false },
-  { id: 'girl_sakura', name: '벚꽃 탐험가', isGirl: true },
-  { id: 'girl_sports', name: '스포츠 탐험가', isGirl: true }
+  { id: 'boy1_dodam',   name: '도담', gender: 'boy',  unlockLevel: 1  },
+  { id: 'boy2_junseo',  name: '준서', gender: 'boy',  unlockLevel: 6  },
+  { id: 'boy3_minjun',  name: '민준', gender: 'boy',  unlockLevel: 12 },
+  { id: 'boy4_jiho',    name: '지호', gender: 'boy',  unlockLevel: 18 },
+  { id: 'girl1_nari',   name: '나리', gender: 'girl', unlockLevel: 1  },
+  { id: 'girl2_soyeon', name: '소연', gender: 'girl', unlockLevel: 6  },
+  { id: 'girl3_sua',    name: '수아', gender: 'girl', unlockLevel: 12 },
+  { id: 'girl4_jia',    name: '지아', gender: 'girl', unlockLevel: 18 },
 ];
 
-// 8종 펫 목록 정의
+// [한글 주석] 아이템 정의 (액세서리)
+const AVATAR_ITEMS = {
+  'earring_emerald':        { slot:'earring', name:'에메랄드 귀걸이',     unlockLevel:3,  rarity:'common', emoji:'💚' },
+  'glasses':                { slot:'glasses', name:'안경',                 unlockLevel:5,  rarity:'common', emoji:'👓' },
+  'hat_cowboy':             { slot:'hat',     name:'카우보이 모자',         unlockLevel:8,  rarity:'common', emoji:'🤠' },
+  'glasses_sun':            { slot:'glasses', name:'선글라스',              unlockLevel:10, rarity:'rare',   emoji:'🕶️' },
+  'earring_red':            { slot:'earring', name:'레드 귀걸이',           unlockLevel:13, rarity:'common', emoji:'❤️' },
+  'hat_lucky':              { slot:'hat',     name:'행운 모자',             unlockLevel:15, rarity:'rare',   emoji:'🍀' },
+  'sword':                  { slot:'weapon',  name:'탐험가의 검',           unlockLevel:17, rarity:'rare',   emoji:'⚔️' },
+  'hat_pumpkin':            { slot:'hat',     name:'호박 모자',             unlockLevel:20, rarity:'rare',   emoji:'🎃' },
+  'hat_witch':              { slot:'hat',     name:'마녀 모자',             unlockLevel:23, rarity:'epic',   emoji:'🧙' },
+  'earring_emerald_silver': { slot:'earring', name:'에메랄드 실버 귀걸이', unlockLevel:25, rarity:'epic',   emoji:'💎' },
+  'hat_pumpkin_purple':     { slot:'hat',     name:'보라 호박 모자',       unlockLevel:27, rarity:'epic',   emoji:'🟣' },
+  'earring_red_silver':     { slot:'earring', name:'레드 실버 귀걸이',     unlockLevel:30, rarity:'epic',   emoji:'👑' },
+};
+
+// [한글 주석] 옷 정의
+const OUTFIT_LIST = [
+  { id: 'default',               name: '기본 복장',       unlockLevel: 1,  rarity: 'common', emoji: '👕' },
+  { id: 'outfit_sporty_red',     name: '빨간 스포츠',     unlockLevel: 7,  rarity: 'common', emoji: '🏃' },
+  { id: 'outfit_sporty_green',   name: '초록 스포츠',     unlockLevel: 7,  rarity: 'common', emoji: '🏃' },
+  { id: 'outfit_floral_pink',    name: '핑크 꽃무늬',     unlockLevel: 7,  rarity: 'common', emoji: '🌸' },
+  { id: 'outfit_floral_purple',  name: '보라 꽃무늬',     unlockLevel: 7,  rarity: 'common', emoji: '💜' },
+  { id: 'outfit_stripe_blue',    name: '파란 스트라이프', unlockLevel: 13, rarity: 'rare',   emoji: '🔵' },
+  { id: 'outfit_stripe_green',   name: '초록 스트라이프', unlockLevel: 13, rarity: 'rare',   emoji: '🟢' },
+  { id: 'outfit_sailor_blue',    name: '파란 세일러',     unlockLevel: 13, rarity: 'rare',   emoji: '⛵' },
+  { id: 'outfit_sailor_pink',    name: '핑크 세일러',     unlockLevel: 13, rarity: 'rare',   emoji: '🌸' },
+  { id: 'outfit_suit_blue',      name: '파란 정장',       unlockLevel: 23, rarity: 'epic',   emoji: '🤵' },
+  { id: 'outfit_suit_black',     name: '검정 정장',       unlockLevel: 23, rarity: 'epic',   emoji: '🖤' },
+  { id: 'outfit_dress_purple',   name: '보라 드레스',     unlockLevel: 23, rarity: 'epic',   emoji: '👗' },
+  { id: 'outfit_dress_pink',     name: '핑크 드레스',     unlockLevel: 23, rarity: 'epic',   emoji: '💗' },
+  { id: 'outfit_pantssuit_black',name: '블랙 팬츠수트',   unlockLevel: 23, rarity: 'epic',   emoji: '🕴️' },
+];
+
+// [한글 주석] 펫 목록
 const PET_LIST = [
-  { id: 'pet_none', name: '없음', emoji: '❌', condition: null },
-  { id: 'pet_chick', name: '병아리', emoji: '🐥', condition: { category: 'animal', count: 5 } },
-  { id: 'pet_rabbit', name: '토끼', emoji: '🐰', condition: { category: 'animal', count: 15 } },
-  { id: 'pet_squirrel', name: '다람쥐', emoji: '🐿️', condition: { category: 'animal', count: 30 } },
-  { id: 'pet_butterfly', name: '나비', emoji: '🦋', condition: { category: 'animal', count: 50 } },
-  { id: 'pet_fox', name: '여우', emoji: '🦊', condition: { category: 'animal', count: 70 } },
-  { id: 'pet_deer', name: '사슴', emoji: '🦌', condition: { category: 'animal', count: 90 } },
-  { id: 'pet_crane', name: '두루미', emoji: '🦢', condition: { total: 200 } }
+  { id: 'pet_none',      name: '없음',   emoji: '❌', condition: null },
+  { id: 'pet_chick',     name: '병아리', emoji: '🐥', condition: { category:'animal', count:5  } },
+  { id: 'pet_rabbit',    name: '토끼',   emoji: '🐰', condition: { category:'animal', count:15 } },
+  { id: 'pet_squirrel',  name: '다람쥐', emoji: '🐿️', condition: { category:'animal', count:30 } },
+  { id: 'pet_butterfly', name: '나비',   emoji: '🦋', condition: { category:'animal', count:50 } },
+  { id: 'pet_fox',       name: '여우',   emoji: '🦊', condition: { category:'animal', count:70 } },
+  { id: 'pet_deer',      name: '사슴',   emoji: '🦌', condition: { category:'animal', count:90 } },
+  { id: 'pet_crane',     name: '두루미', emoji: '🦢', condition: { total:200 } },
 ];
 
-// [한글 주석] 아바타 선택 저장 함수
+// [한글 주석] 현재 선택된 아바타 ID 가져오기
+function getSelectedAvatar() {
+  return localStorage.getItem('selectedAvatar') || 'boy1_dodam';
+}
+
+// [한글 주석] 아바타 선택 저장
 function selectAvatar(avatarId) {
   localStorage.setItem('selectedAvatar', avatarId);
 }
 
-// [한글 주석] 현재 선택된 아바타 ID 가져오기 (기본값: boy_explorer)
-function getSelectedAvatar() {
-  return localStorage.getItem('selectedAvatar') || 'boy_explorer';
-}
-
-// [한글 주석] 아바타 선택이 필요한지 여부 확인
+// [한글 주석] 아바타 선택이 필요한지 여부
 function needsAvatarSelection() {
   return !localStorage.getItem('selectedAvatar');
 }
 
-// [한글 주석] 하위 호환성 유지 (기존 코드가 gender 함수 호출 시 동작하도록 매핑)
+// [한글 주석] 하위 호환성 유지
 function needsGenderSelection() {
   return needsAvatarSelection();
 }
 
-// [한글 주석] 선택된 아바타의 성별(isGirl 여부)에 따라 'girl' 또는 'boy'를 반환
+// [한글 주석] 성별 반환
 function getSelectedGender() {
   const id = getSelectedAvatar();
-  const avatar = AVATAR_LIST.find(a => a.id === id);
-  return avatar && avatar.isGirl ? 'girl' : 'boy';
+  const av = AVATAR_LIST.find(a => a.id === id);
+  return av && av.gender === 'girl' ? 'girl' : 'boy';
+}
+
+// [한글 주석] 하위 호환성 - 기존 성별 선택 매핑
+function selectGender(g) {
+  if (g === 'girl') selectAvatar('girl1_nari');
+  else selectAvatar('boy1_dodam');
 }
 
 // ==========================================
@@ -69,588 +116,33 @@ const AVATAR_ITEMS = {
   'legend_badge':   { slot:'badge', name:'전설 탐험가',  condition:{ level:30 }, rarity:'epic',   emoji:'🏆' }
 };
 
-// ==========================================
-// [한글 주석] 아이템 SVG 조각 (viewBox 0 0 60 100 기준)
-// ==========================================
-function getItemSVG(itemId) {
-  const items = {
-
-    // ==========================================
-    // [한글 주석] 모자류 - 머리(y=0~13) 위에 정확히 맞춤
-    // ==========================================
-
-    // [한글 주석] 나뭇잎 모자 - 아바타 머리 크기에 맞춘 잎사귀 모자
-    'leaf_hat': `<g>
-      <!-- [한글 주석] 모자 챙 - 머리 너비(x=7~53)에 맞춤 -->
-      <ellipse cx="30" cy="10" rx="23" ry="5" fill="#1a6a25"/>
-      <!-- [한글 주석] 모자 몸통 -->
-      <rect x="14" y="1" width="32" height="10" fill="#2d8a3a" rx="3"/>
-      <!-- [한글 주석] 모자 상단 둥글게 -->
-      <ellipse cx="30" cy="1" rx="16" ry="3" fill="#3aaa4a"/>
-      <!-- [한글 주석] 잎맥 장식 -->
-      <line x1="30" y1="1" x2="30" y2="10" stroke="#7fff00" stroke-width="1.5" opacity="0.8"/>
-      <line x1="16" y1="5" x2="44" y2="5" stroke="#7fff00" stroke-width="1" opacity="0.6"/>
-      <line x1="18" y1="3" x2="26" y2="8" stroke="#7fff00" stroke-width="1" opacity="0.5"/>
-      <line x1="42" y1="3" x2="34" y2="8" stroke="#7fff00" stroke-width="1" opacity="0.5"/>
-      <!-- [한글 주석] 꽃 장식 -->
-      <circle cx="30" cy="1" r="2.5" fill="#84ff00"/>
-      <circle cx="22" cy="4" r="1.5" fill="#7fff00" opacity="0.8"/>
-      <circle cx="38" cy="4" r="1.5" fill="#7fff00" opacity="0.8"/>
-    </g>`,
-
-    // [한글 주석] 꽃 왕관 - 머리 전체를 감싸는 꽃 왕관
-    'flower_crown': `<g>
-      <!-- [한글 주석] 왕관 밴드 - 머리 너비에 맞춤 -->
-      <rect x="10" y="9" width="40" height="5" fill="#ffaacc" rx="2"/>
-      <!-- [한글 주석] 꽃 5송이 - 머리 위에 고르게 배치 -->
-      <circle cx="11" cy="8" r="4" fill="#ff69b4"/>
-      <circle cx="11" cy="8" r="2" fill="#fff"/>
-      <circle cx="11" cy="8" r="1" fill="#ffd700"/>
-      <circle cx="19" cy="5" r="4.5" fill="#ff99cc"/>
-      <circle cx="19" cy="5" r="2.5" fill="#ffeeee"/>
-      <circle cx="19" cy="5" r="1" fill="#ffd700"/>
-      <circle cx="30" cy="3" r="5.5" fill="#ff69b4"/>
-      <circle cx="30" cy="3" r="3" fill="#fff"/>
-      <circle cx="30" cy="3" r="1.5" fill="#ffd700"/>
-      <circle cx="41" cy="5" r="4.5" fill="#ff99cc"/>
-      <circle cx="41" cy="5" r="2.5" fill="#ffeeee"/>
-      <circle cx="41" cy="5" r="1" fill="#ffd700"/>
-      <circle cx="49" cy="8" r="4" fill="#ff69b4"/>
-      <circle cx="49" cy="8" r="2" fill="#fff"/>
-      <circle cx="49" cy="8" r="1" fill="#ffd700"/>
-      <!-- [한글 주석] 잎새 -->
-      <ellipse cx="25" cy="7" rx="3" ry="2" fill="#7fff00" opacity="0.7" transform="rotate(-30,25,7)"/>
-      <ellipse cx="35" cy="7" rx="3" ry="2" fill="#7fff00" opacity="0.7" transform="rotate(30,35,7)"/>
-    </g>`,
-
-    // [한글 주석] 조선 왕관 - 익선관 스타일 (머리 위 높이 맞춤)
-    'king_crown': `<g>
-      <!-- [한글 주석] 왕관 베이스 - 머리 너비에 딱 맞춤 -->
-      <rect x="9" y="7" width="42" height="7" fill="#ffd700" rx="2"/>
-      <!-- [한글 주석] 왕관 포인트 3개 - 머리 위로 높이 올림 -->
-      <polygon points="15,7 19,-2 23,7" fill="#ffd700"/>
-      <polygon points="26,7 30,-4 34,7" fill="#ffd700"/>
-      <polygon points="37,7 41,-2 45,7" fill="#ffd700"/>
-      <!-- [한글 주석] 포인트 보석 -->
-      <circle cx="19" cy="0" r="2.5" fill="#ff4444"/>
-      <circle cx="30" cy="-2" r="3" fill="#4a9eff"/>
-      <circle cx="41" cy="0" r="2.5" fill="#ff4444"/>
-      <!-- [한글 주석] 왕관 장식선 -->
-      <rect x="9" y="11" width="42" height="2" fill="#ffaa00" rx="1"/>
-      <!-- [한글 주석] 베이스 보석들 -->
-      <circle cx="15" cy="10" r="2" fill="#ff69b4"/>
-      <circle cx="22" cy="10" r="2" fill="#7fff00"/>
-      <circle cx="30" cy="10" r="2" fill="#ff4444"/>
-      <circle cx="38" cy="10" r="2" fill="#7fff00"/>
-      <circle cx="45" cy="10" r="2" fill="#ff69b4"/>
-      <!-- [한글 주석] 광택 효과 -->
-      <rect x="9" y="7" width="42" height="2" fill="#fff8aa" opacity="0.5"/>
-    </g>`,
-
-    // [한글 주석] 황금 왕관 - 전설급 5포인트 대형 왕관
-    'gold_crown': `<g>
-      <!-- [한글 주석] 왕관 베이스 (두껍고 넓게) -->
-      <rect x="8" y="7" width="44" height="8" fill="#ffd700" rx="3"/>
-      <!-- [한글 주석] 포인트 5개 - 머리 위로 크게 -->
-      <polygon points="10,7 13,-2 16,7" fill="#ffd700"/>
-      <polygon points="18,7 22,-1 26,7" fill="#ffd700"/>
-      <polygon points="27,7 30,-5 33,7" fill="#ffd700"/>
-      <polygon points="34,7 38,-1 42,7" fill="#ffd700"/>
-      <polygon points="44,7 47,-2 50,7" fill="#ffd700"/>
-      <!-- [한글 주석] 광택 -->
-      <rect x="8" y="7" width="44" height="2" fill="#fff8aa" opacity="0.7"/>
-      <!-- [한글 주석] 중앙 대형 보석 -->
-      <circle cx="30" cy="-3" r="3.5" fill="#ff4444"/>
-      <circle cx="30" cy="-3" r="2" fill="#ff9999"/>
-      <!-- [한글 주석] 사이드 보석 -->
-      <circle cx="13" cy="0" r="2" fill="#4a9eff"/>
-      <circle cx="22" cy="1" r="2" fill="#7fff00"/>
-      <circle cx="38" cy="1" r="2" fill="#7fff00"/>
-      <circle cx="47" cy="0" r="2" fill="#4a9eff"/>
-      <!-- [한글 주석] 베이스 장식선 -->
-      <rect x="8" y="12" width="44" height="2.5" fill="#ffaa00"/>
-      <!-- [한글 주석] 베이스 보석 -->
-      <circle cx="14" cy="11" r="2" fill="#ff69b4"/>
-      <circle cx="22" cy="11" r="2" fill="#4a9eff"/>
-      <circle cx="30" cy="11" r="2" fill="#ff4444"/>
-      <circle cx="38" cy="11" r="2" fill="#4a9eff"/>
-      <circle cx="46" cy="11" r="2" fill="#ff69b4"/>
-      <!-- [한글 주석] 반짝임 -->
-      <circle cx="10" cy="4" r="1.5" fill="#fff" opacity="0.8"/>
-      <circle cx="50" cy="4" r="1.5" fill="#fff" opacity="0.8"/>
-      <circle cx="30" cy="8" r="1" fill="#fff" opacity="0.6"/>
-    </g>`,
-
-    // ==========================================
-    // [한글 주석] 망토류 - 어깨(y=36)부터 발끝(y=100)까지 넓게
-    // ==========================================
-
-    // [한글 주석] 자연 망토 - 어깨에서 발끝까지 넓은 초록 망토
-    'nature_cape': `<g>
-      <!-- [한글 주석] 왼쪽 망토 - viewBox 밖까지 넓게 -->
-      <path d="M-2,37 L11,36 L14,100 L-2,100 Z" fill="#2d8a3a" opacity="0.9"/>
-      <!-- [한글 주석] 오른쪽 망토 -->
-      <path d="M62,37 L49,36 L46,100 L62,100 Z" fill="#2d8a3a" opacity="0.9"/>
-      <!-- [한글 주석] 망토 안쪽 색상 (입체감) -->
-      <path d="M2,38 L11,37 L13,100 L2,100 Z" fill="#3aaa4a" opacity="0.4"/>
-      <path d="M58,38 L49,37 L47,100 L58,100 Z" fill="#3aaa4a" opacity="0.4"/>
-      <!-- [한글 주석] 테두리 장식 -->
-      <path d="M-2,37 L11,36 L14,100" fill="none" stroke="#7fff00" stroke-width="2" opacity="0.8"/>
-      <path d="M62,37 L49,36 L46,100" fill="none" stroke="#7fff00" stroke-width="2" opacity="0.8"/>
-      <!-- [한글 주석] 잎사귀 패턴 -->
-      <ellipse cx="3" cy="50" rx="4" ry="6" fill="#7fff00" opacity="0.5" transform="rotate(-20,3,50)"/>
-      <ellipse cx="4" cy="65" rx="4" ry="6" fill="#84ff00" opacity="0.5" transform="rotate(15,4,65)"/>
-      <ellipse cx="3" cy="80" rx="4" ry="6" fill="#7fff00" opacity="0.5" transform="rotate(-10,3,80)"/>
-      <ellipse cx="57" cy="50" rx="4" ry="6" fill="#7fff00" opacity="0.5" transform="rotate(20,57,50)"/>
-      <ellipse cx="56" cy="65" rx="4" ry="6" fill="#84ff00" opacity="0.5" transform="rotate(-15,56,65)"/>
-      <ellipse cx="57" cy="80" rx="4" ry="6" fill="#7fff00" opacity="0.5" transform="rotate(10,57,80)"/>
-      <!-- [한글 주석] 망토 끝 장식 -->
-      <rect x="-2" y="97" width="16" height="3" fill="#7fff00" rx="1"/>
-      <rect x="46" y="97" width="16" height="3" fill="#7fff00" rx="1"/>
-    </g>`,
-
-    // [한글 주석] 유물 망토 - 황금 문양의 넓은 갈색 망토
-    'artifact_cape': `<g>
-      <!-- [한글 주석] 왼쪽 망토 -->
-      <path d="M-2,37 L11,36 L14,100 L-2,100 Z" fill="#8B6914" opacity="0.9"/>
-      <!-- [한글 주석] 오른쪽 망토 -->
-      <path d="M62,37 L49,36 L46,100 L62,100 Z" fill="#8B6914" opacity="0.9"/>
-      <!-- [한글 주석] 안쪽 색상 -->
-      <path d="M2,38 L11,37 L13,100 L2,100 Z" fill="#c8a040" opacity="0.3"/>
-      <path d="M58,38 L49,37 L47,100 L58,100 Z" fill="#c8a040" opacity="0.3"/>
-      <!-- [한글 주석] 황금 테두리 -->
-      <path d="M-2,37 L11,36 L14,100" fill="none" stroke="#ffd700" stroke-width="2.5" opacity="0.9"/>
-      <path d="M62,37 L49,36 L46,100" fill="none" stroke="#ffd700" stroke-width="2.5" opacity="0.9"/>
-      <!-- [한글 주석] 황금 문양 (왼쪽) -->
-      <circle cx="4" cy="48" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
-      <circle cx="4" cy="48" r="1.5" fill="#ffd700" opacity="0.8"/>
-      <circle cx="4" cy="63" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
-      <circle cx="4" cy="63" r="1.5" fill="#ffd700" opacity="0.8"/>
-      <circle cx="4" cy="78" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
-      <circle cx="4" cy="78" r="1.5" fill="#ffd700" opacity="0.8"/>
-      <!-- [한글 주석] 황금 문양 (오른쪽) -->
-      <circle cx="56" cy="48" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
-      <circle cx="56" cy="48" r="1.5" fill="#ffd700" opacity="0.8"/>
-      <circle cx="56" cy="63" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
-      <circle cx="56" cy="63" r="1.5" fill="#ffd700" opacity="0.8"/>
-      <circle cx="56" cy="78" r="3.5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.8"/>
-      <circle cx="56" cy="78" r="1.5" fill="#ffd700" opacity="0.8"/>
-      <!-- [한글 주석] 황금 끝 장식 -->
-      <rect x="-2" y="97" width="16" height="3" fill="#ffd700" rx="1"/>
-      <rect x="46" y="97" width="16" height="3" fill="#ffd700" rx="1"/>
-    </g>`,
-
-    // ==========================================
-    // [한글 주석] 날개류 - 어깨(y=40)에서 크고 화려하게
-    // ==========================================
-
-    // [한글 주석] 나비 날개 - 어깨에서 크게 펼쳐지는 나비 날개
-    'butterfly_wing': `<g>
-      <!-- [한글 주석] 왼쪽 위 날개 (크게 viewBox 밖으로) -->
-      <ellipse cx="2" cy="38" rx="16" ry="20" fill="#87CEEB" opacity="0.8" transform="rotate(-25,2,38)"/>
-      <!-- [한글 주석] 왼쪽 아래 날개 -->
-      <ellipse cx="4" cy="60" rx="12" ry="15" fill="#4a9eff" opacity="0.7" transform="rotate(20,4,60)"/>
-      <!-- [한글 주석] 오른쪽 위 날개 -->
-      <ellipse cx="58" cy="38" rx="16" ry="20" fill="#87CEEB" opacity="0.8" transform="rotate(25,58,38)"/>
-      <!-- [한글 주석] 오른쪽 아래 날개 -->
-      <ellipse cx="56" cy="60" rx="12" ry="15" fill="#4a9eff" opacity="0.7" transform="rotate(-20,56,60)"/>
-      <!-- [한글 주석] 날개 문양 왼쪽 -->
-      <ellipse cx="2" cy="36" rx="7" ry="9" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.7" transform="rotate(-25,2,36)"/>
-      <circle cx="0" cy="32" r="2.5" fill="#ffd700" opacity="0.7"/>
-      <circle cx="-3" cy="42" r="1.5" fill="#ff69b4" opacity="0.6"/>
-      <!-- [한글 주석] 날개 문양 오른쪽 -->
-      <ellipse cx="58" cy="36" rx="7" ry="9" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.7" transform="rotate(25,58,36)"/>
-      <circle cx="60" cy="32" r="2.5" fill="#ffd700" opacity="0.7"/>
-      <circle cx="63" cy="42" r="1.5" fill="#ff69b4" opacity="0.6"/>
-      <!-- [한글 주석] 날개 연결 -->
-      <ellipse cx="10" cy="42" rx="4" ry="3" fill="#4a9eff" opacity="0.5"/>
-      <ellipse cx="50" cy="42" rx="4" ry="3" fill="#4a9eff" opacity="0.5"/>
-    </g>`,
-
-    // [한글 주석] 하늘 날개 - 전설급 대형 천사 날개
-    'sky_wing': `<g>
-      <!-- [한글 주석] 왼쪽 큰 날개 (viewBox 밖으로 크게) -->
-      <path d="M10,42 C-14,20 -20,58 -8,74 C-2,80 8,67 10,60 Z" fill="#ffffff" opacity="0.9"/>
-      <!-- [한글 주석] 왼쪽 날개 깃털 레이어 -->
-      <path d="M10,44 C-5,28 -8,52 3,65 Z" fill="#e8f4ff" opacity="0.7"/>
-      <path d="M10,48 C0,34 -1,54 6,64 Z" fill="#ffffff" opacity="0.6"/>
-      <path d="M10,52 C2,40 2,56 7,63 Z" fill="#d0eaff" opacity="0.5"/>
-      <!-- [한글 주석] 오른쪽 큰 날개 -->
-      <path d="M50,42 C74,20 80,58 68,74 C62,80 52,67 50,60 Z" fill="#ffffff" opacity="0.9"/>
-      <!-- [한글 주석] 오른쪽 날개 깃털 레이어 -->
-      <path d="M50,44 C65,28 68,52 57,65 Z" fill="#e8f4ff" opacity="0.7"/>
-      <path d="M50,48 C60,34 61,54 54,64 Z" fill="#ffffff" opacity="0.6"/>
-      <path d="M50,52 C58,40 58,56 53,63 Z" fill="#d0eaff" opacity="0.5"/>
-      <!-- [한글 주석] 날개 테두리 빛나는 효과 -->
-      <path d="M10,42 C-14,20 -20,58 -8,74" fill="none" stroke="#4a9eff" stroke-width="1.5" opacity="0.6"/>
-      <path d="M50,42 C74,20 80,58 68,74" fill="none" stroke="#4a9eff" stroke-width="1.5" opacity="0.6"/>
-      <!-- [한글 주석] 반짝임 효과 -->
-      <circle cx="-6" cy="28" r="2.5" fill="#fff" opacity="0.9"/>
-      <circle cx="66" cy="28" r="2.5" fill="#fff" opacity="0.9"/>
-      <circle cx="-12" cy="50" r="1.5" fill="#4a9eff" opacity="0.7"/>
-      <circle cx="72" cy="50" r="1.5" fill="#4a9eff" opacity="0.7"/>
-      <circle cx="-5" cy="65" r="1.5" fill="#fff" opacity="0.6"/>
-      <circle cx="65" cy="65" r="1.5" fill="#fff" opacity="0.6"/>
-    </g>`,
-
-    // ==========================================
-    // [한글 주석] 배지류 - 가슴 위치에 크고 선명하게
-    // ==========================================
-
-    // [한글 주석] 탐험가 배지 - 별 모양 메달 (가슴 중앙)
-    'explorer_badge': `<g>
-      <!-- [한글 주석] 메달 리본 -->
-      <rect x="27" y="34" width="6" height="8" fill="#4a9eff" rx="1"/>
-      <rect x="26" y="34" width="3" height="6" fill="#2277cc"/>
-      <polygon points="27,34 30,31 33,34" fill="#4a9eff"/>
-      <!-- [한글 주석] 별 모양 배지 (크게) -->
-      <polygon points="30,44 32.5,51 40,51 34,55.5 36.5,62.5 30,58 23.5,62.5 26,55.5 20,51 27.5,51"
-               fill="#ffd700" stroke="#ffaa00" stroke-width="1"/>
-      <!-- [한글 주석] 별 중앙 원형 장식 -->
-      <circle cx="30" cy="53" r="5" fill="#ff9500"/>
-      <circle cx="30" cy="53" r="3" fill="#ffd700"/>
-      <circle cx="30" cy="53" r="1.5" fill="#fff" opacity="0.8"/>
-      <!-- [한글 주석] 반짝임 -->
-      <circle cx="23" cy="46" r="1.5" fill="#fff" opacity="0.8"/>
-      <circle cx="37" cy="46" r="1.5" fill="#fff" opacity="0.8"/>
-      <circle cx="21" cy="54" r="1" fill="#fff" opacity="0.6"/>
-      <circle cx="39" cy="54" r="1" fill="#fff" opacity="0.6"/>
-    </g>`,
-
-    // [한글 주석] 전설 탐험가 트로피 - 아바타 옆에 크게!
-    'legend_badge': `<g>
-      <!-- [한글 주석] 트로피 받침대 -->
-      <rect x="37" y="90" width="22" height="5" fill="#ffd700" rx="3"/>
-      <rect x="40" y="82" width="16" height="9" fill="#ffd700"/>
-      <!-- [한글 주석] 트로피 몸통 (크게) -->
-      <path d="M36,45 Q33,62 38,76 L58,76 Q63,62 60,45 Z" fill="#ffd700"/>
-      <!-- [한글 주석] 트로피 광택 -->
-      <path d="M38,47 Q35,62 39,74" fill="none" stroke="#fff8aa" stroke-width="2.5" opacity="0.7"/>
-      <!-- [한글 주석] 트로피 왼쪽 손잡이 -->
-      <path d="M36,50 Q26,50 26,60 Q26,68 36,67" fill="none" stroke="#ffd700" stroke-width="5" stroke-linecap="round"/>
-      <!-- [한글 주석] 트로피 오른쪽 손잡이 -->
-      <path d="M60,50 Q70,50 70,60 Q70,68 60,67" fill="none" stroke="#ffd700" stroke-width="5" stroke-linecap="round"/>
-      <!-- [한글 주석] 트로피 별 장식 (크게) -->
-      <polygon points="48,52 50,58 56,58 51,62 53,68 48,64 43,68 45,62 40,58 46,58"
-               fill="#fff" opacity="0.95"/>
-      <!-- [한글 주석] 트로피 테두리 -->
-      <path d="M36,45 Q33,62 38,76 L58,76 Q63,62 60,45 Z" fill="none" stroke="#ffaa00" stroke-width="2"/>
-      <!-- [한글 주석] 빛나는 효과 -->
-      <circle cx="41" cy="50" r="2.5" fill="#fff" opacity="0.8"/>
-      <circle cx="64" cy="48" r="2" fill="#fff" opacity="0.8"/>
-      <circle cx="69" cy="58" r="2" fill="#ffd700" opacity="0.9"/>
-      <!-- [한글 주석] 반짝임 파티클 -->
-      <circle cx="71" cy="44" r="1.5" fill="#ffd700" opacity="0.8"/>
-      <circle cx="73" cy="55" r="1.5" fill="#fff" opacity="0.7"/>
-      <circle cx="72" cy="67" r="1.5" fill="#ffd700" opacity="0.8"/>
-      <circle cx="25" cy="48" r="1.5" fill="#ffd700" opacity="0.7"/>
-      <circle cx="23" cy="60" r="1" fill="#fff" opacity="0.6"/>
-    </g>`
-  };
-  return items[itemId] || '';
-}
-
 
 // ==========================================
-// 4종 아바타 SVG 라우터 및 픽셀아트 함수
+// ==========================================
+// [한글 주석] 아바타 렌더링 함수
 // ==========================================
 
-// [한글 주석] 아바타 ID에 따라 해당 SVG를 반환하는 메인 라우터 함수
+// [한글 주석] PNG 이미지 반환 (기존 SVG 방식 대체)
 function getAvatarSVG(avatarId) {
-  // [한글 주석] 하위 호환성 처리 (기존 ID를 새 ID로 매핑)
-  if (avatarId === 'boy' || avatarId === 'boy_default') avatarId = 'boy_explorer';
-  if (avatarId === 'girl' || avatarId === 'girl_default') avatarId = 'girl_sakura';
-
-  if (avatarId === 'boy_explorer') return getBoyExplorerSVG();
-  if (avatarId === 'boy_police') return getBoyPoliceSVG();
-  if (avatarId === 'girl_sakura') return getGirlSakuraSVG();
-  if (avatarId === 'girl_sports') return getGirlSportsSVG();
-  return getBoyExplorerSVG();
-}
-
-// [한글 주석] 갈색 탐험가 (남) - 픽셀아트 SVG
-function getBoyExplorerSVG() {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100" style="image-rendering:pixelated" width="100%" height="100%">
-    <g id="baseLayer">
-      <rect x="10" y="0" width="40" height="7" fill="#6b4a1a"/>
-      <rect x="7" y="6" width="46" height="4" fill="#4a3008"/>
-      <rect x="10" y="4" width="40" height="3" fill="#c8914a"/>
-      <rect x="12" y="8" width="36" height="5" fill="#3a2200"/>
-      <rect x="10" y="10" width="6" height="10" fill="#3a2200"/>
-      <rect x="44" y="10" width="6" height="10" fill="#3a2200"/>
-      <rect x="12" y="13" width="36" height="22" fill="#e8aa70"/>
-      <rect x="10" y="15" width="2" height="16" fill="#e8aa70"/>
-      <rect x="48" y="15" width="2" height="16" fill="#e8aa70"/>
-      <rect x="14" y="19" width="12" height="9" fill="#fff"/>
-      <rect x="15" y="19" width="10" height="9" fill="#1a0a00"/>
-      <rect x="16" y="20" width="6" height="6" fill="#8b5e00"/>
-      <rect x="18" y="20" width="3" height="3" fill="#fff"/>
-      <rect x="34" y="19" width="12" height="9" fill="#fff"/>
-      <rect x="35" y="19" width="10" height="9" fill="#1a0a00"/>
-      <rect x="36" y="20" width="6" height="6" fill="#8b5e00"/>
-      <rect x="38" y="20" width="3" height="3" fill="#fff"/>
-      <rect x="15" y="17" width="10" height="2" fill="#3a2200"/>
-      <rect x="35" y="17" width="10" height="2" fill="#3a2200"/>
-      <rect x="11" y="28" width="6" height="3" fill="#e8998a" opacity="0.8"/>
-      <rect x="43" y="28" width="6" height="3" fill="#e8998a" opacity="0.8"/>
-      <rect x="22" y="31" width="16" height="3" fill="#c06050"/>
-      <rect x="20" y="31" width="2" height="2" fill="#c06050"/>
-      <rect x="38" y="31" width="2" height="2" fill="#c06050"/>
-      <rect x="24" y="35" width="12" height="5" fill="#e8aa70"/>
-      <rect x="10" y="40" width="40" height="22" fill="#8b6914"/>
-      <rect x="5" y="40" width="6" height="20" fill="#8b6914"/>
-      <rect x="49" y="40" width="6" height="20" fill="#8b6914"/>
-      <rect x="3" y="44" width="4" height="14" fill="#8b6914"/>
-      <rect x="53" y="44" width="4" height="14" fill="#8b6914"/>
-      <rect x="5" y="48" width="6" height="3" fill="#c8914a"/>
-      <rect x="49" y="48" width="6" height="3" fill="#c8914a"/>
-      <rect x="28" y="41" width="3" height="20" fill="#6b4a1a"/>
-      <rect x="27" y="44" width="3" height="3" fill="#ffd700"/>
-      <rect x="27" y="51" width="3" height="3" fill="#ffd700"/>
-      <rect x="27" y="58" width="3" height="3" fill="#ffd700"/>
-      <rect x="12" y="46" width="12" height="8" fill="#6b4a1a"/>
-      <rect x="36" y="46" width="12" height="8" fill="#6b4a1a"/>
-      <rect x="3" y="57" width="4" height="6" fill="#e8aa70"/>
-      <rect x="53" y="57" width="4" height="6" fill="#e8aa70"/>
-      <rect x="10" y="62" width="40" height="4" fill="#4a3008"/>
-      <rect x="24" y="61" width="12" height="6" fill="#c8914a"/>
-      <rect x="27" y="62" width="6" height="4" fill="#8b6914"/>
-      <rect x="10" y="66" width="18" height="24" fill="#5a4a1a"/>
-      <rect x="32" y="66" width="18" height="24" fill="#5a4a1a"/>
-      <rect x="11" y="78" width="16" height="6" fill="#4a3a0a"/>
-      <rect x="33" y="78" width="16" height="6" fill="#4a3a0a"/>
-      <rect x="8" y="90" width="22" height="7" fill="#3a2800"/>
-      <rect x="30" y="90" width="22" height="7" fill="#3a2800"/>
-      <rect x="7" y="95" width="24" height="5" fill="#2a1800"/>
-      <rect x="29" y="95" width="24" height="5" fill="#2a1800"/>
-    </g>
-    <g id="itemLayer"></g>
-  </svg>`;
-}
-
-
-// [한글 주석] 파랑 경찰관 (남) - 픽셀아트 SVG
-function getBoyPoliceSVG() {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100" style="image-rendering:pixelated" width="100%" height="100%">
-    <g id="baseLayer">
-      <rect x="10" y="0" width="40" height="10" fill="#1a3a8a"/>
-      <rect x="7" y="9" width="46" height="4" fill="#0a2a6a"/>
-      <rect x="12" y="2" width="36" height="4" fill="#4a7aff"/>
-      <rect x="24" y="1" width="12" height="7" fill="#ffd700"/>
-      <rect x="26" y="2" width="8" height="5" fill="#ffaa00"/>
-      <rect x="29" y="1" width="2" height="7" fill="#ffd700"/>
-      <rect x="10" y="11" width="6" height="8" fill="#1a0a00"/>
-      <rect x="44" y="11" width="6" height="8" fill="#1a0a00"/>
-      <rect x="12" y="13" width="36" height="22" fill="#f5c48a"/>
-      <rect x="10" y="15" width="2" height="16" fill="#f5c48a"/>
-      <rect x="48" y="15" width="2" height="16" fill="#f5c48a"/>
-      <rect x="14" y="19" width="12" height="9" fill="#fff"/>
-      <rect x="15" y="19" width="10" height="9" fill="#1a0a00"/>
-      <rect x="16" y="20" width="6" height="6" fill="#1a4aaa"/>
-      <rect x="18" y="20" width="3" height="3" fill="#fff"/>
-      <rect x="34" y="19" width="12" height="9" fill="#fff"/>
-      <rect x="35" y="19" width="10" height="9" fill="#1a0a00"/>
-      <rect x="36" y="20" width="6" height="6" fill="#1a4aaa"/>
-      <rect x="38" y="20" width="3" height="3" fill="#fff"/>
-      <rect x="15" y="17" width="10" height="2" fill="#1a0a00"/>
-      <rect x="35" y="17" width="10" height="2" fill="#1a0a00"/>
-      <rect x="11" y="28" width="6" height="3" fill="#ffbbaa" opacity="0.7"/>
-      <rect x="43" y="28" width="6" height="3" fill="#ffbbaa" opacity="0.7"/>
-      <rect x="22" y="31" width="16" height="3" fill="#c06050"/>
-      <rect x="20" y="31" width="2" height="2" fill="#c06050"/>
-      <rect x="38" y="31" width="2" height="2" fill="#c06050"/>
-      <rect x="24" y="35" width="12" height="5" fill="#f5c48a"/>
-      <rect x="22" y="38" width="16" height="5" fill="#ffffff"/>
-      <rect x="24" y="38" width="12" height="8" fill="#ffffff"/>
-      <rect x="27" y="40" width="6" height="12" fill="#0a1a6a"/>
-      <rect x="26" y="46" width="8" height="4" fill="#0a1a6a"/>
-      <rect x="10" y="40" width="40" height="22" fill="#1a3a8a"/>
-      <rect x="5" y="40" width="6" height="20" fill="#1a3a8a"/>
-      <rect x="49" y="40" width="6" height="20" fill="#1a3a8a"/>
-      <rect x="3" y="44" width="4" height="14" fill="#1a3a8a"/>
-      <rect x="53" y="44" width="4" height="14" fill="#1a3a8a"/>
-      <rect x="5" y="50" width="6" height="3" fill="#4a7aff"/>
-      <rect x="49" y="50" width="6" height="3" fill="#4a7aff"/>
-      <rect x="12" y="44" width="12" height="10" fill="#ffd700"/>
-      <rect x="13" y="45" width="10" height="8" fill="#ffaa00"/>
-      <rect x="17" y="46" width="2" height="6" fill="#ffd700"/>
-      <rect x="28" y="40" width="3" height="22" fill="#0a2a6a"/>
-      <rect x="27" y="46" width="3" height="3" fill="#4a7aff"/>
-      <rect x="27" y="53" width="3" height="3" fill="#4a7aff"/>
-      <rect x="3" y="57" width="4" height="6" fill="#f5c48a"/>
-      <rect x="53" y="57" width="4" height="6" fill="#f5c48a"/>
-      <rect x="10" y="62" width="40" height="4" fill="#0a1a4a"/>
-      <rect x="24" y="61" width="12" height="6" fill="#ffd700"/>
-      <rect x="10" y="66" width="18" height="24" fill="#0a2a6a"/>
-      <rect x="32" y="66" width="18" height="24" fill="#0a2a6a"/>
-      <rect x="26" y="66" width="3" height="24" fill="#4a7aff"/>
-      <rect x="31" y="66" width="3" height="24" fill="#4a7aff"/>
-      <rect x="8" y="90" width="22" height="7" fill="#0a0a1a"/>
-      <rect x="30" y="90" width="22" height="7" fill="#0a0a1a"/>
-      <rect x="7" y="95" width="24" height="5" fill="#1a1a2a"/>
-      <rect x="29" y="95" width="24" height="5" fill="#1a1a2a"/>
-    </g>
-    <g id="itemLayer"></g>
-  </svg>`;
-}
-
-
-// [한글 주석] 벚꽃 탐험가 (여) - 픽셀아트 SVG
-function getGirlSakuraSVG() {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100" style="image-rendering:pixelated" width="100%" height="100%">
-    <g id="baseLayer">
-      <rect x="14" y="2" width="32" height="5" fill="#5a2a00"/>
-      <rect x="12" y="5" width="36" height="7" fill="#5a2a00"/>
-      <rect x="10" y="8" width="40" height="8" fill="#5a2a00"/>
-      <rect x="8" y="10" width="6" height="46" fill="#5a2a00"/>
-      <rect x="46" y="10" width="6" height="46" fill="#5a2a00"/>
-      <rect x="6" y="14" width="4" height="40" fill="#5a2a00"/>
-      <rect x="50" y="14" width="4" height="40" fill="#5a2a00"/>
-      <rect x="6" y="34" width="4" height="6" fill="#7a3a10"/>
-      <rect x="8" y="42" width="4" height="6" fill="#7a3a10"/>
-      <rect x="50" y="34" width="4" height="6" fill="#7a3a10"/>
-      <rect x="48" y="42" width="4" height="6" fill="#7a3a10"/>
-      <rect x="10" y="9" width="8" height="5" fill="#ffb7c5"/>
-      <rect x="12" y="7" width="4" height="4" fill="#ff88aa"/>
-      <rect x="12" y="10" width="4" height="2" fill="#fff" opacity="0.5"/>
-      <rect x="12" y="13" width="36" height="22" fill="#f5c48a"/>
-      <rect x="10" y="15" width="2" height="16" fill="#f5c48a"/>
-      <rect x="48" y="15" width="2" height="16" fill="#f5c48a"/>
-      <rect x="13" y="19" width="13" height="9" fill="#fff"/>
-      <rect x="14" y="19" width="11" height="9" fill="#1a0a00"/>
-      <rect x="15" y="20" width="7" height="6" fill="#aa3366"/>
-      <rect x="17" y="20" width="3" height="3" fill="#fff"/>
-      <rect x="34" y="19" width="13" height="9" fill="#fff"/>
-      <rect x="35" y="19" width="11" height="9" fill="#1a0a00"/>
-      <rect x="36" y="20" width="7" height="6" fill="#aa3366"/>
-      <rect x="38" y="20" width="3" height="3" fill="#fff"/>
-      <rect x="13" y="17" width="3" height="4" fill="#1a0a00"/>
-      <rect x="17" y="16" width="3" height="4" fill="#1a0a00"/>
-      <rect x="22" y="16" width="3" height="4" fill="#1a0a00"/>
-      <rect x="34" y="17" width="3" height="4" fill="#1a0a00"/>
-      <rect x="38" y="16" width="3" height="4" fill="#1a0a00"/>
-      <rect x="43" y="16" width="3" height="4" fill="#1a0a00"/>
-      <rect x="11" y="28" width="6" height="3" fill="#ffb7c5" opacity="0.9"/>
-      <rect x="43" y="28" width="6" height="3" fill="#ffb7c5" opacity="0.9"/>
-      <rect x="22" y="31" width="16" height="3" fill="#e07090"/>
-      <rect x="20" y="31" width="2" height="2" fill="#e07090"/>
-      <rect x="38" y="31" width="2" height="2" fill="#e07090"/>
-      <rect x="8" y="22" width="3" height="3" fill="#ffb7c5"/>
-      <rect x="7" y="23" width="5" height="3" fill="#ffb7c5"/>
-      <rect x="8" y="26" width="3" height="3" fill="#ffb7c5"/>
-      <rect x="49" y="22" width="3" height="3" fill="#ffb7c5"/>
-      <rect x="48" y="23" width="5" height="3" fill="#ffb7c5"/>
-      <rect x="49" y="26" width="3" height="3" fill="#ffb7c5"/>
-      <rect x="24" y="35" width="12" height="5" fill="#f5c48a"/>
-      <rect x="18" y="39" width="24" height="2" fill="#ffb7c5"/>
-      <rect x="27" y="39" width="6" height="4" fill="#ff88aa"/>
-      <rect x="15" y="40" width="30" height="22" fill="#f48aaa"/>
-      <rect x="10" y="42" width="6" height="18" fill="#f48aaa"/>
-      <rect x="44" y="42" width="6" height="18" fill="#f48aaa"/>
-      <rect x="8" y="46" width="4" height="12" fill="#f48aaa"/>
-      <rect x="48" y="46" width="4" height="12" fill="#f48aaa"/>
-      <rect x="22" y="40" width="16" height="3" fill="#ffb7c5"/>
-      <rect x="26" y="40" width="8" height="6" fill="#ffccdd"/>
-      <rect x="29" y="40" width="2" height="8" fill="#fff" opacity="0.4"/>
-      <rect x="15" y="58" width="30" height="3" fill="#e06080"/>
-      <rect x="8" y="54" width="4" height="6" fill="#f5c48a"/>
-      <rect x="48" y="54" width="4" height="6" fill="#f5c48a"/>
-      <rect x="15" y="61" width="30" height="34" fill="#f48aaa"/>
-      <rect x="17" y="61" width="3" height="34" fill="#e06080" opacity="0.4"/>
-      <rect x="40" y="61" width="3" height="34" fill="#e06080" opacity="0.4"/>
-      <rect x="20" y="68" width="6" height="6" fill="#ffccdd" opacity="0.7"/>
-      <rect x="22" y="66" width="2" height="3" fill="#ffccdd" opacity="0.7"/>
-      <rect x="34" y="74" width="6" height="6" fill="#ffccdd" opacity="0.7"/>
-      <rect x="36" y="72" width="2" height="3" fill="#ffccdd" opacity="0.7"/>
-      <rect x="18" y="80" width="6" height="6" fill="#ffccdd" opacity="0.7"/>
-      <rect x="14" y="94" width="32" height="2" fill="#ffb7c5"/>
-      <rect x="18" y="96" width="10" height="4" fill="#e06080"/>
-      <rect x="32" y="96" width="10" height="4" fill="#e06080"/>
-      <rect x="26" y="99" width="3" height="5" fill="#c04060"/>
-      <rect x="37" y="99" width="3" height="5" fill="#c04060"/>
-    </g>
-    <g id="itemLayer"></g>
-  </svg>`;
-}
-
-
-// [한글 주석] 스포츠 탐험가 (여) - 픽셀아트 SVG
-function getGirlSportsSVG() {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100" style="image-rendering:pixelated" width="100%" height="100%">
-    <g id="baseLayer">
-      <rect x="14" y="2" width="32" height="5" fill="#1a1a1a"/>
-      <rect x="12" y="5" width="36" height="7" fill="#1a1a1a"/>
-      <rect x="10" y="8" width="40" height="8" fill="#1a1a1a"/>
-      <rect x="8" y="10" width="6" height="24" fill="#1a1a1a"/>
-      <rect x="46" y="10" width="6" height="14" fill="#1a1a1a"/>
-      <rect x="6" y="14" width="4" height="18" fill="#1a1a1a"/>
-      <rect x="46" y="10" width="10" height="28" fill="#1a1a1a"/>
-      <rect x="48" y="36" width="8" height="18" fill="#1a1a1a"/>
-      <rect x="50" y="52" width="6" height="10" fill="#1a1a1a"/>
-      <rect x="10" y="12" width="40" height="4" fill="#84ff00"/>
-      <rect x="12" y="13" width="36" height="22" fill="#f5c48a"/>
-      <rect x="10" y="15" width="2" height="16" fill="#f5c48a"/>
-      <rect x="48" y="15" width="2" height="16" fill="#f5c48a"/>
-      <rect x="13" y="19" width="13" height="9" fill="#fff"/>
-      <rect x="14" y="19" width="11" height="9" fill="#1a0a00"/>
-      <rect x="15" y="20" width="7" height="6" fill="#2a8a2a"/>
-      <rect x="17" y="20" width="3" height="3" fill="#fff"/>
-      <rect x="34" y="19" width="13" height="9" fill="#fff"/>
-      <rect x="35" y="19" width="11" height="9" fill="#1a0a00"/>
-      <rect x="36" y="20" width="7" height="6" fill="#2a8a2a"/>
-      <rect x="38" y="20" width="3" height="3" fill="#fff"/>
-      <rect x="14" y="17" width="10" height="2" fill="#1a0a00"/>
-      <rect x="36" y="17" width="10" height="2" fill="#1a0a00"/>
-      <rect x="11" y="28" width="6" height="3" fill="#ffbbaa" opacity="0.8"/>
-      <rect x="43" y="28" width="6" height="3" fill="#ffbbaa" opacity="0.8"/>
-      <rect x="22" y="31" width="16" height="3" fill="#d06050"/>
-      <rect x="20" y="31" width="2" height="2" fill="#d06050"/>
-      <rect x="38" y="31" width="2" height="2" fill="#d06050"/>
-      <rect x="24" y="35" width="12" height="5" fill="#f5c48a"/>
-      <rect x="13" y="40" width="34" height="22" fill="#f0f0f0"/>
-      <rect x="8" y="42" width="6" height="18" fill="#f0f0f0"/>
-      <rect x="46" y="42" width="6" height="18" fill="#f0f0f0"/>
-      <rect x="6" y="46" width="4" height="12" fill="#f0f0f0"/>
-      <rect x="50" y="46" width="4" height="12" fill="#f0f0f0"/>
-      <rect x="13" y="40" width="4" height="22" fill="#84ff00"/>
-      <rect x="43" y="40" width="4" height="22" fill="#84ff00"/>
-      <rect x="8" y="42" width="4" height="18" fill="#84ff00"/>
-      <rect x="48" y="42" width="4" height="18" fill="#84ff00"/>
-      <rect x="22" y="44" width="16" height="12" fill="#e0e0e0"/>
-      <rect x="24" y="45" width="12" height="10" fill="#84ff00" opacity="0.4"/>
-      <rect x="29" y="46" width="2" height="8" fill="#2a6a2a"/>
-      <rect x="6" y="56" width="4" height="6" fill="#f5c48a"/>
-      <rect x="50" y="56" width="4" height="6" fill="#f5c48a"/>
-      <rect x="13" y="62" width="34" height="5" fill="#2a2a2a"/>
-      <rect x="24" y="61" width="12" height="7" fill="#84ff00"/>
-      <rect x="28" y="62" width="4" height="5" fill="#2a2a2a"/>
-      <rect x="13" y="67" width="16" height="18" fill="#2a2a2a"/>
-      <rect x="31" y="67" width="16" height="18" fill="#2a2a2a"/>
-      <rect x="27" y="67" width="3" height="18" fill="#84ff00"/>
-      <rect x="30" y="67" width="3" height="18" fill="#84ff00"/>
-      <rect x="14" y="85" width="14" height="8" fill="#f5c48a"/>
-      <rect x="32" y="85" width="14" height="8" fill="#f5c48a"/>
-      <rect x="13" y="93" width="16" height="12" fill="#f0f0f0"/>
-      <rect x="31" y="93" width="16" height="12" fill="#f0f0f0"/>
-      <rect x="13" y="96" width="16" height="3" fill="#84ff00"/>
-      <rect x="31" y="96" width="16" height="3" fill="#84ff00"/>
-    </g>
-    <g id="itemLayer"></g>
-  </svg>`;
+  // [한글 주석] 기존 SVG ID를 새 PNG ID로 매핑
+  const mapping = {
+    'boy_explorer': 'boy1_dodam',
+    'boy_police':   'boy2_junseo',
+    'girl_sakura':  'girl1_nari',
+    'girl_sports':  'girl3_sua',
+    'boy':          'boy1_dodam',
+    'girl':         'girl1_nari',
+  };
+  const mapped = mapping[avatarId] || avatarId;
+  return `<img src="${IMG_BASE}avatar_${mapped}.png"
+    style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated;"
+    alt="${mapped}">`;
 }
 
 
 // ==========================================
 // [한글 주석] 아바타/성별 선택 호환성 관리자
 // ==========================================
-function selectGender(g) {
-  // [한글 주석] 기존 selectGender 함수 호출 시 아바타 ID로 역추적하여 저장
-  if (g === 'girl') selectAvatar('girl_sakura');
-  else selectAvatar('boy_explorer');
-}
-
-let tempSelectedAvatarId = null;
-
 function showGenderSelectScreen() {
   const s = document.getElementById('gender-select-screen');
   if (s) {
@@ -659,25 +151,46 @@ function showGenderSelectScreen() {
   }
 }
 
-// [한글 주석] 아바타를 화면에 그리드 형식으로 렌더링
+// [한글 주석] 아바타 선택 화면 미리보기 렌더링
 function renderAvatarPreviews() {
   const container = document.querySelector('.gender-options');
   if (!container) return;
-
   container.innerHTML = '';
 
+  const unlockedAvatars = getUnlockedAvatars();
+
   AVATAR_LIST.forEach(avatar => {
+    const isUnlocked = unlockedAvatars.includes(avatar.id);
     const btn = document.createElement('button');
-    btn.className = 'gender-btn';
+    btn.className = 'gender-btn' + (isUnlocked ? '' : ' locked');
     btn.type = 'button';
     btn.setAttribute('data-avatar-id', avatar.id);
-    btn.onclick = () => handleAvatarSelect(avatar.id);
+
+    if (isUnlocked) {
+      btn.onclick = () => handleAvatarSelect(avatar.id);
+    }
 
     btn.innerHTML = `
-      <div class="gender-avatar-preview" style="width: 80px; height: 120px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0 auto 8px;">
-        ${getAvatarSVG(avatar.id)}
+      <div style="
+        width:64px;height:128px;
+        display:flex;align-items:center;justify-content:center;
+        overflow:hidden;margin:0 auto 6px;
+        position:relative;
+        ${!isUnlocked ? 'opacity:0.4;filter:grayscale(1);' : ''}
+      ">
+        <img src="${IMG_BASE}avatar_${avatar.id}.png"
+          style="width:64px;height:256px;object-fit:contain;object-position:top;
+          image-rendering:pixelated;position:absolute;top:0;"
+          alt="${avatar.name}">
       </div>
-      <span class="gender-label" style="font-size: 11px; font-weight: 700; color: #fff; display: block; text-align: center;">${avatar.name}</span>
+      <span style="font-size:11px;font-weight:700;color:#fff;display:block;text-align:center;">
+        ${avatar.name}
+      </span>
+      ${!isUnlocked
+        ? `<span style="font-size:10px;color:#aaa;display:block;text-align:center;">
+            Lv.${avatar.unlockLevel}
+           </span>`
+        : ''}
     `;
     container.appendChild(btn);
   });
@@ -722,22 +235,66 @@ function confirmAvatarSelection() {
   if (typeof window.proceedToMainScreen === 'function') window.proceedToMainScreen();
 }
 
-// [한글 주석] 아바타 초기화 (메인 화면에 SVG 삽입 및 펫 렌더링)
+// [한글 주석] 아바타 초기화 (메인 화면)
 function initAvatar() {
   const avatarId = getSelectedAvatar();
   if (!avatarId) return;
+
   const el = document.getElementById('main-character');
-  if (!el) return;
-  el.innerHTML = getAvatarSVG(avatarId);
-  el.style.cssText = 'width:120px;height:180px;font-size:unset;line-height:normal;image-rendering:pixelated;cursor:pointer;';
-  // [한글 주석] 장착된 아이템 렌더링
-  renderEquippedItems();
+  if (el) {
+    // [한글 주석] 기존 내용 비우고 컨테이너 생성
+    el.innerHTML = '<div id="main-avatar-container" style="position:relative;width:100%;height:100%;"></div>';
+    el.style.cssText = 'width:80px;height:120px;cursor:pointer;position:relative;';
+    const container = document.getElementById('main-avatar-container');
+    const equipped = getEquippedItems();
+    const outfitId = getEquippedOutfit();
+    _renderAvatarWithItems(container, avatarId, outfitId, equipped);
+  }
 
-  // [한글 주석] 메인 화면 아바타 옆 펫 표시
   renderPet();
-
-  // [한글 주석] 레벨 뱃지 초기값 설정
   updateLevelBadge();
+}
+
+// [한글 주석] PNG 레이어 방식으로 아바타 + 아이템 렌더링
+function _renderAvatarWithItems(container, avatarId, outfitId, equipped) {
+  if (!container) return;
+  container.innerHTML = '';
+  container.style.cssText = 'position:relative;width:100%;height:100%;';
+
+  const layers = [];
+
+  // [한글 주석] 1. 기본 아바타 또는 옷 레이어
+  if (!outfitId || outfitId === 'default') {
+    // [한글 주석] 기본 아바타 전체 이미지
+    layers.push(`${IMG_BASE}avatar_${avatarId}.png`);
+  } else {
+    // [한글 주석] 옷 착용 시: 베이스 바디 + 옷 + 헤어 순서
+    layers.push(`${IMG_BASE}char_base.png`);
+    layers.push(`${IMG_BASE}${outfitId}.png`);
+    layers.push(`${IMG_BASE}hair_${avatarId}.png`);
+  }
+
+  // [한글 주석] 2. 액세서리 레이어들
+  Object.values(equipped).forEach(itemId => {
+    if (itemId && AVATAR_ITEMS[itemId]) {
+      layers.push(`${IMG_BASE}item_${itemId}.png`);
+    }
+  });
+
+  // [한글 주석] 레이어 이미지 쌓기
+  layers.forEach((src, i) => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.style.cssText = `
+      position:absolute;top:0;left:0;
+      width:100%;height:100%;
+      object-fit:contain;
+      image-rendering:pixelated;
+      z-index:${i + 1};
+    `;
+    img.onerror = () => { img.style.display = 'none'; };
+    container.appendChild(img);
+  });
 }
 
 // ==========================================
@@ -761,24 +318,59 @@ function saveEquippedItems(obj) {
 // ==========================================
 // [한글 주석] 해금 체크 (수집 시마다 호출)
 // ==========================================
-function checkAndUnlockItems() {
-  // [한글 주석] 퀴즈 통과 후 확정된 레벨 사용 (카드 수 기반 레벨 사용 금지)
-  const currentLevel = typeof getCurrentLevel === 'function'
-    ? getCurrentLevel()
-    : 1;
+// [한글 주석] 해금된 아바타 목록 가져오기
+function getUnlockedAvatars() {
+  const saved = localStorage.getItem(UNLOCKED_AVATARS_KEY);
+  if (saved) return JSON.parse(saved);
+  return ['boy1_dodam', 'girl1_nari'];
+}
 
+// [한글 주석] 해금된 아바타 목록 저장
+function saveUnlockedAvatars(arr) {
+  localStorage.setItem(UNLOCKED_AVATARS_KEY, JSON.stringify(arr));
+}
+
+// [한글 주석] 아바타 해금 체크 (레벨 기반)
+function checkAndUnlockAvatars() {
+  const level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
+  const unlocked = getUnlockedAvatars();
+  let newAvatars = [];
+  AVATAR_LIST.forEach(av => {
+    if (unlocked.includes(av.id)) return;
+    if (level >= av.unlockLevel) {
+      unlocked.push(av.id);
+      newAvatars.push(av.name + ' 해금!');
+    }
+  });
+  if (newAvatars.length > 0) {
+    saveUnlockedAvatars(unlocked);
+    showItemToast(newAvatars);
+  }
+}
+
+// [한글 주석] 옷 착용/해제 저장
+function getEquippedOutfit() {
+  return localStorage.getItem('equippedOutfit') || 'default';
+}
+function saveEquippedOutfit(id) {
+  localStorage.setItem('equippedOutfit', id);
+}
+// [한글 주석] 아이템 + 아바타 해금 체크 (레벨 기반)
+function checkAndUnlockItems() {
+  const level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
   const unlocked = getUnlockedItems();
   let newItems = [];
 
   Object.keys(AVATAR_ITEMS).forEach(itemId => {
     if (unlocked.includes(itemId)) return;
-    const cond = AVATAR_ITEMS[itemId].condition;
-    // [한글 주석] 레벨 조건 체크
-    if (cond.level && currentLevel >= cond.level) {
+    if (level >= AVATAR_ITEMS[itemId].unlockLevel) {
       unlocked.push(itemId);
       newItems.push(AVATAR_ITEMS[itemId].name);
     }
   });
+
+  // [한글 주석] 아바타 해금도 함께 체크
+  checkAndUnlockAvatars();
 
   if (newItems.length > 0) {
     saveUnlockedItems(unlocked);
@@ -889,23 +481,24 @@ function renderPet() {
 }
 
 // ==========================================
-// [한글 주석] 장착 아이템을 SVG itemLayer에 렌더링
+// [한글 주석] 장착된 아이템 렌더링 업데이트
 // ==========================================
 function renderEquippedItems() {
-  const targets = document.querySelectorAll('#itemLayer');
   const equipped = getEquippedItems();
+  const outfitId = getEquippedOutfit();
+  const avatarId = getSelectedAvatar();
 
-  targets.forEach(layer => {
-    layer.innerHTML = '';
-    Object.values(equipped).forEach(itemId => {
-      const svg = getItemSVG(itemId);
-      if (svg) {
-        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        g.innerHTML = svg;
-        layer.appendChild(g);
-      }
-    });
-  });
+  // [한글 주석] 메인 화면 컨테이너 업데이트
+  const mainContainer = document.getElementById('main-avatar-container');
+  if (mainContainer) {
+    _renderAvatarWithItems(mainContainer, avatarId, outfitId, equipped);
+  }
+
+  // [한글 주석] 꾸미기 화면 컨테이너 업데이트
+  const customizeContainer = document.getElementById('customize-avatar-container');
+  if (customizeContainer) {
+    _renderAvatarWithItems(customizeContainer, avatarId, outfitId, equipped);
+  }
 }
 
 // ==========================================
@@ -965,141 +558,202 @@ function switchCustomizeSlot(slot) {
   renderItemList();
 }
 
+// [한글 주석] 꾸미기 화면 전체 UI 렌더링
 function renderCustomizeUI() {
-  // [한글 주석] 미리보기 아바타 렌더링
-  const preview = document.getElementById('customize-avatar-preview');
-  if (preview) {
-    const avatarId = getSelectedAvatar();
-    preview.innerHTML = getAvatarSVG(avatarId);
-    const layer = preview.querySelector('#itemLayer');
-    if (layer) {
-      const equipped = getEquippedItems();
-      Object.values(equipped).forEach(itemId => {
-        const svg = getItemSVG(itemId);
-        if (svg) {
-          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-          g.innerHTML = svg;
-          layer.appendChild(g);
-        }
-      });
+  // [한글 주석] 꾸미기 미리보기 아바타 컨테이너
+  let container = document.getElementById('customize-avatar-container');
+  if (!container) {
+    // [한글 주석] 기존 ID 호환 처리
+    const old = document.getElementById('customize-avatar-preview');
+    if (old) {
+      old.id = 'customize-avatar-container';
+      container = old;
     }
   }
+  if (container) {
+    container.style.cssText = 'position:relative;width:80px;height:120px;margin:0 auto;';
+    const avatarId = getSelectedAvatar();
+    const equipped = getEquippedItems();
+    const outfitId = getEquippedOutfit();
+    _renderAvatarWithItems(container, avatarId, outfitId, equipped);
+  }
+
   // [한글 주석] 슬롯 탭 활성화
   document.querySelectorAll('.customize-slot-tab').forEach(t => {
     t.classList.toggle('active', t.dataset.slot === currentCustomizeSlot);
   });
-  // [한글 주석] 아이템 목록 렌더링
+
   renderItemList();
 }
 
+// [한글 주석] 아이템 목록 렌더링
 function renderItemList() {
   const listEl = document.getElementById('customize-item-list');
   if (!listEl) return;
   listEl.innerHTML = '';
 
+  const level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
   const unlocked = getUnlockedItems();
   const equipped = getEquippedItems();
-  const collection = typeof getCollection === 'function' ? getCollection() : [];
+  const unlockedAvatars = getUnlockedAvatars();
+  const rarityColors = { common:'#7fff00', rare:'#4a9eff', epic:'#ffd700' };
 
-  // [한글 주석] 현재 수집 수 계산
-  let pCount = 0, aCount = 0, arCount = 0;
-  collection.forEach(id => {
-    if (id.startsWith('plant_')) pCount++;
-    else if (id.startsWith('animal_')) aCount++;
-    else if (id.startsWith('artifact_')) arCount++;
-  });
-  const total = pCount + aCount + arCount;
-  const counts = { plant: pCount, animal: aCount, artifact: arCount };
+  // ==========================================
+  // [한글 주석] 아바타 탭
+  // ==========================================
+  if (currentCustomizeSlot === 'avatar') {
+    AVATAR_LIST.forEach(av => {
+      const isUnlocked = unlockedAvatars.includes(av.id);
+      const isSelected = getSelectedAvatar() === av.id;
+      const div = document.createElement('div');
+      div.className = 'customize-item'
+        + (!isUnlocked ? ' locked' : '')
+        + (isSelected ? ' equipped' : '');
+      div.style.borderColor = isSelected ? '#84ff00' : (isUnlocked ? '#4a9eff' : '#333');
+      div.innerHTML = `
+        <div style="width:40px;height:80px;overflow:hidden;position:relative;flex-shrink:0;
+          ${!isUnlocked ? 'filter:grayscale(1);opacity:0.4;' : ''}">
+          <img src="${IMG_BASE}avatar_${av.id}.png"
+            style="width:40px;height:160px;object-fit:contain;object-position:top;
+            image-rendering:pixelated;position:absolute;top:0;">
+        </div>
+        <div class="customize-item-info">
+          <div class="customize-item-name">${av.name}</div>
+          ${isUnlocked
+            ? `<div class="customize-item-status">${isSelected ? '✅ 선택 중' : '선택 가능'}</div>`
+            : `<div class="customize-item-cond">🔒 Lv.${av.unlockLevel} 해금</div>`}
+        </div>
+      `;
+      if (isUnlocked) {
+        div.onclick = () => {
+          selectAvatar(av.id);
+          initAvatar();
+          renderCustomizeUI();
+        };
+      }
+      listEl.appendChild(div);
+    });
 
-  if (currentCustomizeSlot === 'pet') {
-    // [한글 주석] 펫 탭 처리
+  // ==========================================
+  // [한글 주석] 옷 탭
+  // ==========================================
+  } else if (currentCustomizeSlot === 'outfit') {
+    const currentOutfit = getEquippedOutfit();
+    OUTFIT_LIST.forEach(outfit => {
+      const isUnlocked = level >= outfit.unlockLevel;
+      const isEquipped = currentOutfit === outfit.id;
+      const rColor = rarityColors[outfit.rarity] || '#7fff00';
+      const div = document.createElement('div');
+      div.className = 'customize-item'
+        + (!isUnlocked ? ' locked' : '')
+        + (isEquipped ? ' equipped' : '');
+      div.style.borderColor = isEquipped ? '#84ff00' : (isUnlocked ? rColor : '#333');
+      div.innerHTML = `
+        <div class="customize-item-emoji">${outfit.emoji}</div>
+        <div class="customize-item-info">
+          <div class="customize-item-name">${outfit.name}</div>
+          <div style="color:${rColor};font-size:10px;">
+            ${'★'.repeat(outfit.rarity==='epic'?3:outfit.rarity==='rare'?2:1)}
+          </div>
+          ${isUnlocked
+            ? `<div class="customize-item-status">${isEquipped ? '✅ 착용 중' : '착용 가능'}</div>`
+            : `<div class="customize-item-cond">🔒 Lv.${outfit.unlockLevel} 해금</div>`}
+        </div>
+      `;
+      if (isUnlocked) {
+        div.onclick = () => {
+          saveEquippedOutfit(outfit.id);
+          renderEquippedItems();
+          renderCustomizeUI();
+        };
+      }
+      listEl.appendChild(div);
+    });
+
+  // ==========================================
+  // [한글 주석] 펫 탭
+  // ==========================================
+  } else if (currentCustomizeSlot === 'pet') {
+    const collection = typeof getCollection === 'function' ? getCollection() : [];
+    let aCount = 0, total = 0;
+    collection.forEach(id => {
+      if (id.startsWith('animal_')) aCount++;
+      total++;
+    });
     const unlockedPets = getUnlockedPets();
     const equippedPet = getEquippedPet();
 
     PET_LIST.forEach(pet => {
       const isUnlocked = unlockedPets.includes(pet.id);
       const isEquipped = equippedPet === pet.id;
-
       const div = document.createElement('div');
-      div.className = 'customize-item' + (isUnlocked ? '' : ' locked') + (isEquipped ? ' equipped' : '');
-      const borderColor = isEquipped ? '#84ff00' : (isUnlocked ? '#4a9eff' : '#333');
-      div.style.borderColor = borderColor;
-
+      div.className = 'customize-item'
+        + (!isUnlocked ? ' locked' : '')
+        + (isEquipped ? ' equipped' : '');
+      div.style.borderColor = isEquipped ? '#84ff00' : (isUnlocked ? '#4a9eff' : '#333');
       let condText = '';
       if (!isUnlocked && pet.condition) {
-        if (pet.condition.total) {
-          condText = `전체 ${pet.condition.total}개 필요 (현재 ${total}개)`;
-        } else {
-          const catNames = { plant: '식물', animal: '동물', artifact: '유물' };
-          const cur = counts[pet.condition.category] || 0;
-          condText = `${catNames[pet.condition.category]} ${pet.condition.count}개 필요 (현재 ${cur}개)`;
-        }
+        condText = pet.condition.total
+          ? `전체 ${pet.condition.total}개 필요`
+          : `동물 ${pet.condition.count}개 필요`;
       }
-
       div.innerHTML = `
-        <div class="customize-item-emoji" style="font-size: 2.2rem;">${pet.emoji}</div>
+        <div class="customize-item-emoji" style="font-size:2.2rem;">${pet.emoji}</div>
         <div class="customize-item-info">
           <div class="customize-item-name">${pet.name}</div>
           ${isUnlocked
-          ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
-          : `<div class="customize-item-cond">🔒 ${condText}</div>`
-        }
+            ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
+            : `<div class="customize-item-cond">🔒 ${condText}</div>`}
         </div>
       `;
-
       if (isUnlocked) {
-        div.onclick = () => {
-          equipPet(pet.id);
-          renderCustomizeUI();
-        };
+        div.onclick = () => { equipPet(pet.id); renderCustomizeUI(); };
       }
-
       listEl.appendChild(div);
     });
 
+  // ==========================================
+  // [한글 주석] 일반 액세서리 탭 (hat, glasses, earring, weapon)
+  // ==========================================
   } else {
-    // [한글 주석] 기존 아이템 탭 처리
-    const slotItems = Object.entries(AVATAR_ITEMS).filter(([, v]) => v.slot === currentCustomizeSlot);
+    const slotItems = Object.entries(AVATAR_ITEMS)
+      .filter(([, v]) => v.slot === currentCustomizeSlot);
+
+    if (slotItems.length === 0) {
+      listEl.innerHTML = '<div style="text-align:center;color:#888;padding:20px;">아이템 없음</div>';
+      return;
+    }
 
     slotItems.forEach(([itemId, item]) => {
-      const isUnlocked = unlocked.includes(itemId);
+      const isUnlocked = unlocked.includes(itemId) || level >= item.unlockLevel;
       const isEquipped = equipped[item.slot] === itemId;
-
+      const rColor = rarityColors[item.rarity] || '#7fff00';
       const div = document.createElement('div');
-      div.className = 'customize-item' + (isUnlocked ? '' : ' locked') + (isEquipped ? ' equipped' : '');
-
-      // [한글 주석] 희귀도 색상
-      const rarityColors = { common: '#7fff00', rare: '#4a9eff', epic: '#ffd700' };
-      const borderColor = isEquipped ? '#7fff00' : (isUnlocked ? (rarityColors[item.rarity] || '#4a9eff') : '#333');
-
-      div.style.borderColor = borderColor;
-
-      // [한글 주석] 잠금 조건 텍스트 - 레벨 기반
-      let condText = '';
-      if (!isUnlocked) {
-        condText = item.condition.level
-          ? `Lv.${item.condition.level} 해금`
-          : '조건 미달';
-      }
-
+      div.className = 'customize-item'
+        + (!isUnlocked ? ' locked' : '')
+        + (isEquipped ? ' equipped' : '');
+      div.style.borderColor = isEquipped ? '#84ff00' : (isUnlocked ? rColor : '#333');
       div.innerHTML = `
-        <div class="customize-item-emoji">${item.emoji}</div>
+        <div style="width:40px;height:80px;overflow:hidden;position:relative;flex-shrink:0;
+          ${!isUnlocked ? 'filter:grayscale(1);opacity:0.4;' : ''}">
+          <img src="${IMG_BASE}item_${itemId}.png"
+            style="width:40px;height:160px;object-fit:contain;object-position:top;
+            image-rendering:pixelated;position:absolute;top:0;"
+            onerror="this.parentElement.innerHTML='<div style=font-size:1.8rem;text-align:center;padding-top:16px>${item.emoji}</div>'">
+        </div>
         <div class="customize-item-info">
           <div class="customize-item-name">${item.name}</div>
+          <div style="color:${rColor};font-size:10px;">
+            ${'★'.repeat(item.rarity==='epic'?3:item.rarity==='rare'?2:1)}
+          </div>
           ${isUnlocked
-          ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
-          : `<div class="customize-item-cond">🔒 ${condText}</div>`
-        }
+            ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
+            : `<div class="customize-item-cond">🔒 Lv.${item.unlockLevel} 해금</div>`}
         </div>
       `;
-
       if (isUnlocked) {
-        div.onclick = () => {
-          equipItem(itemId);
-          renderCustomizeUI();
-        };
+        div.onclick = () => { equipItem(itemId); renderCustomizeUI(); };
       }
-
       listEl.appendChild(div);
     });
   }
@@ -1370,4 +1024,8 @@ function showLevelUpPopup(newLevel) {
 window.updateLevelBadge = updateLevelBadge;
 window.showLevelUpPopup = showLevelUpPopup;
 
-
+window.getUnlockedAvatars = getUnlockedAvatars;
+window.checkAndUnlockAvatars = checkAndUnlockAvatars;
+window.getEquippedOutfit = getEquippedOutfit;
+window.saveEquippedOutfit = saveEquippedOutfit;
+window._renderAvatarWithItems = _renderAvatarWithItems;

@@ -426,24 +426,35 @@
     <div class="customize-body">
       <!-- 왼쪽: 아바타 미리보기 -->
       <div class="customize-preview-area">
-        <div class="customize-avatar-box" id="customize-avatar-preview"></div>
+        <div class="customize-avatar-box" id="customize-avatar-container"></div>
       </div>
       <!-- 오른쪽: 슬롯 탭 + 아이템 목록 -->
       <div class="customize-items-area">
         <div class="customize-slot-tabs">
-          <button class="customize-slot-tab active" data-slot="hat" onclick="switchCustomizeSlot('hat')">🎩
-            모자</button>
-          <button class="customize-slot-tab" data-slot="wing" onclick="switchCustomizeSlot('wing')">🦋
-            날개</button>
-          <button class="customize-slot-tab" data-slot="cape" onclick="switchCustomizeSlot('cape')">🌳
-            망토</button>
-          <button class="customize-slot-tab" data-slot="badge" onclick="switchCustomizeSlot('badge')">🎖️
-            배지</button>
-          <button class="customize-slot-tab" data-slot="pet" onclick="switchCustomizeSlot('pet')">🐾
-            펫</button>
-          <!-- [한글 주석] 복주머니 탭 추가 -->
-          <button class="customize-slot-tab" data-slot="reward" onclick="switchCustomizeSlot('reward')">🎁
-            복주머니</button>
+          <!-- [한글 주석] 아바타 탭 -->
+          <button class="customize-slot-tab active" data-slot="avatar"
+            onclick="switchCustomizeSlot('avatar')">🧒<br>아바타</button>
+          <!-- [한글 주석] 옷 탭 -->
+          <button class="customize-slot-tab" data-slot="outfit"
+            onclick="switchCustomizeSlot('outfit')">👕<br>옷</button>
+          <!-- [한글 주석] 모자 탭 -->
+          <button class="customize-slot-tab" data-slot="hat"
+            onclick="switchCustomizeSlot('hat')">🎩<br>모자</button>
+          <!-- [한글 주석] 안경 탭 -->
+          <button class="customize-slot-tab" data-slot="glasses"
+            onclick="switchCustomizeSlot('glasses')">👓<br>안경</button>
+          <!-- [한글 주석] 귀걸이 탭 -->
+          <button class="customize-slot-tab" data-slot="earring"
+            onclick="switchCustomizeSlot('earring')">💚<br>귀걸이</button>
+          <!-- [한글 주석] 무기 탭 -->
+          <button class="customize-slot-tab" data-slot="weapon"
+            onclick="switchCustomizeSlot('weapon')">⚔️<br>무기</button>
+          <!-- [한글 주석] 펫 탭 -->
+          <button class="customize-slot-tab" data-slot="pet"
+            onclick="switchCustomizeSlot('pet')">🐾<br>펫</button>
+          <!-- [한글 주석] 복주머니 탭 -->
+          <button class="customize-slot-tab" data-slot="reward"
+            onclick="switchCustomizeSlot('reward')">🎁<br>복주머니</button>
         </div>
         <!-- [한글 주석] 기존 아이템 목록 (악세서리용) -->
         <div id="customize-item-list" class="customize-item-list"></div>
