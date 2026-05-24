@@ -142,7 +142,15 @@ function renderAvatarPreviews() {
 
   const unlockedAvatars = getUnlockedAvatars();
 
-  AVATAR_LIST.forEach(avatar => {
+  // [한글 주석] 맨 위: Lv.1 해금 캐릭터 (남자 왼쪽, 여자 오른쪽)
+  // [한글 주석] 그 아래: 레벨순 해금 캐릭터 (남자 왼쪽, 여자 오른쪽)
+  const boys = AVATAR_LIST.filter(a => a.gender === 'boy');
+  const girls = AVATAR_LIST.filter(a => a.gender === 'girl');
+
+  // [한글 주석] 레벨 순서로 정렬 후 쌍으로 배치
+  const pairs = boys.map((b, i) => [b, girls[i]]).flat().filter(Boolean);
+
+  pairs.forEach(avatar => {
     const isUnlocked = unlockedAvatars.includes(avatar.id);
     const btn = document.createElement('button');
     btn.className = 'gender-btn' + (isUnlocked ? '' : ' locked');
@@ -155,15 +163,15 @@ function renderAvatarPreviews() {
 
     btn.innerHTML = `
       <div style="
-        width:64px;height:128px;
+        width:64px;height:64px;
         display:flex;align-items:center;justify-content:center;
         overflow:hidden;margin:0 auto 6px;
         position:relative;
         ${!isUnlocked ? 'opacity:0.4;filter:grayscale(1);' : ''}
       ">
         <img src="${IMG_BASE}avatar_${avatar.id}.png"
-          style="width:64px;height:256px;object-fit:contain;object-position:top;
-          image-rendering:pixelated;position:absolute;top:0;"
+          style="width:64px;height:64px;object-fit:contain;
+          image-rendering:pixelated;"
           alt="${avatar.name}">
       </div>
       <span style="font-size:11px;font-weight:700;color:#fff;display:block;text-align:center;">
@@ -227,7 +235,8 @@ function initAvatar() {
   if (el) {
     // [한글 주석] 기존 내용 비우고 컨테이너 생성
     el.innerHTML = '<div id="main-avatar-container" style="position:relative;width:100%;height:100%;"></div>';
-    el.style.cssText = 'width:80px;height:120px;cursor:pointer;position:relative;';
+    // [한글 주석] 메인 아바타 크기 (정면 128x128 PNG 기준)
+    el.style.cssText = 'width:140px;height:140px;cursor:pointer;position:relative;';
     const container = document.getElementById('main-avatar-container');
     const equipped = getEquippedItems();
     const outfitId = getEquippedOutfit();
@@ -269,12 +278,12 @@ function _renderAvatarWithItems(container, avatarId, outfitId, equipped) {
     const img = document.createElement('img');
     img.src = src;
     img.style.cssText = `
-      position:absolute;top:0;left:0;
-      width:100%;height:100%;
-      object-fit:contain;
-      image-rendering:pixelated;
-      z-index:${i + 1};
-    `;
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;
+  object-fit:contain;
+  image-rendering:pixelated;
+  z-index:${i + 1};
+`;
     img.onerror = () => { img.style.display = 'none'; };
     container.appendChild(img);
   });
