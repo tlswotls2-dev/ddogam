@@ -127,8 +127,7 @@
             </div>
             <div class="test-grid">
                 <button class="test-btn" id="test-draw-btn">🎴 아이템 뽑기</button>
-                <button class="test-btn" id="test-step10-btn">👟 +10 걸음</button>
-                <button class="test-btn" id="test-step50-btn">👟 +50 걸음</button>
+                <button class="test-btn" id="test-levelup-btn">⭐ 레벨업</button>
                 <button class="test-btn" id="test-plant90-btn">🌱 식물 90개</button>
                 <button class="test-btn" id="test-unlock-btn">🔓 전체 해금</button>
                 <button class="test-btn" id="test-reset-btn" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">🗑️ 데이터 초기화</button>
@@ -183,7 +182,7 @@
             });
         });
 
-        // 1. 아이템 뽑기
+        // 1. [한글 주석] 아이템 뽑기
         document.getElementById('test-draw-btn').addEventListener('click', () => {
             if (typeof drawRandomItem === 'function') {
                 drawRandomItem();
@@ -192,22 +191,28 @@
             }
         });
 
-        // 2. +10 걸음
-        document.getElementById('test-step10-btn').addEventListener('click', () => {
-            if (typeof window.addStepsForTesting === 'function') {
-                window.addStepsForTesting(10);
-            } else {
-                alert("걸음 추가 함수를 찾을 수 없습니다.");
-            }
-        });
+        // [한글 주석] 레벨업 버튼 - 현재 레벨 +1 강제 적용
+        document.getElementById('test-levelup-btn').addEventListener('click', () => {
+            // [한글 주석] 현재 확정 레벨 가져오기
+            const currentLevel = typeof getCurrentLevel === 'function'
+                ? getCurrentLevel() : parseInt(localStorage.getItem('currentLevel') || '1');
+            const newLevel = Math.min(30, currentLevel + 1);
 
-        // 3. +50 걸음
-        document.getElementById('test-step50-btn').addEventListener('click', () => {
-            if (typeof window.addStepsForTesting === 'function') {
-                window.addStepsForTesting(50);
-            } else {
-                alert("걸음 추가 함수를 찾을 수 없습니다.");
-            }
+            // [한글 주석] 레벨 강제 저장
+            localStorage.setItem('currentLevel', String(newLevel));
+
+            // [한글 주석] 아이템/아바타 해금 체크
+            if (typeof checkAndUnlockItems === 'function') checkAndUnlockItems();
+            if (typeof checkAndUnlockAvatars === 'function') checkAndUnlockAvatars();
+
+            // [한글 주석] UI 업데이트
+            if (typeof updateLevelBadge === 'function') updateLevelBadge();
+            if (typeof window.updateMainScreenData === 'function') window.updateMainScreenData();
+
+            // [한글 주석] 레벨업 팝업 표시
+            if (typeof showLevelUpPopup === 'function') showLevelUpPopup(newLevel);
+
+            console.log(`[테스트] 레벨업: ${currentLevel} → ${newLevel}`);
         });
 
         // 4. 식물 90개 수집
