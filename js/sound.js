@@ -15,7 +15,8 @@ function initAudio() {
   try {
     _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     _bgmGain = _audioCtx.createGain();
-    _bgmGain.gain.value = 0.18;
+    // [한글 주석] 배경음 마스터 볼륨 (5배 상향)
+    _bgmGain.gain.value = 0.9;
     _bgmGain.connect(_audioCtx.destination);
   } catch(e) {
     console.log('[사운드] AudioContext 초기화 실패:', e);
@@ -80,7 +81,8 @@ function _playNatureBGM() {
   windFilter.Q.value = 0.5;
 
   const windGain = _audioCtx.createGain();
-  windGain.gain.value = 0.04;
+  // [한글 주석] 바람소리 볼륨 (5배 상향)
+  windGain.gain.value = 0.2;
 
   windSource.connect(windFilter);
   windFilter.connect(windGain);
@@ -99,7 +101,8 @@ function _playNatureBGM() {
     osc.type = 'sine';
     osc.frequency.value = notes[noteIdx % notes.length];
     gainNode.gain.setValueAtTime(0, _audioCtx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.06, _audioCtx.currentTime + 0.3);
+    // [한글 주석] 메인 BGM 멜로디 볼륨 (5배 상향)
+    gainNode.gain.linearRampToValueAtTime(0.5, _audioCtx.currentTime + 0.3);
     gainNode.gain.exponentialRampToValueAtTime(0.001, _audioCtx.currentTime + 1.8);
 
     osc.connect(gainNode);
@@ -144,7 +147,8 @@ function playExploreBGM() {
     osc.type = 'triangle';
     osc.frequency.value = melody[idx % melody.length];
     gainNode.gain.setValueAtTime(0, _audioCtx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.07, _audioCtx.currentTime + 0.05);
+    // [한글 주석] 탐험 BGM 볼륨 (5배 상향)
+    gainNode.gain.linearRampToValueAtTime(0.5, _audioCtx.currentTime + 0.05);
     gainNode.gain.exponentialRampToValueAtTime(0.001, _audioCtx.currentTime + 0.4);
     osc.connect(gainNode);
     gainNode.connect(_bgmGain);
@@ -392,6 +396,106 @@ function playSfxTab() {
   osc.stop(_audioCtx.currentTime + 0.15);
 }
 
+// [한글 주석] 스플래시 배경음 (잔잔하고 신비로운 느낌)
+function playSplashBGM() {
+  if (!_audioCtx) {
+    try {
+      _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      _bgmGain = _audioCtx.createGain();
+      _bgmGain.gain.value = 0.9;
+      _bgmGain.connect(_audioCtx.destination);
+    } catch(e) { return; }
+  }
+  if (_isMuted) return;
+  _bgmPlaying = true;
+
+  // [한글 주석] 신비로운 상승 멜로디 (스플래시 8.5초에 맞춤)
+  const splashMelody = [
+    {freq: 261.63, t: 0.0},
+    {freq: 329.63, t: 0.6},
+    {freq: 392.00, t: 1.2},
+    {freq: 523.25, t: 1.8},
+    {freq: 659.25, t: 2.5},
+    {freq: 523.25, t: 3.2},
+    {freq: 659.25, t: 3.8},
+    {freq: 783.99, t: 4.5},
+    {freq: 659.25, t: 5.2},
+    {freq: 783.99, t: 5.8},
+    {freq: 1046.50, t: 6.5},
+    {freq: 783.99, t: 7.0},
+    {freq: 1046.50, t: 7.5},
+  ];
+
+  splashMelody.forEach(({freq, t}) => {
+    if (!_audioCtx) return;
+    const osc = _audioCtx.createOscillator();
+    const gain = _audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0, _audioCtx.currentTime + t);
+    gain.gain.linearRampToValueAtTime(0.45, _audioCtx.currentTime + t + 0.2);
+    gain.gain.exponentialRampToValueAtTime(0.001, _audioCtx.currentTime + t + 0.9);
+    osc.connect(gain);
+    gain.connect(_bgmGain);
+    osc.start(_audioCtx.currentTime + t);
+    osc.stop(_audioCtx.currentTime + t + 1.0);
+  });
+
+  // [한글 주석] 배경 패드 (화음 - 부드럽게 지속)
+  const padFreqs = [130.81, 164.81, 196.00];
+  padFreqs.forEach(freq => {
+    if (!_audioCtx) return;
+    const osc = _audioCtx.createOscillator();
+    const gain = _audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0, _audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.12, _audioCtx.currentTime + 1.0);
+    gain.gain.setValueAtTime(0.12, _audioCtx.currentTime + 6.5);
+    gain.gain.linearRampToValueAtTime(0, _audioCtx.currentTime + 8.5);
+    osc.connect(gain);
+    gain.connect(_bgmGain);
+    osc.start(_audioCtx.currentTime);
+    osc.stop(_audioCtx.currentTime + 8.5);
+  });
+}
+
+// [한글 주석] 로그인 화면 배경음 (잔잔한 대기음)
+function playLoginBGM() {
+  if (!_audioCtx) {
+    try {
+      _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      _bgmGain = _audioCtx.createGain();
+      _bgmGain.gain.value = 0.9;
+      _bgmGain.connect(_audioCtx.destination);
+    } catch(e) { return; }
+  }
+  if (_isMuted || _bgmPlaying) return;
+  _bgmPlaying = true;
+
+  // [한글 주석] 로그인 화면용 잔잔한 루프 멜로디
+  const loginNotes = [261.63, 329.63, 392.00, 329.63, 261.63, 293.66, 329.63, 261.63];
+  let idx = 0;
+
+  function playLoginNote() {
+    if (!_bgmPlaying || _isMuted || !_audioCtx) return;
+    const osc = _audioCtx.createOscillator();
+    const gain = _audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = loginNotes[idx % loginNotes.length];
+    gain.gain.setValueAtTime(0, _audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.35, _audioCtx.currentTime + 0.15);
+    gain.gain.exponentialRampToValueAtTime(0.001, _audioCtx.currentTime + 1.2);
+    osc.connect(gain);
+    gain.connect(_bgmGain);
+    osc.start(_audioCtx.currentTime);
+    osc.stop(_audioCtx.currentTime + 1.3);
+    idx++;
+    setTimeout(playLoginNote, 1400);
+  }
+  playLoginNote();
+}
+
 // [한글 주석] 전역 노출
 window.initAudio = initAudio;
 window.toggleMute = toggleMute;
@@ -411,3 +515,5 @@ window.playSfxClick = playSfxClick;
 window.playSfxMatched = playSfxMatched;
 window.playSfxBattleWin = playSfxBattleWin;
 window.playSfxTab = playSfxTab;
+window.playSplashBGM = playSplashBGM;
+window.playLoginBGM = playLoginBGM;

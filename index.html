@@ -163,7 +163,7 @@
         </div>
 
         <!-- 로그인 버튼 (크고 초록색) -->
-        <button type="submit" class="start-btn">탐험 시작!</button>
+        <button type="submit" class="start-btn" onclick="/* [한글 주석] 로그인 시 배경음 정지 (메인화면에서 새 BGM 시작) */ if (typeof stopBGM === 'function') stopBGM();">탐험 시작!</button>
       </form>
 
       <!-- [한글 주석] 기기 초기화 버튼 (기존 API 키 변경 버튼 제거 후 추가) -->
@@ -847,6 +847,9 @@
   <script>
     // [한글 주석] 스플래시 스크린 컨트롤러 v3
     (function () {
+      // [한글 주석] 스플래시 배경음 시작 (페이지 로드 즉시)
+      if (typeof playSplashBGM === 'function') playSplashBGM();
+
       // [한글 주석] 별 생성
       const starsEl = document.getElementById('splash-stars');
       for (let i = 0; i < 60; i++) {
@@ -942,7 +945,11 @@
       setTimeout(() => {
         splash.style.transition = 'opacity 0.8s ease';
         splash.style.opacity = '0';
-        setTimeout(() => { splash.style.display = 'none'; }, 800);
+        setTimeout(() => {
+          splash.style.display = 'none';
+          // [한글 주석] 스플래시 끝나고 로그인 배경음 시작
+          if (typeof playLoginBGM === 'function') setTimeout(() => playLoginBGM(), 200);
+        }, 800);
       }, 8500); // [한글 주석] 로고 2초
     })();
   </script>
