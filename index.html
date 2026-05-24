@@ -229,7 +229,27 @@
                   font-size:15px;
                   font-weight:900;
                   text-shadow: 0 0 10px rgba(255,255,255,0.5);
+                  margin-right: 46px; /* [한글 주석] 음소거 버튼 자리 확보 (왼쪽으로 이동) */
                 "></span>
+        <!-- [한글 주석] 음소거 버튼 - 우상단 고정 -->
+        <button id="mute-btn" onclick="toggleMute()" style="
+          position:absolute;
+          top:10px;
+          right:10px;
+          width:36px;
+          height:36px;
+          background:rgba(0,0,0,0.3);
+          border:1px solid rgba(255,255,255,0.2);
+          border-radius:50%;
+          color:#fff;
+          font-size:16px;
+          cursor:pointer;
+          z-index:100;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          line-height:1;
+        ">🔊</button>
       </div>
     </div>
 
@@ -466,6 +486,8 @@
   <script src="js/app.js?v=4"></script>
   <script src="js/battle.js?v=1"></script>
   <script src="js/testmode.js?v=3"></script>
+  <!-- [한글 주석] 사운드 시스템 추가 -->
+  <script src="js/sound.js?v=1"></script>
   <!-- [한글 주석] 튜토리얼 시스템 -->
   <script src="js/tutorial.js"></script>
 

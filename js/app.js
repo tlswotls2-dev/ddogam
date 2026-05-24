@@ -178,6 +178,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // avatar.js의 handleGenderSelect()에서도 호출할 수 있도록 전역 등록
     // ==========================================
     window.proceedToMainScreen = function() {
+        // [한글 주석] 오디오 초기화 + 음소거 상태 복원 + 메인 배경음 시작
+        if (typeof initAudio === 'function') initAudio();
+        if (typeof loadMuteState === 'function') loadMuteState();
+        if (typeof playMainBGM === 'function') setTimeout(() => playMainBGM(), 500);
+        if (typeof _updateMuteBtn === 'function') _updateMuteBtn();
+
         mainContainer.style.display = 'block'; // 메인 컨테이너 표시
         
         // [한글 주석] 우측 상단에 반/번호 표시
@@ -235,6 +241,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
+            // [한글 주석] 탭 전환 효과음
+            if (typeof playSfxTab === 'function') playSfxTab();
+
             const target = tab.getAttribute('data-target');
 
             // 잠금 상태인 탭을 누르면 수집 개수를 확인하고 퀴즈를 띄우거나 경고 메시지를 표시합니다.
@@ -384,6 +393,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 탐험 모드 관련 전역 함수들
     // ==========================================
     window.startExploration = function() {
+        // [한글 주석] 탐험 배경음으로 전환
+        if (typeof playExploreBGM === 'function') playExploreBGM();
+
         const overlay = document.getElementById('exploration-overlay');
         const defaultContent = document.getElementById('explore-default-content');
         const discoveryContent = document.getElementById('explore-discovery-content');
@@ -401,6 +413,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.stopExploration = function() {
+        // [한글 주석] 메인 배경음으로 복귀
+        if (typeof stopBGM === 'function') stopBGM();
+        setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 300);
+
         const overlay = document.getElementById('exploration-overlay');
         if (overlay) {
             overlay.style.display = 'none';

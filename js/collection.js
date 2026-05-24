@@ -379,6 +379,10 @@ function drawRandomItem() {
         const cardResult = typeof addCardWithDuplicate === 'function'
           ? addCardWithDuplicate(selectedCard.id)
           : 'new';
+
+        // [한글 주석] 카드 획득 효과음
+        if (typeof playSfxCardGet === 'function') playSfxCardGet();
+
         const isNew = cardResult === 'new';
         if (isNew) {
           if (typeof showNewCardEffect === 'function') {
@@ -425,6 +429,10 @@ function drawRandomItem() {
     const cardResult = typeof addCardWithDuplicate === 'function'
       ? addCardWithDuplicate(resultCard.id)
       : 'new';
+
+    // [한글 주석] 카드 획득 효과음
+    if (typeof playSfxCardGet === 'function') playSfxCardGet();
+
     const isNew = cardResult === 'new';
     if (isNew) {
         
@@ -484,6 +492,9 @@ function drawRandomItem() {
  * @param {boolean} isNew - 새로운 발견 여부
  */
 function showCardPopup(cardParam, isNew) {
+    // [한글 주석] 카드 출현 효과음
+    if (typeof playSfxCardAppear === 'function') playSfxCardAppear();
+
     const overlay = document.getElementById('shared-card-overlay');
     
     // [한글 주석] cardParam이 문자열(ID)인 경우와 객체(cardData)인 경우를 모두 완벽히 대응하여 window.allCardsData 원본 데이터를 우선 참조하도록 보장합니다.

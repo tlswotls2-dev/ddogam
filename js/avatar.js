@@ -1252,6 +1252,9 @@ function showBagOpenAnimation(reward, onComplete) {
   `;
   document.body.appendChild(overlay);
 
+  // [한글 주석] 복주머니 두구두구 효과음
+  if (typeof playSfxBagDrumroll === 'function') playSfxBagDrumroll();
+
   // [한글 주석] 1.5초 후 카드 뒤집기로 전환
   setTimeout(() => {
     document.getElementById('bag-shake-phase').style.display = 'none';
@@ -1260,7 +1263,11 @@ function showBagOpenAnimation(reward, onComplete) {
     // [한글 주석] 0.1초 후 뒤집기 애니메이션 시작
     setTimeout(() => {
       const flipInner = document.getElementById('flip-inner');
-      if (flipInner) flipInner.classList.add('flipped');
+      if (flipInner) {
+        flipInner.classList.add('flipped');
+        // [한글 주석] 복주머니 오픈 효과음
+        if (typeof playSfxBagOpen === 'function') playSfxBagOpen();
+      }
     }, 100);
   }, 1500);
 

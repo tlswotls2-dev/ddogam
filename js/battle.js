@@ -628,6 +628,10 @@ function _startBattleQuiz() {
 
 // [한글 주석] 매칭 성공 팝업
 function _showMatchedPopup() {
+  // [한글 주석] 매칭 성공 효과음 + 배틀 배경음 시작
+  if (typeof playSfxMatched === 'function') playSfxMatched();
+  setTimeout(() => { if (typeof playBattleBGM === 'function') playBattleBGM(); }, 800);
+
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
   const overlay = document.createElement('div');
   overlay.id = 'battle-matched-overlay';
@@ -848,7 +852,14 @@ function handleBattleQuizAnswer(btn) {
   overlay.dataset.answered = 'true';
 
   const isCorrect = btn.dataset.correct === 'true';
-  if (isCorrect) battleState.myScore++;
+  if (isCorrect) {
+    battleState.myScore++;
+    // [한글 주석] 배틀 퀴즈 정답 효과음
+    if (typeof playSfxCorrect === 'function') playSfxCorrect();
+  } else {
+    // [한글 주석] 배틀 퀴즈 오답 효과음
+    if (typeof playSfxWrong === 'function') playSfxWrong();
+  }
 
   const allBtns = overlay.querySelectorAll('.battle-quiz-choice');
   allBtns.forEach(b => {
@@ -1008,6 +1019,10 @@ function _showBattleResult(myScore, opponentScore, result) {
     resultColor = '#ffd700';
     rewardMsg = '복주머니 1개를 획득했어요!';
     _grantBattleReward('win');
+
+    // [한글 주석] 배틀 승리 효과음 + 메인 배경음 복귀
+    if (typeof playSfxBattleWin === 'function') playSfxBattleWin();
+    setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 1000);
   } else if (result === 'lose') {
     resultLabel = '😔 패배';
     resultColor = '#ff4444';
@@ -1022,6 +1037,14 @@ function _showBattleResult(myScore, opponentScore, result) {
     resultLabel = '⚔️ 완료';
     resultColor = '#aaa';
     rewardMsg = '상대방 결과를 확인하지 못했어요.';
+  }
+
+  if (result !== 'win') {
+    // [한글 주석] 배틀 종료 후 메인 배경음 복귀
+    setTimeout(() => {
+      if (typeof stopBGM === 'function') stopBGM();
+      setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 300);
+    }, 500);
   }
 
   const overlay = document.createElement('div');

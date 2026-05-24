@@ -402,6 +402,14 @@ function handleLevelQuizAnswer(btn, correctCardId, newLevel, triggerCardId) {
     }
   });
 
+  if (isCorrect) {
+    // [한글 주석] 정답 효과음
+    if (typeof playSfxCorrect === 'function') playSfxCorrect();
+  } else {
+    // [한글 주석] 오답 효과음
+    if (typeof playSfxWrong === 'function') playSfxWrong();
+  }
+
   setTimeout(() => {
     overlay.remove();
     if (isCorrect) {
@@ -421,6 +429,9 @@ function _completeLevelUp(newLevel) {
   if (typeof saveCurrentLevel === 'function') {
     saveCurrentLevel(newLevel);
   }
+
+  // [한글 주석] 레벨업 팡파레
+  if (typeof playSfxLevelUp === 'function') playSfxLevelUp();
 
   // [한글 주석] 카테고리 해금 체크 및 팝업
   const prevCategories = newLevel >= 2
@@ -720,12 +731,18 @@ function handleOXAnswer(selected, qEncoded) {
 
   // [한글 주석] 정답/오답 피드백
   if (isCorrect) {
+    // [한글 주석] OX 정답 효과음
+    if (typeof playSfxCorrect === 'function') playSfxCorrect();
+
     const correctBtn = selectedBool ? oBtn : xBtn;
     if (correctBtn) {
       correctBtn.style.background = 'rgba(132,255,0,0.3)';
       correctBtn.style.transform = 'scale(1.1)';
     }
   } else {
+    // [한글 주석] OX 오답 효과음
+    if (typeof playSfxWrong === 'function') playSfxWrong();
+
     const wrongBtn = selectedBool ? oBtn : xBtn;
     const rightBtn = question.answer ? oBtn : xBtn;
     if (wrongBtn) {
