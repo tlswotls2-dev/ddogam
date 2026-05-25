@@ -545,7 +545,7 @@ function renderLevelBadge() {
   /* [한글 주석] 칭호 위치 - 아바타 오른쪽 살짝 밖 */
   badgeEl.style.cssText = `
     position:absolute;
-    right:-48px;
+    right:56px;
     bottom:56px;
     width:44px;
     height:52px;
@@ -697,7 +697,7 @@ function renderCustomizeUI() {
       const badgePreview = document.createElement('div');
       badgePreview.style.cssText = `
         position:absolute;
-        right:70px;
+        right:60px;
         bottom:60px;
         width:40px;
         height:48px;
@@ -1095,9 +1095,9 @@ function showBagOpenAnimation(reward, onComplete) {
               display:flex;align-items:center;justify-content:center;
               background:rgba(0,0,0,0.2);
             ">${typeof getCardImageHTML === 'function'
-              ? getCardImageHTML(card, 56) /* [한글 주석] 카드 이미지 렌더링 함수가 존재하면 호출 */
-              : `<div style="font-size:56px;">${card.emoji || '🌿'}</div>` /* [한글 주석] 없으면 기본 이모지 출력 */
-            }</div>
+      ? getCardImageHTML(card, 56) /* [한글 주석] 카드 이미지 렌더링 함수가 존재하면 호출 */
+      : `<div style="font-size:56px;">${card.emoji || '🌿'}</div>` /* [한글 주석] 없으면 기본 이모지 출력 */
+    }</div>
             <div style="color:#fff;font-size:18px;font-weight:700;">${card.name}</div>
             <div style="color:${card.rarity === 'epic' ? '#ffd700' : card.rarity === 'rare' ? '#4a9eff' : '#84ff00'};font-size:12px;margin:4px 0;">
               ${card.rarity === 'epic' ? '★★★ 전설' : card.rarity === 'rare' ? '★★ 희귀' : '★ 일반'}

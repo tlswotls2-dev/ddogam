@@ -669,3 +669,27 @@ history.pushState({}, '', location.pathname);
 // [한글 주석] 전역 노출
 window.pushScreen = pushScreen;
 window.handleBackButton = handleBackButton;
+
+// PWA 설치 버튼 - 홈 화면 추가 프롬프트 이벤트 저장
+let _pwaPrompt = null;
+
+// 설치 가능할 때 이벤트 캐치 (안드로이드 크롬에서 동작)
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  _pwaPrompt = e;
+  // 버튼 보이기
+  const btn = document.getElementById('pwa-install-btn');
+  if (btn) btn.style.display = 'block';
+});
+
+// 버튼 클릭 시 설치 팝업 띄우기
+document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+  if (!_pwaPrompt) return;
+  _pwaPrompt.prompt();
+  const { outcome } = await _pwaPrompt.userChoice;
+  // 설치 완료되면 버튼 숨기기
+  if (outcome === 'accepted') {
+    document.getElementById('pwa-install-btn').style.display = 'none';
+  }
+  _pwaPrompt = null;
+});

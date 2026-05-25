@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>또감 - 로그인</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="또감">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <!-- Leaflet.js 지도 라이브러리 CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <!-- [한글 주석] 우주/탐험 테마용 구글 폰트 (Noto Sans KR) -->
@@ -181,6 +185,7 @@
               padding: 8px 20px;
               text-decoration: none;
             ">🔄 기기 초기화</button>
+      <button id="pwa-install-btn" style="display:none;">📲 홈 화면에 추가</button>
     </div>
   </div>
 
