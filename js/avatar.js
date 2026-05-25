@@ -29,7 +29,6 @@ const AVATAR_ITEMS = {
   'glasses_sun':            { slot:'glasses', name:'선글라스',              unlockLevel:10, rarity:'rare',   emoji:'🕶️' },
   'earring_red':            { slot:'earring', name:'레드 귀걸이',           unlockLevel:13, rarity:'common', emoji:'❤️' },
   'hat_lucky':              { slot:'hat',     name:'행운 모자',             unlockLevel:15, rarity:'rare',   emoji:'🍀' },
-  'sword':                  { slot:'weapon',  name:'탐험가의 검',           unlockLevel:17, rarity:'rare',   emoji:'⚔️' },
   'hat_pumpkin':            { slot:'hat',     name:'호박 모자',             unlockLevel:20, rarity:'rare',   emoji:'🎃' },
   'hat_witch':              { slot:'hat',     name:'마녀 모자',             unlockLevel:23, rarity:'epic',   emoji:'🧙' },
   'earring_emerald_silver': { slot:'earring', name:'에메랄드 실버 귀걸이', unlockLevel:25, rarity:'epic',   emoji:'💎' },
@@ -265,9 +264,9 @@ function _renderAvatarWithItems(container, avatarId, outfitId, equipped) {
     layers.push(`${IMG_BASE}hair_${avatarId}.png`);
   }
 
-  // [한글 주석] 2. 액세서리 레이어들 (검 제외 - 검은 별도 배치)
-  Object.entries(equipped).forEach(([slot, itemId]) => {
-    if (itemId && AVATAR_ITEMS[itemId] && slot !== 'weapon') {
+  // [한글 주석] 2. 액세서리 레이어들
+  Object.values(equipped).forEach(itemId => {
+    if (itemId && AVATAR_ITEMS[itemId]) {
       layers.push(`${IMG_BASE}item_${itemId}.png`);
     }
   });
@@ -286,29 +285,6 @@ function _renderAvatarWithItems(container, avatarId, outfitId, equipped) {
     img.onerror = () => { img.style.display = 'none'; };
     container.appendChild(img);
   });
-
-  // [한글 주석] 검 장착 시 아바타 오른쪽 아래에 고정 배치
-  if (equipped.weapon === 'sword') {
-    const swordWrapper = document.createElement('div');
-    swordWrapper.style.cssText = `
-      position:absolute;
-      bottom:5%;
-      right:-30%;
-      width:45%;
-      height:35%;
-      z-index:${layers.length + 2};
-    `;
-    const swordImg = document.createElement('img');
-    swordImg.src = `${IMG_BASE}item_sword_only.png`;
-    swordImg.style.cssText = `
-      width:100%;height:100%;
-      object-fit:contain;
-      image-rendering:pixelated;
-    `;
-    swordImg.onerror = () => { swordWrapper.style.display = 'none'; };
-    swordWrapper.appendChild(swordImg);
-    container.appendChild(swordWrapper);
-  }
 }
 
 // ==========================================

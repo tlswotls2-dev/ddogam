@@ -3205,3 +3205,54 @@ button:active {
   line-height: 1.7;
   text-align: left;
 }
+
+/* [한글 주석] 꾸미기 화면 미리보기 패널 - 세로 50% */
+#avatar-customize-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* [한글 주석] 아바타 미리보기 영역 - 세로 50% 고정 */
+.customize-preview-area {
+  flex: 0 0 50%;
+  min-height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* [한글 주석] 아이템 선택 영역 - 나머지 50% */
+.customize-item-area {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* [한글 주석] 아이템 버튼 크기 축소 */
+.customize-item {
+  padding: 8px 10px !important;
+  min-height: 56px !important;
+  gap: 8px !important;
+}
+
+.customize-item-emoji {
+  font-size: 1.4rem !important;
+}
+
+.customize-item-name {
+  font-size: 12px !important;
+}
+
+.customize-item-status,
+.customize-item-cond {
+  font-size: 10px !important;
+}
+
+/* [한글 주석] 꾸미기 탭 버튼 크기 축소 */
+.customize-slot-tab {
+  padding: 6px 4px !important;
+  font-size: 10px !important;
+  min-width: 36px !important;
+}
