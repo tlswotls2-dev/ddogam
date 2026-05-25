@@ -695,7 +695,6 @@ function renderCustomizeUI() {
       const badgePreview = document.createElement('div');
       badgePreview.style.cssText = `
         position:absolute;
-        // [한글 주석] 미리보기 칭호 위치 - 아바타 오른쪽 살짝 밖
         right:-46px;
         bottom:40px;
         width:40px;
@@ -715,7 +714,6 @@ function renderCustomizeUI() {
       const petPreview = document.createElement('div');
       petPreview.style.cssText = `
         position:absolute;
-        // [한글 주석] 미리보기 펫 위치 - 아래쪽으로 내림
         bottom:-28px;
         right:10px;
         font-size:1.8rem;
