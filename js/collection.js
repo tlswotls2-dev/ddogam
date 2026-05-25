@@ -710,9 +710,13 @@ function closeCardPopup() {
     clearRarityEffects();
     
     document.getElementById('shared-card-overlay').style.display = 'none';
-    // [한글 주석] 카드 확인 후 탐험 BGM 재시작
+    // [한글 주석] 카드 확인 버튼 누르면 탐험 BGM 재시작
+    // [한글 주석] 탐험 중일 때만 재시작 (탐험 오버레이가 열려있으면)
     setTimeout(() => {
-      if (typeof playExploreBGM === 'function') playExploreBGM();
+      const exploreOverlay = document.getElementById('exploration-overlay');
+      if (exploreOverlay && exploreOverlay.style.display !== 'none') {
+        if (typeof playExploreBGM === 'function') playExploreBGM();
+      }
     }, 300);
     
     // 수집 현황 갱신

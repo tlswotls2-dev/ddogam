@@ -2361,26 +2361,26 @@ button:active {
   text-overflow: ellipsis;
 }
 
-/* [한글 주석] 학생 목록 그리드 (PC: 4열) */
+/* [한글 주석] 학생 목록 그리드 (PC: 5열) */
 .dashboard-student-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    max-width: 1400px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    max-width: 1600px;
     margin: 0 auto 40px;
-    padding: 0 32px;
+    padding: 0 20px;
 }
 
-/* [한글 주석] 개별 학생 카드 (어두운 숲 배경) */
+/* [한글 주석] 개별 학생 카드 - 패딩 축소 */
 .dashboard-student-card {
     background-color: #2c3e2d;
     border: 2px solid #4a6a4b;
-    border-radius: 12px;
-    padding: 18px;
+    border-radius: 10px;
+    padding: 10px;
     transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 6px;
 }
 /* [한글 주석] 학생 카드 호버 시 이끼 녹색 강조 */
 .dashboard-student-card:hover {
@@ -2433,10 +2433,10 @@ button:active {
     flex-shrink: 0;
 }
 
-/* [한글 주석] 진행바 배경 (어두운 숲) */
+/* [한글 주석] 진행바 높이 축소 */
 .dsc-progress-bg {
     flex: 1;
-    height: 8px;
+    height: 5px;
     background-color: #1e2e1f;
     border-radius: 4px;
     overflow: hidden;
@@ -2485,20 +2485,20 @@ button:active {
     color: #7a9a6b;
 }
 
-/* [한글 주석] 선물하기 버튼 (황금빛 테마) */
+/* [한글 주석] 선물 버튼 크기 축소 */
 .dsc-reward-btn {
     width: 100%;
-    padding: 10px;
+    padding: 6px;
     background: linear-gradient(135deg, #d4a017, #b3850e);
     color: #2c3e2d;
     border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
     font-weight: 900;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Noto Sans KR', sans-serif;
-    box-shadow: 0 3px 0 #8a5f0a;
+    box-shadow: 0 2px 0 #8a5f0a;
 }
 .dsc-reward-btn:hover {
     filter: brightness(1.1);

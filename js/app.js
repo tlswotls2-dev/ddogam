@@ -438,6 +438,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (defaultContent && discoveryContent) {
             defaultContent.style.display = 'none';
             discoveryContent.style.display = 'block';
+
+            // [한글 주석] 발견 알림 시 배경음 정지
+            if (typeof stopBGM === 'function') stopBGM();
+
+            // [한글 주석] 띠링띠링 효과음 3번
+            if (typeof playSfxCardAppear === 'function') {
+              playSfxCardAppear();
+              setTimeout(() => { if (typeof playSfxCardAppear === 'function') playSfxCardAppear(); }, 400);
+              setTimeout(() => { if (typeof playSfxCardAppear === 'function') playSfxCardAppear(); }, 800);
+            }
         }
     };
 
