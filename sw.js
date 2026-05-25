@@ -3,8 +3,8 @@
 // 이미지 오프라인 캐시 담당
 // ================================
 
-// 캐시 버전 이름 정의 (기존 v1에서 v3로 업데이트)
-const CACHE_NAME = 'ttogam-images-v3';
+// [한글 주석] 캐시 버전 업 - 오디오 파일 추가
+const CACHE_NAME = 'ttogam-images-v4';
 
 // 캐시할 파일 목록 생성
 const IMAGE_URLS = [];
@@ -40,7 +40,12 @@ const APP_URLS = [
   '/js/teacher.js',
   '/js/testmode.js',
   '/data/cards.json',
-  '/data/quiz.json'
+  '/data/quiz.json',
+  // [한글 주석] 배경음악 파일 - 오프라인에서도 재생 가능하도록 미리 캐시
+  '/audio/login.mp3',
+  '/audio/main.mp3',
+  '/audio/exploration.mp3',
+  '/audio/battle.mp3'
 ];
 
 // Service Worker 설치(install) 이벤트 핸들러
@@ -61,6 +66,26 @@ self.addEventListener('install', event => {
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   
+  // [한글 주석] 오디오(/audio/) 요청 - 캐시 우선 전략
+  if (url.pathname.includes('/audio/')) {
+    event.respondWith(
+      caches.match(event.request).then(cached => {
+        if (cached) return cached;
+        // [한글 주석] 캐시에 없으면 네트워크에서 받아서 캐시에 저장
+        return fetch(event.request).then(response => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, clone);
+            });
+          }
+          return response;
+        }).catch(() => new Response('', { status: 404 }));
+      })
+    );
+    return;
+  }
+
   // 이미지(/images/) 요청인 경우의 캐시 전략
   if (url.pathname.includes('/images/')) {
     event.respondWith(

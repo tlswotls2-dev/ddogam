@@ -616,14 +616,11 @@ function showCustomizeScreen() {
   if (!screen) return;
   screen.style.display = 'flex';
   setTimeout(() => screen.classList.add('slide-in'), 10);
-  currentCustomizeSlot = 'hat';
+  // [한글 주석] 아이템 탭 열면 복주머니 탭이 먼저 표시
+  currentCustomizeSlot = 'reward';
 
-  // [한글 주석] 초기 진입 시 복주머니 목록 숨김
-  const bagList = document.getElementById('reward-bag-list');
-  const allBagsBtn = document.getElementById('open-all-bags-btn');
-  if (bagList) bagList.style.display = 'none';
-  if (allBagsBtn) allBagsBtn.style.display = 'none';
-
+  // [한글 주석] 초기 진입 시 복주머니 탭에 맞게 화면 전환
+  switchCustomizeSlot('reward');
   renderCustomizeUI();
 }
 
