@@ -494,8 +494,14 @@ function drawRandomItem() {
 function showCardPopup(cardParam, isNew) {
   // [한글 주석] 뒤로가기 스택에 추가
   if (typeof pushScreen === 'function') pushScreen('shared-card-overlay');
-    // [한글 주석] 카드 출현 효과음
-    if (typeof playSfxCardAppear === 'function') playSfxCardAppear();
+    // [한글 주석] 카드 출현 시 배경음 정지
+    if (typeof stopBGM === 'function') stopBGM();
+    // [한글 주석] 카드 출현 효과음 (띠링띠링 3번 반복)
+    if (typeof playSfxCardAppear === 'function') {
+      playSfxCardAppear();
+      setTimeout(() => { if (typeof playSfxCardAppear === 'function') playSfxCardAppear(); }, 400);
+      setTimeout(() => { if (typeof playSfxCardAppear === 'function') playSfxCardAppear(); }, 800);
+    }
 
     const overlay = document.getElementById('shared-card-overlay');
     
@@ -704,6 +710,10 @@ function closeCardPopup() {
     clearRarityEffects();
     
     document.getElementById('shared-card-overlay').style.display = 'none';
+    // [한글 주석] 카드 확인 후 탐험 BGM 재시작
+    setTimeout(() => {
+      if (typeof playExploreBGM === 'function') playExploreBGM();
+    }, 300);
     
     // 수집 현황 갱신
     if (typeof window.updateMainScreenData === 'function') {
