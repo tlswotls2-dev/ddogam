@@ -220,8 +220,13 @@ function showDodamDetail(card, dateString) {
     popupEmojiEl.innerHTML = getCardImageHTML(card, 68);
     document.getElementById('popup-name').textContent = card.name;
     document.getElementById('popup-short-desc').textContent = card.short_desc || '새로운 발견입니다!';
-    // [한글 주석] 도감 카드 서식지/시대/장소 라벨 스마트 표시
-    document.getElementById('popup-habitat').textContent = window.getHabitatLabel(card);
+    // [한글 주석] 카테고리별 서식지/시대/장소 라벨 직접 처리
+    const habitatLabel = card.category === 'artifact'
+      ? `🏛️ 시대: ${card.habitat || ''}`
+      : card.category === 'animal'
+      ? `🌿 서식지: ${card.habitat || ''}`
+      : `📍 서식지: ${card.habitat || ''}`;
+    document.getElementById('popup-habitat').textContent = habitatLabel;
     
     // 뒷면 데이터 바인딩
     document.getElementById('popup-back-name').textContent = card.name;
