@@ -2315,47 +2315,50 @@ button:active {
     transform: translateY(-1px);
 }
 
-/* [한글 주석] 반 전체 통계 카드 4개 가로 배치 */
+/* [한글 주석] 대시보드 통계 카드 행 - 5개 한줄 */
 .dashboard-stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    max-width: 1400px;
-    margin: 24px auto;
-    padding: 0 32px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  padding: 12px 16px;
+  flex-shrink: 0;
 }
 
-/* [한글 주석] 통계 카드 (숲 패널 배경) */
+/* [한글 주석] 대시보드 통계 카드 - 크기 축소 */
 .dashboard-stat-card {
-    background-color: #3d5239;
-    border: 1px solid #6b8e3d;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
 }
 .dashboard-stat-card:hover {
     transform: translateY(-2px);
     border-color: #8db05c;
 }
 
+/* [한글 주석] 통계 아이콘 크기 축소 */
 .stat-icon {
-    font-size: 2rem;
-    margin-bottom: 8px;
+  font-size: 1.4rem;
+  margin-bottom: 4px;
 }
 
-/* [한글 주석] 통계 라벨 (크림색) */
+/* [한글 주석] 통계 레이블 크기 축소 */
 .stat-label {
-    font-size: 0.85rem;
-    color: #d4c89c;
-    font-weight: 700;
-    margin-bottom: 6px;
+  font-size: 0.65rem;
+  color: #a0c4ff;
+  margin-bottom: 4px;
+  white-space: nowrap;
 }
 
+/* [한글 주석] 통계 값 크기 축소 */
 .stat-value {
-    font-size: 1.3rem;
-    color: #ffffff;
-    font-weight: 900;
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* [한글 주석] 학생 목록 그리드 (PC: 4열) */
