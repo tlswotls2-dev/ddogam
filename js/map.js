@@ -100,7 +100,11 @@ function initMap() {
                 setUserMarker(DEFAULT_LAT, DEFAULT_LNG);
                 document.getElementById('map-status-text').textContent = '📍 위치 권한 필요 (기본 위치 표시 중)';
             },
-            { enableHighAccuracy: true, timeout: 10000 }
+            {
+              enableHighAccuracy: true,  // [한글 주석] GPS 고정밀도 모드
+              timeout: 15000,            // [한글 주석] 타임아웃 15초로 늘림 (모바일 GPS 수신 시간 확보)
+              maximumAge: 0              // [한글 주석] 캐시 위치 사용 안함 - 항상 새 위치 요청
+            }
         );
     } else {
         // Geolocation API 자체를 지원하지 않는 브라우저
