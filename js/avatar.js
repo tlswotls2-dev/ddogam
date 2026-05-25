@@ -545,7 +545,7 @@ function renderLevelBadge() {
   /* [한글 주석] 칭호 위치 - 아바타 오른쪽 살짝 밖 */
   badgeEl.style.cssText = `
     position:absolute;
-    right:56px;
+    right:28px;
     bottom:56px;
     width:44px;
     height:52px;

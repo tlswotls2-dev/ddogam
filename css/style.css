@@ -3292,3 +3292,51 @@ button:active {
   50%  { box-shadow: 0 0 0 8px rgba(255,215,0,0.2); }
   100% { box-shadow: 0 0 0 4px rgba(255,215,0,0.6); }
 }
+
+/* PWA 홈 화면 추가 버튼 - 화면 우상단 고정 */
+#pwa-install-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #1a3a2a, #2d6a4f);
+  color: #a8f0c6;
+  border: 1px solid #52b788;
+  border-radius: 20px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(82, 183, 136, 0.25);
+  transition: all 0.2s ease;
+  letter-spacing: -0.3px;
+}
+
+/* 호버 효과 */
+#pwa-install-btn:hover {
+  background: linear-gradient(135deg, #2d6a4f, #52b788);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(82, 183, 136, 0.4);
+  transform: translateY(-1px);
+}
+
+/* 클릭 효과 */
+#pwa-install-btn:active {
+  transform: scale(0.96) translateY(0);
+  box-shadow: 0 2px 8px rgba(82, 183, 136, 0.2);
+}
+
+/* 집 아이콘 크기 */
+.pwa-btn-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* 버튼 텍스트 */
+.pwa-btn-text {
+  line-height: 1;
+}
