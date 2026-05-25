@@ -544,8 +544,8 @@ function renderLevelBadge() {
   badgeEl.title = badge.name;
   badgeEl.style.cssText = `
     position:absolute;
-    // [한글 주석] 칭호 위치 - 아바타 오른쪽에 가깝게
-    right:-36px;
+    // [한글 주석] 칭호 위치 - 아바타 오른쪽 살짝 밖
+    right:-48px;
     bottom:56px;
     width:44px;
     height:52px;
@@ -695,8 +695,8 @@ function renderCustomizeUI() {
       const badgePreview = document.createElement('div');
       badgePreview.style.cssText = `
         position:absolute;
-        // [한글 주석] 미리보기 칭호 위치 - 좀더 왼쪽으로
-        right:-28px;
+        // [한글 주석] 미리보기 칭호 위치 - 아바타 오른쪽 살짝 밖
+        right:-46px;
         bottom:40px;
         width:40px;
         height:48px;
@@ -715,8 +715,8 @@ function renderCustomizeUI() {
       const petPreview = document.createElement('div');
       petPreview.style.cssText = `
         position:absolute;
-        // [한글 주석] 미리보기 펫 위치 - 좀더 왼쪽으로
-        bottom:-10px;
+        // [한글 주석] 미리보기 펫 위치 - 아래쪽으로 내림
+        bottom:-28px;
         right:10px;
         font-size:1.8rem;
         z-index:10;
