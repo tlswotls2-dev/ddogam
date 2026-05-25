@@ -3,6 +3,30 @@
 // [한글 주석] 레벨 5 → 동물 해금, 레벨 10 → 유물 해금 (storage.js 참고)
 
 // --- 퀴즈 설정 상수 ---
+
+// [한글 주석] 학습기록 Google Sheets 전송
+const LEARNING_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHFQhpwzADLC6JHfMdo4aJ6lUwXW4OFwfKOsQsTQjr07QFX3JJE27xrAJHZ1Zj-KI8/exec';
+
+async function saveLearningToSheet(quizType, correct, level, category) {
+  const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+  if (!userData.class || !userData.number) return;
+  try {
+    const formData = new FormData();
+    formData.append('payload', JSON.stringify({
+      type: 'saveLearning',
+      class: userData.class,
+      number: userData.number,
+      quizType: quizType,       // [한글 주석] 'daily_quiz' 또는 'level_quiz'
+      correct: correct,          // [한글 주석] 정답 여부 (true/false)
+      level: level || '',        // [한글 주석] 레벨업퀴즈일 때 레벨
+      category: category || ''   // [한글 주석] 퀴즈 카테고리 (plant/animal/artifact)
+    }));
+    await fetch(LEARNING_SCRIPT_URL, { method: 'POST', body: formData });
+  } catch(e) {
+    console.log('[학습기록] 전송 실패:', e);
+  }
+}
+
 const QUIZ_PASS_SCORE = 3;    // 통과 기준 정답 수 (5문제 중 3문제 이상 정답 시 통과)
 const QUIZ_QUESTION_COUNT = 5; // 한 번의 퀴즈에서 출제되는 문제 수
 
@@ -412,6 +436,15 @@ function handleLevelQuizAnswer(btn, correctCardId, newLevel, triggerCardId) {
 
   setTimeout(() => {
     overlay.remove();
+
+    // [한글 주석] 레벨업 퀴즈 결과 Sheets에 전송
+    // [한글 주석] 문제 카드의 카테고리를 함께 저장
+    const questionCardEl = overlay ? overlay.querySelector('[data-card-id]') : null;
+    const allCards = window.allCardsData || [];
+    const questionCard = allCards.find(c => c.id === correctCardId);
+    const questionCategory = questionCard ? questionCard.category : '';
+    saveLearningToSheet('level_quiz', isCorrect, newLevel, questionCategory);
+
     if (isCorrect) {
       // [한글 주석] 정답 → 레벨업 완료
       _completeLevelUp(newLevel);
@@ -621,6 +654,8 @@ function showDailyQuiz() {
 
   // [한글 주석] 랜덤으로 카드 1장 선택해서 문제 1개 생성
   const randomCard = collectedCards[Math.floor(Math.random() * collectedCards.length)];
+  // [한글 주석] 카테고리 전달을 위해 전역 저장
+  window._dailyQuizCard = randomCard;
   const question = generateOXQuestion(randomCard);
 
   _showOXQuizPopup(question);
@@ -758,6 +793,12 @@ function handleOXAnswer(selected, qEncoded) {
   // [한글 주석] 완료 시간 저장
   saveDailyQuizTime();
   updateDailyQuizBtn();
+
+  // [한글 주석] 일일시험 결과 Google Sheets에 전송
+  // [한글 주석] 카테고리는 출제된 카드 기준으로 저장
+  const quizCard = window._dailyQuizCard || null;
+  const quizCategory = quizCard ? quizCard.category : '';
+  saveLearningToSheet('daily_quiz', isCorrect, '', quizCategory);
 
   // [한글 주석] 0.9초 후 결과 팝업
   setTimeout(() => {
