@@ -77,7 +77,7 @@ const TUTORIAL_STEPS = [
     blockOthers: true,
     position: 'center',
     showSkip: false,
-    showPrev: false,
+    showPrev: true,
     showNext: false,
     isLast: true
   }
@@ -258,7 +258,8 @@ function _showTutorialStep(stepIdx) {
       background:rgba(255,255,255,0.08);color:#d4c89c;
       border:1px solid #6b8e3d;border-radius:10px;
       padding:8px 14px;font-size:11px;cursor:pointer;
-      pointer-events:all;">← 이전</button>` : '';
+      pointer-events:all;
+      position:absolute;bottom:16px;left:16px;">← 이전</button>` : '';
 
   const nextBtn = step.showNext ? `
     <button onclick="_nextTutorialStep()" style="
@@ -285,7 +286,7 @@ function _showTutorialStep(stepIdx) {
     padding:16px 18px;max-width:260px;width:85vw;
     box-shadow:0 0 30px rgba(255,215,0,0.3);
     text-align:center;animation:fadeIn 0.3s ease;
-    pointer-events:all;
+    pointer-events:all;position:relative;
   `;
 
   msgBox.innerHTML = `
@@ -370,12 +371,10 @@ function _endTutorial() {
 // ==========================================
 function _spawnTutorialCard() {
   const allCards = window.allCardsData || [];
-  const plantCommon = allCards.filter(
-    c => c.category === 'plant' && c.rarity === 'common'
-  );
-  if (plantCommon.length === 0) return;
-
-  const card = plantCommon[Math.floor(Math.random() * plantCommon.length)];
+  // [한글 주석] 튜토리얼 카드는 plant_001로 고정 (없으면 첫번째 식물)
+  const plantCards = allCards.filter(c => c.category === 'plant');
+  if (plantCards.length === 0) return;
+  const card = plantCards.find(c => c.id === 'plant_001') || plantCards[0];
   _tutorialCardData = card;
 
   const popup = document.createElement('div');
@@ -436,6 +435,15 @@ function _spawnTutorialCard() {
   `;
 
   document.body.appendChild(popup);
+
+  // [한글 주석] 3초 뒤 자세히보기 버튼 하이라이트
+  setTimeout(() => {
+    const detailBtn = document.getElementById('tutorial-detail-btn');
+    if (detailBtn) {
+      detailBtn.style.animation = 'tutorialPulse 0.8s ease-in-out infinite';
+      detailBtn.style.boxShadow = '0 0 0 4px rgba(255,215,0,0.6)';
+    }
+  }, 3000);
 }
 
 // [한글 주석] 자세히 보기
@@ -484,6 +492,15 @@ function _tutorialShowDetail() {
   `;
 
   document.body.appendChild(detailArea);
+
+  // [한글 주석] 3초 뒤 확인 버튼 하이라이트
+  setTimeout(() => {
+    const closeBtn = document.getElementById('tutorial-close-btn');
+    if (closeBtn) {
+      closeBtn.style.animation = 'tutorialPulse 0.8s ease-in-out infinite';
+      closeBtn.style.boxShadow = '0 0 0 4px rgba(255,215,0,0.6)';
+    }
+  }, 3000);
 
   // [한글 주석] 3단계 렌더링 (확인 버튼 하이라이트)
   setTimeout(() => {

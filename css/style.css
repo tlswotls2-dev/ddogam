@@ -3285,3 +3285,10 @@ button:active {
   50%  { transform: translateY(-4px); }
   100% { transform: translateY(0px);  }
 }
+
+/* [한글 주석] 튜토리얼 버튼 강조 애니메이션 */
+@keyframes tutorialPulse {
+  0%   { box-shadow: 0 0 0 4px rgba(255,215,0,0.6); }
+  50%  { box-shadow: 0 0 0 8px rgba(255,215,0,0.2); }
+  100% { box-shadow: 0 0 0 4px rgba(255,215,0,0.6); }
+}
