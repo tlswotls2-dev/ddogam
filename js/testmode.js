@@ -128,6 +128,8 @@
             <div class="test-grid">
                 <button class="test-btn" id="test-draw-btn">🎴 아이템 뽑기</button>
                 <button class="test-btn" id="test-levelup-btn">⭐ 레벨업</button>
+                <!-- [한글 주석] 레벨 30 강제 설정 버튼 추가 -->
+                <button class="test-btn" id="test-maxlevel-btn">🏆 레벨 30</button>
                 <button class="test-btn" id="test-plant90-btn">🌱 식물 90개</button>
                 <button class="test-btn" id="test-unlock-btn">🔓 전체 해금</button>
                 <button class="test-btn" id="test-reset-btn" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">🗑️ 데이터 초기화</button>
@@ -213,6 +215,26 @@
             if (typeof showLevelUpPopup === 'function') showLevelUpPopup(newLevel);
 
             console.log(`[테스트] 레벨업: ${currentLevel} → ${newLevel}`);
+        });
+
+        // [한글 주석] 레벨 30 강제 설정
+        document.getElementById('test-maxlevel-btn').addEventListener('click', () => {
+            // [한글 주석] 레벨 30으로 강제 설정
+            localStorage.setItem('currentLevel', '30');
+
+            // [한글 주석] 아이템/아바타 해금 체크
+            if (typeof checkAndUnlockItems === 'function') checkAndUnlockItems();
+            if (typeof checkAndUnlockAvatars === 'function') checkAndUnlockAvatars();
+
+            // [한글 주석] UI 업데이트
+            if (typeof updateLevelBadge === 'function') updateLevelBadge();
+            if (typeof renderLevelBadge === 'function') renderLevelBadge();
+            if (typeof window.updateMainScreenData === 'function') window.updateMainScreenData();
+
+            // [한글 주석] 레벨업 팝업 표시
+            if (typeof showLevelUpPopup === 'function') showLevelUpPopup(30);
+
+            console.log('[테스트] 레벨 30 강제 설정');
         });
 
         // 4. 식물 90개 수집
