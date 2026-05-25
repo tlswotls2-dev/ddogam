@@ -3295,7 +3295,7 @@ button:active {
 
 /* PWA 홈 화면 추가 버튼 - 화면 우상단 고정 */
 #pwa-install-btn {
-  position: fixed;
+  position: absolute;
   top: 16px;
   right: 16px;
   z-index: 9999;
