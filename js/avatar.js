@@ -409,6 +409,16 @@ function getEquippedOutfit() {
 function saveEquippedOutfit(id) {
   localStorage.setItem('equippedOutfit', id);
 }
+
+// [한글 주석] 장착된 칭호 가져오기 (없으면 null)
+function getEquippedTitle() {
+  return localStorage.getItem('equippedTitle') || null;
+}
+// [한글 주석] 칭호 장착 저장
+function saveEquippedTitle(id) {
+  if (id) localStorage.setItem('equippedTitle', id);
+  else localStorage.removeItem('equippedTitle');
+}
 // [한글 주석] 아이템 + 아바타 해금 체크 (레벨 기반)
 function checkAndUnlockItems() {
   const level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
@@ -518,16 +528,17 @@ function checkAndUnlockPets() {
     showItemToast(newPets.map(name => name + '(펫)'));
   }
 }
-// [한글 주석] 레벨 특별 칭호 뱃지 렌더링
+// [한글 주석] 장착된 칭호 뱃지를 메인화면 아바타 옆에 표시
 function renderLevelBadge() {
-  const level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
-
   // [한글 주석] 기존 뱃지 제거
   const existing = document.getElementById('level-special-badge');
   if (existing) existing.remove();
 
-  // [한글 주석] 현재 레벨에 해당하는 최고 칭호 찾기
-  const badge = [...LEVEL_BADGES].reverse().find(b => level >= b.unlockLevel);
+  // [한글 주석] 장착된 칭호 확인
+  const equippedTitleId = getEquippedTitle();
+  if (!equippedTitleId) return;
+
+  const badge = LEVEL_BADGES.find(b => b.id === equippedTitleId);
   if (!badge) return;
 
   const badgeEl = document.createElement('div');
@@ -545,12 +556,11 @@ function renderLevelBadge() {
     cursor:pointer;
   `;
   badgeEl.innerHTML = badge.svg;
-  badgeEl.onclick = () => showItemToast([`${badge.name} 달성! 🎉`]);
+  badgeEl.onclick = () => showItemToast([`${badge.name} 장착 중! 🎉`]);
 
-  // [한글 주석] main-character 자체에 뱃지 추가 (부모 position 건드리지 않음)
+  // [한글 주석] main-character에 직접 추가
   const mainChar = document.getElementById('main-character');
   if (mainChar) {
-    // [한글 주석] main-character가 relative 포지션 되도록 설정
     const originalPosition = window.getComputedStyle(mainChar).position;
     if (originalPosition === 'static') {
       mainChar.style.position = 'relative';
@@ -678,6 +688,42 @@ function renderCustomizeUI() {
     const equipped = getEquippedItems();
     const outfitId = getEquippedOutfit();
     _renderAvatarWithItems(container, avatarId, outfitId, equipped);
+
+    // [한글 주석] 미리보기에 칭호 뱃지 표시
+    const equippedTitleId = getEquippedTitle();
+    const titleBadge = LEVEL_BADGES.find(b => b.id === equippedTitleId);
+    if (titleBadge) {
+      const badgePreview = document.createElement('div');
+      badgePreview.style.cssText = `
+        position:absolute;
+        right:-48px;
+        bottom:40px;
+        width:40px;
+        height:48px;
+        z-index:10;
+        filter:drop-shadow(0 2px 4px rgba(255,215,0,0.4));
+      `;
+      badgePreview.innerHTML = titleBadge.svg;
+      container.style.position = 'relative';
+      container.appendChild(badgePreview);
+    }
+
+    // [한글 주석] 미리보기에 펫 표시
+    const equippedPetId = getEquippedPet();
+    const pet = PET_LIST.find(p => p.id === equippedPetId);
+    if (pet && pet.id !== 'pet_none') {
+      const petPreview = document.createElement('div');
+      petPreview.style.cssText = `
+        position:absolute;
+        bottom:-10px;
+        right:0px;
+        font-size:1.8rem;
+        z-index:10;
+      `;
+      petPreview.textContent = pet.emoji;
+      container.style.position = 'relative';
+      container.appendChild(petPreview);
+    }
   }
 
   // [한글 주석] 슬롯 탭 활성화
@@ -822,13 +868,18 @@ function renderItemList() {
   // ==========================================
   } else if (currentCustomizeSlot === 'title') {
     const level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
+    const equippedTitleId = getEquippedTitle();
 
     LEVEL_BADGES.forEach(badge => {
       const isUnlocked = level >= badge.unlockLevel;
+      const isEquipped = equippedTitleId === badge.id;
+
       const div = document.createElement('div');
-      div.className = 'customize-item' + (!isUnlocked ? ' locked' : '');
-      div.style.borderColor = isUnlocked ? '#ffd700' : '#333';
-      div.style.cssText += ';align-items:center;';
+      div.className = 'customize-item'
+        + (!isUnlocked ? ' locked' : '')
+        + (isEquipped ? ' equipped' : '');
+      div.style.borderColor = isEquipped ? '#ffd700' : (isUnlocked ? '#c8a000' : '#333');
+
       div.innerHTML = `
         <div style="width:44px;height:52px;flex-shrink:0;
           ${!isUnlocked ? 'filter:grayscale(1);opacity:0.4;' : ''}">
@@ -840,10 +891,25 @@ function renderItemList() {
             ${'★'.repeat(badge.unlockLevel === 30 ? 3 : badge.unlockLevel === 20 ? 2 : 1)}
           </div>
           ${isUnlocked
-            ? `<div class="customize-item-status">✅ 달성 완료!</div>`
+            ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중 (탭하여 해제)' : '탭하여 장착'}</div>`
             : `<div class="customize-item-cond">🔒 Lv.${badge.unlockLevel} 달성 시 해금</div>`}
         </div>
       `;
+
+      if (isUnlocked) {
+        div.onclick = () => {
+          // [한글 주석] 이미 장착 중이면 해제, 아니면 장착
+          if (isEquipped) {
+            saveEquippedTitle(null);
+          } else {
+            saveEquippedTitle(badge.id);
+          }
+          // [한글 주석] 메인화면 + 미리보기 갱신
+          renderLevelBadge();
+          renderCustomizeUI();
+        };
+      }
+
       listEl.appendChild(div);
     });
 
@@ -1164,3 +1230,6 @@ window.getEquippedOutfit = getEquippedOutfit;
 window.saveEquippedOutfit = saveEquippedOutfit;
 window._renderAvatarWithItems = _renderAvatarWithItems;
 window.renderLevelBadge = renderLevelBadge;
+
+window.getEquippedTitle = getEquippedTitle;
+window.saveEquippedTitle = saveEquippedTitle;
