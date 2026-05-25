@@ -697,7 +697,7 @@ function renderCustomizeUI() {
       const badgePreview = document.createElement('div');
       badgePreview.style.cssText = `
         position:absolute;
-        right:90px;
+        right:70px;
         bottom:60px;
         width:40px;
         height:48px;
@@ -1087,7 +1087,17 @@ function showBagOpenAnimation(reward, onComplete) {
         <div class="card-flip-inner" id="flip-inner">
           <div class="card-flip-back">❓</div>
           <div class="card-flip-front">
-            <div style="font-size:56px;margin-bottom:8px;">${card.emoji || '🌿'}</div>
+            <!-- [한글 주석] 카드 이미지 또는 이모지 렌더링을 위한 120x120px 박스 구조 -->
+            <div style="
+              width:120px;height:120px;
+              margin:0 auto 12px;
+              border-radius:16px;overflow:hidden;
+              display:flex;align-items:center;justify-content:center;
+              background:rgba(0,0,0,0.2);
+            ">${typeof getCardImageHTML === 'function'
+              ? getCardImageHTML(card, 56) /* [한글 주석] 카드 이미지 렌더링 함수가 존재하면 호출 */
+              : `<div style="font-size:56px;">${card.emoji || '🌿'}</div>` /* [한글 주석] 없으면 기본 이모지 출력 */
+            }</div>
             <div style="color:#fff;font-size:18px;font-weight:700;">${card.name}</div>
             <div style="color:${card.rarity === 'epic' ? '#ffd700' : card.rarity === 'rare' ? '#4a9eff' : '#84ff00'};font-size:12px;margin:4px 0;">
               ${card.rarity === 'epic' ? '★★★ 전설' : card.rarity === 'rare' ? '★★ 희귀' : '★ 일반'}
