@@ -168,7 +168,10 @@ function renderDashboard(students) {
   document.getElementById('stat-student-count').textContent = `${totalStudents}명`;
   document.getElementById('stat-avg-collect').textContent = `${avgCollected}개`;
   document.getElementById('stat-top-student').textContent = `${topStudent.name} (${topStudent.total}개)`;
-  document.getElementById('stat-total-steps').textContent = `오늘 매우잘함 ${greatCount}명`;
+  // [한글 주석] 오늘 접속자 수
+  document.getElementById('stat-today-active').textContent = `${todayActiveCount}명`;
+  // [한글 주석] 오늘 매우잘함 학생 수
+  document.getElementById('stat-today-great').textContent = `${greatCount}명`;
 
   // ==========================================
   // [한글 주석] 학생 카드 렌더링
