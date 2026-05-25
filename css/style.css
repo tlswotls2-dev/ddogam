@@ -3256,3 +3256,10 @@ button:active {
   font-size: 10px !important;
   min-width: 36px !important;
 }
+
+/* [한글 주석] 레벨 칭호 뱃지 둥실둥실 애니메이션 */
+@keyframes badgeFloat {
+  0%   { transform: translateY(0px);  }
+  50%  { transform: translateY(-4px); }
+  100% { transform: translateY(0px);  }
+}

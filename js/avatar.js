@@ -53,6 +53,68 @@ const OUTFIT_LIST = [
   { id: 'outfit_dress_pink',     name: '핑크 드레스',     unlockLevel: 23, rarity: 'epic',   emoji: '💗' },
 ];
 
+// [한글 주석] 레벨 달성 특별 칭호/뱃지 정의
+const LEVEL_BADGES = [
+  {
+    id: 'explorer',
+    name: '탐험가',
+    unlockLevel: 10,
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" width="100%" height="100%">
+      <path d="M32,0 L62,12 L62,38 Q62,58 32,70 Q2,58 2,38 L2,12 Z" fill="#4a7aaa" stroke="#6aacee" stroke-width="1.5"/>
+      <path d="M32,6 L56,16 L56,38 Q56,54 32,62 Q8,54 8,38 L8,16 Z" fill="#2d5a8a" stroke="#4a7aaa" stroke-width="1"/>
+      <circle cx="32" cy="34" r="14" fill="none" stroke="#6aacee" stroke-width="1"/>
+      <polygon points="32,22 35,32 32,30 29,32" fill="#ff4444"/>
+      <polygon points="32,46 35,36 32,38 29,36" fill="#aaaaaa"/>
+      <polygon points="20,34 30,31 28,34 30,37" fill="#aaaaaa"/>
+      <polygon points="44,34 34,31 36,34 34,37" fill="#aaaaaa"/>
+      <circle cx="32" cy="34" r="3" fill="#ffffff" opacity="0.9"/>
+      <text x="32" y="80" font-size="9" font-weight="bold" text-anchor="middle"
+            fill="#6aacee" letter-spacing="2" font-family="monospace">EXPLORER</text>
+    </svg>`
+  },
+  {
+    id: 'pro',
+    name: 'PRO 탐험가',
+    unlockLevel: 20,
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 75" width="100%" height="100%">
+      <path d="M12,8 Q8,28 12,44 L52,44 Q56,28 52,8 Z" fill="#ffd700" stroke="#ff9500" stroke-width="1.5"/>
+      <path d="M15,10 Q12,28 15,42" fill="none" stroke="#fff8aa" stroke-width="2" opacity="0.6"/>
+      <path d="M12,14 Q2,14 2,24 Q2,34 12,34" fill="none" stroke="#ffd700" stroke-width="4" stroke-linecap="round"/>
+      <path d="M52,14 Q62,14 62,24 Q62,34 52,34" fill="none" stroke="#ffd700" stroke-width="4" stroke-linecap="round"/>
+      <rect x="20" y="44" width="24" height="6" fill="#ffd700"/>
+      <rect x="14" y="50" width="36" height="5" fill="#ffd700" rx="2"/>
+      <polygon points="32,14 34,21 42,21 36,26 38,33 32,28 26,33 28,26 22,21 30,21"
+               fill="#ffffff" opacity="0.9"/>
+      <circle cx="8"  cy="10" r="2" fill="#ffd700" opacity="0.7"/>
+      <circle cx="56" cy="8"  r="2" fill="#ffd700" opacity="0.7"/>
+      <text x="32" y="68" font-size="10" font-weight="bold" text-anchor="middle"
+            fill="#ffd700" letter-spacing="2" font-family="monospace">PRO</text>
+    </svg>`
+  },
+  {
+    id: 'master',
+    name: '마스터',
+    unlockLevel: 30,
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 75" width="100%" height="100%">
+      <circle cx="32" cy="33" r="30" fill="#1a2a1a" stroke="#ffd700" stroke-width="2.5"/>
+      <circle cx="32" cy="5"  r="2" fill="#ffd700" opacity="0.7"/>
+      <circle cx="56" cy="14" r="2" fill="#ffd700" opacity="0.7"/>
+      <circle cx="61" cy="33" r="2" fill="#ffd700" opacity="0.7"/>
+      <circle cx="56" cy="52" r="2" fill="#ffd700" opacity="0.7"/>
+      <circle cx="32" cy="61" r="2" fill="#ffd700" opacity="0.7"/>
+      <circle cx="8"  cy="52" r="2" fill="#ffd700" opacity="0.7"/>
+      <circle cx="3"  cy="33" r="2" fill="#ffd700" opacity="0.7"/>
+      <circle cx="8"  cy="14" r="2" fill="#ffd700" opacity="0.7"/>
+      <polygon points="32,12 36,24 50,24 39,32 43,46 32,38 21,46 25,32 14,24 28,24"
+               fill="#ffd700" stroke="#ff9500" stroke-width="1"/>
+      <text x="32" y="57" font-size="7" font-weight="bold" text-anchor="middle"
+            fill="#ffd700" letter-spacing="2" font-family="monospace">MASTER</text>
+      <text x="32" y="72" font-size="8" font-weight="bold" text-anchor="middle"
+            fill="#ffd700" letter-spacing="1" font-family="monospace">마스터</text>
+    </svg>`
+  }
+];
+
 // [한글 주석] 펫 목록
 const PET_LIST = [
   { id: 'pet_none',      name: '없음',   emoji: '❌', condition: null },
@@ -242,6 +304,8 @@ function initAvatar() {
   }
 
   renderPet();
+  // [한글 주석] 레벨 칭호 뱃지 렌더링
+  renderLevelBadge();
   updateLevelBadge();
 }
 
@@ -454,6 +518,41 @@ function checkAndUnlockPets() {
     showItemToast(newPets.map(name => name + '(펫)'));
   }
 }
+// [한글 주석] 레벨 특별 칭호 뱃지 렌더링
+function renderLevelBadge() {
+  const level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
+
+  // [한글 주석] 기존 뱃지 제거
+  const existing = document.getElementById('level-special-badge');
+  if (existing) existing.remove();
+
+  // [한글 주석] 현재 레벨에 해당하는 최고 칭호 찾기
+  const badge = [...LEVEL_BADGES].reverse().find(b => level >= b.unlockLevel);
+  if (!badge) return;
+
+  const badgeEl = document.createElement('div');
+  badgeEl.id = 'level-special-badge';
+  badgeEl.title = badge.name;
+  badgeEl.style.cssText = `
+    position:absolute;
+    right:-52px;
+    bottom:56px;
+    width:44px;
+    height:52px;
+    z-index:10;
+    filter:drop-shadow(0 2px 6px rgba(255,215,0,0.5));
+    animation:badgeFloat 2.5s ease-in-out infinite;
+    cursor:pointer;
+  `;
+  badgeEl.innerHTML = badge.svg;
+  badgeEl.onclick = () => showItemToast([`${badge.name} 달성! 🎉`]);
+
+  const mainChar = document.getElementById('main-character');
+  if (mainChar && mainChar.parentElement) {
+    mainChar.parentElement.style.position = 'relative';
+    mainChar.parentElement.appendChild(badgeEl);
+  }
+}
 
 function renderPet() {
   const petDisplay = document.getElementById('pet-display');
@@ -531,6 +630,14 @@ function switchCustomizeSlot(slot) {
   const itemList = document.getElementById('customize-item-list');
   const bagList = document.getElementById('reward-bag-list');
   const allBagsBtn = document.getElementById('open-all-bags-btn');
+
+  // [한글 주석] 칭호 탭 처리
+  if (slot === 'title') {
+    if (itemList) itemList.style.display = 'block';
+    if (bagList) bagList.style.display = 'none';
+    renderItemList();
+    return;
+  }
 
   if (slot === 'reward') {
     // [한글 주석] 복주머니 탭: 아이템 목록 숨기고 복주머니 목록 표시
@@ -705,6 +812,36 @@ function renderItemList() {
   // ==========================================
   // [한글 주석] 일반 액세서리 탭 (hat, glasses, earring, weapon)
   // ==========================================
+  // ==========================================
+  // [한글 주석] 칭호 탭
+  // ==========================================
+  } else if (currentCustomizeSlot === 'title') {
+    const level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
+
+    LEVEL_BADGES.forEach(badge => {
+      const isUnlocked = level >= badge.unlockLevel;
+      const div = document.createElement('div');
+      div.className = 'customize-item' + (!isUnlocked ? ' locked' : '');
+      div.style.borderColor = isUnlocked ? '#ffd700' : '#333';
+      div.style.cssText += ';align-items:center;';
+      div.innerHTML = `
+        <div style="width:44px;height:52px;flex-shrink:0;
+          ${!isUnlocked ? 'filter:grayscale(1);opacity:0.4;' : ''}">
+          ${badge.svg}
+        </div>
+        <div class="customize-item-info">
+          <div class="customize-item-name">${badge.name}</div>
+          <div style="color:#ffd700;font-size:10px;">
+            ${'★'.repeat(badge.unlockLevel === 30 ? 3 : badge.unlockLevel === 20 ? 2 : 1)}
+          </div>
+          ${isUnlocked
+            ? `<div class="customize-item-status">✅ 달성 완료!</div>`
+            : `<div class="customize-item-cond">🔒 Lv.${badge.unlockLevel} 달성 시 해금</div>`}
+        </div>
+      `;
+      listEl.appendChild(div);
+    });
+
   } else {
     const slotItems = Object.entries(AVATAR_ITEMS)
       .filter(([, v]) => v.slot === currentCustomizeSlot);
@@ -935,6 +1072,8 @@ function updateLevelBadge() {
   const level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
   const badge = document.getElementById('level-badge');
   if (badge) badge.textContent = `Lv.${level}`;
+  // [한글 주석] 레벨 변경 시 칭호 뱃지 갱신
+  renderLevelBadge();
 }
 
 // [한글 주석] 레벨업 축하 팝업
@@ -1019,3 +1158,4 @@ window.checkAndUnlockAvatars = checkAndUnlockAvatars;
 window.getEquippedOutfit = getEquippedOutfit;
 window.saveEquippedOutfit = saveEquippedOutfit;
 window._renderAvatarWithItems = _renderAvatarWithItems;
+window.renderLevelBadge = renderLevelBadge;
