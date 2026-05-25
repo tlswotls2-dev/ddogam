@@ -57,6 +57,7 @@ window.addEventListener('offline', () => {
  */
 async function syncToServer() {
   // [한글 주석] 하드코딩된 SCRIPT_URL을 사용하여 대기열에서 동기화되지 않은 항목 필터링
+  // [한글 주석] 미전송 항목 필터링 (카드 수집, 퀴즈 결과 등 모든 타입 포함)
   const queue = getSyncQueue().filter(item => !item.synced);
 // [한글 주석] 큐가 비어있어도 학생 정보는 항상 서버에 등록
 if (queue.length === 0) {
@@ -108,7 +109,7 @@ if (queue.length === 0) {
   const payload = {
     type: 'sync',
     student: studentInfo,
-    events: queue,
+    events: queue, // [한글 주석] 카드 수집 + 퀴즈 결과 모두 포함
     // [한글 주석] 기존 userCollection 스키마에 부합하도록 안전하게 필터링 카운트
     totalCollection: {
       plant: (JSON.parse(localStorage.getItem('userCollection') || '[]')).filter(id => id.startsWith('plant_')).length,

@@ -10,20 +10,39 @@ const LEARNING_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHFQhpwzAD
 async function saveLearningToSheet(quizType, correct, level, category) {
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
   if (!userData.class || !userData.number) return;
+
+  // [한글 주석] 퀴즈 결과 데이터 구성
+  const learningData = {
+    type: 'saveLearning',
+    class: userData.class,
+    number: userData.number,
+    quizType: quizType,     // [한글 주석] 'daily_quiz' 또는 'level_quiz'
+    correct: correct,        // [한글 주석] 정답 여부 (true/false)
+    level: level || '',      // [한글 주석] 레벨업퀴즈일 때 레벨
+    category: category || '' // [한글 주석] 퀴즈 카테고리 (plant/animal/artifact)
+  };
+
+  // [한글 주석] 오프라인이면 동기화 대기열에 저장 후 종료
+  if (!navigator.onLine) {
+    if (typeof addToSyncQueue === 'function') {
+      addToSyncQueue('quiz_result', learningData);
+      console.log('[학습기록] 오프라인 - 대기열에 저장됨');
+    }
+    return;
+  }
+
+  // [한글 주석] 온라인이면 즉시 전송 시도
   try {
     const formData = new FormData();
-    formData.append('payload', JSON.stringify({
-      type: 'saveLearning',
-      class: userData.class,
-      number: userData.number,
-      quizType: quizType,       // [한글 주석] 'daily_quiz' 또는 'level_quiz'
-      correct: correct,          // [한글 주석] 정답 여부 (true/false)
-      level: level || '',        // [한글 주석] 레벨업퀴즈일 때 레벨
-      category: category || ''   // [한글 주석] 퀴즈 카테고리 (plant/animal/artifact)
-    }));
+    formData.append('payload', JSON.stringify(learningData));
     await fetch(LEARNING_SCRIPT_URL, { method: 'POST', body: formData });
+    console.log('[학습기록] 전송 완료');
   } catch(e) {
-    console.log('[학습기록] 전송 실패:', e);
+    // [한글 주석] 전송 실패 시 대기열에 저장 (인터넷 불안정 대비)
+    console.log('[학습기록] 전송 실패 - 대기열에 저장:', e);
+    if (typeof addToSyncQueue === 'function') {
+      addToSyncQueue('quiz_result', learningData);
+    }
   }
 }
 
