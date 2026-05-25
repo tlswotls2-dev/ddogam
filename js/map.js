@@ -16,6 +16,8 @@ let markersLayer = null;       // 수집 마커들을 묶어서 관리하는 레
  * 지도 화면을 열고 슬라이드 애니메이션을 적용합니다.
  */
 function showMap() {
+  // [한글 주석] 뒤로가기 스택에 추가
+  if (typeof pushScreen === 'function') pushScreen('map-screen');
     const mapScreen = document.getElementById('map-screen');
     
     // 화면에 보이게(flex) 처리

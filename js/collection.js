@@ -492,6 +492,8 @@ function drawRandomItem() {
  * @param {boolean} isNew - 새로운 발견 여부
  */
 function showCardPopup(cardParam, isNew) {
+  // [한글 주석] 뒤로가기 스택에 추가
+  if (typeof pushScreen === 'function') pushScreen('shared-card-overlay');
     // [한글 주석] 카드 출현 효과음
     if (typeof playSfxCardAppear === 'function') playSfxCardAppear();
 

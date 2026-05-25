@@ -393,6 +393,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 탐험 모드 관련 전역 함수들
     // ==========================================
     window.startExploration = function() {
+        // [한글 주석] 뒤로가기 스택에 추가
+        if (typeof pushScreen === 'function') pushScreen('exploration-overlay');
         // [한글 주석] 탐험 배경음으로 전환
         if (typeof playExploreBGM === 'function') playExploreBGM();
 
@@ -588,3 +590,82 @@ function onAvatarClick() {
   }
 }
 window.onAvatarClick = onAvatarClick;
+
+// ==========================================
+// [한글 주석] 안드로이드 뒤로가기 버튼 처리 시스템
+// ==========================================
+
+// [한글 주석] 현재 열려있는 화면 스택
+const _screenStack = [];
+
+// [한글 주석] 화면이 열릴 때 스택에 추가
+function pushScreen(screenId) {
+  // [한글 주석] 중복 방지
+  if (_screenStack[_screenStack.length - 1] === screenId) return;
+  _screenStack.push(screenId);
+  // [한글 주석] 브라우저 히스토리에 상태 추가 (뒤로가기 감지용)
+  history.pushState({ screenId }, '', location.pathname);
+}
+
+// [한글 주석] 현재 열려있는 화면에 따라 뒤로가기 처리
+function handleBackButton() {
+  // [한글 주석] 스택에서 현재 화면 꺼내기
+  const current = _screenStack.pop();
+
+  // [한글 주석] 각 화면별 닫기 함수 매핑
+  const closeMap = {
+    'dodam-screen':            () => { if (typeof hideDodam === 'function') hideDodam(); },
+    'map-screen':              () => { const ms = document.getElementById('map-screen'); if(ms) ms.style.display='none'; },
+    'avatar-customize-screen': () => { if (typeof hideCustomizeScreen === 'function') hideCustomizeScreen(); },
+    'chatbot-screen':          () => { if (typeof hideChatbot === 'function') hideChatbot(); },
+    'quiz-screen':             () => { if (typeof closeQuiz === 'function') closeQuiz(); },
+    'exploration-overlay':     () => { if (typeof stopExploration === 'function') stopExploration(); },
+    'shared-card-overlay':     () => { if (typeof closeCardPopup === 'function') closeCardPopup(); },
+    'help-modal':              () => { if (typeof hideHelpModal === 'function') hideHelpModal(); },
+    'gender-select-screen':    () => { const s = document.getElementById('gender-select-screen'); if(s) s.style.display='none'; },
+  };
+
+  if (current && closeMap[current]) {
+    closeMap[current]();
+    return;
+  }
+
+  // [한글 주석] 스택이 비어있으면 오버레이/모달 순서로 확인 후 닫기
+  const overlayOrder = [
+    'shared-card-overlay',
+    'help-modal',
+    'exploration-overlay',
+    'avatar-customize-screen',
+    'chatbot-screen',
+    'quiz-screen',
+    'dodam-screen',
+    'map-screen',
+  ];
+
+  for (const id of overlayOrder) {
+    const el = document.getElementById(id);
+    if (el && el.style.display !== 'none' && el.style.display !== '') {
+      if (closeMap[id]) { closeMap[id](); return; }
+    }
+  }
+
+  // [한글 주석] 닫을 화면이 없으면 메인화면 → 앱 종료 확인
+  if (confirm('앱을 종료하시겠습니까?')) {
+    navigator.app?.exitApp?.();
+  } else {
+    // [한글 주석] 취소 시 히스토리 다시 추가
+    history.pushState({}, '', location.pathname);
+  }
+}
+
+// [한글 주석] popstate 이벤트 감지 (안드로이드 뒤로가기 = history.back())
+window.addEventListener('popstate', (e) => {
+  handleBackButton();
+});
+
+// [한글 주석] 초기 히스토리 상태 추가 (첫 popstate 감지용)
+history.pushState({}, '', location.pathname);
+
+// [한글 주석] 전역 노출
+window.pushScreen = pushScreen;
+window.handleBackButton = handleBackButton;

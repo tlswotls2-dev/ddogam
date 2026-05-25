@@ -11,46 +11,46 @@ const IMG_BASE = 'images/avatars/';
 
 // [한글 주석] 8종 아바타 정의
 const AVATAR_LIST = [
-  { id: 'boy1_dodam',   name: '도담', gender: 'boy',  unlockLevel: 1  },
-  { id: 'boy2_junseo',  name: '준서', gender: 'boy',  unlockLevel: 6  },
-  { id: 'boy3_minjun',  name: '민준', gender: 'boy',  unlockLevel: 12 },
-  { id: 'boy4_jiho',    name: '지호', gender: 'boy',  unlockLevel: 18 },
-  { id: 'girl1_nari',   name: '나리', gender: 'girl', unlockLevel: 1  },
-  { id: 'girl2_soyeon', name: '소연', gender: 'girl', unlockLevel: 6  },
-  { id: 'girl3_sua',    name: '수아', gender: 'girl', unlockLevel: 12 },
-  { id: 'girl4_jia',    name: '지아', gender: 'girl', unlockLevel: 18 },
+  { id: 'boy1_dodam', name: '도담', gender: 'boy', unlockLevel: 1 },
+  { id: 'boy2_junseo', name: '준서', gender: 'boy', unlockLevel: 6 },
+  { id: 'boy3_minjun', name: '민준', gender: 'boy', unlockLevel: 12 },
+  { id: 'boy4_jiho', name: '지호', gender: 'boy', unlockLevel: 18 },
+  { id: 'girl1_nari', name: '나리', gender: 'girl', unlockLevel: 1 },
+  { id: 'girl2_soyeon', name: '소연', gender: 'girl', unlockLevel: 6 },
+  { id: 'girl3_sua', name: '수아', gender: 'girl', unlockLevel: 12 },
+  { id: 'girl4_jia', name: '지아', gender: 'girl', unlockLevel: 18 },
 ];
 
 // [한글 주석] 아이템 정의 (액세서리)
 const AVATAR_ITEMS = {
-  'earring_emerald':        { slot:'earring', name:'에메랄드 귀걸이',     unlockLevel:3,  rarity:'common', emoji:'💚' },
-  'glasses':                { slot:'glasses', name:'안경',                 unlockLevel:5,  rarity:'common', emoji:'👓' },
-  'hat_cowboy':             { slot:'hat',     name:'카우보이 모자',         unlockLevel:8,  rarity:'common', emoji:'🤠' },
-  'glasses_sun':            { slot:'glasses', name:'선글라스',              unlockLevel:10, rarity:'rare',   emoji:'🕶️' },
-  'earring_red':            { slot:'earring', name:'레드 귀걸이',           unlockLevel:13, rarity:'common', emoji:'❤️' },
-  'hat_lucky':              { slot:'hat',     name:'행운 모자',             unlockLevel:15, rarity:'rare',   emoji:'🍀' },
-  'hat_pumpkin':            { slot:'hat',     name:'호박 모자',             unlockLevel:20, rarity:'rare',   emoji:'🎃' },
-  'hat_witch':              { slot:'hat',     name:'마녀 모자',             unlockLevel:23, rarity:'epic',   emoji:'🧙' },
-  'earring_emerald_silver': { slot:'earring', name:'에메랄드 실버 귀걸이', unlockLevel:25, rarity:'epic',   emoji:'💎' },
-  'hat_pumpkin_purple':     { slot:'hat',     name:'보라 호박 모자',       unlockLevel:27, rarity:'epic',   emoji:'🟣' },
-  'earring_red_silver':     { slot:'earring', name:'레드 실버 귀걸이',     unlockLevel:30, rarity:'epic',   emoji:'👑' },
+  'earring_emerald': { slot: 'earring', name: '에메랄드 귀걸이', unlockLevel: 3, rarity: 'common', emoji: '💚' },
+  'glasses': { slot: 'glasses', name: '안경', unlockLevel: 5, rarity: 'common', emoji: '👓' },
+  'hat_cowboy': { slot: 'hat', name: '카우보이 모자', unlockLevel: 8, rarity: 'common', emoji: '🤠' },
+  'glasses_sun': { slot: 'glasses', name: '선글라스', unlockLevel: 10, rarity: 'rare', emoji: '🕶️' },
+  'earring_red': { slot: 'earring', name: '레드 귀걸이', unlockLevel: 13, rarity: 'common', emoji: '❤️' },
+  'hat_lucky': { slot: 'hat', name: '행운 모자', unlockLevel: 15, rarity: 'rare', emoji: '🍀' },
+  'hat_pumpkin': { slot: 'hat', name: '호박 모자', unlockLevel: 20, rarity: 'rare', emoji: '🎃' },
+  'hat_witch': { slot: 'hat', name: '마녀 모자', unlockLevel: 23, rarity: 'epic', emoji: '🧙' },
+  'earring_emerald_silver': { slot: 'earring', name: '에메랄드 실버 귀걸이', unlockLevel: 25, rarity: 'epic', emoji: '💎' },
+  'hat_pumpkin_purple': { slot: 'hat', name: '보라 호박 모자', unlockLevel: 27, rarity: 'epic', emoji: '🟣' },
+  'earring_red_silver': { slot: 'earring', name: '레드 실버 귀걸이', unlockLevel: 30, rarity: 'epic', emoji: '👑' },
 };
 
 // [한글 주석] 옷 정의
 const OUTFIT_LIST = [
-  { id: 'default',               name: '기본 복장',       unlockLevel: 1,  rarity: 'common', emoji: '👕' },
-  { id: 'outfit_sporty_red',     name: '빨간 스포츠',     unlockLevel: 7,  rarity: 'common', emoji: '🏃' },
-  { id: 'outfit_sporty_green',   name: '초록 스포츠',     unlockLevel: 7,  rarity: 'common', emoji: '🏃' },
-  { id: 'outfit_floral_pink',    name: '핑크 꽃무늬',     unlockLevel: 7,  rarity: 'common', emoji: '🌸' },
-  { id: 'outfit_floral_purple',  name: '보라 꽃무늬',     unlockLevel: 7,  rarity: 'common', emoji: '💜' },
-  { id: 'outfit_stripe_blue',    name: '파란 스트라이프', unlockLevel: 13, rarity: 'rare',   emoji: '🔵' },
-  { id: 'outfit_stripe_green',   name: '초록 스트라이프', unlockLevel: 13, rarity: 'rare',   emoji: '🟢' },
-  { id: 'outfit_sailor_blue',    name: '파란 세일러',     unlockLevel: 13, rarity: 'rare',   emoji: '⛵' },
-  { id: 'outfit_sailor_pink',    name: '핑크 세일러',     unlockLevel: 13, rarity: 'rare',   emoji: '🌸' },
-  { id: 'outfit_suit_blue',      name: '파란 정장',       unlockLevel: 23, rarity: 'epic',   emoji: '🤵' },
-  { id: 'outfit_suit_black',     name: '검정 정장',       unlockLevel: 23, rarity: 'epic',   emoji: '🖤' },
-  { id: 'outfit_dress_purple',   name: '보라 드레스',     unlockLevel: 23, rarity: 'epic',   emoji: '👗' },
-  { id: 'outfit_dress_pink',     name: '핑크 드레스',     unlockLevel: 23, rarity: 'epic',   emoji: '💗' },
+  { id: 'default', name: '기본 복장', unlockLevel: 1, rarity: 'common', emoji: '👕' },
+  { id: 'outfit_sporty_red', name: '빨간 스포츠', unlockLevel: 7, rarity: 'common', emoji: '🏃' },
+  { id: 'outfit_sporty_green', name: '초록 스포츠', unlockLevel: 7, rarity: 'common', emoji: '🏃' },
+  { id: 'outfit_floral_pink', name: '핑크 꽃무늬', unlockLevel: 7, rarity: 'common', emoji: '🌸' },
+  { id: 'outfit_floral_purple', name: '보라 꽃무늬', unlockLevel: 7, rarity: 'common', emoji: '💜' },
+  { id: 'outfit_stripe_blue', name: '파란 스트라이프', unlockLevel: 13, rarity: 'rare', emoji: '🔵' },
+  { id: 'outfit_stripe_green', name: '초록 스트라이프', unlockLevel: 13, rarity: 'rare', emoji: '🟢' },
+  { id: 'outfit_sailor_blue', name: '파란 세일러', unlockLevel: 13, rarity: 'rare', emoji: '⛵' },
+  { id: 'outfit_sailor_pink', name: '핑크 세일러', unlockLevel: 13, rarity: 'rare', emoji: '🌸' },
+  { id: 'outfit_suit_blue', name: '파란 정장', unlockLevel: 23, rarity: 'epic', emoji: '🤵' },
+  { id: 'outfit_suit_black', name: '검정 정장', unlockLevel: 23, rarity: 'epic', emoji: '🖤' },
+  { id: 'outfit_dress_purple', name: '보라 드레스', unlockLevel: 23, rarity: 'epic', emoji: '👗' },
+  { id: 'outfit_dress_pink', name: '핑크 드레스', unlockLevel: 23, rarity: 'epic', emoji: '💗' },
 ];
 
 // [한글 주석] 레벨 달성 특별 칭호/뱃지 정의
@@ -115,14 +115,14 @@ const LEVEL_BADGES = [
 
 // [한글 주석] 펫 목록
 const PET_LIST = [
-  { id: 'pet_none',      name: '없음',   emoji: '❌', condition: null },
-  { id: 'pet_chick',     name: '병아리', emoji: '🐥', condition: { category:'animal', count:5  } },
-  { id: 'pet_rabbit',    name: '토끼',   emoji: '🐰', condition: { category:'animal', count:15 } },
-  { id: 'pet_squirrel',  name: '다람쥐', emoji: '🐿️', condition: { category:'animal', count:30 } },
-  { id: 'pet_butterfly', name: '나비',   emoji: '🦋', condition: { category:'animal', count:50 } },
-  { id: 'pet_fox',       name: '여우',   emoji: '🦊', condition: { category:'animal', count:70 } },
-  { id: 'pet_deer',      name: '사슴',   emoji: '🦌', condition: { category:'animal', count:90 } },
-  { id: 'pet_crane',     name: '두루미', emoji: '🦢', condition: { total:200 } },
+  { id: 'pet_none', name: '없음', emoji: '❌', condition: null },
+  { id: 'pet_chick', name: '병아리', emoji: '🐥', condition: { category: 'animal', count: 5 } },
+  { id: 'pet_rabbit', name: '토끼', emoji: '🐰', condition: { category: 'animal', count: 15 } },
+  { id: 'pet_squirrel', name: '다람쥐', emoji: '🐿️', condition: { category: 'animal', count: 30 } },
+  { id: 'pet_butterfly', name: '나비', emoji: '🦋', condition: { category: 'animal', count: 50 } },
+  { id: 'pet_fox', name: '여우', emoji: '🦊', condition: { category: 'animal', count: 70 } },
+  { id: 'pet_deer', name: '사슴', emoji: '🦌', condition: { category: 'animal', count: 90 } },
+  { id: 'pet_crane', name: '두루미', emoji: '🦢', condition: { total: 200 } },
 ];
 
 // [한글 주석] 현재 선택된 아바타 ID 가져오기
@@ -168,11 +168,11 @@ function getAvatarSVG(avatarId) {
   // [한글 주석] 기존 SVG ID를 새 PNG ID로 매핑
   const mapping = {
     'boy_explorer': 'boy1_dodam',
-    'boy_police':   'boy2_junseo',
-    'girl_sakura':  'girl1_nari',
-    'girl_sports':  'girl3_sua',
-    'boy':          'boy1_dodam',
-    'girl':         'girl1_nari',
+    'boy_police': 'boy2_junseo',
+    'girl_sakura': 'girl1_nari',
+    'girl_sports': 'girl3_sua',
+    'boy': 'boy1_dodam',
+    'girl': 'girl1_nari',
   };
   const mapped = mapping[avatarId] || avatarId;
   return `<img src="${IMG_BASE}avatar_${mapped}.png"
@@ -610,6 +610,8 @@ function renderEquippedItems() {
 let currentCustomizeSlot = 'hat';
 
 function showCustomizeScreen() {
+  // [한글 주석] 뒤로가기 스택에 추가
+  if (typeof pushScreen === 'function') pushScreen('avatar-customize-screen');
   const screen = document.getElementById('avatar-customize-screen');
   if (!screen) return;
   screen.style.display = 'flex';
@@ -695,7 +697,7 @@ function renderCustomizeUI() {
       const badgePreview = document.createElement('div');
       badgePreview.style.cssText = `
         position:absolute;
-        right:-10px;
+        right:90px;
         bottom:60px;
         width:40px;
         height:48px;
@@ -743,7 +745,7 @@ function renderItemList() {
   const unlocked = getUnlockedItems();
   const equipped = getEquippedItems();
   const unlockedAvatars = getUnlockedAvatars();
-  const rarityColors = { common:'#7fff00', rare:'#4a9eff', epic:'#ffd700' };
+  const rarityColors = { common: '#7fff00', rare: '#4a9eff', epic: '#ffd700' };
 
   // ==========================================
   // [한글 주석] 아바타 탭
@@ -767,8 +769,8 @@ function renderItemList() {
         <div class="customize-item-info">
           <div class="customize-item-name">${av.name}</div>
           ${isUnlocked
-            ? `<div class="customize-item-status">${isSelected ? '✅ 선택 중' : '선택 가능'}</div>`
-            : `<div class="customize-item-cond">🔒 Lv.${av.unlockLevel} 해금</div>`}
+          ? `<div class="customize-item-status">${isSelected ? '✅ 선택 중' : '선택 가능'}</div>`
+          : `<div class="customize-item-cond">🔒 Lv.${av.unlockLevel} 해금</div>`}
         </div>
       `;
       if (isUnlocked) {
@@ -781,9 +783,9 @@ function renderItemList() {
       listEl.appendChild(div);
     });
 
-  // ==========================================
-  // [한글 주석] 옷 탭
-  // ==========================================
+    // ==========================================
+    // [한글 주석] 옷 탭
+    // ==========================================
   } else if (currentCustomizeSlot === 'outfit') {
     const currentOutfit = getEquippedOutfit();
     OUTFIT_LIST.forEach(outfit => {
@@ -800,11 +802,11 @@ function renderItemList() {
         <div class="customize-item-info">
           <div class="customize-item-name">${outfit.name}</div>
           <div style="color:${rColor};font-size:10px;">
-            ${'★'.repeat(outfit.rarity==='epic'?3:outfit.rarity==='rare'?2:1)}
+            ${'★'.repeat(outfit.rarity === 'epic' ? 3 : outfit.rarity === 'rare' ? 2 : 1)}
           </div>
           ${isUnlocked
-            ? `<div class="customize-item-status">${isEquipped ? '✅ 착용 중' : '착용 가능'}</div>`
-            : `<div class="customize-item-cond">🔒 Lv.${outfit.unlockLevel} 해금</div>`}
+          ? `<div class="customize-item-status">${isEquipped ? '✅ 착용 중' : '착용 가능'}</div>`
+          : `<div class="customize-item-cond">🔒 Lv.${outfit.unlockLevel} 해금</div>`}
         </div>
       `;
       if (isUnlocked) {
@@ -817,9 +819,9 @@ function renderItemList() {
       listEl.appendChild(div);
     });
 
-  // ==========================================
-  // [한글 주석] 펫 탭
-  // ==========================================
+    // ==========================================
+    // [한글 주석] 펫 탭
+    // ==========================================
   } else if (currentCustomizeSlot === 'pet') {
     const collection = typeof getCollection === 'function' ? getCollection() : [];
     let aCount = 0, total = 0;
@@ -849,8 +851,8 @@ function renderItemList() {
         <div class="customize-item-info">
           <div class="customize-item-name">${pet.name}</div>
           ${isUnlocked
-            ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
-            : `<div class="customize-item-cond">🔒 ${condText}</div>`}
+          ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
+          : `<div class="customize-item-cond">🔒 ${condText}</div>`}
         </div>
       `;
       if (isUnlocked) {
@@ -859,12 +861,12 @@ function renderItemList() {
       listEl.appendChild(div);
     });
 
-  // ==========================================
-  // [한글 주석] 일반 액세서리 탭 (hat, glasses, earring, weapon)
-  // ==========================================
-  // ==========================================
-  // [한글 주석] 칭호 탭
-  // ==========================================
+    // ==========================================
+    // [한글 주석] 일반 액세서리 탭 (hat, glasses, earring, weapon)
+    // ==========================================
+    // ==========================================
+    // [한글 주석] 칭호 탭
+    // ==========================================
   } else if (currentCustomizeSlot === 'title') {
     const level = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
     const equippedTitleId = getEquippedTitle();
@@ -890,8 +892,8 @@ function renderItemList() {
             ${'★'.repeat(badge.unlockLevel === 30 ? 3 : badge.unlockLevel === 20 ? 2 : 1)}
           </div>
           ${isUnlocked
-            ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중 (탭하여 해제)' : '탭하여 장착'}</div>`
-            : `<div class="customize-item-cond">🔒 Lv.${badge.unlockLevel} 달성 시 해금</div>`}
+          ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중 (탭하여 해제)' : '탭하여 장착'}</div>`
+          : `<div class="customize-item-cond">🔒 Lv.${badge.unlockLevel} 달성 시 해금</div>`}
         </div>
       `;
 
@@ -941,11 +943,11 @@ function renderItemList() {
         <div class="customize-item-info">
           <div class="customize-item-name">${item.name}</div>
           <div style="color:${rColor};font-size:10px;">
-            ${'★'.repeat(item.rarity==='epic'?3:item.rarity==='rare'?2:1)}
+            ${'★'.repeat(item.rarity === 'epic' ? 3 : item.rarity === 'rare' ? 2 : 1)}
           </div>
           ${isUnlocked
-            ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
-            : `<div class="customize-item-cond">🔒 Lv.${item.unlockLevel} 해금</div>`}
+          ? `<div class="customize-item-status">${isEquipped ? '✅ 장착 중' : '장착 가능'}</div>`
+          : `<div class="customize-item-cond">🔒 Lv.${item.unlockLevel} 해금</div>`}
         </div>
       `;
       if (isUnlocked) {

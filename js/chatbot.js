@@ -7,6 +7,8 @@ let isChatbotInitialized = false;
  * 챗봇 화면을 열고, 처음 열렸을 때만 환영 메시지를 띄웁니다.
  */
 function showChatbot() {
+  // [한글 주석] 뒤로가기 스택에 추가
+  if (typeof pushScreen === 'function') pushScreen('chatbot-screen');
     const GEMINI_API_KEY = localStorage.getItem('gemini_api_key');
     if (!GEMINI_API_KEY) {
         alert("선생님께 API 키 설정을 요청해주세요!");

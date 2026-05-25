@@ -6,6 +6,8 @@ let currentDodamCategory = 'plant'; // 도감 화면 진입 시 기본으로 보
  * 도감 화면을 열고 부드럽게 슬라이드 애니메이션을 적용합니다.
  */
 function showDodam() {
+  // [한글 주석] 뒤로가기 스택에 추가
+  if (typeof pushScreen === 'function') pushScreen('dodam-screen');
     const dodamScreen = document.getElementById('dodam-screen');
     
     // 화면에 보이게(flex) 처리한 후
