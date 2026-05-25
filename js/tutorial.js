@@ -297,8 +297,15 @@ function _showTutorialStep(stepIdx) {
       white-space:pre-line;margin-bottom:12px;">
       ${step.message}
     </div>
-    <div style="position:relative;min-height:36px;">
-      ${prevBtn ? `<div style="position:absolute;left:0;bottom:0;">${prevBtn}</div>` : ''}
+    <div style="position:relative;min-height:40px;display:flex;align-items:center;justify-content:center;">
+      ${prevBtn ? `
+        <div style="position:absolute;left:0;bottom:0;">
+          <button onclick="_prevTutorialStep()" style="
+            background:rgba(255,255,255,0.06);color:#aaa;
+            border:1px solid #555;border-radius:8px;
+            padding:5px 8px;font-size:10px;cursor:pointer;
+            pointer-events:all;white-space:nowrap;">← 이전</button>
+        </div>` : ''}
       <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
         ${skipBtn}${nextBtn}${lastBtn}
       </div>
@@ -495,9 +502,12 @@ function _tutorialShowDetail() {
 
   document.body.appendChild(detailArea);
 
-  // [한글 주석] 3초 뒤 확인 버튼 하이라이트
+  // [한글 주석] 상세정보 팝업의 확인버튼에 3초 뒤 하이라이트
+  // [한글 주석] tutorialCloseDetail 함수를 가진 버튼만 찾음
   setTimeout(() => {
-    const closeBtn = document.getElementById('tutorial-close-btn');
+    const detailArea = document.getElementById('tutorial-detail-area');
+    if (!detailArea) return;
+    const closeBtn = detailArea.querySelector('#tutorial-close-btn');
     if (closeBtn) {
       closeBtn.style.animation = 'tutorialPulse 0.8s ease-in-out infinite';
       closeBtn.style.boxShadow = '0 0 0 4px rgba(255,215,0,0.6)';
