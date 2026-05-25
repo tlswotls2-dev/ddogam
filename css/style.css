@@ -300,42 +300,64 @@ button:active {
     to { opacity: 1; transform: scale(1.2); }
 }
 
-/* 상단 헤더 영역 (숲 배경 반투명) */
+/* [한글 주석] 상단 헤더 영역 (반응형 대응 및 숲 배경 반투명) */
 .header-area, .main-header {
     position: relative;
     z-index: 10;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 16px;
+    justify-content: space-between;
+    padding: 8px 12px;
+    min-height: 48px;
+    flex-wrap: nowrap;
+    gap: 4px;
+    overflow: hidden;
     background-color: rgba(44, 62, 45, 0.95);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--border-color);
 }
 
+/* [한글 주석] 헤더 왼쪽 영역 (로고 및 현재 모드 배지) */
 .header-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
+    flex-shrink: 0;
+    min-width: 0;
 }
 
-/* 로고 아이콘 (이끼 녹색 발광) */
+/* [한글 주석] 로고 아이콘 (반응형 폰트 및 이끼 녹색 발광) */
 .logo-small {
-    font-size: 1.1rem;
+    font-size: clamp(13px, 3.5vw, 18px);
     font-weight: 900;
     color: var(--accent-color);
     text-shadow: 0 0 10px rgba(141, 176, 92, 0.3);
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-/* 카테고리 알림 배지 */
+/* [한글 주석] 카테고리 알림 배지 (반응형 폰트 및 말줄임표 적용) */
 .badge {
     background-color: var(--panel-bg);
     color: var(--accent-color);
-    padding: 4px 10px;
+    padding: 3px 8px;
     border: 1px solid var(--border-color);
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: clamp(10px, 2.5vw, 13px);
     font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* [한글 주석] 헤더 오른쪽 영역 (유저 정보 및 제어기) */
+.header-right {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
 }
 
 /* 걸음 수 디스플레이 (황금빛 강조) */

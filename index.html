@@ -224,12 +224,17 @@
         <span class="badge" id="current-category-badge">🌱 식물 탐험 중</span>
       </div>
       <div class="header-right">
+        <!-- [한글 주석] 유저 정보 표시 영역 (반응형 폰트 및 긴 이름 말줄임표 처리) -->
         <span id="user-info-display" style="
                   color:#ffffff;
-                  font-size:15px;
+                  font-size:clamp(11px, 3vw, 15px);
                   font-weight:900;
                   text-shadow: 0 0 10px rgba(255,255,255,0.5);
-                  margin-right: 46px; /* [한글 주석] 음소거 버튼 자리 확보 (왼쪽으로 이동) */
+                  margin-right: 46px;
+                  white-space:nowrap;
+                  overflow:hidden;
+                  text-overflow:ellipsis;
+                  max-width:40vw;
                 "></span>
         <!-- [한글 주석] 음소거 버튼 - 우상단 고정 -->
         <button id="mute-btn" onclick="toggleMute()" style="
