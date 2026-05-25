@@ -236,11 +236,8 @@
                   text-overflow:ellipsis;
                   max-width:40vw;
                 "></span>
-        <!-- [한글 주석] 음소거 버튼 - 우상단 고정 -->
+        <!-- [한글 주석] 음소거 버튼 - 헤더 오른쪽 인라인 배치 -->
         <button id="mute-btn" onclick="toggleMute()" style="
-          position:absolute;
-          top:10px;
-          right:10px;
           width:36px;
           height:36px;
           background:rgba(0,0,0,0.3);
@@ -254,6 +251,7 @@
           align-items:center;
           justify-content:center;
           line-height:1;
+          flex-shrink:0;
         ">🔊</button>
       </div>
     </div>

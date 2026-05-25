@@ -695,7 +695,7 @@ function renderCustomizeUI() {
       const badgePreview = document.createElement('div');
       badgePreview.style.cssText = `
         position:absolute;
-        right:-30px;
+        right:-10px;
         bottom:60px;
         width:40px;
         height:48px;
@@ -714,7 +714,7 @@ function renderCustomizeUI() {
       const petPreview = document.createElement('div');
       petPreview.style.cssText = `
         position:absolute;
-        bottom:-10px;
+        bottom:10px;
         right:10px;
         font-size:1.8rem;
         z-index:10;

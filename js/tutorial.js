@@ -48,7 +48,7 @@ const TUTORIAL_STEPS = [
   {
     // [한글 주석] 3단계: 확인 버튼 하이라이트
     targetSelector: '#tutorial-close-btn',
-    message: '📚 더 많은 정보를 볼 수도\n있답니다. 확인을 누르세요.',
+    message: '📚 더 많은 정보를 볼 수도\n있답니다. 상세정보를 읽어보고\n확인을 누르세요.',
     blockTarget: false,
     position: 'top-minimal',
     showSkip: false,
