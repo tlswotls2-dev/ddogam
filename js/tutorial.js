@@ -258,8 +258,7 @@ function _showTutorialStep(stepIdx) {
       background:rgba(255,255,255,0.08);color:#d4c89c;
       border:1px solid #6b8e3d;border-radius:10px;
       padding:8px 14px;font-size:11px;cursor:pointer;
-      pointer-events:all;
-      position:absolute;bottom:16px;left:16px;">← 이전</button>` : '';
+      pointer-events:all;">← 이전</button>` : '';
 
   const nextBtn = step.showNext ? `
     <button onclick="_nextTutorialStep()" style="
@@ -286,7 +285,7 @@ function _showTutorialStep(stepIdx) {
     padding:16px 18px;max-width:260px;width:85vw;
     box-shadow:0 0 30px rgba(255,215,0,0.3);
     text-align:center;animation:fadeIn 0.3s ease;
-    pointer-events:all;position:relative;
+    pointer-events:all;
   `;
 
   msgBox.innerHTML = `
@@ -298,8 +297,11 @@ function _showTutorialStep(stepIdx) {
       white-space:pre-line;margin-bottom:12px;">
       ${step.message}
     </div>
-    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-      ${skipBtn}${prevBtn}${nextBtn}${lastBtn}
+    <div style="position:relative;min-height:36px;">
+      ${prevBtn ? `<div style="position:absolute;left:0;bottom:0;">${prevBtn}</div>` : ''}
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        ${skipBtn}${nextBtn}${lastBtn}
+      </div>
     </div>
     <div style="display:flex;gap:4px;justify-content:center;margin-top:10px;">
       ${TUTORIAL_STEPS.map((_, i) => `
