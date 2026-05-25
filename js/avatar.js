@@ -547,10 +547,15 @@ function renderLevelBadge() {
   badgeEl.innerHTML = badge.svg;
   badgeEl.onclick = () => showItemToast([`${badge.name} 달성! 🎉`]);
 
+  // [한글 주석] main-character 자체에 뱃지 추가 (부모 position 건드리지 않음)
   const mainChar = document.getElementById('main-character');
-  if (mainChar && mainChar.parentElement) {
-    mainChar.parentElement.style.position = 'relative';
-    mainChar.parentElement.appendChild(badgeEl);
+  if (mainChar) {
+    // [한글 주석] main-character가 relative 포지션 되도록 설정
+    const originalPosition = window.getComputedStyle(mainChar).position;
+    if (originalPosition === 'static') {
+      mainChar.style.position = 'relative';
+    }
+    mainChar.appendChild(badgeEl);
   }
 }
 
