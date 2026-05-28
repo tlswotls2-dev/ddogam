@@ -77,37 +77,65 @@ function initMap() {
 
     isMapInitialized = true;
 
-    // GPS로 현재 위치 가져오기 시도
+    // [한글 주석] GPS 위치 감시 ID (지도 닫을 때 정지용)
+    let _watchId = null;
+
+    // [한글 주석] GPS로 현재 위치 감시 시작 (watchPosition: 위치 갱신될 때마다 호출됨)
+    // [한글 주석] PWA 설치 모드에서 getCurrentPosition은 부정확한 초기값으로 멈추는 문제가 있어
+    // [한글 주석] watchPosition을 사용하면 GPS가 정밀해질수록 마커가 자동 업데이트됨
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
+        // [한글 주석] 첫 위치 수신 전 상태 안내
+        document.getElementById('map-status-text').textContent = '📡 GPS 신호 잡는 중...';
+
+        _watchId = navigator.geolocation.watchPosition(
             (position) => {
-                // 위치 가져오기 성공
+                // [한글 주석] 위치 갱신 성공 - GPS 정밀도가 높아질수록 더 정확한 위치로 업데이트됨
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
-                
-                // 현재 위치로 지도 이동
-                map.setView([lat, lng], DEFAULT_ZOOM);
-                
-                // 파란 점 마커 표시
+                const accuracy = Math.round(position.coords.accuracy);
+
+                // [한글 주석] 처음 위치 수신 시 지도 중심 이동
+                if (!userMarker) {
+                    map.setView([lat, lng], DEFAULT_ZOOM);
+                }
+
+                // [한글 주석] 마커 업데이트
                 setUserMarker(lat, lng);
-                
-                // 상태 텍스트 업데이트
-                document.getElementById('map-status-text').textContent = '📍 현재 위치 추적 중';
+
+                // [한글 주석] 정확도 표시 (숫자가 낮을수록 정확)
+                const statusEl = document.getElementById('map-status-text');
+                if (statusEl) {
+                    if (accuracy <= 20) {
+                        statusEl.textContent = `📍 현재 위치 추적 중 (정확도 ${accuracy}m)`;
+                    } else {
+                        statusEl.textContent = `📡 GPS 보정 중... (오차 약 ${accuracy}m)`;
+                    }
+                }
             },
             (error) => {
-                // 위치 가져오기 실패 → 서울시청 기본 좌표 사용
-                console.warn("위치 정보를 가져올 수 없습니다:", error.message);
+                // [한글 주석] 위치 권한 거부 또는 GPS 불가 → 기본 좌표 사용
+                console.warn('[지도] 위치 정보 오류:', error.message);
                 setUserMarker(DEFAULT_LAT, DEFAULT_LNG);
                 document.getElementById('map-status-text').textContent = '📍 위치 권한 필요 (기본 위치 표시 중)';
             },
             {
-              enableHighAccuracy: true,  // [한글 주석] GPS 고정밀도 모드
-              timeout: 15000,            // [한글 주석] 타임아웃 15초로 늘림 (모바일 GPS 수신 시간 확보)
-              maximumAge: 0              // [한글 주석] 캐시 위치 사용 안함 - 항상 새 위치 요청
+                enableHighAccuracy: true, // [한글 주석] GPS 고정밀도 모드 (PWA에서 필수)
+                timeout: 20000,           // [한글 주석] 타임아웃 20초 (GPS 신호 수신 대기)
+                maximumAge: 0             // [한글 주석] 캐시 위치 사용 안함 - 항상 새 위치 요청
             }
         );
+
+        // [한글 주석] 지도 닫을 때 위치 감시 정지 (배터리 절약)
+        map.on('remove', () => {
+            if (_watchId !== null) {
+                navigator.geolocation.clearWatch(_watchId);
+                _watchId = null;
+                console.log('[지도] 위치 감시 정지');
+            }
+        });
+
     } else {
-        // Geolocation API 자체를 지원하지 않는 브라우저
+        // [한글 주석] Geolocation API 미지원 브라우저
         setUserMarker(DEFAULT_LAT, DEFAULT_LNG);
         document.getElementById('map-status-text').textContent = '📍 이 브라우저는 위치를 지원하지 않습니다';
     }

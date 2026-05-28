@@ -582,9 +582,46 @@ function showTeacherHelp() {
       box-shadow:0 0 40px rgba(74,158,255,0.2);
     ">
       <!-- [한글 주석] 헤더 -->
-      <div style="text-align:center;margin-bottom:24px;">
+      <div style="text-align:center;margin-bottom:20px;">
         <div style="font-size:28px;margin-bottom:6px;">👨🏫 선생님 도움말</div>
-        <div style="color:#7aabff;font-size:13px;">또감 대시보드 사용 안내</div>
+        <div style="color:#7aabff;font-size:13px;">또감 앱 소개 및 대시보드 사용 안내</div>
+      </div>
+
+      <!-- [한글 주석] 앱 소개 및 오프라인 안내 (최상단 강조 박스) -->
+      <div style="
+        background:linear-gradient(135deg,rgba(132,255,0,0.08),rgba(74,158,255,0.08));
+        border:1.5px solid #4a7a1e;
+        border-radius:16px;
+        padding:16px;
+        margin-bottom:16px;
+      ">
+        <div style="color:#84ff00;font-size:13px;font-weight:900;margin-bottom:10px;">
+          🌿 또감이란?
+        </div>
+        <div style="color:#c8d8f0;font-size:12px;line-height:1.9;">
+          <b style="color:#fff;">또감</b>은 초등학생이 직접 걸으며 식물·동물·유물 카드를 수집하는
+          <b style="color:#84ff00;">도감 수집형 학습 앱</b>이에요.<br>
+          걷기→카드수집→레벨업→퀴즈 사이클로 자연스럽게 학습이 이루어져요.
+        </div>
+        <!-- [한글 주석] 오프라인 동작 안내 -->
+        <div style="
+          background:rgba(255,215,0,0.08);
+          border:1px solid #a07c10;
+          border-radius:10px;
+          padding:10px 12px;
+          margin-top:10px;
+        ">
+          <div style="color:#ffd700;font-size:12px;font-weight:900;margin-bottom:6px;">
+            📶 인터넷 없어도 사용 가능해요!
+          </div>
+          <div style="color:#c8d8f0;font-size:11px;line-height:1.8;">
+            • 학생 기기에 앱 데이터가 저장되어 있어서
+            <b style="color:#fff;">와이파이 없이도</b> 탐험·카드수집·퀴즈를 모두 할 수 있어요.<br>
+            • 오프라인 중 활동한 내용(걸음수, 수집, 퀴즈 결과)은 기기에 임시 저장돼요.<br>
+            • 나중에 <b style="color:#fff;">와이파이에 연결되면 자동으로</b> 선생님 대시보드에 반영돼요.<br>
+            • 그래서 수업 중 와이파이가 없어도 걱정 없이 사용하세요! 😊
+          </div>
+        </div>
       </div>
 
       <!-- [한글 주석] 핵심 안내 4가지 -->
