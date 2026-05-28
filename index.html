@@ -873,112 +873,105 @@
   </script>
 
   <script>
-    // [한글 주석] 스플래시 스크린 컨트롤러 v3
+    // [한글 주석] 인트로 영상 스플래시 컨트롤러
     (function () {
-      // [한글 주석] 스플래시 배경음 시작 (페이지 로드 즉시)
-      if (typeof playSplashBGM === 'function') playSplashBGM();
-
-      // [한글 주석] 별 생성
-      const starsEl = document.getElementById('splash-stars');
-      for (let i = 0; i < 60; i++) {
-        const s = document.createElement('div');
-        s.style.cssText = `
-      position:absolute;
-      width:${Math.random() * 3 + 1}px;
-      height:${Math.random() * 3 + 1}px;
-      background:#fff;
-      border-radius:50%;
-      left:${Math.random() * 100}%;
-      top:${Math.random() * 100}%;
-      opacity:${Math.random() * 0.8 + 0.2};
-      animation: starTwinkle ${Math.random() * 2 + 1}s infinite alternate;
-    `;
-        starsEl.appendChild(s);
-      }
-
-      // [한글 주석] 아바타 삽입
-      const avatarEl = document.getElementById('splash-avatar');
-      const savedAvatar = localStorage.getItem('selectedAvatar') || 'boy_explorer';
-      if (avatarEl) {
-        if (typeof getAvatarSVG === 'function') {
-          avatarEl.innerHTML = getAvatarSVG(savedAvatar);
-        } else {
-          avatarEl.innerHTML = '<div style="font-size:60px;">🧒</div>';
-        }
-      }
-
-      const phase1 = document.getElementById('splash-phase-1');
-      const phase2 = document.getElementById('splash-phase-2');
-      const phase3 = document.getElementById('splash-phase-3');
-      const logoFinal = document.getElementById('splash-logo-final');
       const splash = document.getElementById('splash-screen');
+      if (!splash) return;
 
-      // [한글 주석] 1단계: 걷고 (0~2초)
-      setTimeout(() => {
-        phase1.style.display = 'none';
-        phase2.style.display = 'flex';
+      // [한글 주석] 기존 스플래시 내용을 모두 지우고 영상으로 교체
+      splash.innerHTML = `
+        <video
+          id="intro-video"
+          src="/video/intro.mp4"
+          playsinline
+          muted
+          style="
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            display:block;
+          "
+        ></video>
 
-        // [한글 주석] 카드 2초 보여주다가 도감으로 날아감
-        setTimeout(() => {
-          const card = document.getElementById('splash-epic-card');
-          const target = document.getElementById('splash-grid-target');
-          if (!card || !target) return;
+        <!-- [한글 주석] 건너뛰기 버튼 - 처음엔 숨김, 탭하면 표시 -->
+        <button
+          id="intro-skip-btn"
+          onclick="skipIntro()"
+          style="
+            display:none;
+            position:absolute;
+            bottom:48px;
+            right:24px;
+            background:rgba(0,0,0,0.55);
+            color:#fff;
+            border:1px solid rgba(255,255,255,0.4);
+            border-radius:20px;
+            padding:8px 20px;
+            font-size:13px;
+            font-family:'Noto Sans KR',sans-serif;
+            font-weight:600;
+            cursor:pointer;
+            z-index:99999;
+            backdrop-filter:blur(4px);
+          "
+        >건너뛰기 ▶</button>
+      `;
 
-          card.classList.add('splash-card-fly');
-          setTimeout(() => {
-            // [한글 주석] 도감 칸에 착! 1초
-            if (target) {
-              target.classList.add('splash-grid-filled');
-              target.innerHTML = '🏺';
-            }
-            if (card) card.style.opacity = '0';
-            // [한글 주석] 카드 0.1초만에 사라지고 바로 도감착
-          }, 100);
-        }, 1500); // [한글 주석] 카드 1.5초 노출 후 날아감
+      // [한글 주석] 스플래시 스타일 조정 (영상이 꽉 차도록)
+      splash.style.cssText = `
+        position:fixed;
+        top:0;left:0;right:0;bottom:0;
+        background:#000;
+        z-index:99999;
+        overflow:hidden;
+      `;
 
-      }, 2000); // [한글 주석] 걷고 2초
+      const video = document.getElementById('intro-video');
+      const skipBtn = document.getElementById('intro-skip-btn');
 
-      // [한글 주석] 2단계: 수집하며 (2~5초, 총 3초)
-      setTimeout(() => {
-        phase2.style.display = 'none';
-        phase3.style.display = 'flex';
+      // [한글 주석] 화면 탭하면 건너뛰기 버튼 표시
+      splash.addEventListener('click', function showSkip() {
+        if (skipBtn) skipBtn.style.display = 'block';
+      });
 
-        // [한글 주석] 책 페이지 넘기기 시작
-        setTimeout(() => {
-          const page = document.getElementById('splash-page');
-          if (page) page.classList.add('page-turning');
-        }, 300);
+      // [한글 주석] 인트로 종료 처리 함수
+      window.skipIntro = function () {
+        _endIntro();
+      };
 
-        // [한글 주석] 반짝임 순차 등장
-        const sparkles = document.querySelectorAll('.splash-sparkle');
-        sparkles.forEach((el, idx) => {
-          setTimeout(() => {
-            el.style.opacity = '1';
-            el.style.animation = 'sparkleFloat 0.8s ease infinite alternate';
-          }, idx * 200);
-        });
+      function _endIntro() {
+        // [한글 주석] 이미 종료 처리 중이면 중복 실행 방지
+        if (splash.dataset.ending) return;
+        splash.dataset.ending = 'true';
 
-      }, 4500); // [한글 주석] 수집하며 2.5초 (카드 1.5초 + 도감착 1초)
-
-      // [한글 주석] 3단계: 배운다 (5~7초, 총 2초)
-      setTimeout(() => {
-        phase3.style.display = 'none';
-        logoFinal.style.display = 'block';
-        logoFinal.style.opacity = '0';
-        logoFinal.style.transition = 'opacity 0.8s ease';
-        setTimeout(() => { logoFinal.style.opacity = '1'; }, 50);
-      }, 6500); // [한글 주석] 배운다 2초
-
-      // [한글 주석] 로고 2초 노출 후 페이드아웃 (9초)
-      setTimeout(() => {
+        // [한글 주석] 페이드아웃 후 로그인 화면 표시
         splash.style.transition = 'opacity 0.8s ease';
         splash.style.opacity = '0';
         setTimeout(() => {
           splash.style.display = 'none';
-          // [한글 주석] 스플래시 끝나고 로그인 배경음 시작
-          if (typeof playLoginBGM === 'function') setTimeout(() => playLoginBGM(), 200);
+          // [한글 주석] 영상 종료 후 로그인 배경음 시작
+          if (typeof playLoginBGM === 'function') playLoginBGM();
         }, 800);
-      }, 8500); // [한글 주석] 로고 2초
+      }
+
+      // [한글 주석] 영상 재생 시작
+      video.play().catch(() => {
+        // [한글 주석] 자동재생 차단된 경우 (브라우저 정책) 바로 로그인으로 이동
+        console.log('[인트로] 자동재생 차단 - 스킵 처리');
+        _endIntro();
+      });
+
+      // [한글 주석] 영상 끝나면 자동으로 로그인 화면으로 전환
+      video.addEventListener('ended', () => {
+        _endIntro();
+      });
+
+      // [한글 주석] 혹시 영상 로드 실패 시에도 로그인으로 이동
+      video.addEventListener('error', () => {
+        console.log('[인트로] 영상 로드 실패 - 스킵 처리');
+        _endIntro();
+      });
+
     })();
   </script>
 
