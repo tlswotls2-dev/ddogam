@@ -224,22 +224,24 @@
 
   <!-- [한글 주석] 학생 앱 전체 래퍼 - 학생 화면 예시에서 통째로 프레임에 넣기 위한 컨테이너 -->
   <div id="student-app-wrapper">
-    <!-- 메인 탐험 화면 컨테이너 (로그인 성공 시 보여짐) -->
-    <div id="main-container" style="display: none;">
+    <!-- [한글 주석] 학생 앱 전체 래퍼 - 학생 화면 예시에서 통째로 프레임에 넣기 위한 컨테이너 -->
+    <div id="student-app-wrapper">
+      <!-- 메인 탐험 화면 컨테이너 (로그인 성공 시 보여짐) -->
+      <div id="main-container" style="display: none;">
 
-      <!-- 낮 풍경 배경의 초록색 잔디 영역 -->
-      <div class="grass-bg"></div>
+        <!-- 낮 풍경 배경의 초록색 잔디 영역 -->
+        <div class="grass-bg"></div>
 
-      <!-- 상단 헤더 영역 -->
-      <div class="header-area">
-        <div class="header-left">
-          <span class="logo-small">🌿 또감</span>
-          <!-- 카테고리에 따라 바뀌는 초록 배지 -->
-          <span class="badge" id="current-category-badge">🌱 식물 탐험 중</span>
-        </div>
-        <div class="header-right">
-          <!-- [한글 주석] 유저 정보 표시 영역 (반응형 폰트 및 긴 이름 말줄임표 처리) -->
-          <span id="user-info-display" style="
+        <!-- 상단 헤더 영역 -->
+        <div class="header-area">
+          <div class="header-left">
+            <span class="logo-small">🌿 또감</span>
+            <!-- 카테고리에 따라 바뀌는 초록 배지 -->
+            <span class="badge" id="current-category-badge">🌱 식물 탐험 중</span>
+          </div>
+          <div class="header-right">
+            <!-- [한글 주석] 유저 정보 표시 영역 (반응형 폰트 및 긴 이름 말줄임표 처리) -->
+            <span id="user-info-display" style="
                   color:#ffffff;
                   font-size:clamp(11px, 3vw, 15px);
                   font-weight:900;
@@ -250,8 +252,8 @@
                   text-overflow:ellipsis;
                   max-width:40vw;
                 "></span>
-          <!-- [한글 주석] 음소거 버튼 - 헤더 오른쪽 인라인 배치 -->
-          <button id="mute-btn" onclick="toggleMute()" style="
+            <!-- [한글 주석] 음소거 버튼 - 헤더 오른쪽 인라인 배치 -->
+            <button id="mute-btn" onclick="toggleMute()" style="
           width:36px;
           height:36px;
           background:rgba(0,0,0,0.3);
@@ -267,53 +269,53 @@
           line-height:1;
           flex-shrink:0;
         ">🔊</button>
-        </div>
-      </div>
-
-      <!-- 상단 카테고리 탭 3개 -->
-      <div class="category-tabs">
-        <button class="tab active" data-target="plant" data-name="식물" data-emoji="🌱">🌱 식물</button>
-        <button class="tab locked" data-target="animal" data-name="동물" data-emoji="🦊">🦊 동물</button>
-        <button class="tab locked" data-target="artifact" data-name="유물" data-emoji="🏺">🏺 유물</button>
-      </div>
-
-      <!-- 반투명 흰색의 수집 현황 카드 -->
-      <div class="status-card">
-        <h3>전체 완성도</h3>
-        <!-- 전체 진행바 -->
-        <div class="progress-bar-container">
-          <div class="progress-bar fill-plant" id="total-progress" style="width: 0%;"></div>
-        </div>
-        <div class="progress-text" id="total-text">0 / 300 (0%)</div>
-
-        <!-- 개별 카테고리 진행바 -->
-        <div class="category-status">
-          <div class="status-item">
-            <span>🌱</span>
-            <div class="small-bar-bg">
-              <div class="small-bar fill-plant" id="plant-progress" style="width: 0%;"></div>
-            </div>
-            <span id="plant-text">0 / 100</span>
-          </div>
-          <div class="status-item">
-            <span>🦊</span>
-            <div class="small-bar-bg">
-              <div class="small-bar fill-animal" id="animal-progress" style="width: 0%;"></div>
-            </div>
-            <span id="animal-text">0 / 100</span>
-          </div>
-          <div class="status-item">
-            <span>🏺</span>
-            <div class="small-bar-bg">
-              <div class="small-bar fill-artifact" id="artifact-progress" style="width: 0%;"></div>
-            </div>
-            <span id="artifact-text">0 / 100</span>
           </div>
         </div>
-      </div>
 
-      <!-- [한글 주석] 배틀 모드 버튼 -->
-      <button id="battle-mode-btn" onclick="showBattleMode()" style="
+        <!-- 상단 카테고리 탭 3개 -->
+        <div class="category-tabs">
+          <button class="tab active" data-target="plant" data-name="식물" data-emoji="🌱">🌱 식물</button>
+          <button class="tab locked" data-target="animal" data-name="동물" data-emoji="🦊">🦊 동물</button>
+          <button class="tab locked" data-target="artifact" data-name="유물" data-emoji="🏺">🏺 유물</button>
+        </div>
+
+        <!-- 반투명 흰색의 수집 현황 카드 -->
+        <div class="status-card">
+          <h3>전체 완성도</h3>
+          <!-- 전체 진행바 -->
+          <div class="progress-bar-container">
+            <div class="progress-bar fill-plant" id="total-progress" style="width: 0%;"></div>
+          </div>
+          <div class="progress-text" id="total-text">0 / 300 (0%)</div>
+
+          <!-- 개별 카테고리 진행바 -->
+          <div class="category-status">
+            <div class="status-item">
+              <span>🌱</span>
+              <div class="small-bar-bg">
+                <div class="small-bar fill-plant" id="plant-progress" style="width: 0%;"></div>
+              </div>
+              <span id="plant-text">0 / 100</span>
+            </div>
+            <div class="status-item">
+              <span>🦊</span>
+              <div class="small-bar-bg">
+                <div class="small-bar fill-animal" id="animal-progress" style="width: 0%;"></div>
+              </div>
+              <span id="animal-text">0 / 100</span>
+            </div>
+            <div class="status-item">
+              <span>🏺</span>
+              <div class="small-bar-bg">
+                <div class="small-bar fill-artifact" id="artifact-progress" style="width: 0%;"></div>
+              </div>
+              <span id="artifact-text">0 / 100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- [한글 주석] 배틀 모드 버튼 -->
+        <button id="battle-mode-btn" onclick="showBattleMode()" style="
           position:absolute;
           left:14px;
           bottom:216px;
@@ -335,8 +337,8 @@
           z-index:10;
         ">⚔️<br>배틀</button>
 
-      <!-- [한글 주석] 일일 시험 버튼 -->
-      <button id="daily-quiz-btn" onclick="showDailyQuiz()" style="
+        <!-- [한글 주석] 일일 시험 버튼 -->
+        <button id="daily-quiz-btn" onclick="showDailyQuiz()" style="
           position:absolute;
           left:14px;
           bottom:148px;
@@ -358,8 +360,8 @@
           z-index:10;
         ">📝<br>일일<br>시험</button>
 
-      <!-- [한글 주석] 도움말 버튼 - 왼쪽 하단 고정 -->
-      <button id="help-btn" onclick="showHelpModal()" style="
+        <!-- [한글 주석] 도움말 버튼 - 왼쪽 하단 고정 -->
+        <button id="help-btn" onclick="showHelpModal()" style="
           position:absolute;
           left:14px;
           bottom:80px;
@@ -381,10 +383,10 @@
           z-index:10;
         ">❓<br>도움말</button>
 
-      <!-- 중앙 캐릭터 영역 (클릭 시 꾸미기 화면 열림) -->
-      <div class="character-area">
-        <!-- [한글 주석] 레벨 뱃지 (아바타 왼쪽 위) -->
-        <div id="level-badge" style="
+        <!-- 중앙 캐릭터 영역 (클릭 시 꾸미기 화면 열림) -->
+        <div class="character-area">
+          <!-- [한글 주석] 레벨 뱃지 (아바타 왼쪽 위) -->
+          <div id="level-badge" style="
               position:absolute;
               left:-10px;top:-10px;
               background:linear-gradient(135deg,#ffd700,#ff9500);
@@ -397,20 +399,20 @@
               box-shadow:0 2px 8px rgba(255,215,0,0.5);
               border:2px solid #fff;
             ">Lv.1</div>
-        <div class="character" id="main-character" onclick="onAvatarClick()">🧒</div>
-        <!-- 펫 표시 영역 -->
-        <div id="pet-display" class="pet-display" onclick="onAvatarClick()"></div>
-      </div>
+          <div class="character" id="main-character" onclick="onAvatarClick()">🧒</div>
+          <!-- 펫 표시 영역 -->
+          <div id="pet-display" class="pet-display" onclick="onAvatarClick()"></div>
+        </div>
 
-      <!-- 오른쪽 화면 사이드 버튼 3개 -->
-      <div class="right-buttons">
-        <button class="side-btn btn-book">📖<br>도감</button>
-        <button class="side-btn btn-map">🗺️<br>지도</button>
-        <!-- [한글 주석] 기존 아이템 버튼을 사이드 버튼 스타일로 교체 (뱃지 포함) -->
-        <button class="side-btn btn-customize" onclick="showCustomizeScreen()">
-          <span style="position:relative;display:inline-block;">
-            🎒<br>아이템
-            <span id="reward-badge" style="
+        <!-- 오른쪽 화면 사이드 버튼 3개 -->
+        <div class="right-buttons">
+          <button class="side-btn btn-book">📖<br>도감</button>
+          <button class="side-btn btn-map">🗺️<br>지도</button>
+          <!-- [한글 주석] 기존 아이템 버튼을 사이드 버튼 스타일로 교체 (뱃지 포함) -->
+          <button class="side-btn btn-customize" onclick="showCustomizeScreen()">
+            <span style="position:relative;display:inline-block;">
+              🎒<br>아이템
+              <span id="reward-badge" style="
                   display:none;
                   position:absolute;
                   top:-22px;right:-14px;
@@ -420,78 +422,652 @@
                   width:18px;height:18px;
                   align-items:center;justify-content:center;
                 "></span>
-          </span>
-        </button>
-      </div>
-
-      <!-- 하단 액션 버튼 2개 -->
-      <div class="bottom-buttons">
-        <button class="action-btn btn-ai"><span class="btn-emoji">🤖</span><span class="btn-text">AI
-            챗봇</span></button>
-        <button class="action-btn btn-explore">👟<br>탐험!</button>
-      </div>
-
-    </div>
-
-    <!-- 🎒 나의 아이템 전체 화면 -->
-    <div id="avatar-customize-screen" class="customize-screen" style="display:none;">
-      <div class="customize-header">
-        <button class="back-btn" onclick="hideCustomizeScreen()">←</button>
-        <h2 class="customize-title">🎒 나의 아이템</h2>
-        <div style="width:40px;"></div>
-      </div>
-      <div class="customize-body">
-        <!-- 왼쪽: 아바타 미리보기 -->
-        <div class="customize-preview-area">
-          <div class="customize-avatar-box" id="customize-avatar-container"></div>
+            </span>
+          </button>
         </div>
-        <!-- 오른쪽: 슬롯 탭 + 아이템 목록 -->
-        <div class="customize-items-area">
-          <div class="customize-slot-tabs">
-            <!-- [한글 주석] 아바타 탭 -->
-            <button class="customize-slot-tab active" data-slot="avatar"
-              onclick="switchCustomizeSlot('avatar')">🧒<br>아바타</button>
-            <!-- [한글 주석] 옷 탭 -->
-            <button class="customize-slot-tab" data-slot="outfit"
-              onclick="switchCustomizeSlot('outfit')">👕<br>옷</button>
-            <!-- [한글 주석] 모자 탭 -->
-            <button class="customize-slot-tab" data-slot="hat" onclick="switchCustomizeSlot('hat')">🎩<br>모자</button>
-            <!-- [한글 주석] 안경 탭 -->
-            <button class="customize-slot-tab" data-slot="glasses"
-              onclick="switchCustomizeSlot('glasses')">👓<br>안경</button>
-            <!-- [한글 주석] 귀걸이 탭 -->
-            <button class="customize-slot-tab" data-slot="earring"
-              onclick="switchCustomizeSlot('earring')">💚<br>귀걸이</button>
-            <!-- [한글 주석] 펫 탭 -->
-            <button class="customize-slot-tab" data-slot="pet" onclick="switchCustomizeSlot('pet')">🐾<br>펫</button>
-            <!-- [한글 주석] 칭호 탭 -->
-            <button class="customize-slot-tab" data-slot="title"
-              onclick="switchCustomizeSlot('title')">🏅<br>칭호</button>
-            <!-- [한글 주석] 복주머니 탭 -->
-            <button class="customize-slot-tab" data-slot="reward"
-              onclick="switchCustomizeSlot('reward')">🎁<br>복주머니</button>
+
+        <!-- 하단 액션 버튼 2개 -->
+        <div class="bottom-buttons">
+          <button class="action-btn btn-ai"><span class="btn-emoji">🤖</span><span class="btn-text">AI
+              챗봇</span></button>
+          <button class="action-btn btn-explore">👟<br>탐험!</button>
+        </div>
+
+      </div>
+
+      <!-- 🎒 나의 아이템 전체 화면 -->
+      <div id="avatar-customize-screen" class="customize-screen" style="display:none;">
+        <div class="customize-header">
+          <button class="back-btn" onclick="hideCustomizeScreen()">←</button>
+          <h2 class="customize-title">🎒 나의 아이템</h2>
+          <div style="width:40px;"></div>
+        </div>
+        <div class="customize-body">
+          <!-- 왼쪽: 아바타 미리보기 -->
+          <div class="customize-preview-area">
+            <div class="customize-avatar-box" id="customize-avatar-container"></div>
           </div>
-          <!-- [한글 주석] 기존 아이템 목록 (악세서리용) -->
-          <div id="customize-item-list" class="customize-item-list"></div>
+          <!-- 오른쪽: 슬롯 탭 + 아이템 목록 -->
+          <div class="customize-items-area">
+            <div class="customize-slot-tabs">
+              <!-- [한글 주석] 아바타 탭 -->
+              <button class="customize-slot-tab active" data-slot="avatar"
+                onclick="switchCustomizeSlot('avatar')">🧒<br>아바타</button>
+              <!-- [한글 주석] 옷 탭 -->
+              <button class="customize-slot-tab" data-slot="outfit"
+                onclick="switchCustomizeSlot('outfit')">👕<br>옷</button>
+              <!-- [한글 주석] 모자 탭 -->
+              <button class="customize-slot-tab" data-slot="hat" onclick="switchCustomizeSlot('hat')">🎩<br>모자</button>
+              <!-- [한글 주석] 안경 탭 -->
+              <button class="customize-slot-tab" data-slot="glasses"
+                onclick="switchCustomizeSlot('glasses')">👓<br>안경</button>
+              <!-- [한글 주석] 귀걸이 탭 -->
+              <button class="customize-slot-tab" data-slot="earring"
+                onclick="switchCustomizeSlot('earring')">💚<br>귀걸이</button>
+              <!-- [한글 주석] 펫 탭 -->
+              <button class="customize-slot-tab" data-slot="pet" onclick="switchCustomizeSlot('pet')">🐾<br>펫</button>
+              <!-- [한글 주석] 칭호 탭 -->
+              <button class="customize-slot-tab" data-slot="title"
+                onclick="switchCustomizeSlot('title')">🏅<br>칭호</button>
+              <!-- [한글 주석] 복주머니 탭 -->
+              <button class="customize-slot-tab" data-slot="reward"
+                onclick="switchCustomizeSlot('reward')">🎁<br>복주머니</button>
+            </div>
+            <!-- [한글 주석] 기존 아이템 목록 (악세서리용) -->
+            <div id="customize-item-list" class="customize-item-list"></div>
 
-          <!-- [한글 주석] 복주머니 목록 (복주머니 탭 선택 시 표시) -->
-          <div id="reward-bag-list" class="customize-item-list"></div>
+            <!-- [한글 주석] 복주머니 목록 (복주머니 탭 선택 시 표시) -->
+            <div id="reward-bag-list" class="customize-item-list"></div>
 
-          <!-- [한글 주석] 전체 열기 버튼 -->
-          <button id="open-all-bags-btn" onclick="openAllBags()" style="display:none;
+            <!-- [한글 주석] 전체 열기 버튼 -->
+            <button id="open-all-bags-btn" onclick="openAllBags()" style="display:none;
                     width:100%;margin-top:12px;
                     background:#ffd700;color:#000;
                     border:none;border-radius:12px;
                     padding:12px;font-size:15px;
                     font-weight:900;cursor:pointer;">
-            🎁 전체 열기
-          </button>
+              🎁 전체 열기
+            </button>
+          </div>
+        </div>
+        <div class="customize-footer">
+          <button class="customize-done-btn" onclick="hideCustomizeScreen()">장착 완료!</button>
         </div>
       </div>
-      <div class="customize-footer">
-        <button class="customize-done-btn" onclick="hideCustomizeScreen()">장착 완료!</button>
+
+
+      <!-- ========================================== -->
+      <!-- [한글 주석] 📊 선생님 전용 대시보드 화면 (PC 최적화) -->
+      <!-- ========================================== -->
+      <div id="teacher-dashboard-screen" class="teacher-dashboard-screen" style="display: none;">
+
+        <!-- [한글 주석] 상단 헤더 바 -->
+        <div class="dashboard-header">
+          <h1 id="dashboard-title" class="dashboard-title">📊 또감 대시보드</h1>
+          <div class="dashboard-header-actions">
+            <!-- [한글 주석] 전체 일괄 선물 버튼 -->
+            <button onclick="showBulkRewardModal()" style="
+                  background: linear-gradient(135deg, #ff9500, #ff6b00);
+                  color: #fff;
+                  border: none;
+                  border-radius: 8px;
+                  padding: 8px 16px;
+                  font-size: 14px;
+                  font-weight: 700;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                ">🎁 전체 선물하기</button>
+            <button class="dashboard-btn dashboard-refresh-btn" onclick="refreshDashboard()">🔄 새로고침</button>
+            <button class="dashboard-btn dashboard-logout-btn" onclick="teacherLogout()">🚪 로그아웃</button>
+            <!-- [한글 주석] 학생 화면 예시 보기 버튼 -->
+            <button onclick="showStudentPreview()" style="
+          background:rgba(132,255,0,0.12);
+          color:#84ff00;
+          border:1px solid #4a7a1e;
+          border-radius:8px;
+          padding:8px 16px;
+          font-size:14px;
+          font-weight:700;
+          cursor:pointer;
+          display:flex;
+          align-items:center;
+          gap:6px;
+        ">📱 학생 화면 예시</button>
+            <!-- [한글 주석] 교사용 도움말 버튼 -->
+            <button onclick="showTeacherHelp()" style="
+          background:rgba(74,158,255,0.15);
+          color:#7aabff;
+          border:1px solid #4a6fa5;
+          border-radius:8px;
+          padding:8px 16px;
+          font-size:14px;
+          font-weight:700;
+          cursor:pointer;
+          display:flex;
+          align-items:center;
+          gap:6px;
+        ">❓ 도움말</button>
+          </div>
+        </div>
+
+        <!-- [한글 주석] 대시보드 상단 통계 카드 5개 -->
+        <div class="dashboard-stats-row">
+          <div class="dashboard-stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-label">참여 학생</div>
+            <div class="stat-value" id="stat-student-count">0명</div>
+          </div>
+          <div class="dashboard-stat-card">
+            <div class="stat-icon">📦</div>
+            <div class="stat-label">평균 수집</div>
+            <div class="stat-value" id="stat-avg-collect">0개</div>
+          </div>
+          <div class="dashboard-stat-card">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-label">최다 수집</div>
+            <div class="stat-value" id="stat-top-student">-</div>
+          </div>
+          <div class="dashboard-stat-card">
+            <div class="stat-icon">🖥️</div>
+            <div class="stat-label">오늘 접속</div>
+            <div class="stat-value" id="stat-today-active">0명</div>
+          </div>
+          <div class="dashboard-stat-card">
+            <div class="stat-icon">📗</div>
+            <div class="stat-label">오늘 매우잘함</div>
+            <div class="stat-value" id="stat-today-great">0명</div>
+          </div>
+        </div>
+
+        <!-- [한글 주석] 학생 목록 그리드 (PC 4열) -->
+        <div class="dashboard-student-grid" id="dashboard-student-grid">
+          <!-- teacher.js에서 동적으로 렌더링 -->
+        </div>
+
       </div>
-    </div>
+
+
+      <!-- 🌟 지도 클러스터 상세 팝업 -->
+      <div id="cluster-popup" class="cluster-popup" style="display:none;">
+        <div class="cluster-popup-inner">
+          <h2 class="cluster-popup-title">이 장소에서 N개 발견!</h2>
+          <div class="cluster-popup-list">
+            <!-- map.js에서 동적으로 채워짐 -->
+          </div>
+          <button class="cluster-popup-close-btn" onclick="closeClusterPopup()">닫기</button>
+        </div>
+      </div>
+
+      <!-- 🌟 공통 카드 상세 정보 팝업 (앞면/뒷면 구조) -->
+      <div id="shared-card-overlay" class="shared-card-overlay" style="display: none;">
+        <div class="flip-card">
+          <div class="flip-card-inner" id="flip-card-inner">
+
+            <!-- 앞면 -->
+            <div class="flip-card-front">
+              <!-- 상단 배지 영역 -->
+              <div class="card-badges">
+                <span id="popup-rarity-badge" class="badge-common">일반</span>
+                <span id="popup-category-badge" class="badge-category-plant">🌱 식물</span>
+              </div>
+
+              <!-- 이모지 영역 (새로운 발견 시 클래스 추가됨) -->
+              <div id="popup-emoji-container" class="popup-emoji-container">
+                <div id="popup-emoji">🌼</div>
+              </div>
+
+              <!-- 카드 이름과 요약 정보 -->
+              <h2 id="popup-name">카드 이름</h2>
+              <p id="popup-short-desc">짧은 요약 설명</p>
+              <div id="popup-habitat">📍 서식지: OOO</div>
+
+              <!-- 하단 버튼 -->
+              <div class="popup-buttons">
+                <button class="btn-close" onclick="closeCardPopup()">확인!</button>
+                <button class="btn-detail" id="btn-detail" onclick="flipCard()">자세히 보기 ▶</button>
+              </div>
+            </div>
+
+            <!-- 뒷면 -->
+            <div class="flip-card-back">
+              <!-- 뒷면 상단 (이름 + 희귀도) -->
+              <div class="back-header">
+                <h2 id="popup-back-name">카드 이름</h2>
+                <span id="popup-back-rarity" class="badge-common">일반</span>
+              </div>
+
+              <!-- 중앙 스크롤 상세 설명 영역 -->
+              <div class="back-content">
+                <p id="popup-detail-desc">상세 설명이 여기에 들어갑니다.</p>
+              </div>
+
+              <!-- 하단 수집 날짜 (도감에서만 표시용) -->
+              <div id="popup-date" class="popup-date">📅 2026년 5월 14일 수집</div>
+
+              <!-- 하단 뒤로가기 버튼들 -->
+              <div class="popup-buttons">
+                <button class="btn-flip-back" onclick="unflipCard()">◀ 앞면으로</button>
+                <button class="btn-close" onclick="closeCardPopup()">닫기</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 📖 도감 전체 화면 (기본적으로 숨김 상태, 슬라이드인 애니메이션 적용) -->
+      <div id="dodam-screen" class="dodam-screen" style="display: none;">
+        <!-- 상단 헤더 -->
+        <div class="dodam-header">
+          <button class="back-btn" onclick="hideDodam()">←</button>
+          <h2 class="dodam-title">📖 나의 도감</h2>
+          <div style="width: 40px;"></div> <!-- 타이틀 중앙 정렬을 위한 우측 여백 블록 -->
+        </div>
+
+        <!-- 탭 영역 -->
+        <div class="dodam-tabs">
+          <button class="dodam-tab active" data-category="plant" onclick="switchDodamTab('plant')">🌱 식물</button>
+          <button class="dodam-tab locked" data-category="animal" onclick="switchDodamTab('animal')">🔒 동물</button>
+          <button class="dodam-tab locked" data-category="artifact" onclick="switchDodamTab('artifact')">🔒
+            유물</button>
+          <button class="dodam-tab" data-category="workshop" onclick="switchDodamTab('workshop')">⚗️ 조합소</button>
+        </div>
+
+        <!-- 수집 현황 요약 (진행바) -->
+        <div class="dodam-summary">
+          <div class="dodam-summary-text">0 / 100 수집</div>
+          <div class="dodam-progress-bg">
+            <div class="dodam-progress-fill" id="dodam-progress" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- 카드 그리드 영역 (JS에서 동적으로 렌더링됨) -->
+        <div class="dodam-grid" id="dodam-grid"></div>
+      </div>
+
+      <!-- 도감 개별 카드 팝업 (shared-card-overlay로 통합되었으므로 기존 오버레이 제거됨) -->
+
+      <!-- 🗺️ 지도 화면 (기본적으로 숨김, 슬라이드인 애니메이션 적용) -->
+      <div id="map-screen" class="map-screen" style="display: none;">
+        <!-- 상단 헤더 -->
+        <div class="map-header">
+          <button class="back-btn" id="map-back-btn">←</button>
+          <h2 class="map-title">🗺️ 탐험 지도</h2>
+          <div style="width: 40px;"></div>
+        </div>
+
+        <!-- Leaflet 지도가 렌더링될 영역 -->
+        <div id="map-container" class="map-container"></div>
+
+        <!-- 지도 위에 떠있는 하단 정보바 -->
+        <div class="map-info-bar">
+          <span id="map-status-text">📍 현재 위치 추적 중</span>
+          <span id="map-collected-count">🎒 수집한 아이템: 0개</span>
+        </div>
+      </div>
+
+      <!-- 📝 해금 퀴즈 화면 (슬라이드 애니메이션 적용) -->
+      <div id="quiz-screen" class="quiz-screen" style="display: none;">
+        <!-- 상단 헤더 -->
+        <div class="quiz-header">
+          <button class="back-btn" onclick="closeQuiz()">←</button>
+          <h2 class="quiz-title">📝 해금 퀴즈</h2>
+          <div id="quiz-progress" class="quiz-progress">1 / 5</div>
+        </div>
+
+        <!-- 퀴즈 진행 영역 -->
+        <div id="quiz-content" class="quiz-content">
+          <h3 id="quiz-question" class="quiz-question">질문이 여기에 표시됩니다.</h3>
+
+          <!-- 힌트 영역 -->
+          <div class="quiz-hint-area">
+            <button class="quiz-hint-btn" onclick="showHint()">💡 힌트 보기</button>
+            <div id="quiz-hint-text" class="quiz-hint-text" style="display: none;">힌트 내용</div>
+          </div>
+
+          <!-- 선택지 영역 -->
+          <div id="quiz-options" class="quiz-options">
+            <!-- 버튼들이 JS에서 동적으로 생성됨 -->
+          </div>
+        </div>
+
+        <!-- 퀴즈 결과 영역 -->
+        <div id="quiz-result" class="quiz-result" style="display: none;">
+          <h2 id="quiz-result-title" class="quiz-result-title">결과 타이틀</h2>
+          <p id="quiz-result-desc" class="quiz-result-desc">결과 설명</p>
+          <div class="quiz-result-buttons">
+            <!-- 다시 도전하기는 현재 카테고리를 인자로 받음 -->
+            <button class="action-btn retry-btn" onclick="startQuiz(currentQuizCategory)">다시 도전하기</button>
+            <button class="action-btn go-main-btn" onclick="closeQuiz()">메인으로 가기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🤖 AI 챗봇 화면 (슬라이드 애니메이션 적용) -->
+      <div id="chatbot-screen" class="chatbot-screen" style="display: none;">
+        <!-- 상단 헤더 -->
+        <div class="chatbot-header">
+          <button class="back-btn" onclick="hideChatbot()">←</button>
+          <h2 class="chatbot-title">🤖 학습 도우미 AI 챗봇</h2>
+          <div style="width: 40px;"></div>
+        </div>
+
+        <!-- 채팅 메시지 영역 (스크롤 가능) -->
+        <div id="chatbot-messages" class="chatbot-messages">
+          <!-- 말풍선들이 동적으로 추가됨 -->
+        </div>
+
+
+
+        <!-- 하단 메시지 텍스트 입력창 + 전송 버튼 -->
+        <div class="chatbot-input-area">
+          <input type="text" id="chatbot-input" placeholder="궁금한 것을 물어보세요!" onkeypress="handleChatInputKeyPress(event)">
+          <button class="chatbot-send-btn" onclick="sendMessage()">전송</button>
+        </div>
+      </div>
+      <!-- 탐험 모드 오버레이 (검정 80% 반투명 배경) -->
+      <div id="exploration-overlay" class="exploration-overlay" style="display: none;"
+        onclick="handleExplorationOverlayClick()">
+        <!-- 기본 탐험 중 표시되는 내용 -->
+        <div id="explore-default-content" class="explore-content-wrapper">
+
+          <!-- [한글 주석] 상단: 탐험 중 타이틀 -->
+          <div class="explore-top">🥾 탐험 중...</div>
+
+          <!-- [한글 주석] 중앙: 걷는 아바타 애니메이션 -->
+          <div class="explore-center">
+
+            <!-- [한글 주석] 아바타 걷기 씬 -->
+            <div class="explore-walk-scene">
+              <!-- [한글 주석] 배경 나무들 -->
+              <div class="explore-tree tree-far">🌲</div>
+              <div class="explore-tree tree-mid">🌳</div>
+              <div class="explore-tree tree-near">🌲</div>
+              <!-- [한글 주석] 길 -->
+              <div class="explore-road"></div>
+              <!-- [한글 주석] 아바타 -->
+              <div class="explore-avatar-walk" id="explore-avatar-walk"></div>
+              <!-- [한글 주석] 발자국 -->
+              <div class="explore-footprint fp1">👣</div>
+              <div class="explore-footprint fp2">👣</div>
+              <div class="explore-footprint fp3">👣</div>
+            </div>
+
+            <!-- [한글 주석] 안내 문구 -->
+            <div class="explore-safety-msg">
+              <div class="explore-safety-icon">⚠️</div>
+              <div class="explore-safety-text">
+                👀 두눈은 화면에서 잠시 벗어나<br>
+                두 발로 걸으며 자연을 느껴봐요!<br>
+                <span style="color:#d4a017;font-weight:700;">
+                  걷다 보면 신기한 카드가 나타날 거예요 🌿
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- [한글 주석] 하단: 탐험 종료 버튼 -->
+          <div class="explore-bottom">
+            <button class="explore-end-btn" onclick="event.stopPropagation(); stopExploration();">
+              탐험 종료
+            </button>
+          </div>
+        </div>
+
+        <!-- 아이템 발견 시 표시되는 알림 (깜빡임 효과 적용 예정) -->
+        <div id="explore-discovery-content" class="explore-discovery-content" style="display: none;">
+          🎉 새로운 발견! 화면을 탭하세요!
+        </div>
+      </div>
+
+
+      <!-- [한글 주석] 도움말 모달 -->
+      <div id="help-modal" style="display:none;
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.85);
+  z-index:99999;
+  align-items:center;
+  justify-content:center;
+  overflow-y:auto;
+">
+        <!-- [한글 주석] 메인 도움말 (핵심 요약) -->
+        <div id="help-main" style="
+    background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
+    border:2px solid #6b8e3d;
+    border-radius:24px;
+    padding:24px 20px;
+    max-width:320px;
+    width:90%;
+    text-align:center;
+    box-shadow:0 0 40px rgba(141,176,92,0.3);
+    margin:20px auto;
+  ">
+          <!-- [한글 주석] 헤더 -->
+          <div style="font-size:26px;margin-bottom:4px;">🌿 또감 사용법</div>
+          <div style="color:#8db05c;font-size:12px;margin-bottom:20px;">
+            걷고, 수집하며, 배워요!
+          </div>
+
+          <!-- [한글 주석] 핵심 4단계 -->
+          <div style="display:flex;flex-direction:column;gap:10px;text-align:left;margin-bottom:20px;">
+
+            <div style="
+        background:rgba(141,176,92,0.1);border:1px solid #6b8e3d;
+        border-radius:14px;padding:12px 14px;
+        display:flex;align-items:center;gap:12px;
+      ">
+              <div style="font-size:28px;">👟</div>
+              <div>
+                <div style="color:#8db05c;font-size:12px;font-weight:900;margin-bottom:2px;">STEP 1. 탐험 시작!</div>
+                <div style="color:#d4c89c;font-size:11px;line-height:1.5;">주황색 탐험 버튼을 눌러요.</div>
+              </div>
+            </div>
+
+            <div style="
+        background:rgba(74,158,255,0.08);border:1px solid #4a6fa5;
+        border-radius:14px;padding:12px 14px;
+        display:flex;align-items:center;gap:12px;
+      ">
+              <div style="font-size:28px;">🚶</div>
+              <div>
+                <div style="color:#7aabff;font-size:12px;font-weight:900;margin-bottom:2px;">STEP 2. 주변을 걸어요!</div>
+                <div style="color:#d4c89c;font-size:11px;line-height:1.5;">걸으면 랜덤으로 카드가 나타나요. 진동이 울리면 확인!</div>
+              </div>
+            </div>
+
+            <div style="
+        background:rgba(212,160,23,0.08);border:1px solid #a07c10;
+        border-radius:14px;padding:12px 14px;
+        display:flex;align-items:center;gap:12px;
+      ">
+              <div style="font-size:28px;">📖</div>
+              <div>
+                <div style="color:#d4a017;font-size:12px;font-weight:900;margin-bottom:2px;">STEP 3. 카드를 수집해요!</div>
+                <div style="color:#d4c89c;font-size:11px;line-height:1.5;">도감을 완성하며 레벨을 올려요!</div>
+              </div>
+            </div>
+
+            <div style="
+        background:rgba(255,107,107,0.08);border:1px solid #8b3a3a;
+        border-radius:14px;padding:12px 14px;
+        display:flex;align-items:center;gap:12px;
+      ">
+              <div style="font-size:28px;">🎯</div>
+              <div>
+                <div style="color:#ff8080;font-size:12px;font-weight:900;margin-bottom:2px;">STEP 4. 레벨업 퀴즈!</div>
+                <div style="color:#d4c89c;font-size:11px;line-height:1.5;">
+                  퀴즈를 풀고 레벨을 올리면 다음 단계를 해금할 수 있어요!<br>
+                  <span style="color:#8db05c;">Lv.5</span> → 동물 해금 &nbsp;
+                  <span style="color:#d4a017;">Lv.10</span> → 유물 해금
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- [한글 주석] 버튼 2개 -->
+          <div style="display:flex;gap:8px;">
+            <button onclick="hideHelpModal()" style="
+        flex:1;
+        background:rgba(255,255,255,0.08);
+        color:#d4c89c;border:1px solid #6b8e3d;
+        border-radius:12px;padding:11px;
+        font-size:13px;font-weight:700;cursor:pointer;
+      ">확인</button>
+            <button onclick="showHelpDetail()" style="
+        flex:1.5;
+        background:linear-gradient(135deg,#d4a017,#b3850e);
+        color:#1e2e1f;border:none;
+        border-radius:12px;padding:11px;
+        font-size:13px;font-weight:900;cursor:pointer;
+      ">📚 자세히 알아보기</button>
+          </div>
+        </div>
+
+        <!-- [한글 주석] 상세 도움말 (처음엔 숨김) -->
+        <div id="help-detail" style="display:none;
+  background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
+  border:2px solid #6b8e3d;
+  border-radius:24px;
+  padding:24px 20px;
+  max-width:320px;
+  width:90%;
+  box-shadow:0 0 40px rgba(141,176,92,0.3);
+  margin:20px auto;
+">
+          <!-- [한글 주석] 헤더 -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
+            <button onclick="hideHelpDetail()" style="
+      background:rgba(255,255,255,0.08);color:#d4c89c;
+      border:1px solid #6b8e3d;border-radius:10px;
+      padding:6px 12px;font-size:13px;cursor:pointer;
+    ">← 뒤로</button>
+            <div style="color:#8db05c;font-size:15px;font-weight:900;">📚 자세한 사용법</div>
+          </div>
+
+          <!-- [한글 주석] 상세 항목들 -->
+          <div style="display:flex;flex-direction:column;gap:14px;max-height:70vh;overflow-y:auto;">
+
+            <!-- [한글 주석] 탐험 방법 -->
+            <div style="background:rgba(141,176,92,0.08);border:1px solid #6b8e3d;border-radius:14px;padding:14px;">
+              <div style="color:#8db05c;font-size:13px;font-weight:900;margin-bottom:8px;">👟 탐험 방법</div>
+              <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
+                • 주황색 <b style="color:#d4a017;">탐험!</b> 버튼을 누르면 탐험 시작<br>
+                • 걸을 땐 화면 OFF! 안전하게 주변을 살피며 걸어요<br>
+                • 걷다 보면 현재 위치 주변에서 랜덤으로 카드 등장<br>
+                • 진동이 울리면 멈춰서 화면을 켜고 카드를 확인해요<br>
+                • 30% 확률로 카드 3장 중 1장을 선택하는 이벤트 발생!
+              </div>
+            </div>
+
+            <!-- [한글 주석] 도감 -->
+            <div style="background:rgba(74,158,255,0.08);border:1px solid #4a6fa5;border-radius:14px;padding:14px;">
+              <div style="color:#7aabff;font-size:13px;font-weight:900;margin-bottom:8px;">📖 도감</div>
+              <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
+                • 수집한 카드를 모두 볼 수 있어요<br>
+                • 식물 100종, 동물 100종, 유물 100종<br>
+                • 카드 희귀도: <span style="color:#8db05c;">★ 일반</span> / <span style="color:#7aabff;">★★ 희귀</span> / <span
+                  style="color:#ffd700;">★★★ 전설</span><br>
+                • 카드를 탭하면 자세한 정보를 볼 수 있어요<br>
+                • ⚗️ 조합소 탭에서 중복 카드를 새 카드로 바꿀 수 있어요
+              </div>
+            </div>
+
+            <!-- [한글 주석] 조합소 -->
+            <div style="background:rgba(212,160,23,0.08);border:1px solid #a07c10;border-radius:14px;padding:14px;">
+              <div style="color:#d4a017;font-size:13px;font-weight:900;margin-bottom:8px;">⚗️ 조합소</div>
+              <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
+                • 이미 가진 카드가 또 나오면 조합소에 쌓여요<br>
+                • 중복 카드 5장을 선택해 새 카드로 조합!<br>
+                • 조합 규칙:<br>
+                &nbsp;&nbsp;- 전설 1장 이상 → 무조건 전설<br>
+                &nbsp;&nbsp;- 희귀 4~5장 → 전설 50% / 희귀 50%<br>
+                &nbsp;&nbsp;- 희귀 3장 + 일반 2장 → 희귀 100%<br>
+                &nbsp;&nbsp;- 희귀 1~2장 + 일반 → 희귀 60% / 일반 40%<br>
+                &nbsp;&nbsp;- 일반 5장 → 일반 75% / 희귀 15% / 전설 10%<br>
+                • 조합된 카드는 무조건 내게 없던 카드!
+              </div>
+            </div>
+
+            <!-- [한글 주석] 레벨 & 아이템 -->
+            <div style="background:rgba(255,107,107,0.08);border:1px solid #8b3a3a;border-radius:14px;padding:14px;">
+              <div style="color:#ff8080;font-size:13px;font-weight:900;margin-bottom:8px;">⭐ 레벨 & 아이템</div>
+              <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
+                • 카드 10장마다 레벨업 퀴즈 도전!<br>
+                • 퀴즈를 맞춰야 레벨이 올라가요<br>
+                • <span style="color:#8db05c;">Lv.5</span> 달성 → 동물 탐험 해금<br>
+                • <span style="color:#d4a017;">Lv.10</span> 달성 → 유물 탐험 해금<br>
+                • 레벨에 따라 아바타 꾸미기 아이템 해금:<br>
+                &nbsp;&nbsp;Lv.3 나뭇잎모자 / Lv.5 나비날개<br>
+                &nbsp;&nbsp;Lv.8 꽃왕관 / Lv.10 자연망토<br>
+                &nbsp;&nbsp;Lv.15 조선왕관·유물망토 / Lv.20 하늘날개<br>
+                &nbsp;&nbsp;Lv.25 황금왕관·탐험가배지 / Lv.30 전설탐험가<br>
+                • 아바타를 탭하면 아바타를 변경할 수 있어요
+              </div>
+            </div>
+
+            <!-- [한글 주석] 일일 시험 -->
+            <div style="background:rgba(141,176,92,0.08);border:1px solid #6b8e3d;border-radius:14px;padding:14px;">
+              <div style="color:#8db05c;font-size:13px;font-weight:900;margin-bottom:8px;">📝 일일 시험</div>
+              <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
+                • 하루에 한 번 OX 퀴즈에 도전해요<br>
+                • 내가 수집한 카드 중 하나의 설명이 맞는지 틀리는지 맞춰요<br>
+                • 정답이면 복주머니 1개 획득!<br>
+                • 자정이 지나면 다시 도전할 수 있어요
+              </div>
+            </div>
+
+            <!-- [한글 주석] 지식 배틀 -->
+            <div style="background:rgba(255,68,68,0.08);border:1px solid #8b3a3a;border-radius:14px;padding:14px;">
+              <div style="color:#ff8080;font-size:13px;font-weight:900;margin-bottom:8px;">⚔️ 지식 배틀</div>
+              <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
+                • 같은 반 친구와 지식 대결!<br>
+                • 카테고리 선택 후 1분 공부 → 자동 매칭<br>
+                • 매칭 후 5문제 (3분 제한) 를 풀어 승부!<br>
+                • 문제는 해당 카테고리 100종 전체에서 출제돼요<br>
+                • 승리 → 복주머니 1개 / 무승부 → 복주머니 조각 1개<br>
+                • 조각 2개를 모으면 복주머니 1개로 변환돼요<br>
+                • 하루 3회 제한 (매칭 성공 기준)
+              </div>
+            </div>
+
+            <!-- [한글 주석] AI 챗봇 -->
+            <div style="background:rgba(141,176,92,0.08);border:1px solid #6b8e3d;border-radius:14px;padding:14px;">
+              <div style="color:#8db05c;font-size:13px;font-weight:900;margin-bottom:8px;">🤖 AI 챗봇</div>
+              <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
+                • 수집한 동식물·유물에 대해 질문할 수 있어요<br>
+                • 카드에 없는 더 자세한 정보도 알려줘요<br>
+                • 도감과 관련 없는 질문은 답하지 않아요
+              </div>
+            </div>
+
+            <!-- [한글 주석] 복주머니 -->
+            <div style="background:rgba(212,160,23,0.08);border:1px solid #a07c10;border-radius:14px;padding:14px;">
+              <div style="color:#d4a017;font-size:13px;font-weight:900;margin-bottom:8px;">🎁 복주머니</div>
+              <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
+                • 선생님이 특별한 카드를 선물로 보내줄 수 있어요<br>
+                • 일일 시험 정답 / 배틀 승리 시에도 받아요<br>
+                • 아이템 → 복주머니 탭에서 확인·개봉해요<br>
+                • 두구두구 애니메이션으로 카드를 뽑아요!
+              </div>
+            </div>
+
+          </div>
+
+          <!-- [한글 주석] 닫기 버튼 -->
+          <button onclick="hideHelpModal()" style="
+    margin-top:16px;
+    width:100%;
+    background:linear-gradient(135deg,#d4a017,#b3850e);
+    color:#1e2e1f;border:none;border-radius:12px;
+    padding:12px;font-size:14px;font-weight:900;cursor:pointer;
+  ">확인!</button>
+        </div>
+      </div>
+    </div><!-- [한글 주석] student-app-wrapper 닫는 태그 -->
 
     <!-- Leaflet.js 지도 라이브러리 JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -517,97 +1093,6 @@
     <!-- [한글 주석] 튜토리얼 시스템 -->
     <script src="js/tutorial.js"></script>
 
-    <!-- ========================================== -->
-    <!-- [한글 주석] 📊 선생님 전용 대시보드 화면 (PC 최적화) -->
-    <!-- ========================================== -->
-    <div id="teacher-dashboard-screen" class="teacher-dashboard-screen" style="display: none;">
-
-      <!-- [한글 주석] 상단 헤더 바 -->
-      <div class="dashboard-header">
-        <h1 id="dashboard-title" class="dashboard-title">📊 또감 대시보드</h1>
-        <div class="dashboard-header-actions">
-          <!-- [한글 주석] 전체 일괄 선물 버튼 -->
-          <button onclick="showBulkRewardModal()" style="
-                  background: linear-gradient(135deg, #ff9500, #ff6b00);
-                  color: #fff;
-                  border: none;
-                  border-radius: 8px;
-                  padding: 8px 16px;
-                  font-size: 14px;
-                  font-weight: 700;
-                  cursor: pointer;
-                  display: flex;
-                  align-items: center;
-                  gap: 6px;
-                ">🎁 전체 선물하기</button>
-          <button class="dashboard-btn dashboard-refresh-btn" onclick="refreshDashboard()">🔄 새로고침</button>
-          <button class="dashboard-btn dashboard-logout-btn" onclick="teacherLogout()">🚪 로그아웃</button>
-          <!-- [한글 주석] 학생 화면 예시 보기 버튼 -->
-          <button onclick="showStudentPreview()" style="
-          background:rgba(132,255,0,0.12);
-          color:#84ff00;
-          border:1px solid #4a7a1e;
-          border-radius:8px;
-          padding:8px 16px;
-          font-size:14px;
-          font-weight:700;
-          cursor:pointer;
-          display:flex;
-          align-items:center;
-          gap:6px;
-        ">📱 학생 화면 예시</button>
-          <!-- [한글 주석] 교사용 도움말 버튼 -->
-          <button onclick="showTeacherHelp()" style="
-          background:rgba(74,158,255,0.15);
-          color:#7aabff;
-          border:1px solid #4a6fa5;
-          border-radius:8px;
-          padding:8px 16px;
-          font-size:14px;
-          font-weight:700;
-          cursor:pointer;
-          display:flex;
-          align-items:center;
-          gap:6px;
-        ">❓ 도움말</button>
-        </div>
-      </div>
-
-      <!-- [한글 주석] 대시보드 상단 통계 카드 5개 -->
-      <div class="dashboard-stats-row">
-        <div class="dashboard-stat-card">
-          <div class="stat-icon">👥</div>
-          <div class="stat-label">참여 학생</div>
-          <div class="stat-value" id="stat-student-count">0명</div>
-        </div>
-        <div class="dashboard-stat-card">
-          <div class="stat-icon">📦</div>
-          <div class="stat-label">평균 수집</div>
-          <div class="stat-value" id="stat-avg-collect">0개</div>
-        </div>
-        <div class="dashboard-stat-card">
-          <div class="stat-icon">🏆</div>
-          <div class="stat-label">최다 수집</div>
-          <div class="stat-value" id="stat-top-student">-</div>
-        </div>
-        <div class="dashboard-stat-card">
-          <div class="stat-icon">🖥️</div>
-          <div class="stat-label">오늘 접속</div>
-          <div class="stat-value" id="stat-today-active">0명</div>
-        </div>
-        <div class="dashboard-stat-card">
-          <div class="stat-icon">📗</div>
-          <div class="stat-label">오늘 매우잘함</div>
-          <div class="stat-value" id="stat-today-great">0명</div>
-        </div>
-      </div>
-
-      <!-- [한글 주석] 학생 목록 그리드 (PC 4열) -->
-      <div class="dashboard-student-grid" id="dashboard-student-grid">
-        <!-- teacher.js에서 동적으로 렌더링 -->
-      </div>
-
-    </div>
 
     <!-- 안전 경고 오버레이 (위험 상황 시 표시됨) -->
     <div id="safety-overlay" class="safety-overlay" style="display: none;">
@@ -619,240 +1104,6 @@
           카드가 나타나요 🌿<br>
           안전한 곳에서 화면을 확인해요!
         </span>
-      </div>
-    </div>
-
-    <!-- 🌟 지도 클러스터 상세 팝업 -->
-    <div id="cluster-popup" class="cluster-popup" style="display:none;">
-      <div class="cluster-popup-inner">
-        <h2 class="cluster-popup-title">이 장소에서 N개 발견!</h2>
-        <div class="cluster-popup-list">
-          <!-- map.js에서 동적으로 채워짐 -->
-        </div>
-        <button class="cluster-popup-close-btn" onclick="closeClusterPopup()">닫기</button>
-      </div>
-    </div>
-
-    <!-- 🌟 공통 카드 상세 정보 팝업 (앞면/뒷면 구조) -->
-    <div id="shared-card-overlay" class="shared-card-overlay" style="display: none;">
-      <div class="flip-card">
-        <div class="flip-card-inner" id="flip-card-inner">
-
-          <!-- 앞면 -->
-          <div class="flip-card-front">
-            <!-- 상단 배지 영역 -->
-            <div class="card-badges">
-              <span id="popup-rarity-badge" class="badge-common">일반</span>
-              <span id="popup-category-badge" class="badge-category-plant">🌱 식물</span>
-            </div>
-
-            <!-- 이모지 영역 (새로운 발견 시 클래스 추가됨) -->
-            <div id="popup-emoji-container" class="popup-emoji-container">
-              <div id="popup-emoji">🌼</div>
-            </div>
-
-            <!-- 카드 이름과 요약 정보 -->
-            <h2 id="popup-name">카드 이름</h2>
-            <p id="popup-short-desc">짧은 요약 설명</p>
-            <div id="popup-habitat">📍 서식지: OOO</div>
-
-            <!-- 하단 버튼 -->
-            <div class="popup-buttons">
-              <button class="btn-close" onclick="closeCardPopup()">확인!</button>
-              <button class="btn-detail" id="btn-detail" onclick="flipCard()">자세히 보기 ▶</button>
-            </div>
-          </div>
-
-          <!-- 뒷면 -->
-          <div class="flip-card-back">
-            <!-- 뒷면 상단 (이름 + 희귀도) -->
-            <div class="back-header">
-              <h2 id="popup-back-name">카드 이름</h2>
-              <span id="popup-back-rarity" class="badge-common">일반</span>
-            </div>
-
-            <!-- 중앙 스크롤 상세 설명 영역 -->
-            <div class="back-content">
-              <p id="popup-detail-desc">상세 설명이 여기에 들어갑니다.</p>
-            </div>
-
-            <!-- 하단 수집 날짜 (도감에서만 표시용) -->
-            <div id="popup-date" class="popup-date">📅 2026년 5월 14일 수집</div>
-
-            <!-- 하단 뒤로가기 버튼들 -->
-            <div class="popup-buttons">
-              <button class="btn-flip-back" onclick="unflipCard()">◀ 앞면으로</button>
-              <button class="btn-close" onclick="closeCardPopup()">닫기</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- 📖 도감 전체 화면 (기본적으로 숨김 상태, 슬라이드인 애니메이션 적용) -->
-    <div id="dodam-screen" class="dodam-screen" style="display: none;">
-      <!-- 상단 헤더 -->
-      <div class="dodam-header">
-        <button class="back-btn" onclick="hideDodam()">←</button>
-        <h2 class="dodam-title">📖 나의 도감</h2>
-        <div style="width: 40px;"></div> <!-- 타이틀 중앙 정렬을 위한 우측 여백 블록 -->
-      </div>
-
-      <!-- 탭 영역 -->
-      <div class="dodam-tabs">
-        <button class="dodam-tab active" data-category="plant" onclick="switchDodamTab('plant')">🌱 식물</button>
-        <button class="dodam-tab locked" data-category="animal" onclick="switchDodamTab('animal')">🔒 동물</button>
-        <button class="dodam-tab locked" data-category="artifact" onclick="switchDodamTab('artifact')">🔒
-          유물</button>
-        <button class="dodam-tab" data-category="workshop" onclick="switchDodamTab('workshop')">⚗️ 조합소</button>
-      </div>
-
-      <!-- 수집 현황 요약 (진행바) -->
-      <div class="dodam-summary">
-        <div class="dodam-summary-text">0 / 100 수집</div>
-        <div class="dodam-progress-bg">
-          <div class="dodam-progress-fill" id="dodam-progress" style="width: 0%;"></div>
-        </div>
-      </div>
-
-      <!-- 카드 그리드 영역 (JS에서 동적으로 렌더링됨) -->
-      <div class="dodam-grid" id="dodam-grid"></div>
-    </div>
-
-    <!-- 도감 개별 카드 팝업 (shared-card-overlay로 통합되었으므로 기존 오버레이 제거됨) -->
-
-    <!-- 🗺️ 지도 화면 (기본적으로 숨김, 슬라이드인 애니메이션 적용) -->
-    <div id="map-screen" class="map-screen" style="display: none;">
-      <!-- 상단 헤더 -->
-      <div class="map-header">
-        <button class="back-btn" id="map-back-btn">←</button>
-        <h2 class="map-title">🗺️ 탐험 지도</h2>
-        <div style="width: 40px;"></div>
-      </div>
-
-      <!-- Leaflet 지도가 렌더링될 영역 -->
-      <div id="map-container" class="map-container"></div>
-
-      <!-- 지도 위에 떠있는 하단 정보바 -->
-      <div class="map-info-bar">
-        <span id="map-status-text">📍 현재 위치 추적 중</span>
-        <span id="map-collected-count">🎒 수집한 아이템: 0개</span>
-      </div>
-    </div>
-
-    <!-- 📝 해금 퀴즈 화면 (슬라이드 애니메이션 적용) -->
-    <div id="quiz-screen" class="quiz-screen" style="display: none;">
-      <!-- 상단 헤더 -->
-      <div class="quiz-header">
-        <button class="back-btn" onclick="closeQuiz()">←</button>
-        <h2 class="quiz-title">📝 해금 퀴즈</h2>
-        <div id="quiz-progress" class="quiz-progress">1 / 5</div>
-      </div>
-
-      <!-- 퀴즈 진행 영역 -->
-      <div id="quiz-content" class="quiz-content">
-        <h3 id="quiz-question" class="quiz-question">질문이 여기에 표시됩니다.</h3>
-
-        <!-- 힌트 영역 -->
-        <div class="quiz-hint-area">
-          <button class="quiz-hint-btn" onclick="showHint()">💡 힌트 보기</button>
-          <div id="quiz-hint-text" class="quiz-hint-text" style="display: none;">힌트 내용</div>
-        </div>
-
-        <!-- 선택지 영역 -->
-        <div id="quiz-options" class="quiz-options">
-          <!-- 버튼들이 JS에서 동적으로 생성됨 -->
-        </div>
-      </div>
-
-      <!-- 퀴즈 결과 영역 -->
-      <div id="quiz-result" class="quiz-result" style="display: none;">
-        <h2 id="quiz-result-title" class="quiz-result-title">결과 타이틀</h2>
-        <p id="quiz-result-desc" class="quiz-result-desc">결과 설명</p>
-        <div class="quiz-result-buttons">
-          <!-- 다시 도전하기는 현재 카테고리를 인자로 받음 -->
-          <button class="action-btn retry-btn" onclick="startQuiz(currentQuizCategory)">다시 도전하기</button>
-          <button class="action-btn go-main-btn" onclick="closeQuiz()">메인으로 가기</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 🤖 AI 챗봇 화면 (슬라이드 애니메이션 적용) -->
-    <div id="chatbot-screen" class="chatbot-screen" style="display: none;">
-      <!-- 상단 헤더 -->
-      <div class="chatbot-header">
-        <button class="back-btn" onclick="hideChatbot()">←</button>
-        <h2 class="chatbot-title">🤖 학습 도우미 AI 챗봇</h2>
-        <div style="width: 40px;"></div>
-      </div>
-
-      <!-- 채팅 메시지 영역 (스크롤 가능) -->
-      <div id="chatbot-messages" class="chatbot-messages">
-        <!-- 말풍선들이 동적으로 추가됨 -->
-      </div>
-
-
-
-      <!-- 하단 메시지 텍스트 입력창 + 전송 버튼 -->
-      <div class="chatbot-input-area">
-        <input type="text" id="chatbot-input" placeholder="궁금한 것을 물어보세요!" onkeypress="handleChatInputKeyPress(event)">
-        <button class="chatbot-send-btn" onclick="sendMessage()">전송</button>
-      </div>
-    </div>
-    <!-- 탐험 모드 오버레이 (검정 80% 반투명 배경) -->
-    <div id="exploration-overlay" class="exploration-overlay" style="display: none;"
-      onclick="handleExplorationOverlayClick()">
-      <!-- 기본 탐험 중 표시되는 내용 -->
-      <div id="explore-default-content" class="explore-content-wrapper">
-
-        <!-- [한글 주석] 상단: 탐험 중 타이틀 -->
-        <div class="explore-top">🥾 탐험 중...</div>
-
-        <!-- [한글 주석] 중앙: 걷는 아바타 애니메이션 -->
-        <div class="explore-center">
-
-          <!-- [한글 주석] 아바타 걷기 씬 -->
-          <div class="explore-walk-scene">
-            <!-- [한글 주석] 배경 나무들 -->
-            <div class="explore-tree tree-far">🌲</div>
-            <div class="explore-tree tree-mid">🌳</div>
-            <div class="explore-tree tree-near">🌲</div>
-            <!-- [한글 주석] 길 -->
-            <div class="explore-road"></div>
-            <!-- [한글 주석] 아바타 -->
-            <div class="explore-avatar-walk" id="explore-avatar-walk"></div>
-            <!-- [한글 주석] 발자국 -->
-            <div class="explore-footprint fp1">👣</div>
-            <div class="explore-footprint fp2">👣</div>
-            <div class="explore-footprint fp3">👣</div>
-          </div>
-
-          <!-- [한글 주석] 안내 문구 -->
-          <div class="explore-safety-msg">
-            <div class="explore-safety-icon">⚠️</div>
-            <div class="explore-safety-text">
-              👀 두눈은 화면에서 잠시 벗어나<br>
-              두 발로 걸으며 자연을 느껴봐요!<br>
-              <span style="color:#d4a017;font-weight:700;">
-                걷다 보면 신기한 카드가 나타날 거예요 🌿
-              </span>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- [한글 주석] 하단: 탐험 종료 버튼 -->
-        <div class="explore-bottom">
-          <button class="explore-end-btn" onclick="event.stopPropagation(); stopExploration();">
-            탐험 종료
-          </button>
-        </div>
-      </div>
-
-      <!-- 아이템 발견 시 표시되는 알림 (깜빡임 효과 적용 예정) -->
-      <div id="explore-discovery-content" class="explore-discovery-content" style="display: none;">
-        🎉 새로운 발견! 화면을 탭하세요!
       </div>
     </div>
 
@@ -1011,250 +1262,6 @@
       })();
     </script>
 
-    <!-- [한글 주석] 도움말 모달 -->
-    <div id="help-modal" style="display:none;
-  position:fixed;top:0;left:0;right:0;bottom:0;
-  background:rgba(0,0,0,0.85);
-  z-index:99999;
-  align-items:center;
-  justify-content:center;
-  overflow-y:auto;
-">
-      <!-- [한글 주석] 메인 도움말 (핵심 요약) -->
-      <div id="help-main" style="
-    background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
-    border:2px solid #6b8e3d;
-    border-radius:24px;
-    padding:24px 20px;
-    max-width:320px;
-    width:90%;
-    text-align:center;
-    box-shadow:0 0 40px rgba(141,176,92,0.3);
-    margin:20px auto;
-  ">
-        <!-- [한글 주석] 헤더 -->
-        <div style="font-size:26px;margin-bottom:4px;">🌿 또감 사용법</div>
-        <div style="color:#8db05c;font-size:12px;margin-bottom:20px;">
-          걷고, 수집하며, 배워요!
-        </div>
-
-        <!-- [한글 주석] 핵심 4단계 -->
-        <div style="display:flex;flex-direction:column;gap:10px;text-align:left;margin-bottom:20px;">
-
-          <div style="
-        background:rgba(141,176,92,0.1);border:1px solid #6b8e3d;
-        border-radius:14px;padding:12px 14px;
-        display:flex;align-items:center;gap:12px;
-      ">
-            <div style="font-size:28px;">👟</div>
-            <div>
-              <div style="color:#8db05c;font-size:12px;font-weight:900;margin-bottom:2px;">STEP 1. 탐험 시작!</div>
-              <div style="color:#d4c89c;font-size:11px;line-height:1.5;">주황색 탐험 버튼을 눌러요.</div>
-            </div>
-          </div>
-
-          <div style="
-        background:rgba(74,158,255,0.08);border:1px solid #4a6fa5;
-        border-radius:14px;padding:12px 14px;
-        display:flex;align-items:center;gap:12px;
-      ">
-            <div style="font-size:28px;">🚶</div>
-            <div>
-              <div style="color:#7aabff;font-size:12px;font-weight:900;margin-bottom:2px;">STEP 2. 주변을 걸어요!</div>
-              <div style="color:#d4c89c;font-size:11px;line-height:1.5;">걸으면 랜덤으로 카드가 나타나요. 진동이 울리면 확인!</div>
-            </div>
-          </div>
-
-          <div style="
-        background:rgba(212,160,23,0.08);border:1px solid #a07c10;
-        border-radius:14px;padding:12px 14px;
-        display:flex;align-items:center;gap:12px;
-      ">
-            <div style="font-size:28px;">📖</div>
-            <div>
-              <div style="color:#d4a017;font-size:12px;font-weight:900;margin-bottom:2px;">STEP 3. 카드를 수집해요!</div>
-              <div style="color:#d4c89c;font-size:11px;line-height:1.5;">도감을 완성하며 레벨을 올려요!</div>
-            </div>
-          </div>
-
-          <div style="
-        background:rgba(255,107,107,0.08);border:1px solid #8b3a3a;
-        border-radius:14px;padding:12px 14px;
-        display:flex;align-items:center;gap:12px;
-      ">
-            <div style="font-size:28px;">🎯</div>
-            <div>
-              <div style="color:#ff8080;font-size:12px;font-weight:900;margin-bottom:2px;">STEP 4. 레벨업 퀴즈!</div>
-              <div style="color:#d4c89c;font-size:11px;line-height:1.5;">
-                퀴즈를 풀고 레벨을 올리면 다음 단계를 해금할 수 있어요!<br>
-                <span style="color:#8db05c;">Lv.5</span> → 동물 해금 &nbsp;
-                <span style="color:#d4a017;">Lv.10</span> → 유물 해금
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- [한글 주석] 버튼 2개 -->
-        <div style="display:flex;gap:8px;">
-          <button onclick="hideHelpModal()" style="
-        flex:1;
-        background:rgba(255,255,255,0.08);
-        color:#d4c89c;border:1px solid #6b8e3d;
-        border-radius:12px;padding:11px;
-        font-size:13px;font-weight:700;cursor:pointer;
-      ">확인</button>
-          <button onclick="showHelpDetail()" style="
-        flex:1.5;
-        background:linear-gradient(135deg,#d4a017,#b3850e);
-        color:#1e2e1f;border:none;
-        border-radius:12px;padding:11px;
-        font-size:13px;font-weight:900;cursor:pointer;
-      ">📚 자세히 알아보기</button>
-        </div>
-      </div>
-
-      <!-- [한글 주석] 상세 도움말 (처음엔 숨김) -->
-      <div id="help-detail" style="display:none;
-  background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
-  border:2px solid #6b8e3d;
-  border-radius:24px;
-  padding:24px 20px;
-  max-width:320px;
-  width:90%;
-  box-shadow:0 0 40px rgba(141,176,92,0.3);
-  margin:20px auto;
-">
-        <!-- [한글 주석] 헤더 -->
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
-          <button onclick="hideHelpDetail()" style="
-      background:rgba(255,255,255,0.08);color:#d4c89c;
-      border:1px solid #6b8e3d;border-radius:10px;
-      padding:6px 12px;font-size:13px;cursor:pointer;
-    ">← 뒤로</button>
-          <div style="color:#8db05c;font-size:15px;font-weight:900;">📚 자세한 사용법</div>
-        </div>
-
-        <!-- [한글 주석] 상세 항목들 -->
-        <div style="display:flex;flex-direction:column;gap:14px;max-height:70vh;overflow-y:auto;">
-
-          <!-- [한글 주석] 탐험 방법 -->
-          <div style="background:rgba(141,176,92,0.08);border:1px solid #6b8e3d;border-radius:14px;padding:14px;">
-            <div style="color:#8db05c;font-size:13px;font-weight:900;margin-bottom:8px;">👟 탐험 방법</div>
-            <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
-              • 주황색 <b style="color:#d4a017;">탐험!</b> 버튼을 누르면 탐험 시작<br>
-              • 걸을 땐 화면 OFF! 안전하게 주변을 살피며 걸어요<br>
-              • 걷다 보면 현재 위치 주변에서 랜덤으로 카드 등장<br>
-              • 진동이 울리면 멈춰서 화면을 켜고 카드를 확인해요<br>
-              • 30% 확률로 카드 3장 중 1장을 선택하는 이벤트 발생!
-            </div>
-          </div>
-
-          <!-- [한글 주석] 도감 -->
-          <div style="background:rgba(74,158,255,0.08);border:1px solid #4a6fa5;border-radius:14px;padding:14px;">
-            <div style="color:#7aabff;font-size:13px;font-weight:900;margin-bottom:8px;">📖 도감</div>
-            <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
-              • 수집한 카드를 모두 볼 수 있어요<br>
-              • 식물 100종, 동물 100종, 유물 100종<br>
-              • 카드 희귀도: <span style="color:#8db05c;">★ 일반</span> / <span style="color:#7aabff;">★★ 희귀</span> / <span
-                style="color:#ffd700;">★★★ 전설</span><br>
-              • 카드를 탭하면 자세한 정보를 볼 수 있어요<br>
-              • ⚗️ 조합소 탭에서 중복 카드를 새 카드로 바꿀 수 있어요
-            </div>
-          </div>
-
-          <!-- [한글 주석] 조합소 -->
-          <div style="background:rgba(212,160,23,0.08);border:1px solid #a07c10;border-radius:14px;padding:14px;">
-            <div style="color:#d4a017;font-size:13px;font-weight:900;margin-bottom:8px;">⚗️ 조합소</div>
-            <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
-              • 이미 가진 카드가 또 나오면 조합소에 쌓여요<br>
-              • 중복 카드 5장을 선택해 새 카드로 조합!<br>
-              • 조합 규칙:<br>
-              &nbsp;&nbsp;- 전설 1장 이상 → 무조건 전설<br>
-              &nbsp;&nbsp;- 희귀 4~5장 → 전설 50% / 희귀 50%<br>
-              &nbsp;&nbsp;- 희귀 3장 + 일반 2장 → 희귀 100%<br>
-              &nbsp;&nbsp;- 희귀 1~2장 + 일반 → 희귀 60% / 일반 40%<br>
-              &nbsp;&nbsp;- 일반 5장 → 일반 75% / 희귀 15% / 전설 10%<br>
-              • 조합된 카드는 무조건 내게 없던 카드!
-            </div>
-          </div>
-
-          <!-- [한글 주석] 레벨 & 아이템 -->
-          <div style="background:rgba(255,107,107,0.08);border:1px solid #8b3a3a;border-radius:14px;padding:14px;">
-            <div style="color:#ff8080;font-size:13px;font-weight:900;margin-bottom:8px;">⭐ 레벨 & 아이템</div>
-            <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
-              • 카드 10장마다 레벨업 퀴즈 도전!<br>
-              • 퀴즈를 맞춰야 레벨이 올라가요<br>
-              • <span style="color:#8db05c;">Lv.5</span> 달성 → 동물 탐험 해금<br>
-              • <span style="color:#d4a017;">Lv.10</span> 달성 → 유물 탐험 해금<br>
-              • 레벨에 따라 아바타 꾸미기 아이템 해금:<br>
-              &nbsp;&nbsp;Lv.3 나뭇잎모자 / Lv.5 나비날개<br>
-              &nbsp;&nbsp;Lv.8 꽃왕관 / Lv.10 자연망토<br>
-              &nbsp;&nbsp;Lv.15 조선왕관·유물망토 / Lv.20 하늘날개<br>
-              &nbsp;&nbsp;Lv.25 황금왕관·탐험가배지 / Lv.30 전설탐험가<br>
-              • 아바타를 탭하면 아바타를 변경할 수 있어요
-            </div>
-          </div>
-
-          <!-- [한글 주석] 일일 시험 -->
-          <div style="background:rgba(141,176,92,0.08);border:1px solid #6b8e3d;border-radius:14px;padding:14px;">
-            <div style="color:#8db05c;font-size:13px;font-weight:900;margin-bottom:8px;">📝 일일 시험</div>
-            <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
-              • 하루에 한 번 OX 퀴즈에 도전해요<br>
-              • 내가 수집한 카드 중 하나의 설명이 맞는지 틀리는지 맞춰요<br>
-              • 정답이면 복주머니 1개 획득!<br>
-              • 자정이 지나면 다시 도전할 수 있어요
-            </div>
-          </div>
-
-          <!-- [한글 주석] 지식 배틀 -->
-          <div style="background:rgba(255,68,68,0.08);border:1px solid #8b3a3a;border-radius:14px;padding:14px;">
-            <div style="color:#ff8080;font-size:13px;font-weight:900;margin-bottom:8px;">⚔️ 지식 배틀</div>
-            <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
-              • 같은 반 친구와 지식 대결!<br>
-              • 카테고리 선택 후 1분 공부 → 자동 매칭<br>
-              • 매칭 후 5문제 (3분 제한) 를 풀어 승부!<br>
-              • 문제는 해당 카테고리 100종 전체에서 출제돼요<br>
-              • 승리 → 복주머니 1개 / 무승부 → 복주머니 조각 1개<br>
-              • 조각 2개를 모으면 복주머니 1개로 변환돼요<br>
-              • 하루 3회 제한 (매칭 성공 기준)
-            </div>
-          </div>
-
-          <!-- [한글 주석] AI 챗봇 -->
-          <div style="background:rgba(141,176,92,0.08);border:1px solid #6b8e3d;border-radius:14px;padding:14px;">
-            <div style="color:#8db05c;font-size:13px;font-weight:900;margin-bottom:8px;">🤖 AI 챗봇</div>
-            <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
-              • 수집한 동식물·유물에 대해 질문할 수 있어요<br>
-              • 카드에 없는 더 자세한 정보도 알려줘요<br>
-              • 도감과 관련 없는 질문은 답하지 않아요
-            </div>
-          </div>
-
-          <!-- [한글 주석] 복주머니 -->
-          <div style="background:rgba(212,160,23,0.08);border:1px solid #a07c10;border-radius:14px;padding:14px;">
-            <div style="color:#d4a017;font-size:13px;font-weight:900;margin-bottom:8px;">🎁 복주머니</div>
-            <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
-              • 선생님이 특별한 카드를 선물로 보내줄 수 있어요<br>
-              • 일일 시험 정답 / 배틀 승리 시에도 받아요<br>
-              • 아이템 → 복주머니 탭에서 확인·개봉해요<br>
-              • 두구두구 애니메이션으로 카드를 뽑아요!
-            </div>
-          </div>
-
-        </div>
-
-        <!-- [한글 주석] 닫기 버튼 -->
-        <button onclick="hideHelpModal()" style="
-    margin-top:16px;
-    width:100%;
-    background:linear-gradient(135deg,#d4a017,#b3850e);
-    color:#1e2e1f;border:none;border-radius:12px;
-    padding:12px;font-size:14px;font-weight:900;cursor:pointer;
-  ">확인!</button>
-      </div>
-    </div>
-  </div><!-- [한글 주석] student-app-wrapper 닫는 태그 -->
 </body>
 
 </html>
