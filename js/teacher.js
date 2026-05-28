@@ -782,3 +782,139 @@ function closeTeacherHelp() {
   const overlay = document.getElementById('teacher-help-overlay');
   if (overlay) overlay.remove();
 }
+
+// ==========================================
+// [한글 주석] 학생 화면 예시 보기 시스템
+// ==========================================
+
+function showStudentPreview() {
+  // [한글 주석] 가상 학생 데이터 세팅 (카드 300개 전부, Lv.30)
+  _injectDemoData();
+
+  // [한글 주석] 기존 오버레이 있으면 제거
+  const existing = document.getElementById('student-preview-overlay');
+  if (existing) existing.remove();
+
+  // [한글 주석] 전체화면 오버레이 생성
+  const overlay = document.createElement('div');
+  overlay.id = 'student-preview-overlay';
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    z-index:99998;
+    background:#0f1c30;
+    overflow:hidden;
+  `;
+
+  // [한글 주석] 닫기 버튼 (우상단 고정)
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = '✕ 예시 닫기';
+  closeBtn.style.cssText = `
+    position:fixed;
+    top:16px;right:16px;
+    z-index:99999;
+    background:rgba(255,68,68,0.85);
+    color:#fff;
+    border:none;
+    border-radius:20px;
+    padding:10px 20px;
+    font-size:14px;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:0 4px 12px rgba(0,0,0,0.4);
+    font-family:'Noto Sans KR',sans-serif;
+  `;
+  closeBtn.onclick = closeStudentPreview;
+
+  // [한글 주석] 안내 배지 (좌상단)
+  const badge = document.createElement('div');
+  badge.textContent = '👁️ 학생 화면 예시 (가상 데이터)';
+  badge.style.cssText = `
+    position:fixed;
+    top:16px;left:16px;
+    z-index:99999;
+    background:rgba(132,255,0,0.15);
+    color:#84ff00;
+    border:1px solid #4a7a1e;
+    border-radius:20px;
+    padding:8px 16px;
+    font-size:12px;
+    font-weight:700;
+    font-family:'Noto Sans KR',sans-serif;
+  `;
+
+  // [한글 주석] 메인 컨테이너를 오버레이 안으로 복제
+  const mainContainer = document.getElementById('main-container');
+  const cloned = mainContainer.cloneNode(true);
+  cloned.style.display = 'block';
+  cloned.style.position = 'relative';
+  cloned.style.height = '100vh';
+  cloned.style.overflow = 'auto';
+  cloned.id = 'student-preview-main';
+
+  overlay.appendChild(cloned);
+  document.body.appendChild(overlay);
+  document.body.appendChild(closeBtn);
+  document.body.appendChild(badge);
+
+  // [한글 주석] 가상 데이터 기반으로 화면 업데이트
+  setTimeout(() => {
+    if (typeof window.updateMainScreenData === 'function') {
+      window.updateMainScreenData();
+    }
+    if (typeof updateLevelBadge === 'function') updateLevelBadge();
+    if (typeof initAvatar === 'function') initAvatar();
+    // [한글 주석] 유저 정보 표시
+    const userInfoEl = document.getElementById('user-info-display');
+    if (userInfoEl) userInfoEl.innerHTML = `예시반 1번 탐험가<span style="color:#ff4444;">♥</span>`;
+    // [한글 주석] 탭 잠금 해제 (레벨 30이므로 전부 해금)
+    document.querySelectorAll('.tab.locked').forEach(t => {
+      t.classList.remove('locked');
+      if (t.dataset.target === 'animal') t.textContent = '🦊 동물';
+      if (t.dataset.target === 'artifact') t.textContent = '🏺 유물';
+    });
+  }, 100);
+}
+
+// [한글 주석] 가상 데이터 localStorage 주입
+function _injectDemoData() {
+  // [한글 주석] 가상 유저 정보
+  localStorage.setItem('userData', JSON.stringify({
+    class: '예시', number: '1', password: '1234'
+  }));
+  localStorage.setItem('isTeacher', 'false');
+  localStorage.setItem('currentLevel', '30');
+  localStorage.setItem('selectedAvatar', 'boy1_dodam');
+
+  // [한글 주석] 카드 300개 전부 수집 상태로 세팅
+  const allCards = [];
+  for (let i = 1; i <= 100; i++) {
+    allCards.push(`plant_${String(i).padStart(3,'0')}`);
+    allCards.push(`animal_${String(i).padStart(3,'0')}`);
+    allCards.push(`artifact_${String(i).padStart(3,'0')}`);
+  }
+  localStorage.setItem('userCollection', JSON.stringify(allCards));
+  localStorage.setItem('unlockedCategories', JSON.stringify(['plant','animal','artifact']));
+
+  // [한글 주석] 걸음수 세팅
+  localStorage.setItem('pedometerData', JSON.stringify({ steps: 9999 }));
+}
+
+// [한글 주석] 학생 화면 예시 닫기
+function closeStudentPreview() {
+  // [한글 주석] 오버레이 및 고정 버튼/배지 제거
+  const overlay = document.getElementById('student-preview-overlay');
+  if (overlay) overlay.remove();
+
+  // [한글 주석] 닫기 버튼, 배지 제거
+  document.querySelectorAll('button, div').forEach(el => {
+    if (el.textContent === '✕ 예시 닫기') el.remove();
+  });
+
+  // [한글 주석] 대시보드 다시 렌더링
+  const teacherClass = localStorage.getItem('teacherClass') || '1';
+  localStorage.setItem('isTeacher', 'true');
+  if (typeof refreshDashboard === 'function') refreshDashboard();
+}
+
+window.showStudentPreview = showStudentPreview;
+window.closeStudentPreview = closeStudentPreview;
