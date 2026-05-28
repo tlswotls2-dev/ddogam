@@ -45,9 +45,9 @@ function showBattleMode() {
     ? getUnlockedCategories() : ['plant'];
 
   const catConfig = {
-    plant:    { label:'🌱 식물 지식 배틀', color:'#8db05c', border:'#6b8e3d' },
-    animal:   { label:'🦊 동물 지식 배틀', color:'#ff9500', border:'#cc7700' },
-    artifact: { label:'🏺 유물 지식 배틀', color:'#d4a017', border:'#a07c10' }
+    plant: { label: '🌱 식물 지식 배틀', color: '#8db05c', border: '#6b8e3d' },
+    animal: { label: '🦊 동물 지식 배틀', color: '#ff9500', border: '#cc7700' },
+    artifact: { label: '🏺 유물 지식 배틀', color: '#d4a017', border: '#a07c10' }
   };
 
   const overlay = document.createElement('div');
@@ -111,7 +111,7 @@ function showBattleMode() {
           <button
             onclick="startBattleStudy('${cat}')"
             style="
-              background:rgba(${cat==='plant'?'141,176,92':cat==='animal'?'255,149,0':'212,160,23'},0.1);
+              background:rgba(${cat === 'plant' ? '141,176,92' : cat === 'animal' ? '255,149,0' : '212,160,23'},0.1);
               border:1px solid ${catConfig[cat].border};
               border-radius:14px;
               padding:14px;
@@ -172,7 +172,7 @@ async function _fetchBattleCount() {
         infoEl.style.color = '#8db05c';
       }
     }
-  } catch(e) {
+  } catch (e) {
     const infoEl = document.getElementById('battle-count-info');
     if (infoEl) infoEl.textContent = '횟수 확인 실패';
   }
@@ -227,7 +227,7 @@ function _renderStudyScreen() {
   if (existing) existing.remove();
 
   const catLabel = {
-    plant:'🌱 식물', animal:'🦊 동물', artifact:'🏺 유물'
+    plant: '🌱 식물', animal: '🦊 동물', artifact: '🏺 유물'
   }[battleState.category] || '';
 
   const overlay = document.createElement('div');
@@ -330,9 +330,9 @@ function _renderBattleCard() {
 
   const showBack = battleState.showingBack;
   const rarityConfig = {
-    common: { color:'#8db05c', label:'★ 일반' },
-    rare:   { color:'#4a9eff', label:'★★ 희귀' },
-    epic:   { color:'#ffd700', label:'★★★ 전설' }
+    common: { color: '#8db05c', label: '★ 일반' },
+    rare: { color: '#4a9eff', label: '★★ 희귀' },
+    epic: { color: '#ffd700', label: '★★★ 전설' }
   };
   const cfg = rarityConfig[card.rarity] || rarityConfig.common;
 
@@ -451,7 +451,7 @@ function _startBattleTimer() {
       const m = Math.floor(remaining / 60);
       const s = remaining % 60;
       if (timerEl()) timerEl().textContent =
-        `${m}:${String(s).padStart(2,'0')}`;
+        `${m}:${String(s).padStart(2, '0')}`;
       if (msgEl()) msgEl().textContent = '카드를 보며 공부해요!';
 
     } else if (elapsed === STUDY_SEC + 1) {
@@ -478,7 +478,7 @@ function _startBattleTimer() {
       const m = Math.floor(remaining / 60);
       const s = remaining % 60;
       if (timerEl()) timerEl().textContent =
-        `${m}:${String(s).padStart(2,'0')}`;
+        `${m}:${String(s).padStart(2, '0')}`;
       if (msgEl()) msgEl().textContent = '🔍 상대방 찾는 중...';
 
       // [한글 주석] 30초마다 매칭 확인
@@ -509,8 +509,8 @@ async function _registerBattleWait() {
     category: battleState.category
   }));
   try {
-    await fetch(BATTLE_SCRIPT_URL, { method:'POST', body:formData });
-  } catch(e) {
+    await fetch(BATTLE_SCRIPT_URL, { method: 'POST', body: formData });
+  } catch (e) {
     console.log('[배틀] 대기 등록 실패:', e);
   }
 }
@@ -531,7 +531,7 @@ async function _checkBattleMatch() {
       if (data.matchTime) battleState.matchTime = data.matchTime;
       return true;
     }
-  } catch(e) {
+  } catch (e) {
     console.log('[배틀] 매칭 확인 실패:', e);
   }
   return false;
@@ -547,8 +547,8 @@ async function _cancelBattleWait() {
     number: userData.number
   }));
   try {
-    await fetch(BATTLE_SCRIPT_URL, { method:'POST', body:formData });
-  } catch(e) {
+    await fetch(BATTLE_SCRIPT_URL, { method: 'POST', body: formData });
+  } catch (e) {
     console.log('[배틀] 대기 취소 실패:', e);
   }
 }
@@ -566,6 +566,10 @@ async function cancelBattle() {
   battleState.phase = 'idle';
   const overlay = document.getElementById('battle-study-overlay');
   if (overlay) overlay.remove();
+
+  // [한글 주석] 포기 후 메인 BGM 복귀
+  if (typeof stopBGM === 'function') stopBGM();
+  setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 300);
 }
 
 // [한글 주석] 매칭 실패 팝업
@@ -717,7 +721,7 @@ function _startQuizTimer() {
     if (timerEl) {
       const m = Math.floor(remaining / 60);
       const s = remaining % 60;
-      timerEl.textContent = `⏱ ${m}:${String(s).padStart(2,'0')}`;
+      timerEl.textContent = `⏱ ${m}:${String(s).padStart(2, '0')}`;
       // [한글 주석] 30초 이하면 빨간색으로
       timerEl.style.color = remaining <= 30 ? '#ff4444' : '#aaa';
     }
@@ -762,9 +766,9 @@ function _renderBattleQuiz() {
   const progress = Math.round((battleState.currentQ / total) * 100);
 
   const rarityConfig = {
-    common: { color:'#8db05c' },
-    rare:   { color:'#4a9eff' },
-    epic:   { color:'#ffd700' }
+    common: { color: '#8db05c' },
+    rare: { color: '#4a9eff' },
+    epic: { color: '#ffd700' }
   };
   const rColor = (rarityConfig[card.rarity] || rarityConfig.common).color;
 
@@ -797,7 +801,7 @@ function _renderBattleQuiz() {
         <div style="color:#ff8080;font-size:12px;font-weight:700;">⚔️ 배틀 퀴즈</div>
         <div style="display:flex;gap:8px;align-items:center;">
           <div id="battle-quiz-timer" style="color:#aaa;font-size:11px;">⏱ 2:00</div>
-          <div style="color:#aaa;font-size:12px;">${battleState.currentQ+1} / ${total}</div>
+          <div style="color:#aaa;font-size:12px;">${battleState.currentQ + 1} / ${total}</div>
         </div>
       </div>
 
@@ -842,7 +846,7 @@ function _renderBattleQuiz() {
               text-align:left;cursor:pointer;
               line-height:1.4;transition:all 0.2s;
             "
-          >${['①','②','③','④'][i]} ${c.short_desc}</button>
+          >${['①', '②', '③', '④'][i]} ${c.short_desc}</button>
         `).join('')}
       </div>
 
@@ -934,8 +938,8 @@ async function _finishBattleQuiz(isTimeout = false) {
   }));
 
   try {
-    await fetch(BATTLE_SCRIPT_URL, { method:'POST', body:formData });
-  } catch(e) {
+    await fetch(BATTLE_SCRIPT_URL, { method: 'POST', body: formData });
+  } catch (e) {
     console.log('[배틀] 결과 저장 실패:', e);
   }
 
@@ -980,7 +984,7 @@ async function _finishBattleQuiz(isTimeout = false) {
         _showBattleResult(battleState.myScore, opponentScore, result);
         return;
       }
-    } catch(e) {
+    } catch (e) {
       console.log('[배틀] 상대 결과 확인 실패:', e);
     }
 
@@ -1117,7 +1121,7 @@ function _showBattleResult(myScore, opponentScore, result) {
   battleState.phase = 'idle';
 
   if (result === 'win' && navigator.vibrate) {
-    navigator.vibrate([200,100,200,100,300]);
+    navigator.vibrate([200, 100, 200, 100, 300]);
   }
 }
 
@@ -1128,15 +1132,15 @@ function _grantBattleReward(result) {
     const bags = JSON.parse(localStorage.getItem('rewardBags') || '[]');
     const now = new Date();
     const timeStr = now.toLocaleDateString('ko-KR', {
-      year:'numeric', month:'long', day:'numeric',
-      hour:'2-digit', minute:'2-digit'
+      year: 'numeric', month: 'long', day: 'numeric',
+      hour: '2-digit', minute: '2-digit'
     });
     const unlockedCats = typeof getUnlockedCategories === 'function'
       ? getUnlockedCategories() : ['plant'];
     const randomCat = unlockedCats[Math.floor(Math.random() * unlockedCats.length)];
 
     bags.push({
-      reward: { type:'category', category:randomCat, rarity:'all' },
+      reward: { type: 'category', category: randomCat, rarity: 'all' },
       receivedAt: timeStr,
       source: 'battle_win'
     });
