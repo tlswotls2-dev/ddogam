@@ -823,10 +823,12 @@ function showStudentPreview() {
     box-shadow:0 4px 12px rgba(0,0,0,0.4);
     font-family:'Noto Sans KR',sans-serif;
   `;
+  closeBtn.id = 'student-preview-close-btn';
   closeBtn.onclick = closeStudentPreview;
 
   // [한글 주석] 안내 배지 (좌상단)
   const badge = document.createElement('div');
+  badge.id = 'student-preview-badge';
   badge.textContent = '👁️ 학생 화면 예시 (가상 데이터)';
   badge.style.cssText = `
     position:fixed;
@@ -842,30 +844,51 @@ function showStudentPreview() {
     font-family:'Noto Sans KR',sans-serif;
   `;
 
-  // [한글 주석] 메인 컨테이너를 오버레이 안으로 복제
-  const mainContainer = document.getElementById('main-container');
-  const cloned = mainContainer.cloneNode(true);
-  cloned.style.display = 'block';
-  cloned.style.position = 'relative';
-  cloned.style.height = '100vh';
-  cloned.style.overflow = 'auto';
-  cloned.id = 'student-preview-main';
+  // [한글 주석] 모바일 비율 프레임 (390x844 = iPhone 기준)
+  const frame = document.createElement('div');
+  frame.id = 'student-preview-frame';
+  frame.style.cssText = `
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:390px;
+    height:844px;
+    border-radius:40px;
+    overflow:hidden;
+    box-shadow:0 0 0 12px #222, 0 0 60px rgba(0,0,0,0.8);
+    background:#0f1c30;
+  `;
 
-  overlay.appendChild(cloned);
+  overlay.appendChild(frame);
   document.body.appendChild(overlay);
   document.body.appendChild(closeBtn);
   document.body.appendChild(badge);
 
+  // [한글 주석] 실제 main-container를 프레임 안으로 이동 (이벤트 리스너 살아있음)
+  const mainContainer = document.getElementById('main-container');
+  // [한글 주석] 원래 위치 기억
+  mainContainer._previewParent = mainContainer.parentNode;
+  mainContainer._previewNextSibling = mainContainer.nextSibling;
+
+  // [한글 주석] 프레임 안으로 이동
+  mainContainer.style.display = 'block';
+  mainContainer.style.width = '390px';
+  mainContainer.style.height = '844px';
+  mainContainer.style.overflow = 'auto';
+  mainContainer.style.position = 'relative';
+  frame.appendChild(mainContainer);
+
   // [한글 주석] 가상 데이터 기반으로 화면 업데이트
   setTimeout(() => {
-    if (typeof window.updateMainScreenData === 'function') {
-      window.updateMainScreenData();
-    }
+    if (typeof window.updateMainScreenData === 'function') window.updateMainScreenData();
     if (typeof updateLevelBadge === 'function') updateLevelBadge();
     if (typeof initAvatar === 'function') initAvatar();
+    if (typeof checkAndUnlockItems === 'function') checkAndUnlockItems();
+
     // [한글 주석] 유저 정보 표시
     const userInfoEl = document.getElementById('user-info-display');
     if (userInfoEl) userInfoEl.innerHTML = `예시반 1번 탐험가<span style="color:#ff4444;">♥</span>`;
+
     // [한글 주석] 탭 잠금 해제 (레벨 30이므로 전부 해금)
     document.querySelectorAll('.tab.locked').forEach(t => {
       t.classList.remove('locked');
@@ -901,17 +924,33 @@ function _injectDemoData() {
 
 // [한글 주석] 학생 화면 예시 닫기
 function closeStudentPreview() {
-  // [한글 주석] 오버레이 및 고정 버튼/배지 제거
+  // [한글 주석] main-container를 원래 위치로 복원
+  const mainContainer = document.getElementById('main-container');
+  if (mainContainer && mainContainer._previewParent) {
+    mainContainer.style.display = 'none';
+    mainContainer.style.width = '';
+    mainContainer.style.height = '';
+    mainContainer.style.overflow = '';
+    mainContainer.style.position = '';
+    // [한글 주석] 원래 부모 노드에 원래 위치로 복원
+    if (mainContainer._previewNextSibling) {
+      mainContainer._previewParent.insertBefore(mainContainer, mainContainer._previewNextSibling);
+    } else {
+      mainContainer._previewParent.appendChild(mainContainer);
+    }
+    mainContainer._previewParent = null;
+    mainContainer._previewNextSibling = null;
+  }
+
+  // [한글 주석] 오버레이, 닫기 버튼, 배지 제거
   const overlay = document.getElementById('student-preview-overlay');
   if (overlay) overlay.remove();
+  const closeBtn = document.getElementById('student-preview-close-btn');
+  if (closeBtn) closeBtn.remove();
+  const badge = document.getElementById('student-preview-badge');
+  if (badge) badge.remove();
 
-  // [한글 주석] 닫기 버튼, 배지 제거
-  document.querySelectorAll('button, div').forEach(el => {
-    if (el.textContent === '✕ 예시 닫기') el.remove();
-  });
-
-  // [한글 주석] 대시보드 다시 렌더링
-  const teacherClass = localStorage.getItem('teacherClass') || '1';
+  // [한글 주석] isTeacher 복원 후 대시보드 새로고침
   localStorage.setItem('isTeacher', 'true');
   if (typeof refreshDashboard === 'function') refreshDashboard();
 }
