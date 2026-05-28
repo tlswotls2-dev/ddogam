@@ -89,12 +89,20 @@ function initMap() {
 
         _watchId = navigator.geolocation.watchPosition(
             (position) => {
-                // [한글 주석] 위치 갱신 성공 - GPS 정밀도가 높아질수록 더 정확한 위치로 업데이트됨
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
                 const accuracy = Math.round(position.coords.accuracy);
 
-                // [한글 주석] 처음 위치 수신 시 지도 중심 이동
+                const statusEl = document.getElementById('map-status-text');
+
+                // [한글 주석] 정확도 100m 초과이면 마커 업데이트 안 함 (기지국/와이파이 기반 부정확한 값 무시)
+                if (accuracy > 100) {
+                    console.log(`[지도] 정확도 낮아 무시: ${accuracy}m`);
+                    if (statusEl) statusEl.textContent = `📡 GPS 신호 잡는 중... (오차 ${accuracy}m)`;
+                    return;
+                }
+
+                // [한글 주석] 처음으로 정확한 위치 수신 시 지도 중심 이동
                 if (!userMarker) {
                     map.setView([lat, lng], DEFAULT_ZOOM);
                 }
@@ -102,13 +110,12 @@ function initMap() {
                 // [한글 주석] 마커 업데이트
                 setUserMarker(lat, lng);
 
-                // [한글 주석] 정확도 표시 (숫자가 낮을수록 정확)
-                const statusEl = document.getElementById('map-status-text');
+                // [한글 주석] 정확도에 따라 상태 메시지 표시
                 if (statusEl) {
                     if (accuracy <= 20) {
-                        statusEl.textContent = `📍 현재 위치 추적 중 (정확도 ${accuracy}m)`;
+                        statusEl.textContent = `📍 현재 위치 (정확도 ${accuracy}m)`;
                     } else {
-                        statusEl.textContent = `📡 GPS 보정 중... (오차 약 ${accuracy}m)`;
+                        statusEl.textContent = `📍 현재 위치 추적 중 (오차 약 ${accuracy}m)`;
                     }
                 }
             },

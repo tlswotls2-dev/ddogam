@@ -612,14 +612,14 @@ function showTeacherHelp() {
           margin-top:10px;
         ">
           <div style="color:#ffd700;font-size:12px;font-weight:900;margin-bottom:6px;">
-            📶 인터넷 없어도 사용 가능해요!
+            📶 인터넷 연결 없이도 탐험 가능해요!
           </div>
           <div style="color:#c8d8f0;font-size:11px;line-height:1.8;">
             • 학생 기기에 앱 데이터가 저장되어 있어서
-            <b style="color:#fff;">와이파이 없이도</b> 탐험·카드수집·퀴즈를 모두 할 수 있어요.<br>
+            <b style="color:#fff;">인터넷 연결 없이도</b> 탐험·카드수집·퀴즈를 모두 할 수 있어요.<br>
             • 오프라인 중 활동한 내용(걸음수, 수집, 퀴즈 결과)은 기기에 임시 저장돼요.<br>
             • 나중에 <b style="color:#fff;">와이파이에 연결되면 자동으로</b> 선생님 대시보드에 반영돼요.<br>
-            • 그래서 수업 중 와이파이가 없어도 걱정 없이 사용하세요! 😊
+            • 그렇기 때문에 야외활동 시 인터넷이 끊기더라도 걱정 없이 사용하세요! 😊
           </div>
         </div>
       </div>
