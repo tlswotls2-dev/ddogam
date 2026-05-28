@@ -10,18 +10,18 @@ const TEACHER_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHFQhpwzADL
 const EVAL_CRITERIA = {
   steps: {
     great: 3000,   // [한글 주석] 매우잘함: 3000보 이상
-    good:  2000,   // [한글 주석] 잘함: 2000보 이상
-    ok:    1000,   // [한글 주석] 보통: 1000보 이상
+    good: 2000,   // [한글 주석] 잘함: 2000보 이상
+    ok: 1000,   // [한글 주석] 보통: 1000보 이상
   },
   collect: {
     great: 5,      // [한글 주석] 매우잘함: 5개 이상
-    good:  3,      // [한글 주석] 잘함: 3개 이상
-    ok:    1,      // [한글 주석] 보통: 1개 이상
+    good: 3,      // [한글 주석] 잘함: 3개 이상
+    ok: 1,      // [한글 주석] 보통: 1개 이상
   },
   learning: {
     great: 2,      // [한글 주석] 매우잘함: 정답 2개 이상
-    good:  1,      // [한글 주석] 잘함: 정답 1개 이상
-    ok:    0,      // [한글 주석] 보통: 참여만 (정답 0)
+    good: 1,      // [한글 주석] 잘함: 정답 1개 이상
+    ok: 0,      // [한글 주석] 보통: 참여만 (정답 0)
     // [한글 주석] 미참여 = 노력요함
   }
 };
@@ -29,9 +29,9 @@ const EVAL_CRITERIA = {
 // [한글 주석] 평가 등급 레이블/색상
 const EVAL_LEVELS = {
   great: { label: '매우잘함', color: '#4a9eff', bg: 'rgba(74,158,255,0.15)', border: '#4a9eff' },
-  good:  { label: '잘함',     color: '#84ff00', bg: 'rgba(132,255,0,0.15)',  border: '#84ff00' },
-  ok:    { label: '보통',     color: '#ffd700', bg: 'rgba(255,215,0,0.15)',  border: '#ffd700' },
-  bad:   { label: '노력요함', color: '#ff6b6b', bg: 'rgba(255,107,107,0.15)', border: '#ff6b6b' }
+  good: { label: '잘함', color: '#84ff00', bg: 'rgba(132,255,0,0.15)', border: '#84ff00' },
+  ok: { label: '보통', color: '#ffd700', bg: 'rgba(255,215,0,0.15)', border: '#ffd700' },
+  bad: { label: '노력요함', color: '#ff6b6b', bg: 'rgba(255,107,107,0.15)', border: '#ff6b6b' }
 };
 
 // ==========================================
@@ -39,22 +39,22 @@ const EVAL_LEVELS = {
 // ==========================================
 function evalSteps(steps) {
   if (steps >= EVAL_CRITERIA.steps.great) return 'great';
-  if (steps >= EVAL_CRITERIA.steps.good)  return 'good';
-  if (steps >= EVAL_CRITERIA.steps.ok)    return 'ok';
+  if (steps >= EVAL_CRITERIA.steps.good) return 'good';
+  if (steps >= EVAL_CRITERIA.steps.ok) return 'ok';
   return 'bad';
 }
 
 function evalCollect(todayCollect) {
   if (todayCollect >= EVAL_CRITERIA.collect.great) return 'great';
-  if (todayCollect >= EVAL_CRITERIA.collect.good)  return 'good';
-  if (todayCollect >= EVAL_CRITERIA.collect.ok)    return 'ok';
+  if (todayCollect >= EVAL_CRITERIA.collect.good) return 'good';
+  if (todayCollect >= EVAL_CRITERIA.collect.ok) return 'ok';
   return 'bad';
 }
 
 function evalLearning(correct, participated) {
   if (!participated) return 'bad';
   if (correct >= EVAL_CRITERIA.learning.great) return 'great';
-  if (correct >= EVAL_CRITERIA.learning.good)  return 'good';
+  if (correct >= EVAL_CRITERIA.learning.good) return 'good';
   return 'ok';
 }
 
@@ -87,8 +87,8 @@ function evalBadge(grade) {
 function categoryStatsHTML(categoryStats) {
   if (!categoryStats) return '';
   const cats = [
-    { key: 'plant',    label: '🌱 식물', color: '#84ff00' },
-    { key: 'animal',   label: '🦊 동물', color: '#ff9500' },
+    { key: 'plant', label: '🌱 식물', color: '#84ff00' },
+    { key: 'animal', label: '🦊 동물', color: '#ff9500' },
     { key: 'artifact', label: '🏺 유물', color: '#d4a017' },
   ];
   return cats.map(cat => {
@@ -146,8 +146,8 @@ function renderDashboard(students) {
   const todayActiveCount = students.filter(s => {
     if (!s.lastSync || s.lastSync === '-') return false;
     return s.lastSync.includes(today.split('.')[0]) &&
-           s.lastSync.includes(today.split('.')[1]?.trim()) &&
-           s.lastSync.includes(today.split('.')[2]?.trim());
+      s.lastSync.includes(today.split('.')[1]?.trim()) &&
+      s.lastSync.includes(today.split('.')[2]?.trim());
   }).length;
 
   // [한글 주석] 오늘 매우잘함 학생 수
@@ -193,27 +193,27 @@ function renderDashboard(students) {
   gridEl.innerHTML = '';
 
   students.forEach(student => {
-    const plantCount    = Number(student.plant) || 0;
-    const animalCount   = Number(student.animal) || 0;
+    const plantCount = Number(student.plant) || 0;
+    const animalCount = Number(student.animal) || 0;
     const artifactCount = Number(student.artifact) || 0;
-    const total         = Number(student.total) || 0;
-    const steps         = Number(student.steps) || 0;
-    const lastSync      = student.lastSync || '미동기화';
+    const total = Number(student.total) || 0;
+    const steps = Number(student.steps) || 0;
+    const lastSync = student.lastSync || '미동기화';
 
     // [한글 주석] 오늘 수집 수 (총 수집에서 어제까지 수집 추정 불가 → steps 동기화 기준 사용)
     // [한글 주석] todayCollect가 없으면 0으로 처리
-    const todayCollect  = Number(student.todayCollect) || 0;
-    const todayCorrect  = Number(student.todayCorrect) || 0;
-    const participated  = student.todayParticipated || false;
-    const battleToday   = student.todayBattle || false;
-    const battleWon     = student.todayBattleWon || false;
+    const todayCollect = Number(student.todayCollect) || 0;
+    const todayCorrect = Number(student.todayCorrect) || 0;
+    const participated = student.todayParticipated || false;
+    const battleToday = student.todayBattle || false;
+    const battleWon = student.todayBattleWon || false;
 
     // [한글 주석] 항목별 평가
-    const stepsGrade    = evalSteps(steps);
-    const collectGrade  = evalCollect(todayCollect);
+    const stepsGrade = evalSteps(steps);
+    const collectGrade = evalCollect(todayCollect);
     const learningGrade = evalLearning(todayCorrect, participated);
-    const totalGrade    = evalTotal(stepsGrade, collectGrade, learningGrade);
-    const totalEval     = EVAL_LEVELS[totalGrade];
+    const totalGrade = evalTotal(stepsGrade, collectGrade, learningGrade);
+    const totalEval = EVAL_LEVELS[totalGrade];
 
     const level = Math.min(30, Math.floor(total / 10) + 1);
 
@@ -288,21 +288,21 @@ function renderDashboard(students) {
         <div class="dsc-progress-row" style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
           <span style="font-size:11px;width:16px;">🌱</span>
           <div class="dsc-progress-bg" style="flex:1;height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
-            <div style="width:${Math.min(plantCount,100)}%;height:100%;background:#84ff00;border-radius:4px;"></div>
+            <div style="width:${Math.min(plantCount, 100)}%;height:100%;background:#84ff00;border-radius:4px;"></div>
           </div>
           <span style="font-size:10px;color:#aaa;width:24px;text-align:right;">${plantCount}</span>
         </div>
         <div class="dsc-progress-row" style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
           <span style="font-size:11px;width:16px;">🦊</span>
           <div class="dsc-progress-bg" style="flex:1;height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
-            <div style="width:${Math.min(animalCount,100)}%;height:100%;background:#ff9500;border-radius:4px;"></div>
+            <div style="width:${Math.min(animalCount, 100)}%;height:100%;background:#ff9500;border-radius:4px;"></div>
           </div>
           <span style="font-size:10px;color:#aaa;width:24px;text-align:right;">${animalCount}</span>
         </div>
         <div class="dsc-progress-row" style="display:flex;align-items:center;gap:4px;">
           <span style="font-size:11px;width:16px;">🏺</span>
           <div class="dsc-progress-bg" style="flex:1;height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
-            <div style="width:${Math.min(artifactCount,100)}%;height:100%;background:#d4a017;border-radius:4px;"></div>
+            <div style="width:${Math.min(artifactCount, 100)}%;height:100%;background:#d4a017;border-radius:4px;"></div>
           </div>
           <span style="font-size:10px;color:#aaa;width:24px;text-align:right;">${artifactCount}</span>
         </div>
@@ -351,16 +351,16 @@ function showRewardModal(classNum, studentNum, studentName) {
   overlay.className = 'reward-modal-overlay';
 
   const rewardOptions = [
-    { emoji: '🎁', label: '전체 랜덤',  type: 'random',   category: 'all',      rarity: 'all' },
-    { emoji: '🌱', label: '식물 일반',  type: 'category', category: 'plant',    rarity: 'common' },
-    { emoji: '🌸', label: '식물 희귀',  type: 'category', category: 'plant',    rarity: 'rare' },
-    { emoji: '🌺', label: '식물 전설',  type: 'category', category: 'plant',    rarity: 'epic' },
-    { emoji: '🦊', label: '동물 일반',  type: 'category', category: 'animal',   rarity: 'common' },
-    { emoji: '🦁', label: '동물 희귀',  type: 'category', category: 'animal',   rarity: 'rare' },
-    { emoji: '🐉', label: '동물 전설',  type: 'category', category: 'animal',   rarity: 'epic' },
-    { emoji: '🏺', label: '유물 일반',  type: 'category', category: 'artifact', rarity: 'common' },
-    { emoji: '💎', label: '유물 희귀',  type: 'category', category: 'artifact', rarity: 'rare' },
-    { emoji: '👑', label: '유물 전설',  type: 'category', category: 'artifact', rarity: 'epic' }
+    { emoji: '🎁', label: '전체 랜덤', type: 'random', category: 'all', rarity: 'all' },
+    { emoji: '🌱', label: '식물 일반', type: 'category', category: 'plant', rarity: 'common' },
+    { emoji: '🌸', label: '식물 희귀', type: 'category', category: 'plant', rarity: 'rare' },
+    { emoji: '🌺', label: '식물 전설', type: 'category', category: 'plant', rarity: 'epic' },
+    { emoji: '🦊', label: '동물 일반', type: 'category', category: 'animal', rarity: 'common' },
+    { emoji: '🦁', label: '동물 희귀', type: 'category', category: 'animal', rarity: 'rare' },
+    { emoji: '🐉', label: '동물 전설', type: 'category', category: 'animal', rarity: 'epic' },
+    { emoji: '🏺', label: '유물 일반', type: 'category', category: 'artifact', rarity: 'common' },
+    { emoji: '💎', label: '유물 희귀', type: 'category', category: 'artifact', rarity: 'rare' },
+    { emoji: '👑', label: '유물 전설', type: 'category', category: 'artifact', rarity: 'epic' }
   ];
 
   const buttonsHTML = rewardOptions.map(opt => `
@@ -462,16 +462,16 @@ function showBulkRewardModal() {
   overlay.className = 'reward-modal-overlay';
 
   const rewardOptions = [
-    { emoji: '🎁', label: '전체 랜덤',  type: 'random',   category: 'all',      rarity: 'all' },
-    { emoji: '🌱', label: '식물 일반',  type: 'category', category: 'plant',    rarity: 'common' },
-    { emoji: '🌸', label: '식물 희귀',  type: 'category', category: 'plant',    rarity: 'rare' },
-    { emoji: '🌺', label: '식물 전설',  type: 'category', category: 'plant',    rarity: 'epic' },
-    { emoji: '🦊', label: '동물 일반',  type: 'category', category: 'animal',   rarity: 'common' },
-    { emoji: '🦁', label: '동물 희귀',  type: 'category', category: 'animal',   rarity: 'rare' },
-    { emoji: '🐉', label: '동물 전설',  type: 'category', category: 'animal',   rarity: 'epic' },
-    { emoji: '🏺', label: '유물 일반',  type: 'category', category: 'artifact', rarity: 'common' },
-    { emoji: '💎', label: '유물 희귀',  type: 'category', category: 'artifact', rarity: 'rare' },
-    { emoji: '👑', label: '유물 전설',  type: 'category', category: 'artifact', rarity: 'epic' }
+    { emoji: '🎁', label: '전체 랜덤', type: 'random', category: 'all', rarity: 'all' },
+    { emoji: '🌱', label: '식물 일반', type: 'category', category: 'plant', rarity: 'common' },
+    { emoji: '🌸', label: '식물 희귀', type: 'category', category: 'plant', rarity: 'rare' },
+    { emoji: '🌺', label: '식물 전설', type: 'category', category: 'plant', rarity: 'epic' },
+    { emoji: '🦊', label: '동물 일반', type: 'category', category: 'animal', rarity: 'common' },
+    { emoji: '🦁', label: '동물 희귀', type: 'category', category: 'animal', rarity: 'rare' },
+    { emoji: '🐉', label: '동물 전설', type: 'category', category: 'animal', rarity: 'epic' },
+    { emoji: '🏺', label: '유물 일반', type: 'category', category: 'artifact', rarity: 'common' },
+    { emoji: '💎', label: '유물 희귀', type: 'category', category: 'artifact', rarity: 'rare' },
+    { emoji: '👑', label: '유물 전설', type: 'category', category: 'artifact', rarity: 'epic' }
   ];
 
   const teacherClass = localStorage.getItem('teacherClass');
@@ -888,12 +888,12 @@ function _injectDemoData() {
   // [한글 주석] 카드 300개 전부 수집 상태로 세팅
   const allCards = [];
   for (let i = 1; i <= 100; i++) {
-    allCards.push(`plant_${String(i).padStart(3,'0')}`);
-    allCards.push(`animal_${String(i).padStart(3,'0')}`);
-    allCards.push(`artifact_${String(i).padStart(3,'0')}`);
+    allCards.push(`plant_${String(i).padStart(3, '0')}`);
+    allCards.push(`animal_${String(i).padStart(3, '0')}`);
+    allCards.push(`artifact_${String(i).padStart(3, '0')}`);
   }
   localStorage.setItem('userCollection', JSON.stringify(allCards));
-  localStorage.setItem('unlockedCategories', JSON.stringify(['plant','animal','artifact']));
+  localStorage.setItem('unlockedCategories', JSON.stringify(['plant', 'animal', 'artifact']));
 
   // [한글 주석] 걸음수 세팅
   localStorage.setItem('pedometerData', JSON.stringify({ steps: 9999 }));
