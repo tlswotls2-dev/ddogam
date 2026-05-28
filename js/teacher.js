@@ -795,24 +795,27 @@ function showStudentPreview() {
   const existing = document.getElementById('student-preview-overlay');
   if (existing) existing.remove();
 
-  // [한글 주석] 전체화면 오버레이 생성
+  // [한글 주석] 전체화면 어두운 배경 오버레이
   const overlay = document.createElement('div');
   overlay.id = 'student-preview-overlay';
   overlay.style.cssText = `
     position:fixed;top:0;left:0;right:0;bottom:0;
     z-index:99998;
-    background:#0f1c30;
-    overflow:hidden;
+    background:rgba(0,0,0,0.92);
+    display:flex;
+    align-items:center;
+    justify-content:center;
   `;
 
   // [한글 주석] 닫기 버튼 (우상단 고정)
   const closeBtn = document.createElement('button');
+  closeBtn.id = 'student-preview-close-btn';
   closeBtn.textContent = '✕ 예시 닫기';
   closeBtn.style.cssText = `
     position:fixed;
     top:16px;right:16px;
     z-index:99999;
-    background:rgba(255,68,68,0.85);
+    background:rgba(255,68,68,0.9);
     color:#fff;
     border:none;
     border-radius:20px;
@@ -823,7 +826,6 @@ function showStudentPreview() {
     box-shadow:0 4px 12px rgba(0,0,0,0.4);
     font-family:'Noto Sans KR',sans-serif;
   `;
-  closeBtn.id = 'student-preview-close-btn';
   closeBtn.onclick = closeStudentPreview;
 
   // [한글 주석] 안내 배지 (좌상단)
@@ -844,19 +846,18 @@ function showStudentPreview() {
     font-family:'Noto Sans KR',sans-serif;
   `;
 
-  // [한글 주석] 모바일 비율 프레임 (390x844 = iPhone 기준)
+  // [한글 주석] 모바일 비율 프레임 (390x844)
   const frame = document.createElement('div');
   frame.id = 'student-preview-frame';
   frame.style.cssText = `
-    position:absolute;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%);
+    position:relative;
     width:390px;
     height:844px;
     border-radius:40px;
     overflow:hidden;
-    box-shadow:0 0 0 12px #222, 0 0 60px rgba(0,0,0,0.8);
+    box-shadow:0 0 0 12px #1a1a2e, 0 0 80px rgba(132,255,0,0.2);
     background:#0f1c30;
+    flex-shrink:0;
   `;
 
   overlay.appendChild(frame);
@@ -864,19 +865,29 @@ function showStudentPreview() {
   document.body.appendChild(closeBtn);
   document.body.appendChild(badge);
 
-  // [한글 주석] 실제 main-container를 프레임 안으로 이동 (이벤트 리스너 살아있음)
-  const mainContainer = document.getElementById('main-container');
-  // [한글 주석] 원래 위치 기억
-  mainContainer._previewParent = mainContainer.parentNode;
-  mainContainer._previewNextSibling = mainContainer.nextSibling;
+  // [한글 주석] student-app-wrapper 전체를 프레임 안으로 이동
+  // [한글 주석] main-container + 모든 오버레이가 wrapper 안에 있으므로 통째로 이동
+  const wrapper = document.getElementById('student-app-wrapper');
+  wrapper._previewParent = wrapper.parentNode;
+  wrapper._previewNextSibling = wrapper.nextSibling;
 
-  // [한글 주석] 프레임 안으로 이동
+  // [한글 주석] 프레임에 맞게 스타일 조정
+  wrapper.style.position = 'relative';
+  wrapper.style.width = '390px';
+  wrapper.style.height = '844px';
+  wrapper.style.overflow = 'hidden';
+
+  frame.appendChild(wrapper);
+
+  // [한글 주석] 메인 컨테이너 표시 및 스타일 조정
+  const mainContainer = document.getElementById('main-container');
   mainContainer.style.display = 'block';
   mainContainer.style.width = '390px';
   mainContainer.style.height = '844px';
-  mainContainer.style.overflow = 'auto';
-  mainContainer.style.position = 'relative';
-  frame.appendChild(mainContainer);
+  mainContainer.style.overflow = 'hidden';
+  mainContainer.style.position = 'absolute';
+  mainContainer.style.top = '0';
+  mainContainer.style.left = '0';
 
   // [한글 주석] 가상 데이터 기반으로 화면 업데이트
   setTimeout(() => {
@@ -884,18 +895,29 @@ function showStudentPreview() {
     if (typeof updateLevelBadge === 'function') updateLevelBadge();
     if (typeof initAvatar === 'function') initAvatar();
     if (typeof checkAndUnlockItems === 'function') checkAndUnlockItems();
+    if (typeof loadCardsData === 'function') loadCardsData();
 
     // [한글 주석] 유저 정보 표시
     const userInfoEl = document.getElementById('user-info-display');
     if (userInfoEl) userInfoEl.innerHTML = `예시반 1번 탐험가<span style="color:#ff4444;">♥</span>`;
 
-    // [한글 주석] 탭 잠금 해제 (레벨 30이므로 전부 해금)
+    // [한글 주석] 메인 탭 잠금 전부 해제 (레벨 30)
     document.querySelectorAll('.tab.locked').forEach(t => {
       t.classList.remove('locked');
       if (t.dataset.target === 'animal') t.textContent = '🦊 동물';
       if (t.dataset.target === 'artifact') t.textContent = '🏺 유물';
     });
-  }, 100);
+
+    // [한글 주석] 도감 탭 잠금 해제
+    document.querySelectorAll('.dodam-tab.locked').forEach(t => {
+      t.classList.remove('locked');
+      if (t.dataset.category === 'animal') t.textContent = '🦊 동물';
+      if (t.dataset.category === 'artifact') t.textContent = '🏺 유물';
+    });
+
+    // [한글 주석] 일일 시험 버튼 상태 초기화
+    if (typeof updateDailyQuizBtn === 'function') updateDailyQuizBtn();
+  }, 150);
 }
 
 // [한글 주석] 가상 데이터 localStorage 주입
@@ -924,23 +946,47 @@ function _injectDemoData() {
 
 // [한글 주석] 학생 화면 예시 닫기
 function closeStudentPreview() {
-  // [한글 주석] main-container를 원래 위치로 복원
+  // [한글 주석] student-app-wrapper를 원래 위치로 복원
+  const wrapper = document.getElementById('student-app-wrapper');
+  if (wrapper && wrapper._previewParent) {
+    // [한글 주석] 스타일 초기화
+    wrapper.style.position = '';
+    wrapper.style.width = '';
+    wrapper.style.height = '';
+    wrapper.style.overflow = '';
+
+    // [한글 주석] 원래 부모 위치로 복원
+    if (wrapper._previewNextSibling) {
+      wrapper._previewParent.insertBefore(wrapper, wrapper._previewNextSibling);
+    } else {
+      wrapper._previewParent.appendChild(wrapper);
+    }
+    wrapper._previewParent = null;
+    wrapper._previewNextSibling = null;
+  }
+
+  // [한글 주석] main-container 스타일 초기화 및 숨김
   const mainContainer = document.getElementById('main-container');
-  if (mainContainer && mainContainer._previewParent) {
+  if (mainContainer) {
     mainContainer.style.display = 'none';
     mainContainer.style.width = '';
     mainContainer.style.height = '';
     mainContainer.style.overflow = '';
     mainContainer.style.position = '';
-    // [한글 주석] 원래 부모 노드에 원래 위치로 복원
-    if (mainContainer._previewNextSibling) {
-      mainContainer._previewParent.insertBefore(mainContainer, mainContainer._previewNextSibling);
-    } else {
-      mainContainer._previewParent.appendChild(mainContainer);
-    }
-    mainContainer._previewParent = null;
-    mainContainer._previewNextSibling = null;
+    mainContainer.style.top = '';
+    mainContainer.style.left = '';
   }
+
+  // [한글 주석] 혹시 열려있는 하위 화면들 전부 닫기
+  const screensToHide = [
+    'dodam-screen', 'map-screen', 'chatbot-screen',
+    'exploration-overlay', 'avatar-customize-screen',
+    'shared-card-overlay', 'quiz-screen', 'help-modal', 'safety-overlay'
+  ];
+  screensToHide.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
 
   // [한글 주석] 오버레이, 닫기 버튼, 배지 제거
   const overlay = document.getElementById('student-preview-overlay');
