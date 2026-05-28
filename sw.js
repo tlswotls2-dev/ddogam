@@ -110,7 +110,26 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // 이미지 이외의 앱 파일 요청 (캐시 우선 전략: 캐시 확인 후 없으면 네트워크 요청)
+  // [한글 주석] index.html 및 루트(/) 요청은 항상 네트워크 우선
+  // [한글 주석] 캐시 우선이면 스플래시 상태가 저장돼 매번 안 보임
+  if (url.pathname === '/' || url.pathname === '/index.html') {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          // [한글 주석] 네트워크 성공 시 캐시 업데이트 후 반환
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => {
+          // [한글 주석] 오프라인이면 캐시 반환
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+
+  // [한글 주석] 그 외 앱 파일 요청 (캐시 우선 전략: 캐시 확인 후 없으면 네트워크 요청)
   event.respondWith(
     caches.match(event.request).then(cached => {
       return cached || fetch(event.request);

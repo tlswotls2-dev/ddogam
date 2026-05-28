@@ -543,3 +543,242 @@ window.refreshDashboard = refreshDashboard;
 window.teacherLogout = teacherLogout;
 window.showBulkRewardModal = showBulkRewardModal;
 window.sendBulkReward = sendBulkReward;
+window.showTeacherHelp = showTeacherHelp;
+window.showTeacherHelpDetail = showTeacherHelpDetail;
+window.hideTeacherHelpDetail = hideTeacherHelpDetail;
+window.closeTeacherHelp = closeTeacherHelp;
+
+// ==========================================
+// [한글 주석] 교사용 도움말 시스템
+// ==========================================
+
+function showTeacherHelp() {
+  // [한글 주석] 기존 도움말 있으면 제거
+  const existing = document.getElementById('teacher-help-overlay');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'teacher-help-overlay';
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.88);
+    z-index:99999;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    overflow-y:auto;
+    padding:24px 16px;
+  `;
+
+  overlay.innerHTML = `
+    <!-- [한글 주석] 메인 도움말 -->
+    <div id="teacher-help-main" style="
+      background:linear-gradient(135deg,#0f1c2e,#1a2a3e);
+      border:2px solid #4a6fa5;
+      border-radius:24px;
+      padding:28px 24px;
+      max-width:480px;
+      width:100%;
+      box-shadow:0 0 40px rgba(74,158,255,0.2);
+    ">
+      <!-- [한글 주석] 헤더 -->
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="font-size:28px;margin-bottom:6px;">👨🏫 선생님 도움말</div>
+        <div style="color:#7aabff;font-size:13px;">또감 대시보드 사용 안내</div>
+      </div>
+
+      <!-- [한글 주석] 핵심 안내 4가지 -->
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+
+        <div style="background:rgba(74,158,255,0.08);border:1px solid #4a6fa5;border-radius:14px;padding:14px;display:flex;align-items:flex-start;gap:12px;">
+          <div style="font-size:26px;flex-shrink:0;">📊</div>
+          <div>
+            <div style="color:#7aabff;font-size:13px;font-weight:900;margin-bottom:4px;">대시보드 보는 법</div>
+            <div style="color:#c8d8f0;font-size:12px;line-height:1.7;">
+              학생 카드에는 걸음수·수집·학습 3가지 항목이 평가돼요.<br>
+              <span style="color:#4a9eff;">매우잘함</span> /
+              <span style="color:#84ff00;">잘함</span> /
+              <span style="color:#ffd700;">보통</span> /
+              <span style="color:#ff6b6b;">노력요함</span>
+              4단계로 표시됩니다.
+            </div>
+          </div>
+        </div>
+
+        <div style="background:rgba(212,160,23,0.08);border:1px solid #a07c10;border-radius:14px;padding:14px;display:flex;align-items:flex-start;gap:12px;">
+          <div style="font-size:26px;flex-shrink:0;">🎁</div>
+          <div>
+            <div style="color:#d4a017;font-size:13px;font-weight:900;margin-bottom:4px;">복주머니 선물하기</div>
+            <div style="color:#c8d8f0;font-size:12px;line-height:1.7;">
+              학생 카드의 🎁 선물 버튼으로 개별 선물,<br>
+              상단 <b style="color:#ff9500;">전체 선물하기</b> 버튼으로 반 전체에게 동시 선물할 수 있어요.<br>
+              선물은 학생이 WiFi 연결 시 자동 수령해요.
+            </div>
+          </div>
+        </div>
+
+        <div style="background:rgba(132,255,0,0.06);border:1px solid #4a7a1e;border-radius:14px;padding:14px;display:flex;align-items:flex-start;gap:12px;">
+          <div style="font-size:26px;flex-shrink:0;">🔄</div>
+          <div>
+            <div style="color:#84ff00;font-size:13px;font-weight:900;margin-bottom:4px;">데이터 동기화</div>
+            <div style="color:#c8d8f0;font-size:12px;line-height:1.7;">
+              학생 데이터는 WiFi 연결 시 자동 전송돼요.<br>
+              최신 데이터를 보려면 🔄 새로고침 버튼을 눌러주세요.<br>
+              오프라인 상태의 학생은 접속 후 자동 반영됩니다.
+            </div>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,107,107,0.06);border:1px solid #8b3a3a;border-radius:14px;padding:14px;display:flex;align-items:flex-start;gap:12px;">
+          <div style="font-size:26px;flex-shrink:0;">🔑</div>
+          <div>
+            <div style="color:#ff8080;font-size:13px;font-weight:900;margin-bottom:4px;">로그인 방법</div>
+            <div style="color:#c8d8f0;font-size:12px;line-height:1.7;">
+              반 선택 → 번호 <b>0</b> 입력 → 비밀번호 <b>teacher반번호</b><br>
+              예) 3반 선생님 → 비밀번호: <b style="color:#ffd700;">teacher3</b><br>
+              학생 비밀번호는 공통 <b style="color:#ffd700;">1234</b>예요.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- [한글 주석] 버튼 2개 -->
+      <div style="display:flex;gap:8px;">
+        <button onclick="closeTeacherHelp()" style="
+          flex:1;
+          background:rgba(255,255,255,0.06);
+          color:#c8d8f0;border:1px solid #4a6fa5;
+          border-radius:12px;padding:12px;
+          font-size:13px;font-weight:700;cursor:pointer;
+        ">확인</button>
+        <button onclick="showTeacherHelpDetail()" style="
+          flex:1.5;
+          background:linear-gradient(135deg,#4a6fa5,#2a4a7a);
+          color:#fff;border:none;
+          border-radius:12px;padding:12px;
+          font-size:13px;font-weight:900;cursor:pointer;
+        ">📚 자세히 알아보기</button>
+      </div>
+    </div>
+
+    <!-- [한글 주석] 상세 도움말 (처음엔 숨김) -->
+    <div id="teacher-help-detail" style="display:none;
+      background:linear-gradient(135deg,#0f1c2e,#1a2a3e);
+      border:2px solid #4a6fa5;
+      border-radius:24px;
+      padding:28px 24px;
+      max-width:480px;
+      width:100%;
+      box-shadow:0 0 40px rgba(74,158,255,0.2);
+    ">
+      <!-- [한글 주석] 상세 헤더 -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <button onclick="hideTeacherHelpDetail()" style="
+          background:rgba(255,255,255,0.06);color:#c8d8f0;
+          border:1px solid #4a6fa5;border-radius:10px;
+          padding:6px 12px;font-size:13px;cursor:pointer;
+        ">← 뒤로</button>
+        <div style="color:#7aabff;font-size:15px;font-weight:900;">📚 자세한 사용법</div>
+      </div>
+
+      <!-- [한글 주석] 상세 항목 -->
+      <div style="display:flex;flex-direction:column;gap:14px;max-height:65vh;overflow-y:auto;">
+
+        <div style="background:rgba(74,158,255,0.08);border:1px solid #4a6fa5;border-radius:14px;padding:14px;">
+          <div style="color:#7aabff;font-size:13px;font-weight:900;margin-bottom:8px;">📊 평가 기준</div>
+          <div style="color:#c8d8f0;font-size:12px;line-height:1.9;">
+            <b style="color:#fff;">🦶 걸음수</b><br>
+            &nbsp;&nbsp;매우잘함: 3,000보 이상<br>
+            &nbsp;&nbsp;잘함: 2,000보 이상 / 보통: 1,000보 이상<br>
+            <b style="color:#fff;">📦 수집 (오늘)</b><br>
+            &nbsp;&nbsp;매우잘함: 5개 이상<br>
+            &nbsp;&nbsp;잘함: 3개 이상 / 보통: 1개 이상<br>
+            <b style="color:#fff;">📝 학습활동 (오늘)</b><br>
+            &nbsp;&nbsp;매우잘함: 퀴즈 정답 2개 이상<br>
+            &nbsp;&nbsp;잘함: 정답 1개 / 보통: 참여만 / 노력요함: 미참여<br>
+            종합 평가는 3항목 점수를 평균낸 결과예요.
+          </div>
+        </div>
+
+        <div style="background:rgba(212,160,23,0.08);border:1px solid #a07c10;border-radius:14px;padding:14px;">
+          <div style="color:#d4a017;font-size:13px;font-weight:900;margin-bottom:8px;">🎁 복주머니 종류</div>
+          <div style="color:#c8d8f0;font-size:12px;line-height:1.9;">
+            • 🎁 전체 랜덤: 해금된 카테고리 중 랜덤 카드<br>
+            • 카테고리별 (식물/동물/유물) × 희귀도 (일반/희귀/전설)<br>
+            • 전설 복주머니는 특별한 보상용으로 아껴두세요!<br>
+            • 학생이 아직 해금 안 한 카테고리의 카드는<br>
+            &nbsp;&nbsp;선물해도 수령 후 열 수 없어요.
+          </div>
+        </div>
+
+        <div style="background:rgba(132,255,0,0.06);border:1px solid #4a7a1e;border-radius:14px;padding:14px;">
+          <div style="color:#84ff00;font-size:13px;font-weight:900;margin-bottom:8px;">📱 학생 앱 구조</div>
+          <div style="color:#c8d8f0;font-size:12px;line-height:1.9;">
+            • 카드 10장 수집마다 레벨업 퀴즈 도전<br>
+            • Lv.5 → 동물 해금 / Lv.10 → 유물 해금<br>
+            • 일일 OX 시험: 하루 1회, 정답 시 복주머니 획득<br>
+            • 지식 배틀: 같은 반 친구와 실시간 퀴즈 대결<br>
+            • 오프라인에서 퀴즈 풀면 WiFi 연결 시 자동 전송
+          </div>
+        </div>
+
+        <div style="background:rgba(255,107,107,0.06);border:1px solid #8b3a3a;border-radius:14px;padding:14px;">
+          <div style="color:#ff8080;font-size:13px;font-weight:900;margin-bottom:8px;">⚠️ 주의사항</div>
+          <div style="color:#c8d8f0;font-size:12px;line-height:1.9;">
+            • 학생 비밀번호는 <b style="color:#ffd700;">1234</b> (공통)<br>
+            • 기기 초기화 시 해당 기기의 모든 수집 기록 삭제<br>
+            • 구글 시트 데이터는 삭제되지 않아요<br>
+            • 전체 선물은 취소가 안 되니 신중하게 눌러주세요<br>
+            • 학생 데이터 반영까지 최대 30초 소요될 수 있어요
+          </div>
+        </div>
+
+        <div style="background:rgba(141,176,92,0.08);border:1px solid #6b8e3d;border-radius:14px;padding:14px;">
+          <div style="color:#8db05c;font-size:13px;font-weight:900;margin-bottom:8px;">💡 활용 팁</div>
+          <div style="color:#c8d8f0;font-size:12px;line-height:1.9;">
+            • 수업 전 전체 선물로 동기 부여해보세요<br>
+            • 매우잘함 학생 수로 학급 전체 참여도 파악 가능<br>
+            • 퀴즈 정답률로 학습 이해도를 파악할 수 있어요<br>
+            • 걸음수가 낮은 학생에게 개별 복주머니로 격려해보세요<br>
+            • 새로고침은 수업 시작 전 한 번 눌러두면 좋아요
+          </div>
+        </div>
+
+      </div>
+
+      <!-- [한글 주석] 닫기 버튼 -->
+      <button onclick="closeTeacherHelp()" style="
+        margin-top:16px;
+        width:100%;
+        background:linear-gradient(135deg,#4a6fa5,#2a4a7a);
+        color:#fff;border:none;border-radius:12px;
+        padding:12px;font-size:14px;font-weight:900;cursor:pointer;
+      ">확인!</button>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+}
+
+// [한글 주석] 상세 도움말 표시
+function showTeacherHelpDetail() {
+  const main = document.getElementById('teacher-help-main');
+  const detail = document.getElementById('teacher-help-detail');
+  if (main) main.style.display = 'none';
+  if (detail) detail.style.display = 'block';
+}
+
+// [한글 주석] 상세 도움말 숨기고 메인으로
+function hideTeacherHelpDetail() {
+  const main = document.getElementById('teacher-help-main');
+  const detail = document.getElementById('teacher-help-detail');
+  if (main) main.style.display = 'block';
+  if (detail) detail.style.display = 'none';
+}
+
+// [한글 주석] 교사용 도움말 닫기
+function closeTeacherHelp() {
+  const overlay = document.getElementById('teacher-help-overlay');
+  if (overlay) overlay.remove();
+}
