@@ -945,6 +945,10 @@
         if (splash.dataset.ending) return;
         splash.dataset.ending = 'true';
 
+        // [한글 주석] 영상 즉시 정지 및 소리 끄기
+        video.pause();
+        video.muted = true;
+
         // [한글 주석] 페이드아웃 후 로그인 화면 표시
         splash.style.transition = 'opacity 0.8s ease';
         splash.style.opacity = '0';
