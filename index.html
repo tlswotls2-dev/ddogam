@@ -880,16 +880,17 @@
 
       // [한글 주석] 기존 스플래시 내용을 모두 지우고 영상으로 교체
       splash.innerHTML = `
+        <!-- [한글 주석] 인트로 영상 - 소리 포함, 비율 유지하며 전체 표시 -->
         <video
           id="intro-video"
           src="/video/intro.mp4"
           playsinline
-          muted
           style="
             width:100%;
             height:100%;
-            object-fit:cover;
+            object-fit:contain;
             display:block;
+            background:#1a3a2a;
           "
         ></video>
 
@@ -954,7 +955,8 @@
         }, 800);
       }
 
-      // [한글 주석] 영상 재생 시작
+      // [한글 주석] 소리 활성화 후 영상 재생 시작
+      video.muted = false;
       video.play().catch(() => {
         // [한글 주석] 자동재생 차단된 경우 (브라우저 정책) 바로 로그인으로 이동
         console.log('[인트로] 자동재생 차단 - 스킵 처리');
