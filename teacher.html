@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>또감 - 교사 대시보드</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- [한글 주석] 📊 선생님 전용 대시보드 화면 (PC 최적화) -->
+  <div id="teacher-dashboard-screen" class="teacher-dashboard-screen">
+    <!-- 상단 헤더 바 -->
+    <div class="dashboard-header">
+      <h1 id="dashboard-title" class="dashboard-title">📊 또감 대시보드</h1>
+      <div class="dashboard-header-actions">
+        <button onclick="showBulkRewardModal()" style="
+                  background: linear-gradient(135deg, #ff9500, #ff6b00);
+                  color: #fff;
+                  border: none;
+                  border-radius: 8px;
+                  padding: 8px 16px;
+                  font-size: 14px;
+                  font-weight: 700;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                ">🎁 전체 선물하기</button>
+        <button class="dashboard-btn dashboard-refresh-btn" onclick="refreshDashboard()">🔄 새로고침</button>
+        <button class="dashboard-btn dashboard-logout-btn" onclick="teacherLogout()">🚪 로그아웃</button>
+        <button onclick="showTeacherHelp()" style="
+          background:rgba(74,158,255,0.15);
+          color:#7aabff;
+          border:1px solid #4a6fa5;
+          border-radius:8px;
+          padding:8px 16px;
+          font-size:14px;
+          font-weight:700;
+          cursor:pointer;
+          display:flex;
+          align-items:center;
+          gap:6px;
+        ">❓ 도움말</button>
+      </div>
+    </div>
+
+    <!-- 대시보드 상단 통계 카드 5개 -->
+    <div class="dashboard-stats-row">
+      <div class="dashboard-stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-label">참여 학생</div>
+        <div class="stat-value" id="stat-student-count">0명</div>
+      </div>
+      <div class="dashboard-stat-card">
+        <div class="stat-icon">📦</div>
+        <div class="stat-label">평균 수집</div>
+        <div class="stat-value" id="stat-avg-collect">0개</div>
+      </div>
+      <div class="dashboard-stat-card">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-label">최다 수집</div>
+        <div class="stat-value" id="stat-top-student">-</div>
+      </div>
+      <div class="dashboard-stat-card">
+        <div class="stat-icon">🖥️</div>
+        <div class="stat-label">오늘 접속</div>
+        <div class="stat-value" id="stat-today-active">0명</div>
+      </div>
+      <div class="dashboard-stat-card">
+        <div class="stat-icon">📗</div>
+        <div class="stat-label">오늘 매우잘함</div>
+        <div class="stat-value" id="stat-today-great">0명</div>
+      </div>
+    </div>
+
+    <!-- 학생 목록 그리드 -->
+    <div class="dashboard-student-grid" id="dashboard-student-grid"></div>
+  </div>
+
+  <script src="js/teacher.js"></script>
+  <script src="js/demo.js"></script>
+</body>
+</html>

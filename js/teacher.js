@@ -120,6 +120,13 @@ function initDashboard() {
 }
 
 async function loadStudentData(classNum) {
+  // [한글 주석] 체험 모드: 서버 요청 없이 샘플 데이터로 렌더링
+  if (localStorage.getItem('demoMode') === 'true') {
+    const demoStudents = JSON.parse(localStorage.getItem('demoStudents') || '[]');
+    renderDashboard(demoStudents);
+    return;
+  }
+
   const gridEl = document.getElementById('dashboard-student-grid');
   if (gridEl) gridEl.innerHTML = '<div class="dashboard-loading">📡 학생 데이터를 불러오는 중...</div>';
   try {
@@ -337,6 +344,11 @@ function renderDashboard(students) {
 
     gridEl.appendChild(card);
   });
+
+  // [한글 주석] 체험 모드 배너 표시
+  if (localStorage.getItem('demoMode') === 'true') {
+    if (typeof showDemoBanner === 'function') showDemoBanner();
+  }
 }
 
 // ==========================================
@@ -423,6 +435,10 @@ function refreshDashboard() {
 }
 
 function teacherLogout() {
+  // [한글 주석] 체험 모드면 exitDemoMode로 깔끔하게 종료
+  if (localStorage.getItem('demoMode') === 'true') {
+    if (typeof exitDemoMode === 'function') { exitDemoMode(); return; }
+  }
   localStorage.removeItem('isTeacher');
   localStorage.removeItem('teacherClass');
   location.reload();
