@@ -82,8 +82,13 @@
   <script src="js/teacher.js"></script>
   <script src="js/demo.js"></script>
 <script>
-  // [한글 주석] 체험 모드 배너 체크 (페이지 로드 완료 후)
   document.addEventListener('DOMContentLoaded', function() {
+    // [한글 주석] 대시보드 초기화 (실제 데이터 or 샘플 데이터)
+    if (typeof initDashboard === 'function') {
+      initDashboard();
+    }
+
+    // [한글 주석] 체험 모드 배너 표시
     if (localStorage.getItem('demoMode') === 'true') {
       setTimeout(function() {
         if (typeof showDemoBanner === 'function') showDemoBanner();
