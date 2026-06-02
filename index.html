@@ -1193,10 +1193,8 @@
       const video = document.getElementById('intro-video');
       const skipBtn = document.getElementById('intro-skip-btn');
 
-      // [한글 주석] 화면 탭하면 건너뛰기 버튼 표시
-      splash.addEventListener('click', function showSkip() {
-        if (skipBtn) skipBtn.style.display = 'block';
-      });
+      // [한글 주석] 건너뛰기 버튼 처음부터 바로 표시
+      if (skipBtn) skipBtn.style.display = 'block';
 
       // [한글 주석] 인트로 종료 처리 함수
       window.skipIntro = function () {
