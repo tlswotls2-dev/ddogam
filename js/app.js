@@ -227,6 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 500); // UI 안정화 후 실행
         }
     };
+    const proceedToMainScreen = window.proceedToMainScreen;
+    window.proceedToMainScreen = proceedToMainScreen;
 
     // ==========================================
     // 2. 메인 화면 기능 처리
