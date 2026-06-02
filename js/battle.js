@@ -471,7 +471,7 @@ function _startBattleTimer() {
         clearInterval(battleState.pollInterval);
         battleState.pollInterval = null;
         await _cancelBattleWait();
-        _showMatchFailPopup();
+        _startAIBattleTransition();
         return;
       }
 
@@ -1154,6 +1154,63 @@ function _grantBattleReward(result) {
   }
 }
 
+// [한글 주석] 매칭 실패 → AI 배틀 자동 전환
+function _startAIBattleTransition() {
+  // [한글 주석] 공부 화면 제거
+  const studyOverlay = document.getElementById('battle-study-overlay');
+  if (studyOverlay) studyOverlay.remove();
+
+  battleState.phase = 'idle';
+
+  // [한글 주석] AI 배틀 전환 안내 팝업
+  const overlay = document.createElement('div');
+  overlay.id = 'ai-transition-overlay';
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.92);
+    z-index:99999;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    animation:fadeIn 0.3s ease;
+  `;
+  overlay.innerHTML = `
+    <div style="
+      background:linear-gradient(135deg,#0d1a30,#1a2e4a);
+      border:2px solid #4a9eff;
+      border-radius:24px;
+      padding:32px 24px;
+      max-width:300px;width:100%;
+      text-align:center;
+      box-shadow:0 0 40px rgba(74,158,255,0.3);
+    ">
+      <div style="font-size:52px;margin-bottom:12px;animation:aib-pulse 1s ease-in-out infinite;">🤖</div>
+      <div style="color:#4a9eff;font-size:16px;font-weight:900;margin-bottom:8px;">
+        AI 또감이의 도전장!
+      </div>
+      <div style="color:#b0b8d0;font-size:13px;line-height:1.7;margin-bottom:8px;">
+        상대를 찾지 못했지만...<br>
+        🤖 AI 또감이가 도전장을 보냈어요!
+      </div>
+      <div style="color:#555;font-size:11px;">잠시 후 배틀이 시작됩니다...</div>
+    </div>
+    <style>
+      @keyframes aib-pulse {
+        0%,100% { transform:scale(1); }
+        50%      { transform:scale(1.1); }
+      }
+    </style>`;
+  document.body.appendChild(overlay);
+
+  // [한글 주석] 2초 후 AI 배틀 시작 (ai_battle.js의 startAIBattle 호출)
+  setTimeout(() => {
+    const tr = document.getElementById('ai-transition-overlay');
+    if (tr) tr.remove();
+    if (typeof startAIBattle === 'function') {
+      startAIBattle(battleState.category);
+    }
+  }, 2000);
+}
+
 // [한글 주석] 전역 노출
 window.showBattleMode = showBattleMode;
 window.closeBattleOverlay = closeBattleOverlay;
@@ -1164,3 +1221,4 @@ window.battleNextCard = battleNextCard;
 window.battlePrevCard = battlePrevCard;
 window.handleBattleQuizAnswer = handleBattleQuizAnswer;
 window._renderBattleQuiz = _renderBattleQuiz;
+window._startAIBattleTransition = _startAIBattleTransition;
