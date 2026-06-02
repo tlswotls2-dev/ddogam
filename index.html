@@ -1261,6 +1261,14 @@
         overflow:hidden;
       `;
 
+      // [한글 주석] 체험 모드 진입 시 인트로 영상 즉시 건너뛰기
+      if (localStorage.getItem('demoSkipIntro') === 'true') {
+        localStorage.removeItem('demoSkipIntro');
+        splash.style.display = 'none';
+        if (typeof playLoginBGM === 'function') playLoginBGM();
+        return;
+      }
+
       const video = document.getElementById('intro-video');
       const skipBtn = document.getElementById('intro-skip-btn');
 
