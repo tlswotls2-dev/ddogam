@@ -1075,6 +1075,64 @@
   <!-- [한글 주석] 튜토리얼 시스템 -->
   <script src="js/tutorial.js"></script>
 
+  <script>
+    // [한글 주석] 태블릿 감지 및 레이아웃 조정
+    // [한글 주석] 안드로이드 태블릿은 CSS orientation 감지가 불안정하므로 JS로 직접 처리
+    (function applyTabletLayout() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const ua = navigator.userAgent.toLowerCase();
+
+      // [한글 주석] 태블릿 판단 기준: 너비 600px~1200px이고 세로 모드
+      const isTabletWidth = w >= 600 && w <= 1200;
+      const isPortrait = h > w;
+      const isAndroid = ua.includes('android');
+      const isTablet = isTabletWidth && isPortrait;
+
+      if (isTablet) {
+        // [한글 주석] 태블릿 전용 CSS 동적 추가
+        const style = document.createElement('style');
+        style.id = 'tablet-layout-style';
+        style.textContent = `
+          /* [한글 주석] 태블릿 세로모드 전용 레이아웃 */
+          #main-container,
+          #login-container,
+          #avatar-customize-screen,
+          #dodam-screen,
+          #map-screen,
+          #quiz-screen,
+          #chatbot-screen,
+          #teacher-dashboard-screen {
+            max-width: 680px !important;
+            width: 92% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            position: fixed !important;
+          }
+
+          /* [한글 주석] 태블릿에서 앱 컨테이너 중앙 정렬 */
+          .app-container {
+            max-width: 680px !important;
+            width: 92% !important;
+            margin: 0 auto !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            position: fixed !important;
+          }
+
+          /* [한글 주석] body 배경색 설정 (양옆 빈 공간) */
+          body {
+            background: #1a2e1a !important;
+          }
+        `;
+        document.head.appendChild(style);
+        console.log('[태블릿] 레이아웃 적용됨, 너비:', w);
+      }
+    })();
+  </script>
+
 
   <!-- 안전 경고 오버레이 (위험 상황 시 표시됨) -->
   <div id="safety-overlay" class="safety-overlay" style="display: none;">
