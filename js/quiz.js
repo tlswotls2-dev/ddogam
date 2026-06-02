@@ -37,7 +37,7 @@ async function saveLearningToSheet(quizType, correct, level, category) {
     formData.append('payload', JSON.stringify(learningData));
     await fetch(LEARNING_SCRIPT_URL, { method: 'POST', body: formData });
     console.log('[학습기록] 전송 완료');
-  } catch(e) {
+  } catch (e) {
     // [한글 주석] 전송 실패 시 대기열에 저장 (인터넷 불안정 대비)
     console.log('[학습기록] 전송 실패 - 대기열에 저장:', e);
     if (typeof addToSyncQueue === 'function') {
@@ -61,20 +61,20 @@ let quizData = null;          // quiz.json에서 불러온 전체 문제은행 �
  * 캐시 버스팅을 적용하여 항상 최신 데이터를 가져옵니다.
  */
 async function loadQuizData() {
-    try {
-        // [한글 주석] 브라우저 캐시로 인해 이전 버전의 퀴즈 데이터가 로드되는 것을 방지하기 위해
-        // 타임스탬프 기반 캐시 버스팅 파라미터를 추가합니다.
-        const response = await fetch('data/quiz.json?v=' + Date.now());
-        quizData = await response.json();
-        console.log(`퀴즈 데이터 로드 완료: 식물 ${quizData.plant.length}문제, 동물 ${quizData.animal.length}문제`);
+  try {
+    // [한글 주석] 브라우저 캐시로 인해 이전 버전의 퀴즈 데이터가 로드되는 것을 방지하기 위해
+    // 타임스탬프 기반 캐시 버스팅 파라미터를 추가합니다.
+    const response = await fetch('data/quiz.json?v=' + Date.now());
+    quizData = await response.json();
+    console.log(`퀴즈 데이터 로드 완료: 식물 ${quizData.plant.length}문제, 동물 ${quizData.animal.length}문제`);
 
-        // [한글 주석] 일일 퀴즈 버튼 상태 초기화 (앱 로드 시)
-        setTimeout(() => {
-          if (typeof updateDailyQuizBtn === 'function') updateDailyQuizBtn();
-        }, 300);
-    } catch (error) {
-        console.error("퀴즈 데이터를 불러오는데 실패했습니다.", error);
-    }
+    // [한글 주석] 일일 퀴즈 버튼 상태 초기화 (앱 로드 시)
+    setTimeout(() => {
+      if (typeof updateDailyQuizBtn === 'function') updateDailyQuizBtn();
+    }, 300);
+  } catch (error) {
+    console.error("퀴즈 데이터를 불러오는데 실패했습니다.", error);
+  }
 }
 
 /**
@@ -84,12 +84,12 @@ async function loadQuizData() {
  * @returns {Array} 섞인 배열
  */
 function shuffleArray(array) {
-    // [한글 주석] 배열의 뒤쪽부터 순회하며 랜덤 위치의 요소와 교환하는 Fisher-Yates 셔플 알고리즘
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]]; // 구조분해 할당으로 요소 교환
-    }
-    return array;
+  // [한글 주석] 배열의 뒤쪽부터 순회하며 랜덤 위치의 요소와 교환하는 Fisher-Yates 셔플 알고리즘
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]]; // 구조분해 할당으로 요소 교환
+  }
+  return array;
 }
 
 /**
@@ -98,64 +98,64 @@ function shuffleArray(array) {
  * @param {string} targetCategory - 해금하려는 카테고리 ('animal' 또는 'artifact')
  */
 function startQuiz(targetCategory) {
-    // 퀴즈 데이터가 아직 로드되지 않은 경우 안내
-    if (!quizData) {
-        alert("퀴즈 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
-        return;
-    }
+  // 퀴즈 데이터가 아직 로드되지 않은 경우 안내
+  if (!quizData) {
+    alert("퀴즈 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+    return;
+  }
 
-    // 퀴즈 상태 초기화
-    currentQuizCategory = targetCategory;
-    currentScore = 0;
-    currentQuestionIndex = 0;
+  // 퀴즈 상태 초기화
+  currentQuizCategory = targetCategory;
+  currentScore = 0;
+  currentQuestionIndex = 0;
 
-    // [한글 주석] 해금 목표에 맞는 퀴즈 문제 풀(카테고리) 선택
-    // 동물을 해금하려면 → 식물 퀴즈를 풀어야 함
-    // 유물을 해금하려면 → 동물 퀴즈를 풀어야 함
-    const questionCategory = targetCategory === 'animal' ? 'plant' : 'animal';
-    
-    // [한글 주석] 해당 카테고리의 전체 문제은행(20문제)을 복사한 뒤 무작위로 섞기
-    const allQuestions = [...quizData[questionCategory]];
-    shuffleArray(allQuestions);
-    
-    // [한글 주석] 섞인 문제 중 앞에서 5개만 선택 (QUIZ_QUESTION_COUNT = 5)
-    const selectedQuestions = allQuestions.slice(0, QUIZ_QUESTION_COUNT);
+  // [한글 주석] 해금 목표에 맞는 퀴즈 문제 풀(카테고리) 선택
+  // 동물을 해금하려면 → 식물 퀴즈를 풀어야 함
+  // 유물을 해금하려면 → 동물 퀴즈를 풀어야 함
+  const questionCategory = targetCategory === 'animal' ? 'plant' : 'animal';
 
-    // [한글 주석] 선택된 5개 문제 각각의 보기(options) 순서를 랜덤으로 섞고,
-    // 정답 인덱스(answer)를 섞인 순서에 맞게 재계산합니다.
-    currentQuestions = selectedQuestions.map(q => {
-        // 원본 정답 텍스트를 미리 저장
-        const correctAnswerText = q.options[q.answer];
-        
-        // 보기 배열을 복사한 뒤 무작위로 섞기
-        const shuffledOptions = [...q.options];
-        shuffleArray(shuffledOptions);
-        
-        // 섞인 보기 배열에서 정답 텍스트의 새로운 위치(인덱스)를 찾아 재계산
-        const newAnswerIndex = shuffledOptions.indexOf(correctAnswerText);
-        
-        // 문제 객체를 새로운 보기 순서와 재계산된 정답 인덱스로 반환
-        return {
-            ...q,                        // 기존 문제 데이터(id, question, hint, related_card 등) 유지
-            options: shuffledOptions,     // 섞인 보기 배열로 교체
-            answer: newAnswerIndex        // 재계산된 정답 인덱스로 교체
-        };
-    });
+  // [한글 주석] 해당 카테고리의 전체 문제은행(20문제)을 복사한 뒤 무작위로 섞기
+  const allQuestions = [...quizData[questionCategory]];
+  shuffleArray(allQuestions);
 
-    // UI 초기화 및 화면 표시
-    document.getElementById('quiz-result').style.display = 'none';
-    document.getElementById('quiz-content').style.display = 'block';
-    
-    const quizScreen = document.getElementById('quiz-screen');
-    quizScreen.style.display = 'flex';
-    
-    // 부드러운 슬라이드 인 애니메이션 적용
-    setTimeout(() => {
-        quizScreen.classList.add('slide-in');
-    }, 10);
+  // [한글 주석] 섞인 문제 중 앞에서 5개만 선택 (QUIZ_QUESTION_COUNT = 5)
+  const selectedQuestions = allQuestions.slice(0, QUIZ_QUESTION_COUNT);
 
-    // 첫 문제 렌더링
-    renderQuestion();
+  // [한글 주석] 선택된 5개 문제 각각의 보기(options) 순서를 랜덤으로 섞고,
+  // 정답 인덱스(answer)를 섞인 순서에 맞게 재계산합니다.
+  currentQuestions = selectedQuestions.map(q => {
+    // 원본 정답 텍스트를 미리 저장
+    const correctAnswerText = q.options[q.answer];
+
+    // 보기 배열을 복사한 뒤 무작위로 섞기
+    const shuffledOptions = [...q.options];
+    shuffleArray(shuffledOptions);
+
+    // 섞인 보기 배열에서 정답 텍스트의 새로운 위치(인덱스)를 찾아 재계산
+    const newAnswerIndex = shuffledOptions.indexOf(correctAnswerText);
+
+    // 문제 객체를 새로운 보기 순서와 재계산된 정답 인덱스로 반환
+    return {
+      ...q,                        // 기존 문제 데이터(id, question, hint, related_card 등) 유지
+      options: shuffledOptions,     // 섞인 보기 배열로 교체
+      answer: newAnswerIndex        // 재계산된 정답 인덱스로 교체
+    };
+  });
+
+  // UI 초기화 및 화면 표시
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-content').style.display = 'block';
+
+  const quizScreen = document.getElementById('quiz-screen');
+  quizScreen.style.display = 'flex';
+
+  // 부드러운 슬라이드 인 애니메이션 적용
+  setTimeout(() => {
+    quizScreen.classList.add('slide-in');
+  }, 10);
+
+  // 첫 문제 렌더링
+  renderQuestion();
 }
 
 /**
@@ -163,42 +163,42 @@ function startQuiz(targetCategory) {
  * 보기는 이미 startQuiz에서 섞여있으므로 그대로 출력합니다.
  */
 function renderQuestion() {
-    // 5문제를 다 풀었으면 결과 화면 표시
-    if (currentQuestionIndex >= currentQuestions.length) {
-        showQuizResult();
-        return;
-    }
+  // 5문제를 다 풀었으면 결과 화면 표시
+  if (currentQuestionIndex >= currentQuestions.length) {
+    showQuizResult();
+    return;
+  }
 
-    const q = currentQuestions[currentQuestionIndex];
-    
-    // 진행도 및 문제 텍스트 세팅
-    document.getElementById('quiz-progress').textContent = `${currentQuestionIndex + 1} / ${currentQuestions.length}`;
-    document.getElementById('quiz-question').textContent = q.question;
-    document.getElementById('quiz-hint-text').textContent = q.hint;
-    document.getElementById('quiz-hint-text').style.display = 'none'; // 다음 문제로 넘어가면 힌트 숨김
+  const q = currentQuestions[currentQuestionIndex];
 
-    // [한글 주석] 보기 버튼을 동적으로 생성합니다.
-    // 보기 순서는 이미 startQuiz()에서 셔플되었으므로 순서대로 표시하면 됩니다.
-    const optionsContainer = document.getElementById('quiz-options');
-    optionsContainer.innerHTML = '';
-    
-    q.options.forEach((optionText, index) => {
-        const btn = document.createElement('button');
-        btn.className = 'quiz-option';
-        btn.textContent = optionText;
-        
-        // [한글 주석] 클릭 시 정답 여부 확인
-        // index === q.answer이면 정답 (answer는 이미 셔플된 보기 기준으로 재계산됨)
-        btn.onclick = () => handleAnswer(btn, index === q.answer, q.answer);
-        optionsContainer.appendChild(btn);
-    });
+  // 진행도 및 문제 텍스트 세팅
+  document.getElementById('quiz-progress').textContent = `${currentQuestionIndex + 1} / ${currentQuestions.length}`;
+  document.getElementById('quiz-question').textContent = q.question;
+  document.getElementById('quiz-hint-text').textContent = q.hint;
+  document.getElementById('quiz-hint-text').style.display = 'none'; // 다음 문제로 넘어가면 힌트 숨김
+
+  // [한글 주석] 보기 버튼을 동적으로 생성합니다.
+  // 보기 순서는 이미 startQuiz()에서 셔플되었으므로 순서대로 표시하면 됩니다.
+  const optionsContainer = document.getElementById('quiz-options');
+  optionsContainer.innerHTML = '';
+
+  q.options.forEach((optionText, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = optionText;
+
+    // [한글 주석] 클릭 시 정답 여부 확인
+    // index === q.answer이면 정답 (answer는 이미 셔플된 보기 기준으로 재계산됨)
+    btn.onclick = () => handleAnswer(btn, index === q.answer, q.answer);
+    optionsContainer.appendChild(btn);
+  });
 }
 
 /**
  * 힌트 보기 버튼을 누르면 숨겨진 힌트 텍스트를 표시합니다.
  */
 function showHint() {
-    document.getElementById('quiz-hint-text').style.display = 'block';
+  document.getElementById('quiz-hint-text').style.display = 'block';
 }
 
 /**
@@ -208,72 +208,72 @@ function showHint() {
  * @param {number} correctAnswerIndex - 정답의 인덱스 (셔플 후 기준)
  */
 function handleAnswer(selectedBtn, isCorrect, correctAnswerIndex) {
-    // [한글 주석] 한 문제에 여러 번 클릭하는 것을 방지하기 위해 모든 보기 버튼 비활성화
-    const buttons = document.querySelectorAll('.quiz-option');
-    buttons.forEach(btn => btn.disabled = true);
+  // [한글 주석] 한 문제에 여러 번 클릭하는 것을 방지하기 위해 모든 보기 버튼 비활성화
+  const buttons = document.querySelectorAll('.quiz-option');
+  buttons.forEach(btn => btn.disabled = true);
 
-    if (isCorrect) {
-        // 정답인 경우: 초록색 강조 + 정답 피드백
-        selectedBtn.classList.add('correct');
-        selectedBtn.innerHTML += " <span class='quiz-feedback'>🎉 정답!</span>";
-        currentScore++;
-    } else {
-        // 오답인 경우: 빨간색 강조 + 오답 피드백
-        selectedBtn.classList.add('wrong');
-        selectedBtn.innerHTML += " <span class='quiz-feedback'>❌ 틀렸어요</span>";
-        
-        // [한글 주석] 정답이 무엇이었는지 알려주기 위해 정답 버튼에 초록색 표시
-        buttons[correctAnswerIndex].classList.add('correct');
-    }
+  if (isCorrect) {
+    // 정답인 경우: 초록색 강조 + 정답 피드백
+    selectedBtn.classList.add('correct');
+    selectedBtn.innerHTML += " <span class='quiz-feedback'>🎉 정답!</span>";
+    currentScore++;
+  } else {
+    // 오답인 경우: 빨간색 강조 + 오답 피드백
+    selectedBtn.classList.add('wrong');
+    selectedBtn.innerHTML += " <span class='quiz-feedback'>❌ 틀렸어요</span>";
 
-    // 1.5초(1500ms) 대기 후 다음 문제로 자동 이동
-    setTimeout(() => {
-        currentQuestionIndex++;
-        renderQuestion();
-    }, 1500);
+    // [한글 주석] 정답이 무엇이었는지 알려주기 위해 정답 버튼에 초록색 표시
+    buttons[correctAnswerIndex].classList.add('correct');
+  }
+
+  // 1.5초(1500ms) 대기 후 다음 문제로 자동 이동
+  setTimeout(() => {
+    currentQuestionIndex++;
+    renderQuestion();
+  }, 1500);
 }
 
 /**
  * 5문제를 모두 푼 후 최종 결과를 화면에 표시하고 해금 로직을 처리합니다.
  */
 function showQuizResult() {
-    document.getElementById('quiz-content').style.display = 'none';
-    const resultDiv = document.getElementById('quiz-result');
-    resultDiv.style.display = 'flex'; // flex 레이아웃으로 변경하여 가운데 정렬
+  document.getElementById('quiz-content').style.display = 'none';
+  const resultDiv = document.getElementById('quiz-result');
+  resultDiv.style.display = 'flex'; // flex 레이아웃으로 변경하여 가운데 정렬
 
-    // [한글 주석] 통과 기준(3개 이상 정답) 충족 여부 판단
-    const isPass = currentScore >= QUIZ_PASS_SCORE;
-    
-    if (isPass) {
-        // 통과 시: 축하 메시지 + 카테고리 해금 처리
-        document.getElementById('quiz-result-title').innerHTML = "🎊 해금 성공! 🎊";
-        document.getElementById('quiz-result-desc').textContent = `${currentScore}개 정답! 이제 ${currentQuizCategory === 'animal' ? '동물' : '유물'} 탐험이 가능해요!`;
-        
-        // storage.js에 퀴즈 통과 기록 저장
-        setQuizPassed(currentQuizCategory); 
-        
-        // 메인 화면 UI 즉시 갱신 (잠금 풀림 반영)
-        if (typeof window.updateMainScreenData === 'function') {
-            window.updateMainScreenData();
-        }
-    } else {
-        // 실패 시: 재도전 안내
-        document.getElementById('quiz-result-title').textContent = "조금 더 공부해봐요! 😊";
-        document.getElementById('quiz-result-desc').textContent = `${currentScore}개를 맞췄어요. (통과 기준: ${QUIZ_PASS_SCORE}개)`;
+  // [한글 주석] 통과 기준(3개 이상 정답) 충족 여부 판단
+  const isPass = currentScore >= QUIZ_PASS_SCORE;
+
+  if (isPass) {
+    // 통과 시: 축하 메시지 + 카테고리 해금 처리
+    document.getElementById('quiz-result-title').innerHTML = "🎊 해금 성공! 🎊";
+    document.getElementById('quiz-result-desc').textContent = `${currentScore}개 정답! 이제 ${currentQuizCategory === 'animal' ? '동물' : '유물'} 탐험이 가능해요!`;
+
+    // storage.js에 퀴즈 통과 기록 저장
+    setQuizPassed(currentQuizCategory);
+
+    // 메인 화면 UI 즉시 갱신 (잠금 풀림 반영)
+    if (typeof window.updateMainScreenData === 'function') {
+      window.updateMainScreenData();
     }
+  } else {
+    // 실패 시: 재도전 안내
+    document.getElementById('quiz-result-title').textContent = "조금 더 공부해봐요! 😊";
+    document.getElementById('quiz-result-desc').textContent = `${currentScore}개를 맞췄어요. (통과 기준: ${QUIZ_PASS_SCORE}개)`;
+  }
 }
 
 /**
  * 퀴즈 화면을 닫고 메인 화면으로 돌아갑니다.
  */
 function closeQuiz() {
-    const quizScreen = document.getElementById('quiz-screen');
-    quizScreen.classList.remove('slide-in');
-    
-    // 슬라이드 애니메이션 대기 후 완전 숨김
-    setTimeout(() => {
-        quizScreen.style.display = 'none';
-    }, 300);
+  const quizScreen = document.getElementById('quiz-screen');
+  quizScreen.classList.remove('slide-in');
+
+  // 슬라이드 애니메이션 대기 후 완전 숨김
+  setTimeout(() => {
+    quizScreen.style.display = 'none';
+  }, 300);
 }
 
 // ==========================================
@@ -282,11 +282,10 @@ function closeQuiz() {
 
 // [한글 주석] 레벨업 퀴즈 표시
 function showLevelUpQuiz(targetLevel, triggerCardId) {
-  // [한글 주석] 수집한 카드 목록에서 랜덤으로 문제 카드 선택
   const collection = typeof getCollection === 'function' ? getCollection() : [];
   const allCards = window.allCardsData || [];
 
-  // [한글 주석] 수집한 카드 중 short_desc 있는 것만 문제로 사용
+  // [한글 주석] 수집한 카드 중 short_desc 있는 것만 후보로 사용
   const collectedCards = collection
     .map(id => allCards.find(c => c.id === id))
     .filter(c => c && c.short_desc);
@@ -296,8 +295,34 @@ function showLevelUpQuiz(targetLevel, triggerCardId) {
     return;
   }
 
+  // [한글 주석] 레벨별 퀴즈 카테고리 결정
+  // Lv.1~5: 식물 카드만
+  // Lv.6~10: 동물 카드만
+  // Lv.11~15: 유물 카드만
+  // Lv.16 이상: 식물+동물+유물 전체 랜덤
+  let quizCategory = null;
+  if (targetLevel <= 5) {
+    quizCategory = 'plant';
+  } else if (targetLevel <= 10) {
+    quizCategory = 'animal';
+  } else if (targetLevel <= 15) {
+    quizCategory = 'artifact';
+  } else {
+    quizCategory = null; // [한글 주석] null이면 전체 랜덤
+  }
+
+  // [한글 주석] 카테고리 필터링된 수집 카드 추출
+  let filteredCards = quizCategory
+    ? collectedCards.filter(c => c.category === quizCategory)
+    : collectedCards;
+
+  // [한글 주석] 해당 카테고리 수집 카드가 없으면 전체 수집 카드에서 출제
+  if (filteredCards.length === 0) {
+    filteredCards = collectedCards;
+  }
+
   // [한글 주석] 랜덤으로 문제 카드 선택
-  const questionCard = collectedCards[Math.floor(Math.random() * collectedCards.length)];
+  const questionCard = filteredCards[Math.floor(Math.random() * filteredCards.length)];
   const choices = _generateChoices(questionCard, allCards);
   _showLevelQuizPopup(targetLevel, questionCard, choices);
 }
@@ -413,7 +438,7 @@ function _showLevelQuizPopup(newLevel, questionCard, choices, triggerCardId) {
               transition:all 0.2s;
               line-height:1.4;
             "
-          >${['①','②','③','④'][i]} ${c.short_desc}</button>
+          >${['①', '②', '③', '④'][i]} ${c.short_desc}</button>
         `).join('')}
       </div>
     </div>
@@ -488,11 +513,11 @@ function _completeLevelUp(newLevel) {
   // [한글 주석] 카테고리 해금 체크 및 팝업
   const prevCategories = newLevel >= 2
     ? (() => {
-        const prev = ['plant'];
-        if (newLevel - 1 >= 5) prev.push('animal');
-        if (newLevel - 1 >= 10) prev.push('artifact');
-        return prev;
-      })()
+      const prev = ['plant'];
+      if (newLevel - 1 >= 5) prev.push('animal');
+      if (newLevel - 1 >= 10) prev.push('artifact');
+      return prev;
+    })()
     : ['plant'];
 
   // [한글 주석] 새로 해금된 카테고리 확인
@@ -602,8 +627,8 @@ function isDailyQuizDone() {
   const last = new Date(parseInt(lastTime));
   const now = new Date();
   return last.getFullYear() === now.getFullYear() &&
-         last.getMonth() === now.getMonth() &&
-         last.getDate() === now.getDate();
+    last.getMonth() === now.getMonth() &&
+    last.getDate() === now.getDate();
 }
 
 // [한글 주석] 일일 퀴즈 완료 시간 저장
@@ -833,15 +858,15 @@ function _showOXResult(isCorrect) {
     const existingBags = JSON.parse(localStorage.getItem('rewardBags') || '[]');
     const now = new Date();
     const timeStr = now.toLocaleDateString('ko-KR', {
-      year:'numeric', month:'long', day:'numeric',
-      hour:'2-digit', minute:'2-digit'
+      year: 'numeric', month: 'long', day: 'numeric',
+      hour: '2-digit', minute: '2-digit'
     });
     const unlockedCats = typeof getUnlockedCategories === 'function'
       ? getUnlockedCategories() : ['plant'];
     const randomCat = unlockedCats[Math.floor(Math.random() * unlockedCats.length)];
 
     existingBags.push({
-      reward: { type:'category', category:randomCat, rarity:'all' },
+      reward: { type: 'category', category: randomCat, rarity: 'all' },
       receivedAt: timeStr,
       source: 'daily_quiz'
     });
