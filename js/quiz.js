@@ -454,6 +454,13 @@ function handleLevelQuizAnswer(btn, correctCardId, newLevel, triggerCardId) {
   overlay.dataset.answered = 'true';
 
   const isCorrect = btn.dataset.correct === 'true';
+
+  // [한글 주석] AI 분석용 로컬 기록 저장
+  const _lvlCard = (window.allCardsData || []).find(c => c.id === correctCardId);
+  if (typeof addToLocalQuizHistory === 'function') {
+    addToLocalQuizHistory('level_quiz', isCorrect, _lvlCard ? _lvlCard.category : '');
+  }
+
   const allBtns = overlay.querySelectorAll('.level-quiz-choice');
 
   // [한글 주석] 정답/오답 색상 표시
@@ -802,6 +809,12 @@ function handleOXAnswer(selected, qEncoded) {
   const selectedBool = selected === 'o';
   const isCorrect = selectedBool === question.answer;
 
+  // [한글 주석] AI 분석용 로컬 기록 저장
+  const _oxCard = window._dailyQuizCard || null;
+  if (typeof addToLocalQuizHistory === 'function') {
+    addToLocalQuizHistory('daily_quiz', isCorrect, _oxCard ? _oxCard.category : '');
+  }
+
   // [한글 주석] 버튼 비활성화
   const oBtn = document.getElementById('ox-btn-o');
   const xBtn = document.getElementById('ox-btn-x');
@@ -1001,6 +1014,267 @@ if (typeof updateDailyQuizBtn === 'function') updateDailyQuizBtn();
 setTimeout(() => updateDailyQuizBtn(), 500);
 
 // [한글 주석] 전역 노출
+// ==========================================
+// [한글 주석] AI 퀴즈 분석 시스템
+// ==========================================
+
+// [한글 주석] 퀴즈 결과를 로컬스토리지에 기록 (최대 200개 유지)
+function addToLocalQuizHistory(quizType, correct, category) {
+  if (!category) return;
+  const history = JSON.parse(localStorage.getItem('localQuizHistory') || '[]');
+  history.push({ type: quizType, correct: correct, category: category, ts: Date.now() });
+  if (history.length > 200) history.splice(0, history.length - 200);
+  localStorage.setItem('localQuizHistory', JSON.stringify(history));
+}
+
+// [한글 주석] 카테고리별 정답률 계산 (일일퀴즈 + 레벨업퀴즈 합산)
+// [한글 주석] 기록 없는 카테고리는 null 반환 (0%와 구분)
+function _getQuizStats() {
+  const history = JSON.parse(localStorage.getItem('localQuizHistory') || '[]');
+  const stats = {};
+  ['plant', 'animal', 'artifact'].forEach(c => {
+    const items = history.filter(h => h.category === c);
+    stats[c] = {
+      total: items.length,
+      correct: items.filter(h => h.correct).length,
+      rate: items.length > 0
+        ? Math.round(items.filter(h => h.correct).length / items.length * 100)
+        : null
+    };
+  });
+  return stats;
+}
+
+// [한글 주석] 레이더 차트 SVG 생성 (초기 0 상태 — _animateRadar로 채움)
+function _buildRadarSVG() {
+  const cx = 100, cy = 105, r = 72;
+  const angles = { plant: -90, animal: 30, artifact: 150 };
+  const toXY = (angle, ratio) => {
+    const rad = angle * Math.PI / 180;
+    return [Math.round(cx + r * ratio * Math.cos(rad)), Math.round(cy + r * ratio * Math.sin(rad))];
+  };
+  const guidePts = [0.25, 0.5, 0.75, 1.0].map(ratio =>
+    Object.values(angles).map(a => toXY(a, ratio).join(',')).join(' ')
+  );
+  const ends = Object.values(angles).map(a => toXY(a, 1.0));
+  const initPt = `${cx},${cy}`;
+  return `
+    <svg id="ai-radar-svg" width="200" height="200" viewBox="0 0 200 200" style="overflow:visible;">
+      ${guidePts.map(pts =>
+        `<polygon points="${pts}" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>`
+      ).join('')}
+      <line x1="${cx}" y1="${cy}" x2="${ends[0][0]}" y2="${ends[0][1]}" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+      <line x1="${cx}" y1="${cy}" x2="${ends[1][0]}" y2="${ends[1][1]}" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+      <line x1="${cx}" y1="${cy}" x2="${ends[2][0]}" y2="${ends[2][1]}" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+      <polygon id="ai-radar-poly" points="${initPt} ${initPt} ${initPt}"
+        fill="rgba(74,158,255,0.18)" stroke="#4a9eff" stroke-width="2"
+        style="transition:points 1.2s cubic-bezier(0.4,0,0.2,1);"/>
+      <circle id="ai-dot-plant"    cx="${cx}" cy="${cy}" r="4" fill="#84ff00" style="transition:all 1.2s cubic-bezier(0.4,0,0.2,1);"/>
+      <circle id="ai-dot-animal"   cx="${cx}" cy="${cy}" r="4" fill="#ff9d00" style="transition:all 1.2s cubic-bezier(0.4,0,0.2,1);"/>
+      <circle id="ai-dot-artifact" cx="${cx}" cy="${cy}" r="4" fill="#4a9eff" style="transition:all 1.2s cubic-bezier(0.4,0,0.2,1);"/>
+      <text x="${cx}" y="${ends[0][1] - 9}"  text-anchor="middle" fill="#84ff00" font-size="10" font-family="sans-serif">식물</text>
+      <text x="${ends[1][0] + 14}" y="${ends[1][1]}" text-anchor="middle" fill="#ff9d00" font-size="10" font-family="sans-serif">동물</text>
+      <text x="${ends[2][0] - 14}" y="${ends[2][1]}" text-anchor="middle" fill="#4a9eff" font-size="10" font-family="sans-serif">유물</text>
+      <text x="${cx}" y="192" text-anchor="middle" fill="#333" font-size="9" font-family="sans-serif">학습 정확도 레이더</text>
+    </svg>`;
+}
+
+// [한글 주석] 레이더 차트 실데이터 채우기 (CSS transition 애니메이션)
+function _animateRadar(stats) {
+  setTimeout(() => {
+    const poly = document.getElementById('ai-radar-poly');
+    if (!poly) return;
+    const cx = 100, cy = 105, r = 72;
+    const config = [
+      { cat: 'plant',    angle: -90,  dotId: 'ai-dot-plant'    },
+      { cat: 'animal',   angle:  30,  dotId: 'ai-dot-animal'   },
+      { cat: 'artifact', angle: 150,  dotId: 'ai-dot-artifact' },
+    ];
+    const pts = config.map(({ cat, angle, dotId }) => {
+      const ratio = (stats[cat].rate ?? 0) / 100;
+      const rad = angle * Math.PI / 180;
+      const nx = Math.round(cx + r * ratio * Math.cos(rad));
+      const ny = Math.round(cy + r * ratio * Math.sin(rad));
+      const dot = document.getElementById(dotId);
+      if (dot) { dot.setAttribute('cx', nx); dot.setAttribute('cy', ny); }
+      return nx + ',' + ny;
+    }).join(' ');
+    poly.setAttribute('points', pts);
+  }, 80);
+}
+
+// [한글 주석] 기록 없을 때 (첫 시험) 안내 화면
+function _showFirstTimeAnalysis() {
+  const existing = document.getElementById('ai-analysis-overlay');
+  if (existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'ai-analysis-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(160deg,#0a1628,#0d1e38);border:1.5px solid #4a9eff;border-radius:22px;padding:28px 20px;max-width:320px;width:100%;text-align:center;">
+      <div style="font-size:52px;margin-bottom:14px;">🤖</div>
+      <div style="color:#4a9eff;font-size:14px;font-weight:700;margin-bottom:8px;">AI 또감이</div>
+      <div style="color:#f0e6c8;font-size:15px;font-weight:700;margin-bottom:10px;">오늘의 첫 시험이에요!</div>
+      <div style="color:#888;font-size:12px;line-height:1.8;margin-bottom:24px;">
+        시험을 풀수록 AI가 학습 데이터를<br>
+        모아서 다음번에 분석해줄게요 📊
+      </div>
+      <button onclick="document.getElementById('ai-analysis-overlay').remove(); if(typeof showDailyQuiz==='function') showDailyQuiz();"
+        style="width:100%;background:linear-gradient(135deg,#0d2035,#1a3a5a);border:1.5px solid #4a9eff;border-radius:12px;padding:14px;color:#4a9eff;font-size:14px;font-weight:700;cursor:pointer;">
+        📝 시험 시작하기
+      </button>
+      <button onclick="document.getElementById('ai-analysis-overlay').remove();"
+        style="width:100%;margin-top:8px;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;color:#555;font-size:12px;cursor:pointer;">
+        닫기
+      </button>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+// [한글 주석] AI 분석 팝업 메인 함수 (일일시험 버튼에서 호출)
+// [한글 주석] 흐름: 오늘 완료 → 완료팝업 / 기록없음 → 첫시험 안내 / 기록있음 → 분석 후 시험 시작
+function showAIQuizAnalysis() {
+  // [한글 주석] 오늘 이미 시험 봤으면 기존 완료 팝업 표시
+  if (typeof isDailyQuizDone === 'function' && isDailyQuizDone()) {
+    if (typeof _showDailyQuizDonePopup === 'function') _showDailyQuizDonePopup();
+    return;
+  }
+
+  const stats = _getQuizStats();
+  const available = ['plant', 'animal', 'artifact'].filter(c => stats[c].total > 0);
+
+  // [한글 주석] 퀴즈 기록이 전혀 없으면 첫 시험 안내 화면
+  if (available.length === 0) {
+    _showFirstTimeAnalysis();
+    return;
+  }
+
+  // [한글 주석] 취약 영역 = 기록 있는 카테고리 중 정답률 최저
+  const weakCat = available.reduce((a, b) =>
+    (stats[a].rate ?? 100) <= (stats[b].rate ?? 100) ? a : b
+  );
+  const catLabel = { plant: '🌿 식물', animal: '🦔 동물', artifact: '🏺 유물' };
+  const catColor = { plant: '#84ff00', animal: '#ff9d00', artifact: '#4a9eff' };
+
+  // [한글 주석] 정답률 바 HTML 생성
+  const barsHTML = ['plant', 'animal', 'artifact'].map(c => {
+    const s = stats[c];
+    const color = catColor[c];
+    return `
+      <div style="margin-bottom:13px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+          <span style="color:#f0e6c8;font-size:12px;">${catLabel[c]}</span>
+          <span id="aiq-rate-${c}" style="color:${color};font-size:13px;font-weight:700;">
+            ${s.total > 0 ? '0%' : '데이터 없음'}
+          </span>
+        </div>
+        ${s.total > 0 ? `
+          <div style="height:7px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;">
+            <div id="aiq-bar-${c}" style="height:100%;width:0%;background:${color};border-radius:4px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);"></div>
+          </div>
+          <div style="color:#555;font-size:10px;margin-top:2px;">${s.correct}/${s.total}문제 정답</div>
+        ` : `<div style="color:#444;font-size:10px;">아직 퀴즈 기록 없음</div>`}
+      </div>`;
+  }).join('');
+
+  // [한글 주석] 기존 오버레이 제거 후 새로 생성
+  const existing = document.getElementById('ai-analysis-overlay');
+  if (existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'ai-analysis-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.96);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+
+  overlay.innerHTML = `
+    <div id="aiq-scan-layer" style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;">
+      <div style="width:70px;height:70px;border:2.5px solid #4a9eff;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:aiq-spin 1s linear infinite;">
+        <span style="font-size:28px;">🤖</span>
+      </div>
+      <div id="aiq-scan-txt" style="color:#4a9eff;font-size:13px;font-weight:700;letter-spacing:2px;">ANALYZING...</div>
+      <div style="display:flex;gap:5px;">
+        ${[0,1,2,3,4].map(i =>
+          `<div style="width:6px;height:6px;background:#4a9eff;border-radius:50%;animation:aiq-dot 0.6s ease-in-out infinite alternate;animation-delay:${i*0.1}s;"></div>`
+        ).join('')}
+      </div>
+    </div>
+
+    <div id="aiq-result-layer" style="
+      background:linear-gradient(160deg,#0a1628,#0d1e38);
+      border:1.5px solid #4a9eff;border-radius:22px;padding:20px;
+      max-width:340px;width:100%;
+      opacity:0;transform:scale(0.92);
+      transition:all 0.5s cubic-bezier(0.4,0,0.2,1);
+      max-height:88vh;overflow-y:auto;">
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <span style="font-size:26px;">🤖</span>
+        <div>
+          <div style="color:#4a9eff;font-size:12px;font-weight:700;letter-spacing:1px;">AI 또감이</div>
+          <div style="color:#3a4a5a;font-size:10px;">ANALYSIS COMPLETE ✓</div>
+        </div>
+        <div style="margin-left:auto;background:rgba(74,158,255,0.15);border:1px solid #4a9eff;border-radius:6px;padding:2px 9px;color:#4a9eff;font-size:10px;font-weight:700;">AI 분석</div>
+      </div>
+
+      <div style="text-align:center;margin-bottom:14px;">${_buildRadarSVG()}</div>
+
+      <div style="margin-bottom:14px;">${barsHTML}</div>
+
+      <div style="background:rgba(255,80,80,0.08);border:1px solid rgba(255,80,80,0.3);border-radius:12px;padding:12px;margin-bottom:14px;">
+        <div style="color:#ff8080;font-size:11px;font-weight:700;margin-bottom:4px;">⚡ 취약 영역 분석</div>
+        <div style="color:#fff;font-size:14px;font-weight:700;">${catLabel[weakCat]} 집중 연습 필요!</div>
+        <div style="color:#777;font-size:10px;margin-top:3px;">정답률 ${stats[weakCat].rate ?? 0}%</div>
+      </div>
+
+      <div style="color:#4a9eff;font-size:10px;font-weight:700;margin-bottom:7px;">🎯 오늘의 AI 추천 퀴즈</div>
+      <button onclick="document.getElementById('ai-analysis-overlay').remove(); if(typeof showDailyQuiz==='function') showDailyQuiz();"
+        style="width:100%;background:linear-gradient(135deg,#0d2035,#1a3a5a);border:1.5px solid #4a9eff;border-radius:12px;padding:14px;color:#4a9eff;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:0.5px;">
+        🤖 AI 추천 일일 시험 시작
+      </button>
+      <button onclick="document.getElementById('ai-analysis-overlay').remove();"
+        style="width:100%;margin-top:8px;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;color:#555;font-size:12px;cursor:pointer;">
+        닫기
+      </button>
+    </div>
+
+    <style>
+      @keyframes aiq-spin { to { transform: rotate(360deg); } }
+      @keyframes aiq-dot  { to { transform: translateY(-6px); opacity: 0.3; } }
+    </style>`;
+
+  document.body.appendChild(overlay);
+
+  // [한글 주석] 1.5초 스캔 애니메이션 → 결과 표시
+  setTimeout(() => {
+    const scanTxt = document.getElementById('aiq-scan-txt');
+    if (scanTxt) { scanTxt.textContent = 'COMPLETE ✓'; scanTxt.style.color = '#ffd700'; }
+    setTimeout(() => {
+      const scan   = document.getElementById('aiq-scan-layer');
+      const result = document.getElementById('aiq-result-layer');
+      if (scan)   scan.style.display = 'none';
+      if (result) { result.style.opacity = '1'; result.style.transform = 'scale(1)'; }
+      // [한글 주석] 바 채우기 + 숫자 카운팅업 애니메이션
+      ['plant', 'animal', 'artifact'].forEach(c => {
+        const bar    = document.getElementById('aiq-bar-' + c);
+        const rateEl = document.getElementById('aiq-rate-' + c);
+        const rate   = stats[c].rate ?? 0;
+        if (bar) requestAnimationFrame(() => { bar.style.width = rate + '%'; });
+        if (rateEl && stats[c].total > 0) {
+          let cur = 0;
+          const step = Math.max(rate / 30, 1);
+          const timer = setInterval(() => {
+            cur = Math.min(cur + step, rate);
+            rateEl.textContent = Math.round(cur) + '%';
+            if (cur >= rate) clearInterval(timer);
+          }, 40);
+        }
+      });
+      _animateRadar(stats);
+    }, 400);
+  }, 1500);
+}
+
+window.addToLocalQuizHistory = addToLocalQuizHistory;
+window.showAIQuizAnalysis    = showAIQuizAnalysis;
+
 window.showDailyQuiz = showDailyQuiz;
 window.handleOXAnswer = handleOXAnswer;
 window.updateDailyQuizBtn = updateDailyQuizBtn;
