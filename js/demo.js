@@ -235,12 +235,12 @@ function startStudentDemo() {
 
   // [한글 주석] 샘플 퀴즈 기록 (AI 분석 화면 체험용)
   const sampleHistory = [
-    ...Array(8).fill(null).map(() => ({ type:'level_quiz', correct:true,  category:'plant',    ts: Date.now() })),
-    ...Array(3).fill(null).map(() => ({ type:'level_quiz', correct:false, category:'plant',    ts: Date.now() })),
-    ...Array(4).fill(null).map(() => ({ type:'level_quiz', correct:true,  category:'animal',   ts: Date.now() })),
-    ...Array(4).fill(null).map(() => ({ type:'level_quiz', correct:false, category:'animal',   ts: Date.now() })),
-    ...Array(2).fill(null).map(() => ({ type:'daily_quiz', correct:true,  category:'artifact', ts: Date.now() })),
-    ...Array(5).fill(null).map(() => ({ type:'daily_quiz', correct:false, category:'artifact', ts: Date.now() })),
+    ...Array(8).fill(null).map(() => ({ type:'level_quiz', correct:true,  category:'plant',    ts:Date.now() })),
+    ...Array(3).fill(null).map(() => ({ type:'level_quiz', correct:false, category:'plant',    ts:Date.now() })),
+    ...Array(4).fill(null).map(() => ({ type:'level_quiz', correct:true,  category:'animal',   ts:Date.now() })),
+    ...Array(4).fill(null).map(() => ({ type:'level_quiz', correct:false, category:'animal',   ts:Date.now() })),
+    ...Array(2).fill(null).map(() => ({ type:'daily_quiz', correct:true,  category:'artifact', ts:Date.now() })),
+    ...Array(5).fill(null).map(() => ({ type:'daily_quiz', correct:false, category:'artifact', ts:Date.now() })),
   ];
   localStorage.setItem('localQuizHistory', JSON.stringify(sampleHistory));
 
@@ -248,8 +248,24 @@ function startStudentDemo() {
   const sel = document.getElementById('demo-select-overlay');
   if (sel) sel.remove();
 
-  // [한글 주석] 데이터 설정 완료 후 reload → app.js DOMContentLoaded에서 자동 진입
-  location.reload();
+  // [한글 주석] 로그인 화면 숨기기
+  const loginContainer = document.getElementById('login-container');
+  if (loginContainer) loginContainer.style.display = 'none';
+
+  // [한글 주석] reload 없이 바로 메인 화면으로 전환
+  // [한글 주석] app.js의 proceedToMainScreen은 DOMContentLoaded에서 이미 window에 등록됨
+  if (typeof window.proceedToMainScreen === 'function') {
+    window.proceedToMainScreen();
+  } else {
+    // [한글 주석] fallback
+    const mainContainer = document.getElementById('main-container');
+    if (mainContainer) mainContainer.style.display = 'block';
+  }
+
+  // [한글 주석] 체험 모드 배너 표시
+  setTimeout(() => {
+    if (typeof showDemoBanner === 'function') showDemoBanner();
+  }, 800);
 }
 
 // ==========================================
