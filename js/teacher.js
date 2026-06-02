@@ -344,11 +344,6 @@ function renderDashboard(students) {
 
     gridEl.appendChild(card);
   });
-
-  // [한글 주석] 체험 모드 배너 표시
-  if (localStorage.getItem('demoMode') === 'true') {
-    if (typeof showDemoBanner === 'function') showDemoBanner();
-  }
 }
 
 // ==========================================

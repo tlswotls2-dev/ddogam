@@ -81,5 +81,15 @@
 
   <script src="js/teacher.js"></script>
   <script src="js/demo.js"></script>
+<script>
+  // [한글 주석] 체험 모드 배너 체크 (페이지 로드 완료 후)
+  document.addEventListener('DOMContentLoaded', function() {
+    if (localStorage.getItem('demoMode') === 'true') {
+      setTimeout(function() {
+        if (typeof showDemoBanner === 'function') showDemoBanner();
+      }, 600);
+    }
+  });
+</script>
 </body>
 </html>
