@@ -3,8 +3,8 @@
 // 이미지 오프라인 캐시 담당
 // ================================
 
-// [한글 주석] 캐시 버전 업 - 오디오 파일 추가
-const CACHE_NAME = 'ttogam-images-v4';
+// [한글 주석] 캐시 버전 업 - index.html 네트워크 우선 전략 적용
+const CACHE_NAME = 'ttogam-images-v5';
 
 // 캐시할 파일 목록 생성
 const IMAGE_URLS = [];
@@ -110,26 +110,25 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // [한글 주석] index.html 및 루트(/) 요청은 항상 네트워크 우선
-  // [한글 주석] 캐시 우선이면 스플래시 상태가 저장돼 매번 안 보임
+  // [한글 주석] index.html은 항상 네트워크 우선 (새로고침 시 항상 최신 버전)
   if (url.pathname === '/' || url.pathname === '/index.html') {
     event.respondWith(
       fetch(event.request)
         .then(response => {
-          // [한글 주석] 네트워크 성공 시 캐시 업데이트 후 반환
+          // [한글 주석] 네트워크 성공 시 캐시 업데이트
           const clone = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
           return response;
         })
         .catch(() => {
-          // [한글 주석] 오프라인이면 캐시 반환
+          // [한글 주석] 오프라인 시 캐시 버전 사용
           return caches.match(event.request);
         })
     );
     return;
   }
 
-  // [한글 주석] 그 외 앱 파일 요청 (캐시 우선 전략: 캐시 확인 후 없으면 네트워크 요청)
+  // [한글 주석] 그 외 앱 파일 - 캐시 우선
   event.respondWith(
     caches.match(event.request).then(cached => {
       return cached || fetch(event.request);
