@@ -59,6 +59,25 @@ document.addEventListener('DOMContentLoaded', () => {
         '6': 'teacher6'
     };
 
+    // [한글 주석] 체험 모드 자동 진입 — demo.js에서 데이터 설정 후 reload 시 실행
+    if (localStorage.getItem('demoMode') === 'true' &&
+        localStorage.getItem('isTeacher') === 'false') {
+      const _demoUserData = localStorage.getItem('userData');
+      if (_demoUserData) {
+        loginContainer.style.display = 'none';
+        setTimeout(() => {
+          // [한글 주석] 아바타 선택 건너뛰고 바로 메인 화면으로
+          if (typeof proceedToMainScreen === 'function') {
+            proceedToMainScreen();
+            // [한글 주석] 체험 모드 배너 표시
+            setTimeout(() => {
+              if (typeof showDemoBanner === 'function') showDemoBanner();
+            }, 800);
+          }
+        }, 100);
+      }
+    }
+
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             // 1. 기본 제출 동작 방지 (페이지 새로고침 방지)
