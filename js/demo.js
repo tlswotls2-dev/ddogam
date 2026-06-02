@@ -205,9 +205,10 @@ function startStudentDemo() {
   localStorage.setItem('userData', JSON.stringify({
     class: '체험', number: '99', name: '데모계정'
   }));
+  localStorage.setItem('isTeacher', 'false');
   localStorage.setItem('demoMode', 'true');
 
-  // [한글 주석] 레벨 30 설정 (함수 방식 + 직접 키 방식 병행)
+  // [한글 주석] 레벨 30 설정
   if (typeof saveCurrentLevel === 'function') saveCurrentLevel(30);
   localStorage.setItem('currentLevel', '30');
 
@@ -220,7 +221,7 @@ function startStudentDemo() {
   localStorage.setItem('quizPassed_artifact', 'true');
   localStorage.setItem('unlockedCategories', JSON.stringify(['plant','animal','artifact']));
 
-  // [한글 주석] 카드 300장 전부 수집 (plant_001~100, animal_001~100, artifact_001~100)
+  // [한글 주석] 카드 300장 전부 수집
   const allIds = [];
   for (let i = 1; i <= 100; i++) {
     const n = String(i).padStart(3, '0');
@@ -229,22 +230,41 @@ function startStudentDemo() {
   if (typeof saveCollection === 'function') saveCollection(allIds);
   localStorage.setItem('collection', JSON.stringify(allIds));
 
-  // [한글 주석] 아이템 전체 해금 (아이템 키 이름은 앱 구조에 따라 자동 처리)
+  // [한글 주석] 아이템 전체 해금
   localStorage.setItem('unlockedItems', 'all');
 
   // [한글 주석] 샘플 퀴즈 기록 (AI 분석 화면 체험용)
   const sampleHistory = [
-    ...Array(8).fill({ type:'level_quiz', correct:true,  category:'plant',    ts: Date.now() }),
-    ...Array(3).fill({ type:'level_quiz', correct:false, category:'plant',    ts: Date.now() }),
-    ...Array(4).fill({ type:'level_quiz', correct:true,  category:'animal',   ts: Date.now() }),
-    ...Array(4).fill({ type:'level_quiz', correct:false, category:'animal',   ts: Date.now() }),
-    ...Array(2).fill({ type:'daily_quiz', correct:true,  category:'artifact', ts: Date.now() }),
-    ...Array(5).fill({ type:'daily_quiz', correct:false, category:'artifact', ts: Date.now() }),
+    ...Array(8).fill(null).map(() => ({ type:'level_quiz', correct:true,  category:'plant',    ts: Date.now() })),
+    ...Array(3).fill(null).map(() => ({ type:'level_quiz', correct:false, category:'plant',    ts: Date.now() })),
+    ...Array(4).fill(null).map(() => ({ type:'level_quiz', correct:true,  category:'animal',   ts: Date.now() })),
+    ...Array(4).fill(null).map(() => ({ type:'level_quiz', correct:false, category:'animal',   ts: Date.now() })),
+    ...Array(2).fill(null).map(() => ({ type:'daily_quiz', correct:true,  category:'artifact', ts: Date.now() })),
+    ...Array(5).fill(null).map(() => ({ type:'daily_quiz', correct:false, category:'artifact', ts: Date.now() })),
   ];
   localStorage.setItem('localQuizHistory', JSON.stringify(sampleHistory));
 
-  // [한글 주석] 앱 재시작 (체험 데이터 로드)
-  location.reload();
+  // [한글 주석] 선택 화면 제거
+  const sel = document.getElementById('demo-select-overlay');
+  if (sel) sel.remove();
+
+  // [한글 주석] 로그인 화면 숨기기
+  const loginContainer = document.getElementById('login-container');
+  if (loginContainer) loginContainer.style.display = 'none';
+
+  // [한글 주석] 메인 화면으로 전환 (app.js의 proceedToMainScreen 직접 호출)
+  if (typeof window.proceedToMainScreen === 'function') {
+    window.proceedToMainScreen();
+  } else {
+    // [한글 주석] fallback: 메인 컨테이너 직접 표시
+    const mainContainer = document.getElementById('main-container');
+    if (mainContainer) mainContainer.style.display = 'block';
+  }
+
+  // [한글 주석] 체험 모드 배너 표시
+  setTimeout(() => {
+    if (typeof showDemoBanner === 'function') showDemoBanner();
+  }, 1000);
 }
 
 // ==========================================
