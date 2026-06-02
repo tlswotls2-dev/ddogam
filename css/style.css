@@ -170,18 +170,25 @@ button:active {
     color: var(--accent-color);
 }
 
-/* 탐험 시작 버튼 (황금빛 우드 테마) */
-#loginForm .start-btn {
+/* 탐험 시작 버튼 공통 크기 (form 안팎 모두 적용) */
+.start-btn {
     width: 100%;
-    background: linear-gradient(135deg, #d4a017, #b3850e);
-    color: #2c3e2d;
     border-radius: 14px;
     font-size: 1.3rem;
     font-weight: 900;
     padding: 16px;
+    box-sizing: border-box;
+    display: block;
+    cursor: pointer;
+    letter-spacing: 1px;
+}
+
+/* 탐험 시작 버튼 (황금빛 우드 테마) */
+#loginForm .start-btn {
+    background: linear-gradient(135deg, #d4a017, #b3850e);
+    color: #2c3e2d;
     margin-top: 15px;
     box-shadow: 0 5px 0 #8a5f0a, 0 8px 20px rgba(212,160,23,0.3);
-    letter-spacing: 1px;
 }
 
 /* 로그인 버튼 클릭 시 눌림 효과 */
