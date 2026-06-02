@@ -248,23 +248,8 @@ function startStudentDemo() {
   const sel = document.getElementById('demo-select-overlay');
   if (sel) sel.remove();
 
-  // [한글 주석] 로그인 화면 숨기기
-  const loginContainer = document.getElementById('login-container');
-  if (loginContainer) loginContainer.style.display = 'none';
-
-  // [한글 주석] 메인 화면으로 전환 (app.js의 proceedToMainScreen 직접 호출)
-  if (typeof window.proceedToMainScreen === 'function') {
-    window.proceedToMainScreen();
-  } else {
-    // [한글 주석] fallback: 메인 컨테이너 직접 표시
-    const mainContainer = document.getElementById('main-container');
-    if (mainContainer) mainContainer.style.display = 'block';
-  }
-
-  // [한글 주석] 체험 모드 배너 표시
-  setTimeout(() => {
-    if (typeof showDemoBanner === 'function') showDemoBanner();
-  }, 1000);
+  // [한글 주석] 데이터 설정 완료 후 reload → app.js DOMContentLoaded에서 자동 진입
+  location.reload();
 }
 
 // ==========================================
