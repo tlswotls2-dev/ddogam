@@ -174,6 +174,22 @@
 
       <!-- [한글 주석] 기기 초기화 버튼 (기존 API 키 변경 버튼 제거 후 추가) -->
       <!-- [한글 주석] 기기 초기화 버튼 - 실수 방지를 위해 아래 여백 충분히 확보 -->
+      <!-- [한글 주석] 체험 모드 버튼 (교사·심사위원용) -->
+      <button onclick="if(typeof showDemoModeEntry==='function') showDemoModeEntry();" style="
+        background:linear-gradient(135deg,#0d2035,#1a3a5a);
+        border:1.5px solid #4a9eff;
+        border-radius:8px;
+        color:#4a9eff;
+        font-size:13px;
+        font-weight:700;
+        cursor:pointer;
+        margin-top:12px;
+        margin-bottom:4px;
+        padding:10px 24px;
+        width:100%;
+        box-sizing:border-box;
+        letter-spacing:0.5px;
+      ">🔍 체험 모드 (교사용)</button>
       <button onclick="showResetDeviceConfirm()" style="
               background: none;
               border: 1px solid #8b2020;
@@ -1061,6 +1077,7 @@
   <script src="js/dodam.js?v=3"></script>
   <script src="js/map.js"></script>
   <script src="js/quiz.js"></script>
+  <script src="js/demo.js"></script>
   <script src="js/ai_battle.js"></script>
   <script src="js/chatbot.js"></script>
   <script src="js/avatar.js"></script>
@@ -1300,6 +1317,11 @@
 
     })();
   </script>
+
+<script>
+  // [한글 주석] 체험 모드 배너 체크 (앱 시작 시 실행)
+  if (typeof checkDemoModeBanner === 'function') checkDemoModeBanner();
+</script>
 
 </body>
 
