@@ -3343,3 +3343,48 @@ button:active {
 .pwa-btn-text {
   line-height: 1;
 }
+
+/* [한글 주석] 태블릿 전용 레이아웃 (768px ~ 1024px 사이 세로 모드) */
+@media (min-width: 768px) and (max-width: 1200px) and (orientation: portrait) {
+  /* [한글 주석] 앱 래퍼 너비를 태블릿에 맞게 확장 */
+  #app-wrapper,
+  .app-wrapper,
+  #student-app-wrapper {
+    max-width: 680px !important;
+    width: 90% !important;
+  }
+
+  /* [한글 주석] 헤더 폰트 및 패딩 태블릿 최적화 */
+  #app-header,
+  .app-header {
+    font-size: clamp(13px, 2vw, 18px) !important;
+    padding: 10px 16px !important;
+  }
+
+  /* [한글 주석] 탐험 버튼 태블릿 크기 조정 */
+  #explore-btn,
+  .explore-btn {
+    font-size: clamp(16px, 2.5vw, 22px) !important;
+    padding: 16px 32px !important;
+  }
+
+  /* [한글 주석] 도감/지도/아이템 버튼 태블릿 크기 조정 */
+  .side-btn,
+  .quick-btn {
+    width: 64px !important;
+    height: 64px !important;
+    font-size: 12px !important;
+  }
+
+  /* [한글 주석] 카드 그리드 태블릿에서 3열로 확장 */
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  /* [한글 주석] 아바타 영역 태블릿 크기 조정 */
+  #main-character-area,
+  .main-character-area {
+    transform: scale(1.3) !important;
+    transform-origin: center bottom !important;
+  }
+}
