@@ -227,7 +227,8 @@ function startStudentDemo() {
     const n = String(i).padStart(3, '0');
     allIds.push('plant_' + n, 'animal_' + n, 'artifact_' + n);
   }
-  localStorage.setItem('collection', JSON.stringify(allIds));
+  // [한글 주석] storage.js의 getCollection()은 'userCollection' 키를 읽음
+  localStorage.setItem('userCollection', JSON.stringify(allIds));
 
   // [한글 주석] 아이템 전체 해금
   localStorage.setItem('unlockedItems', 'all');
@@ -313,7 +314,7 @@ function exitDemoMode() {
   // [한글 주석] 주입한 데모 데이터 전체 삭제
   const demoKeys = [
     'demoMode', 'demoStudents', 'isTeacher', 'teacherClass',
-    'userData', 'currentLevel', 'collection',
+    'userData', 'currentLevel', 'collection', 'userCollection',
     'quizPassed_animal', 'quizPassed_artifact', 'unlockedCategories',
     'unlockedItems', 'localQuizHistory', 'rewardBags',
     'dailyQuizTime', 'localQuizHistory'
