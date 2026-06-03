@@ -227,7 +227,6 @@ function startStudentDemo() {
     const n = String(i).padStart(3, '0');
     allIds.push('plant_' + n, 'animal_' + n, 'artifact_' + n);
   }
-  if (typeof saveCollection === 'function') saveCollection(allIds);
   localStorage.setItem('collection', JSON.stringify(allIds));
 
   // [한글 주석] 아이템 전체 해금
