@@ -230,8 +230,9 @@ function startStudentDemo() {
   // [한글 주석] storage.js의 getCollection()은 'userCollection' 키를 읽음
   localStorage.setItem('userCollection', JSON.stringify(allIds));
 
-  // [한글 주석] 아이템 전체 해금
-  localStorage.setItem('unlockedItems', 'all');
+  // [한글 주석] 아이템 목록 초기화 (빈 배열로 설정, checkAndUnlockItems가 레벨 30 기준으로 자동 해금)
+  localStorage.setItem('unlockedItems', JSON.stringify([]));
+  localStorage.setItem('unlockedAvatars', JSON.stringify([]));
 
   // [한글 주석] 조합소 체험용 중복 카드 데이터 주입 (각 카드 3~5장씩)
   const demoDuplicates = {
@@ -326,7 +327,7 @@ function exitDemoMode() {
     'demoMode', 'demoStudents', 'isTeacher', 'teacherClass',
     'userData', 'currentLevel', 'collection', 'userCollection',
     'quizPassed_animal', 'quizPassed_artifact', 'unlockedCategories',
-    'unlockedItems', 'cardDuplicates', 'localQuizHistory', 'rewardBags',
+    'unlockedItems', 'unlockedAvatars', 'cardDuplicates', 'localQuizHistory', 'rewardBags',
     'dailyQuizTime', 'localQuizHistory'
   ];
   demoKeys.forEach(k => localStorage.removeItem(k));
