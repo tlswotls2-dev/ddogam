@@ -6,26 +6,26 @@ const DEMO_PASSWORD = 'ddogam2026';
 
 // [한글 주석] 교사 대시보드 체험용 샘플 학생 20명 데이터
 const DEMO_STUDENTS = [
-  { number:'1',  name:'김민준', steps:4200, total:65, plant:35, animal:20, artifact:10, todayCollect:6, todayCorrect:2, todayParticipated:true,  todayBattle:true,  todayBattleWon:true,  lastSync:'2026.06.02 10:23', categoryStats:{ plant:{correct:8,total:10}, animal:{correct:6,total:8},  artifact:{correct:3,total:5} } },
-  { number:'2',  name:'이서연', steps:3800, total:58, plant:30, animal:18, artifact:10, todayCollect:5, todayCorrect:2, todayParticipated:true,  todayBattle:false, todayBattleWon:false, lastSync:'2026.06.02 10:18', categoryStats:{ plant:{correct:7,total:9},  animal:{correct:5,total:7},  artifact:{correct:2,total:4} } },
-  { number:'3',  name:'박지호', steps:2900, total:42, plant:28, animal:14, artifact:0,  todayCollect:4, todayCorrect:1, todayParticipated:true,  todayBattle:true,  todayBattleWon:false, lastSync:'2026.06.02 09:55', categoryStats:{ plant:{correct:5,total:8},  animal:{correct:3,total:6},  artifact:{correct:0,total:0} } },
-  { number:'4',  name:'최수아', steps:3200, total:51, plant:29, animal:16, artifact:6,  todayCollect:5, todayCorrect:2, todayParticipated:true,  todayBattle:false, todayBattleWon:false, lastSync:'2026.06.02 10:10', categoryStats:{ plant:{correct:6,total:8},  animal:{correct:4,total:6},  artifact:{correct:1,total:3} } },
-  { number:'5',  name:'정하윤', steps:1800, total:31, plant:25, animal:6,  artifact:0,  todayCollect:2, todayCorrect:1, todayParticipated:true,  todayBattle:false, todayBattleWon:false, lastSync:'2026.06.02 09:42', categoryStats:{ plant:{correct:4,total:7},  animal:{correct:1,total:4},  artifact:{correct:0,total:0} } },
-  { number:'6',  name:'강민서', steps:4500, total:73, plant:38, animal:25, artifact:10, todayCollect:7, todayCorrect:2, todayParticipated:true,  todayBattle:true,  todayBattleWon:true,  lastSync:'2026.06.02 10:28', categoryStats:{ plant:{correct:9,total:10}, animal:{correct:7,total:9},  artifact:{correct:3,total:4} } },
-  { number:'7',  name:'윤서진', steps:2100, total:38, plant:27, animal:11, artifact:0,  todayCollect:3, todayCorrect:0, todayParticipated:true,  todayBattle:false, todayBattleWon:false, lastSync:'2026.06.02 09:30', categoryStats:{ plant:{correct:3,total:6},  animal:{correct:2,total:5},  artifact:{correct:0,total:0} } },
-  { number:'8',  name:'임도윤', steps:800,  total:18, plant:18, animal:0,  artifact:0,  todayCollect:1, todayCorrect:0, todayParticipated:false, todayBattle:false, todayBattleWon:false, lastSync:'2026.06.02 09:15', categoryStats:{ plant:{correct:2,total:5},  animal:{correct:0,total:0},  artifact:{correct:0,total:0} } },
-  { number:'9',  name:'한지아', steps:3500, total:55, plant:32, animal:17, artifact:6,  todayCollect:5, todayCorrect:1, todayParticipated:true,  todayBattle:true,  todayBattleWon:false, lastSync:'2026.06.02 10:05', categoryStats:{ plant:{correct:6,total:9},  animal:{correct:4,total:7},  artifact:{correct:2,total:4} } },
-  { number:'10', name:'오준혁', steps:500,  total:12, plant:12, animal:0,  artifact:0,  todayCollect:0, todayCorrect:0, todayParticipated:false, todayBattle:false, todayBattleWon:false, lastSync:'2026.06.01 14:22', categoryStats:null },
-  { number:'11', name:'배나은', steps:2700, total:44, plant:28, animal:14, artifact:2,  todayCollect:4, todayCorrect:2, todayParticipated:true,  todayBattle:false, todayBattleWon:false, lastSync:'2026.06.02 10:00', categoryStats:{ plant:{correct:5,total:7},  animal:{correct:3,total:5},  artifact:{correct:1,total:2} } },
-  { number:'12', name:'신채원', steps:3100, total:48, plant:30, animal:15, artifact:3,  todayCollect:5, todayCorrect:1, todayParticipated:true,  todayBattle:false, todayBattleWon:false, lastSync:'2026.06.02 09:48', categoryStats:{ plant:{correct:6,total:8},  animal:{correct:3,total:6},  artifact:{correct:1,total:2} } },
-  { number:'13', name:'류지훈', steps:1200, total:22, plant:20, animal:2,  artifact:0,  todayCollect:1, todayCorrect:0, todayParticipated:true,  todayBattle:false, todayBattleWon:false, lastSync:'2026.06.02 09:20', categoryStats:{ plant:{correct:2,total:4},  animal:{correct:0,total:1},  artifact:{correct:0,total:0} } },
-  { number:'14', name:'권아린', steps:4100, total:68, plant:36, animal:22, artifact:10, todayCollect:6, todayCorrect:2, todayParticipated:true,  todayBattle:true,  todayBattleWon:true,  lastSync:'2026.06.02 10:20', categoryStats:{ plant:{correct:8,total:10}, animal:{correct:6,total:8},  artifact:{correct:3,total:5} } },
-  { number:'15', name:'문태양', steps:2400, total:36, plant:26, animal:10, artifact:0,  todayCollect:3, todayCorrect:1, todayParticipated:true,  todayBattle:false, todayBattleWon:false, lastSync:'2026.06.02 09:38', categoryStats:{ plant:{correct:4,total:6},  animal:{correct:2,total:4},  artifact:{correct:0,total:0} } },
-  { number:'16', name:'',     steps:1600, total:28, plant:24, animal:4,  artifact:0,  todayCollect:2, todayCorrect:0, todayParticipated:false, todayBattle:false, todayBattleWon:false, lastSync:'2026.06.02 09:10', categoryStats:{ plant:{correct:3,total:5},  animal:{correct:0,total:2},  artifact:{correct:0,total:0} } },
-  { number:'17', name:'조예린', steps:3700, total:60, plant:33, animal:20, artifact:7,  todayCollect:6, todayCorrect:2, todayParticipated:true,  todayBattle:true,  todayBattleWon:false, lastSync:'2026.06.02 10:15', categoryStats:{ plant:{correct:7,total:9},  animal:{correct:5,total:7},  artifact:{correct:2,total:3} } },
-  { number:'18', name:'서민우', steps:900,  total:15, plant:15, animal:0,  artifact:0,  todayCollect:0, todayCorrect:0, todayParticipated:false, todayBattle:false, todayBattleWon:false, lastSync:'2026.06.01 16:30', categoryStats:null },
-  { number:'19', name:'황지은', steps:2600, total:41, plant:27, animal:12, artifact:2,  todayCollect:3, todayCorrect:1, todayParticipated:true,  todayBattle:false, todayBattleWon:false, lastSync:'2026.06.02 09:52', categoryStats:{ plant:{correct:5,total:7},  animal:{correct:2,total:5},  artifact:{correct:1,total:2} } },
-  { number:'20', name:'노현준', steps:3300, total:53, plant:31, animal:17, artifact:5,  todayCollect:4, todayCorrect:2, todayParticipated:true,  todayBattle:true,  todayBattleWon:true,  lastSync:'2026.06.02 10:08', categoryStats:{ plant:{correct:6,total:8},  animal:{correct:4,total:6},  artifact:{correct:2,total:3} } },
+  { number: '1', name: '김민준', steps: 4200, total: 65, plant: 35, animal: 20, artifact: 10, todayCollect: 6, todayCorrect: 2, todayParticipated: true, todayBattle: true, todayBattleWon: true, lastSync: '2026.06.02 10:23', categoryStats: { plant: { correct: 8, total: 10 }, animal: { correct: 6, total: 8 }, artifact: { correct: 3, total: 5 } } },
+  { number: '2', name: '이서연', steps: 3800, total: 58, plant: 30, animal: 18, artifact: 10, todayCollect: 5, todayCorrect: 2, todayParticipated: true, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.02 10:18', categoryStats: { plant: { correct: 7, total: 9 }, animal: { correct: 5, total: 7 }, artifact: { correct: 2, total: 4 } } },
+  { number: '3', name: '박지호', steps: 2900, total: 42, plant: 28, animal: 14, artifact: 0, todayCollect: 4, todayCorrect: 1, todayParticipated: true, todayBattle: true, todayBattleWon: false, lastSync: '2026.06.02 09:55', categoryStats: { plant: { correct: 5, total: 8 }, animal: { correct: 3, total: 6 }, artifact: { correct: 0, total: 0 } } },
+  { number: '4', name: '최수아', steps: 3200, total: 51, plant: 29, animal: 16, artifact: 6, todayCollect: 5, todayCorrect: 2, todayParticipated: true, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.02 10:10', categoryStats: { plant: { correct: 6, total: 8 }, animal: { correct: 4, total: 6 }, artifact: { correct: 1, total: 3 } } },
+  { number: '5', name: '정하윤', steps: 1800, total: 31, plant: 25, animal: 6, artifact: 0, todayCollect: 2, todayCorrect: 1, todayParticipated: true, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.02 09:42', categoryStats: { plant: { correct: 4, total: 7 }, animal: { correct: 1, total: 4 }, artifact: { correct: 0, total: 0 } } },
+  { number: '6', name: '강민서', steps: 4500, total: 73, plant: 38, animal: 25, artifact: 10, todayCollect: 7, todayCorrect: 2, todayParticipated: true, todayBattle: true, todayBattleWon: true, lastSync: '2026.06.02 10:28', categoryStats: { plant: { correct: 9, total: 10 }, animal: { correct: 7, total: 9 }, artifact: { correct: 3, total: 4 } } },
+  { number: '7', name: '윤서진', steps: 2100, total: 38, plant: 27, animal: 11, artifact: 0, todayCollect: 3, todayCorrect: 0, todayParticipated: true, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.02 09:30', categoryStats: { plant: { correct: 3, total: 6 }, animal: { correct: 2, total: 5 }, artifact: { correct: 0, total: 0 } } },
+  { number: '8', name: '임도윤', steps: 800, total: 18, plant: 18, animal: 0, artifact: 0, todayCollect: 1, todayCorrect: 0, todayParticipated: false, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.02 09:15', categoryStats: { plant: { correct: 2, total: 5 }, animal: { correct: 0, total: 0 }, artifact: { correct: 0, total: 0 } } },
+  { number: '9', name: '한지아', steps: 3500, total: 55, plant: 32, animal: 17, artifact: 6, todayCollect: 5, todayCorrect: 1, todayParticipated: true, todayBattle: true, todayBattleWon: false, lastSync: '2026.06.02 10:05', categoryStats: { plant: { correct: 6, total: 9 }, animal: { correct: 4, total: 7 }, artifact: { correct: 2, total: 4 } } },
+  { number: '10', name: '오준혁', steps: 500, total: 12, plant: 12, animal: 0, artifact: 0, todayCollect: 0, todayCorrect: 0, todayParticipated: false, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.01 14:22', categoryStats: null },
+  { number: '11', name: '배나은', steps: 2700, total: 44, plant: 28, animal: 14, artifact: 2, todayCollect: 4, todayCorrect: 2, todayParticipated: true, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.02 10:00', categoryStats: { plant: { correct: 5, total: 7 }, animal: { correct: 3, total: 5 }, artifact: { correct: 1, total: 2 } } },
+  { number: '12', name: '신채원', steps: 3100, total: 48, plant: 30, animal: 15, artifact: 3, todayCollect: 5, todayCorrect: 1, todayParticipated: true, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.02 09:48', categoryStats: { plant: { correct: 6, total: 8 }, animal: { correct: 3, total: 6 }, artifact: { correct: 1, total: 2 } } },
+  { number: '13', name: '류지훈', steps: 1200, total: 22, plant: 20, animal: 2, artifact: 0, todayCollect: 1, todayCorrect: 0, todayParticipated: true, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.02 09:20', categoryStats: { plant: { correct: 2, total: 4 }, animal: { correct: 0, total: 1 }, artifact: { correct: 0, total: 0 } } },
+  { number: '14', name: '권아린', steps: 4100, total: 68, plant: 36, animal: 22, artifact: 10, todayCollect: 6, todayCorrect: 2, todayParticipated: true, todayBattle: true, todayBattleWon: true, lastSync: '2026.06.02 10:20', categoryStats: { plant: { correct: 8, total: 10 }, animal: { correct: 6, total: 8 }, artifact: { correct: 3, total: 5 } } },
+  { number: '15', name: '문태양', steps: 2400, total: 36, plant: 26, animal: 10, artifact: 0, todayCollect: 3, todayCorrect: 1, todayParticipated: true, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.02 09:38', categoryStats: { plant: { correct: 4, total: 6 }, animal: { correct: 2, total: 4 }, artifact: { correct: 0, total: 0 } } },
+  { number: '16', name: '', steps: 1600, total: 28, plant: 24, animal: 4, artifact: 0, todayCollect: 2, todayCorrect: 0, todayParticipated: false, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.02 09:10', categoryStats: { plant: { correct: 3, total: 5 }, animal: { correct: 0, total: 2 }, artifact: { correct: 0, total: 0 } } },
+  { number: '17', name: '조예린', steps: 3700, total: 60, plant: 33, animal: 20, artifact: 7, todayCollect: 6, todayCorrect: 2, todayParticipated: true, todayBattle: true, todayBattleWon: false, lastSync: '2026.06.02 10:15', categoryStats: { plant: { correct: 7, total: 9 }, animal: { correct: 5, total: 7 }, artifact: { correct: 2, total: 3 } } },
+  { number: '18', name: '서민우', steps: 900, total: 15, plant: 15, animal: 0, artifact: 0, todayCollect: 0, todayCorrect: 0, todayParticipated: false, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.01 16:30', categoryStats: null },
+  { number: '19', name: '황지은', steps: 2600, total: 41, plant: 27, animal: 12, artifact: 2, todayCollect: 3, todayCorrect: 1, todayParticipated: true, todayBattle: false, todayBattleWon: false, lastSync: '2026.06.02 09:52', categoryStats: { plant: { correct: 5, total: 7 }, animal: { correct: 2, total: 5 }, artifact: { correct: 1, total: 2 } } },
+  { number: '20', name: '노현준', steps: 3300, total: 53, plant: 31, animal: 17, artifact: 5, todayCollect: 4, todayCorrect: 2, todayParticipated: true, todayBattle: true, todayBattleWon: true, lastSync: '2026.06.02 10:08', categoryStats: { plant: { correct: 6, total: 8 }, animal: { correct: 4, total: 6 }, artifact: { correct: 2, total: 3 } } },
 ];
 
 // ==========================================
@@ -56,7 +56,7 @@ function showDemoModeEntry() {
     ">
       <div style="font-size:40px;margin-bottom:10px;">🔍</div>
       <div style="color:#4a9eff;font-size:16px;font-weight:900;margin-bottom:6px;">체험 모드</div>
-      <div style="color:#888;font-size:11px;margin-bottom:20px;">교사·심사위원 전용 체험 모드입니다</div>
+      <div style="color:#888;font-size:11px;margin-bottom:20px;">교사 전용 체험 모드입니다</div>
 
       <input id="demo-pw-input" type="password" placeholder="비밀번호를 입력하세요"
         style="
@@ -218,7 +218,7 @@ function startStudentDemo() {
   }
   localStorage.setItem('quizPassed_animal', 'true');
   localStorage.setItem('quizPassed_artifact', 'true');
-  localStorage.setItem('unlockedCategories', JSON.stringify(['plant','animal','artifact']));
+  localStorage.setItem('unlockedCategories', JSON.stringify(['plant', 'animal', 'artifact']));
 
   // [한글 주석] 카드 300장 전부 수집
   const allIds = [];
@@ -235,22 +235,22 @@ function startStudentDemo() {
 
   // [한글 주석] 조합소 체험용 중복 카드 데이터 주입 (각 카드 3~5장씩)
   const demoDuplicates = {
-    'plant_001':4, 'plant_002':3, 'plant_003':5, 'plant_004':3, 'plant_005':4,
-    'plant_006':3, 'plant_007':4, 'plant_008':3, 'plant_009':5, 'plant_010':3,
-    'animal_001':4, 'animal_002':3, 'animal_003':5, 'animal_004':3, 'animal_005':4,
-    'animal_006':3, 'animal_007':4, 'animal_008':3, 'animal_009':5, 'animal_010':3,
-    'artifact_001':3, 'artifact_002':4, 'artifact_003':3, 'artifact_004':5, 'artifact_005':3,
+    'plant_001': 4, 'plant_002': 3, 'plant_003': 5, 'plant_004': 3, 'plant_005': 4,
+    'plant_006': 3, 'plant_007': 4, 'plant_008': 3, 'plant_009': 5, 'plant_010': 3,
+    'animal_001': 4, 'animal_002': 3, 'animal_003': 5, 'animal_004': 3, 'animal_005': 4,
+    'animal_006': 3, 'animal_007': 4, 'animal_008': 3, 'animal_009': 5, 'animal_010': 3,
+    'artifact_001': 3, 'artifact_002': 4, 'artifact_003': 3, 'artifact_004': 5, 'artifact_005': 3,
   };
   localStorage.setItem('cardDuplicates', JSON.stringify(demoDuplicates));
 
   // [한글 주석] 샘플 퀴즈 기록 (AI 분석 화면 체험용)
   const sampleHistory = [
-    ...Array(8).fill(null).map(() => ({ type:'level_quiz', correct:true,  category:'plant',    ts:Date.now() })),
-    ...Array(3).fill(null).map(() => ({ type:'level_quiz', correct:false, category:'plant',    ts:Date.now() })),
-    ...Array(4).fill(null).map(() => ({ type:'level_quiz', correct:true,  category:'animal',   ts:Date.now() })),
-    ...Array(4).fill(null).map(() => ({ type:'level_quiz', correct:false, category:'animal',   ts:Date.now() })),
-    ...Array(2).fill(null).map(() => ({ type:'daily_quiz', correct:true,  category:'artifact', ts:Date.now() })),
-    ...Array(5).fill(null).map(() => ({ type:'daily_quiz', correct:false, category:'artifact', ts:Date.now() })),
+    ...Array(8).fill(null).map(() => ({ type: 'level_quiz', correct: true, category: 'plant', ts: Date.now() })),
+    ...Array(3).fill(null).map(() => ({ type: 'level_quiz', correct: false, category: 'plant', ts: Date.now() })),
+    ...Array(4).fill(null).map(() => ({ type: 'level_quiz', correct: true, category: 'animal', ts: Date.now() })),
+    ...Array(4).fill(null).map(() => ({ type: 'level_quiz', correct: false, category: 'animal', ts: Date.now() })),
+    ...Array(2).fill(null).map(() => ({ type: 'daily_quiz', correct: true, category: 'artifact', ts: Date.now() })),
+    ...Array(5).fill(null).map(() => ({ type: 'daily_quiz', correct: false, category: 'artifact', ts: Date.now() })),
   ];
   localStorage.setItem('localQuizHistory', JSON.stringify(sampleHistory));
 
@@ -352,10 +352,10 @@ function checkDemoModeBanner() {
 }
 
 // [한글 주석] 전역 노출
-window.showDemoModeEntry  = showDemoModeEntry;
-window.startStudentDemo   = startStudentDemo;
-window.startTeacherDemo   = startTeacherDemo;
-window.showDemoBanner     = showDemoBanner;
-window.exitDemoMode       = exitDemoMode;
+window.showDemoModeEntry = showDemoModeEntry;
+window.startStudentDemo = startStudentDemo;
+window.startTeacherDemo = startTeacherDemo;
+window.showDemoBanner = showDemoBanner;
+window.exitDemoMode = exitDemoMode;
 window.checkDemoModeBanner = checkDemoModeBanner;
 window._verifyDemoPassword = _verifyDemoPassword;

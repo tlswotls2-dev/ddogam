@@ -5,8 +5,8 @@
  * @param {Object} data - 저장할 사용자 데이터 객체
  */
 function saveUserData(data) {
-    // 객체를 JSON 문자열로 변환하여 저장
-    localStorage.setItem('userData', JSON.stringify(data));
+  // 객체를 JSON 문자열로 변환하여 저장
+  localStorage.setItem('userData', JSON.stringify(data));
 }
 
 /**
@@ -14,10 +14,10 @@ function saveUserData(data) {
  * @returns {Object|null} 저장된 사용자 데이터 객체 또는 데이터가 없을 경우 null
  */
 function loadUserData() {
-    // 저장된 JSON 문자열을 가져옴
-    const dataString = localStorage.getItem('userData');
-    // 문자열이 있으면 객체로 변환하여 반환, 없으면 null 반환
-    return dataString ? JSON.parse(dataString) : null;
+  // 저장된 JSON 문자열을 가져옴
+  const dataString = localStorage.getItem('userData');
+  // 문자열이 있으면 객체로 변환하여 반환, 없으면 null 반환
+  return dataString ? JSON.parse(dataString) : null;
 }
 
 /**
@@ -25,62 +25,62 @@ function loadUserData() {
  * @param {string} cardId - 수집한 카드의 ID
  */
 function saveCollection(cardId) {
-    // 기존 컬렉션을 불러옴
-    const collection = getCollection();
-    // 중복 수집 방지: 아직 컬렉션에 없는 카드일 경우만 추가
-    if (!collection.includes(cardId)) {
-        collection.push(cardId);
-        // 업데이트된 컬렉션을 다시 문자열로 변환하여 저장
-        localStorage.setItem('userCollection', JSON.stringify(collection));
+  // 기존 컬렉션을 불러옴
+  const collection = getCollection();
+  // 중복 수집 방지: 아직 컬렉션에 없는 카드일 경우만 추가
+  if (!collection.includes(cardId)) {
+    collection.push(cardId);
+    // 업데이트된 컬렉션을 다시 문자열로 변환하여 저장
+    localStorage.setItem('userCollection', JSON.stringify(collection));
 
-        // [한글 주석] 대기 중인 레벨업 퀴즈가 있으면 먼저 처리
-        const pendingLevel = localStorage.getItem('pendingLevel');
-        if (pendingLevel) {
-          localStorage.removeItem('pendingLevel');
-          if (typeof showLevelUpQuiz === 'function') {
-            showLevelUpQuiz(parseInt(pendingLevel), cardId);
-          }
-          return; // [한글 주석] 대기 퀴즈 처리 후 나머지 로직 skip
-        }
-
-        // [한글 주석] 일반 레벨업 체크
-        const prevTotal = collection.length - 1;
-        const newTotal = collection.length;
-        const newLevel = checkLevelUp(prevTotal, newTotal);
-        if (newLevel) {
-          if (typeof showLevelUpQuiz === 'function') {
-            showLevelUpQuiz(newLevel, cardId);
-          } else {
-            showLevelUpPopup(newLevel);
-          }
-        }
-
-        // 도감을 위한 수집 날짜 저장
-        const dates = getCollectionDates();
-        const dateString = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
-        dates[cardId] = dateString;
-        localStorage.setItem('collectionDates', JSON.stringify(dates));
-
-        // [한글 주석] WiFi 연결 시 자동 동기화를 위한 대기열 추가
-        if (typeof addToSyncQueue === 'function') {
-            const card = window.allCardsData ? window.allCardsData.find(c => c.id === cardId) : null;
-            if (card) {
-                addToSyncQueue('card_collected', {
-                    cardId: card.id,
-                    cardName: card.name,
-                    category: card.category,
-                    rarity: card.rarity
-                });
-            } else {
-                addToSyncQueue('card_collected', {
-                    cardId: cardId,
-                    cardName: '알 수 없음',
-                    category: cardId.split('_')[0] || 'plant',
-                    rarity: 'common'
-                });
-            }
-        }
+    // [한글 주석] 대기 중인 레벨업 퀴즈가 있으면 먼저 처리
+    const pendingLevel = localStorage.getItem('pendingLevel');
+    if (pendingLevel) {
+      localStorage.removeItem('pendingLevel');
+      if (typeof showLevelUpQuiz === 'function') {
+        showLevelUpQuiz(parseInt(pendingLevel), cardId);
+      }
+      return; // [한글 주석] 대기 퀴즈 처리 후 나머지 로직 skip
     }
+
+    // [한글 주석] 일반 레벨업 체크
+    const prevTotal = collection.length - 1;
+    const newTotal = collection.length;
+    const newLevel = checkLevelUp(prevTotal, newTotal);
+    if (newLevel) {
+      if (typeof showLevelUpQuiz === 'function') {
+        showLevelUpQuiz(newLevel, cardId);
+      } else {
+        showLevelUpPopup(newLevel);
+      }
+    }
+
+    // 도감을 위한 수집 날짜 저장
+    const dates = getCollectionDates();
+    const dateString = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+    dates[cardId] = dateString;
+    localStorage.setItem('collectionDates', JSON.stringify(dates));
+
+    // [한글 주석] WiFi 연결 시 자동 동기화를 위한 대기열 추가
+    if (typeof addToSyncQueue === 'function') {
+      const card = window.allCardsData ? window.allCardsData.find(c => c.id === cardId) : null;
+      if (card) {
+        addToSyncQueue('card_collected', {
+          cardId: card.id,
+          cardName: card.name,
+          category: card.category,
+          rarity: card.rarity
+        });
+      } else {
+        addToSyncQueue('card_collected', {
+          cardId: cardId,
+          cardName: '알 수 없음',
+          category: cardId.split('_')[0] || 'plant',
+          rarity: 'common'
+        });
+      }
+    }
+  }
 }
 
 /**
@@ -88,8 +88,8 @@ function saveCollection(cardId) {
  * @returns {Object} { "cardId": "2026년 5월 14일" } 형태의 객체
  */
 function getCollectionDates() {
-    const datesString = localStorage.getItem('collectionDates');
-    return datesString ? JSON.parse(datesString) : {};
+  const datesString = localStorage.getItem('collectionDates');
+  return datesString ? JSON.parse(datesString) : {};
 }
 
 /**
@@ -97,10 +97,10 @@ function getCollectionDates() {
  * @returns {Array<string>} 수집한 카드 ID 배열
  */
 function getCollection() {
-    // 저장된 컬렉션 문자열을 가져옴
-    const collectionString = localStorage.getItem('userCollection');
-    // 문자열이 있으면 배열로 변환하여 반환, 없으면 빈 배열 반환
-    return collectionString ? JSON.parse(collectionString) : [];
+  // 저장된 컬렉션 문자열을 가져옴
+  const collectionString = localStorage.getItem('userCollection');
+  // 문자열이 있으면 배열로 변환하여 반환, 없으면 빈 배열 반환
+  return collectionString ? JSON.parse(collectionString) : [];
 }
 
 /**
@@ -110,9 +110,9 @@ function getCollection() {
  * @param {number} lng - 경도
  */
 function saveCollectionLocation(cardId, lat, lng) {
-    const locations = getCollectionLocations();
-    locations[cardId] = { lat: lat, lng: lng };
-    localStorage.setItem('collectionLocations', JSON.stringify(locations));
+  const locations = getCollectionLocations();
+  locations[cardId] = { lat: lat, lng: lng };
+  localStorage.setItem('collectionLocations', JSON.stringify(locations));
 }
 
 /**
@@ -120,8 +120,8 @@ function saveCollectionLocation(cardId, lat, lng) {
  * @returns {Object} { "cardId": { lat: 37.56, lng: 126.97 } } 형태의 객체
  */
 function getCollectionLocations() {
-    const locString = localStorage.getItem('collectionLocations');
-    return locString ? JSON.parse(locString) : {};
+  const locString = localStorage.getItem('collectionLocations');
+  return locString ? JSON.parse(locString) : {};
 }
 
 /**
@@ -129,11 +129,11 @@ function getCollectionLocations() {
  * @param {string} category - 통과한 카테고리 이름 ('animal' 또는 'artifact')
  */
 function setQuizPassed(category) {
-    const passed = getQuizPassed();
-    if (!passed.includes(category)) {
-        passed.push(category);
-        localStorage.setItem('quizPassed', JSON.stringify(passed));
-    }
+  const passed = getQuizPassed();
+  if (!passed.includes(category)) {
+    passed.push(category);
+    localStorage.setItem('quizPassed', JSON.stringify(passed));
+  }
 }
 
 /**
@@ -141,8 +141,8 @@ function setQuizPassed(category) {
  * @returns {Array<string>} 통과한 카테고리 배열
  */
 function getQuizPassed() {
-    const passedStr = localStorage.getItem('quizPassed');
-    return passedStr ? JSON.parse(passedStr) : [];
+  const passedStr = localStorage.getItem('quizPassed');
+  return passedStr ? JSON.parse(passedStr) : [];
 }
 
 /**
@@ -151,7 +151,7 @@ function getQuizPassed() {
  * @returns {boolean} 통과 여부
  */
 function isQuizPassed(category) {
-    return getQuizPassed().includes(category);
+  return getQuizPassed().includes(category);
 }
 
 // [한글 주석] 실제 확정된 레벨 가져오기 (퀴즈 통과 후 저장된 값)
@@ -189,7 +189,7 @@ window.checkLevelUp = checkLevelUp;
 function checkCategoryUnlockByLevel(level) {
   // [한글 주석] 레벨 5 → 동물 해금, 레벨 10 → 유물 해금
   const unlocks = [];
-  if (level >= 5)  unlocks.push('animal');
+  if (level >= 5) unlocks.push('animal');
   if (level >= 10) unlocks.push('artifact');
 
   const current = JSON.parse(localStorage.getItem('unlockedCategories') || '["plant"]');
@@ -217,7 +217,7 @@ function getUnlockedCategories() {
     ? getCurrentLevel()
     : parseInt(localStorage.getItem('currentLevel') || '1');
   const categories = ['plant'];
-  if (level >= 5)  categories.push('animal');
+  if (level >= 5) categories.push('animal');
   if (level >= 10) categories.push('artifact');
   return categories;
 }
@@ -303,15 +303,15 @@ function addBagFragment() {
     const bags = JSON.parse(localStorage.getItem('rewardBags') || '[]');
     const now = new Date();
     const timeStr = now.toLocaleDateString('ko-KR', {
-      year:'numeric', month:'long', day:'numeric',
-      hour:'2-digit', minute:'2-digit'
+      year: 'numeric', month: 'long', day: 'numeric',
+      hour: '2-digit', minute: '2-digit'
     });
     const unlockedCats = typeof getUnlockedCategories === 'function'
       ? getUnlockedCategories() : ['plant'];
     const randomCat = unlockedCats[Math.floor(Math.random() * unlockedCats.length)];
 
     bags.push({
-      reward: { type:'category', category:randomCat, rarity:'all' },
+      reward: { type: 'category', category: randomCat, rarity: 'all' },
       receivedAt: timeStr,
       source: 'battle_draw'
     });
