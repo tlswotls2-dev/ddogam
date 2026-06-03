@@ -150,14 +150,13 @@ function _showDemoSelection() {
         margin-bottom:12px;
       ">
         <div style="display:flex;align-items:center;gap:14px;">
-          <div style="font-size:36px;">🧑🎓</div>
+          <div style="font-size:36px;flex-shrink:0;">🎓</div>
           <div>
             <div style="color:#84ff00;font-size:14px;font-weight:900;margin-bottom:3px;">
               학생 체험
             </div>
             <div style="color:#9ab89a;font-size:11px;line-height:1.6;">
-              레벨 30 · 카드 300장 전부 수집<br>
-              모든 아이템·카테고리 해금 상태
+              레벨 30 · 카드 300장 전부 수집 · 모든 아이템·카테고리 해금 상태
             </div>
           </div>
         </div>
