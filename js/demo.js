@@ -233,6 +233,16 @@ function startStudentDemo() {
   // [한글 주석] 아이템 전체 해금
   localStorage.setItem('unlockedItems', 'all');
 
+  // [한글 주석] 조합소 체험용 중복 카드 데이터 주입 (각 카드 3~5장씩)
+  const demoDuplicates = {
+    'plant_001':4, 'plant_002':3, 'plant_003':5, 'plant_004':3, 'plant_005':4,
+    'plant_006':3, 'plant_007':4, 'plant_008':3, 'plant_009':5, 'plant_010':3,
+    'animal_001':4, 'animal_002':3, 'animal_003':5, 'animal_004':3, 'animal_005':4,
+    'animal_006':3, 'animal_007':4, 'animal_008':3, 'animal_009':5, 'animal_010':3,
+    'artifact_001':3, 'artifact_002':4, 'artifact_003':3, 'artifact_004':5, 'artifact_005':3,
+  };
+  localStorage.setItem('cardDuplicates', JSON.stringify(demoDuplicates));
+
   // [한글 주석] 샘플 퀴즈 기록 (AI 분석 화면 체험용)
   const sampleHistory = [
     ...Array(8).fill(null).map(() => ({ type:'level_quiz', correct:true,  category:'plant',    ts:Date.now() })),
@@ -316,7 +326,7 @@ function exitDemoMode() {
     'demoMode', 'demoStudents', 'isTeacher', 'teacherClass',
     'userData', 'currentLevel', 'collection', 'userCollection',
     'quizPassed_animal', 'quizPassed_artifact', 'unlockedCategories',
-    'unlockedItems', 'localQuizHistory', 'rewardBags',
+    'unlockedItems', 'cardDuplicates', 'localQuizHistory', 'rewardBags',
     'dailyQuizTime', 'localQuizHistory'
   ];
   demoKeys.forEach(k => localStorage.removeItem(k));
