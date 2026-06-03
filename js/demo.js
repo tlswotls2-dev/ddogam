@@ -256,9 +256,9 @@ function startStudentDemo() {
 
   // [한글 주석] 체험용 복주머니 3개 미리 지급
   const demoBags = [
-    { reward:{ type:'category', category:'plant',    rarity:'epic'   }, receivedAt:'2026년 6월 2일 선생님 선물', source:'teacher' },
-    { reward:{ type:'category', category:'animal',   rarity:'rare'   }, receivedAt:'2026년 6월 2일 배틀 승리',   source:'battle_win' },
-    { reward:{ type:'category', category:'artifact', rarity:'common' }, receivedAt:'2026년 6월 2일 일일 시험',   source:'daily_quiz' },
+    { reward: { type: 'category', category: 'plant', rarity: 'epic' }, receivedAt: '2026년 6월 2일 선생님 선물', source: 'teacher' },
+    { reward: { type: 'category', category: 'animal', rarity: 'rare' }, receivedAt: '2026년 6월 2일 배틀 승리', source: 'battle_win' },
+    { reward: { type: 'category', category: 'artifact', rarity: 'common' }, receivedAt: '2026년 6월 2일 일일 시험', source: 'daily_quiz' },
   ];
   localStorage.setItem('rewardBags', JSON.stringify(demoBags));
 
