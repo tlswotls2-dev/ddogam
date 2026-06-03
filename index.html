@@ -175,16 +175,18 @@
       <!-- [한글 주석] 기기 초기화 버튼 (기존 API 키 변경 버튼 제거 후 추가) -->
       <!-- [한글 주석] 기기 초기화 버튼 - 실수 방지를 위해 아래 여백 충분히 확보 -->
       <!-- [한글 주석] 체험 모드 버튼 (교사·심사위원용) -->
-      <button class="start-btn" onclick="if(typeof showDemoModeEntry==='function') showDemoModeEntry();" style="
-        background:linear-gradient(135deg,#0d2035,#1a3a5a) !important;
-        border:1.5px solid #4a9eff !important;
-        color:#4a9eff !important;
-        margin-top:8px !important;
-        margin-bottom:4px !important;
-        width:100% !important;
-        box-sizing:border-box !important;
-        display:block !important;
-      ">🔍 체험 모드 (교사용)</button>
+      <div style="width:100%;box-sizing:border-box;">
+        <button class="start-btn" onclick="if(typeof showDemoModeEntry==='function') showDemoModeEntry();" style="
+          background:linear-gradient(135deg,#0d2035,#1a3a5a) !important;
+          border:1.5px solid #4a9eff !important;
+          color:#4a9eff !important;
+          margin-top:8px !important;
+          margin-bottom:4px !important;
+          width:100% !important;
+          box-sizing:border-box !important;
+          display:block !important;
+        ">🔍 체험 모드 (교사용)</button>
+      </div>
       <button onclick="showResetDeviceConfirm()" style="
               background: none;
               border: 1px solid #8b2020;
@@ -1321,10 +1323,10 @@
     })();
   </script>
 
-<script>
-  // [한글 주석] 체험 모드 배너 체크 (앱 시작 시 실행)
-  if (typeof checkDemoModeBanner === 'function') checkDemoModeBanner();
-</script>
+  <script>
+    // [한글 주석] 체험 모드 배너 체크 (앱 시작 시 실행)
+    if (typeof checkDemoModeBanner === 'function') checkDemoModeBanner();
+  </script>
 
 </body>
 
