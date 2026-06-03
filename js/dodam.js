@@ -8,19 +8,22 @@ let currentDodamCategory = 'plant'; // 도감 화면 진입 시 기본으로 보
 function showDodam() {
   // [한글 주석] 뒤로가기 스택에 추가
   if (typeof pushScreen === 'function') pushScreen('dodam-screen');
-    const dodamScreen = document.getElementById('dodam-screen');
-    
-    // 화면에 보이게(flex) 처리한 후
-    dodamScreen.style.display = 'flex';
-    
-    // 아주 짧은 딜레이 뒤에 slide-in 클래스를 추가하여 애니메이션이 동작하게 합니다.
-    setTimeout(() => {
-        dodamScreen.classList.add('slide-in');
-    }, 10);
+  const dodamScreen = document.getElementById('dodam-screen');
+  dodamScreen.style.display = 'flex';
+  setTimeout(() => { dodamScreen.classList.add('slide-in'); }, 10);
 
-    // 상단 탭 상태 및 그리드 내용 렌더링
-    renderDodamTabs();
-    renderDodamGrid(currentDodamCategory);
+  // [한글 주석] 카드 데이터 로드 완료 후 렌더링 (비동기 대기)
+  function _renderWhenReady() {
+    if (window.allCardsData && window.allCardsData.length > 0) {
+      renderDodamTabs();
+      renderDodamGrid(currentDodamCategory);
+    } else {
+      // [한글 주석] 데이터 아직 없으면 로드 트리거 후 재시도
+      if (typeof loadCardsData === 'function') loadCardsData();
+      setTimeout(_renderWhenReady, 300);
+    }
+  }
+  _renderWhenReady();
 }
 
 /**
