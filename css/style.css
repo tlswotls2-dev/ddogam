@@ -3395,3 +3395,20 @@ button:active {
     transform-origin: center bottom !important;
   }
 }
+
+/* [한글 주석] 체험 모드(교사용) 버튼 - 로그인 폼과 동일한 너비로 정렬 */
+.app-container > button.start-btn {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* [한글 주석] 체험 모드(교사용) 버튼 - 로그인 폼과 동일한 너비 강제 적용 */
+#login-screen > button.start-btn {
+    width: calc(100% ) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+}
