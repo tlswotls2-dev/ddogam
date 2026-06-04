@@ -106,6 +106,10 @@ function _showAIBattleIntro(questions, aiRate, playerLevel) {
 
   document.body.appendChild(overlay);
 
+  // [한글 주석] AI 배틀 BGM 시작 (실제 배틀과 동일한 음악)
+  if (typeof stopBGM === 'function') stopBGM();
+  setTimeout(() => { if (typeof playBattleBGM === 'function') playBattleBGM(); }, 300);
+
   // [한글 주석] 배틀 상태 객체
   const state = { qi: 0, ps: 0, as: 0, questions, aiRate, answered: false };
   document.getElementById('aib-start-btn').onclick = () => _renderAIBattleQ(overlay, state);
@@ -245,6 +249,28 @@ function _renderAIBattleResult(overlay, state) {
   const win  = state.ps > state.as;
   const draw = state.ps === state.as;
 
+  // [한글 주석] AI 배틀 보상 지급 (승리: 복주머니 1개, 무승부: 복주머니 조각 1개)
+  if (win) {
+    const bags = JSON.parse(localStorage.getItem('rewardBags') || '[]');
+    const now = new Date();
+    const timeStr = now.toLocaleDateString('ko-KR', {
+      year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+    const unlockedCats = typeof getUnlockedCategories === 'function'
+      ? getUnlockedCategories() : ['plant'];
+    const randomCat = unlockedCats[Math.floor(Math.random() * unlockedCats.length)];
+    bags.push({
+      reward: { type:'category', category:randomCat, rarity:'all' },
+      receivedAt: timeStr,
+      source: 'ai_battle_win'
+    });
+    localStorage.setItem('rewardBags', JSON.stringify(bags));
+    if (typeof updateRewardBadge === 'function') updateRewardBadge();
+  } else if (draw) {
+    if (typeof addBagFragment === 'function') addBagFragment();
+    if (typeof updateFragmentBadge === 'function') updateFragmentBadge();
+  }
+
   overlay.innerHTML = `
     <div style="max-width:340px;width:100%;padding-top:30px;text-align:center;">
       <div style="font-size:62px;margin-bottom:10px;">
@@ -270,13 +296,13 @@ function _renderAIBattleResult(overlay, state) {
       </div>
 
       <div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:14px;margin-bottom:18px;color:#b0b8d0;font-size:12px;line-height:1.8;">
-        ${win  ? '대단해요! AI 또감이를 이겼어요! 🎉'
-               : draw ? 'AI 또감이와 비겼어요! 한 번 더 도전해봐요 💪'
+        ${win  ? '대단해요! AI 또감이를 이겼어요! 🎉<br><span style="color:#ffd700;font-size:11px;">🎁 복주머니 1개 획득!</span>'
+               : draw ? 'AI 또감이와 비겼어요! 💪<br><span style="color:#4a9eff;font-size:11px;">🧩 복주머니 조각 1개 획득!</span>'
                : 'AI 또감이가 조금 더 빨랐어요.<br>카드를 더 읽고 다시 도전! 📖'}
-        <br><span style="color:#333;font-size:10px;">AI 배틀은 일일 횟수에 포함되지 않아요</span>
+        <br><span style="color:#444;font-size:10px;">AI 배틀은 일일 횟수 · 제한 없음</span>
       </div>
 
-      <button onclick="document.getElementById('ai-battle-overlay').remove();"
+      <button onclick="document.getElementById('ai-battle-overlay').remove(); if(typeof stopBGM==='function') stopBGM(); setTimeout(()=>{ if(typeof playMainBGM==='function') playMainBGM(); },300);"
         style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:13px;color:#c0c8e0;font-size:13px;font-weight:700;cursor:pointer;">
         돌아가기
       </button>
