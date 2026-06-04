@@ -10,27 +10,36 @@ function _getAICorrectRate(playerLevel) {
   return 0.68;
 }
 
-// [한글 주석] AI 배틀 진입점 — battle.js의 매칭 실패 시점에서 호출
+// [한글 주석] AI 배틀 진입점 — allCardsData 기반으로 실제 배틀과 동일한 형식 사용
 function startAIBattle(category) {
-  // [한글 주석] quizData는 quiz.js에서 이미 로드된 전역 변수 사용
-  if (typeof quizData === 'undefined' || !quizData) {
-    alert('퀴즈 데이터를 불러오는 중이에요! 잠시 후 다시 시도해주세요.');
+  const allCards = window.allCardsData || [];
+  const catCards = allCards.filter(c => c.category === category && c.short_desc);
+
+  if (catCards.length < 4) {
+    // [한글 주석] 카드 데이터 미로드 시 잠시 후 재시도 안내
+    const toast = document.createElement('div');
+    toast.className = 'item-unlock-toast';
+    toast.textContent = '카드 데이터를 불러오는 중이에요! 잠시 후 다시 시도해주세요.';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 2500);
     return;
   }
+
   const playerLevel = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
   const aiRate = _getAICorrectRate(playerLevel);
 
-  // [한글 주석] 배틀 카테고리에 맞는 퀴즈 풀 선택 (기존 배틀 로직과 동일)
-  const qCat = category === 'animal' ? 'plant'
-             : category === 'artifact' ? 'animal'
-             : 'plant';
-  const pool = quizData[qCat] || quizData.plant || [];
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  const questions = shuffled.slice(0, 5).map(q => {
-    // [한글 주석] 보기 순서 섞기 (기존 startQuiz 로직과 동일)
-    const correctText = q.options[q.answer];
-    const shuffledOpts = [...q.options].sort(() => Math.random() - 0.5);
-    return { ...q, options: shuffledOpts, answer: shuffledOpts.indexOf(correctText) };
+  // [한글 주석] 카드 5장 랜덤 선택 (실제 배틀과 동일한 방식)
+  const shuffled = [...catCards].sort(() => Math.random() - 0.5);
+  const selected = shuffled.slice(0, 5);
+
+  // [한글 주석] 각 카드에 대해 정답 + 오답 3개 short_desc 보기 구성
+  const questions = selected.map(card => {
+    const others = catCards.filter(c => c.id !== card.id && c.short_desc);
+    const shuffledOthers = [...others].sort(() => Math.random() - 0.5);
+    const wrongs = shuffledOthers.slice(0, 3);
+    const choices = [card, ...wrongs].sort(() => Math.random() - 0.5);
+    return { card, choices };
   });
 
   _showAIBattleIntro(questions, aiRate, playerLevel);
@@ -115,25 +124,35 @@ function _showAIBattleIntro(questions, aiRate, playerLevel) {
   document.getElementById('aib-start-btn').onclick = () => _renderAIBattleQ(overlay, state);
 }
 
-// [한글 주석] AI 배틀 문제 화면
+// [한글 주석] AI 배틀 문제 화면 — 실제 배틀과 동일한 카드 이미지+설명 형식
 function _renderAIBattleQ(overlay, state) {
   if (state.qi >= state.questions.length) {
     _renderAIBattleResult(overlay, state);
     return;
   }
 
-  const q = state.questions[state.qi];
+  const qData = state.questions[state.qi];
+  const card = qData.card;
+  const choices = qData.choices;
   state.answered = false;
 
-  // [한글 주석] AI 정답 여부를 미리 결정 (확률 기반)
+  // [한글 주석] AI 정답 여부 미리 결정 (확률 기반)
   const aiCorrect = Math.random() < state.aiRate;
-  // [한글 주석] AI 생각 시간: 1.2~3.2초 랜덤
   const aiDelay = 1200 + Math.random() * 2000;
   let aiDone = false;
+
+  const rarityColors = { common:'#84ff00', rare:'#4a9eff', epic:'#ffd700' };
+  const rColor = rarityColors[card.rarity] || '#84ff00';
+
+  // [한글 주석] 카드 이미지 (실제 배틀과 동일)
+  const imgHTML = typeof getCardImageHTML === 'function'
+    ? getCardImageHTML(card, 70)
+    : `<div style="font-size:36px;">${card.emoji || '🃏'}</div>`;
 
   overlay.innerHTML = `
     <div style="max-width:340px;width:100%;padding-top:8px;">
 
+      <!-- [한글 주석] 상단 점수판 -->
       <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.04);border-radius:12px;padding:10px 16px;margin-bottom:14px;">
         <div style="text-align:center;">
           <div style="color:#84ff00;font-size:22px;font-weight:700;">${state.ps}</div>
@@ -146,23 +165,28 @@ function _renderAIBattleQ(overlay, state) {
         </div>
       </div>
 
+      <!-- [한글 주석] AI 상태 표시 -->
       <div id="aib-ai-status" style="display:flex;align-items:center;gap:8px;background:rgba(74,158,255,0.07);border:1px solid rgba(74,158,255,0.2);border-radius:9px;padding:8px 12px;margin-bottom:12px;">
         <span style="font-size:16px;">🤖</span>
         <span id="aib-ai-txt" style="color:#4a9eff;font-size:11px;font-weight:700;">AI 또감이 생각 중...</span>
         <span id="aib-ai-icon" style="margin-left:auto;font-size:13px;">💭</span>
       </div>
 
-      <div style="background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;margin-bottom:12px;min-height:72px;display:flex;align-items:center;justify-content:center;">
-        <div style="color:#f0e6c8;font-size:14px;line-height:1.7;text-align:center;">
-          ${q.question}
+      <!-- [한글 주석] 카드 이미지 + 이름 (실제 배틀과 동일한 형식) -->
+      <div style="display:flex;align-items:center;gap:12px;background:rgba(0,0,0,0.3);border:1px solid ${rColor};border-radius:14px;padding:12px;margin-bottom:14px;">
+        <div style="width:70px;height:70px;flex-shrink:0;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">${imgHTML}</div>
+        <div>
+          <div style="color:${rColor};font-size:10px;font-weight:700;margin-bottom:3px;">이 카드의 설명은?</div>
+          <div style="color:#fff;font-size:16px;font-weight:900;">${card.name}</div>
         </div>
       </div>
 
+      <!-- [한글 주석] 4지선다 보기 (short_desc 기반) -->
       <div id="aib-opts" style="display:flex;flex-direction:column;gap:8px;">
-        ${q.options.map((opt, i) => `
-          <button class="aib-opt" data-idx="${i}"
+        ${choices.map((c, i) => `
+          <button class="aib-opt" data-idx="${i}" data-correct="${c.id === card.id}"
             style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;padding:11px 14px;color:#f0e6c8;font-size:12px;text-align:left;cursor:pointer;transition:all 0.15s;line-height:1.5;">
-            ${['①','②','③','④'][i]} ${opt}
+            ${['①','②','③','④'][i]} ${c.short_desc}
           </button>`).join('')}
       </div>
     </div>`;
@@ -174,7 +198,7 @@ function _renderAIBattleQ(overlay, state) {
     if (el) el.textContent = frames[Math.floor(Date.now() / 400) % 4];
   }, 300);
 
-  // [한글 주석] AI 응답 타이머 — 랜덤 딜레이 후 정답/오답 표시
+  // [한글 주석] AI 응답 타이머 — 1.2~3.2초 후 정답/오답 표시
   const aiTimer = setTimeout(() => {
     clearInterval(dotTimer);
     aiDone = true;
@@ -183,19 +207,18 @@ function _renderAIBattleQ(overlay, state) {
     if (!txt) return;
     if (aiCorrect) {
       state.as++;
-      txt.textContent  = 'AI 또감이 정답! ✓';
-      txt.style.color  = '#84ff00';
+      txt.textContent = 'AI 또감이 정답! ✓';
+      txt.style.color = '#84ff00';
       if (icon) icon.textContent = '✅';
     } else {
-      txt.textContent  = 'AI 또감이 오답 ✗';
-      txt.style.color  = '#ff8080';
+      txt.textContent = 'AI 또감이 오답 ✗';
+      txt.style.color = '#ff8080';
       if (icon) icon.textContent = '❌';
     }
     // [한글 주석] 시간 제한 없음 — 학생이 직접 답해야 다음 문제로 넘어감
-    // [한글 주석] AI가 먼저 풀어도 학생은 끝까지 모든 문제를 풀 수 있음
   }, aiDelay);
 
-  // [한글 주석] 플레이어 답 클릭 처리
+  // [한글 주석] 플레이어 답 처리
   overlay.querySelectorAll('.aib-opt').forEach(btn => {
     btn.onclick = () => {
       if (state.answered) return;
@@ -203,38 +226,37 @@ function _renderAIBattleQ(overlay, state) {
       clearTimeout(aiTimer);
       clearInterval(dotTimer);
 
-      const sel = parseInt(btn.dataset.idx);
-      const ok  = sel === q.answer;
+      const isCorrect = btn.dataset.correct === 'true';
 
-      if (ok) {
+      if (isCorrect) {
         state.ps++;
         btn.style.background = 'rgba(132,255,0,0.2)';
-        btn.style.border     = '2px solid #84ff00';
-        btn.style.color      = '#84ff00';
+        btn.style.border = '2px solid #84ff00';
+        btn.style.color = '#84ff00';
         if (typeof playSfxCorrect === 'function') playSfxCorrect();
       } else {
         btn.style.background = 'rgba(255,68,68,0.18)';
-        btn.style.border     = '2px solid #ff4444';
-        btn.style.color      = '#ff4444';
+        btn.style.border = '2px solid #ff4444';
+        btn.style.color = '#ff4444';
         // [한글 주석] 정답 보기 초록색으로 표시
-        const correctBtn = overlay.querySelector(`[data-idx="${q.answer}"]`);
+        const correctBtn = overlay.querySelector('[data-correct="true"]');
         if (correctBtn) {
           correctBtn.style.background = 'rgba(132,255,0,0.15)';
-          correctBtn.style.border     = '2px solid #84ff00';
+          correctBtn.style.border = '2px solid #84ff00';
         }
         if (typeof playSfxWrong === 'function') playSfxWrong();
       }
 
       overlay.querySelectorAll('.aib-opt').forEach(b => b.disabled = true);
 
-      // [한글 주석] AI가 아직 생각 중이었으면 결과 즉시 반영
+      // [한글 주석] AI가 아직 답 안 했으면 결과 즉시 반영
       if (!aiDone) {
         if (aiCorrect) state.as++;
         const txt  = document.getElementById('aib-ai-txt');
         const icon = document.getElementById('aib-ai-icon');
         if (txt) {
           txt.textContent = aiCorrect ? 'AI 또감이 정답! ✓' : 'AI 또감이 오답 ✗';
-          txt.style.color = aiCorrect ? '#84ff00' : '#ff8080';
+          txt.style.color  = aiCorrect ? '#84ff00' : '#ff8080';
         }
         if (icon) icon.textContent = aiCorrect ? '✅' : '❌';
       }
