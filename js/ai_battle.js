@@ -187,10 +187,8 @@ function _renderAIBattleQ(overlay, state) {
       txt.style.color  = '#ff8080';
       if (icon) icon.textContent = '❌';
     }
-    // [한글 주석] 플레이어가 아직 답 안 했으면 2초 후 다음 문제
-    if (!state.answered) {
-      setTimeout(() => { state.qi++; _renderAIBattleQ(overlay, state); }, 2000);
-    }
+    // [한글 주석] 시간 제한 없음 — 학생이 직접 답해야 다음 문제로 넘어감
+    // [한글 주석] AI가 먼저 풀어도 학생은 끝까지 모든 문제를 풀 수 있음
   }, aiDelay);
 
   // [한글 주석] 플레이어 답 클릭 처리
