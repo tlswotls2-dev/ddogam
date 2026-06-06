@@ -123,7 +123,8 @@ const LANG_UI = {
 async function translateText(text, targetLang) {
   if (!text || targetLang === 'ko') return text;
 
-  const GEMINI_API_KEY = localStorage.getItem('gemini_api_key');
+  // [한글 주석] 번역용 API 키 (Code.gs와 동일한 키 사용)
+  const GEMINI_API_KEY = 'AIzaSyC06cHpOGDbHrjidT3rRN91yJVaf7lya48';
   if (!GEMINI_API_KEY) return text;
 
   const langNames = { en: 'English', ru: 'Russian', zh: 'Simplified Chinese' };
