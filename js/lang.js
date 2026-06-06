@@ -128,7 +128,8 @@ async function translateText(text, targetLang) {
   if (!GEMINI_API_KEY) return text;
 
   const langNames = { en: 'English', ru: 'Russian', zh: 'Simplified Chinese' };
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+  // [한글 주석] chatbot.js와 동일한 모델명 사용
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   try {
     const response = await fetch(url, {
