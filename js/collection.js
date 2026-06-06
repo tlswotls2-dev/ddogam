@@ -491,159 +491,178 @@ function drawRandomItem() {
  * @param {Object} card - 카드 데이터 객체
  * @param {boolean} isNew - 새로운 발견 여부
  */
-function showCardPopup(cardParam, isNew) {
+async function showCardPopup(cardParam, isNew) {
   // [한글 주석] 뒤로가기 스택에 추가
   if (typeof pushScreen === 'function') pushScreen('shared-card-overlay');
-    // [한글 주석] 카드 출현 시 배경음 정지
-    if (typeof stopBGM === 'function') stopBGM();
-    // [한글 주석] 카드 출현 효과음 (띠링띠링 3번 반복)
-    if (typeof playSfxCardAppear === 'function') {
-      playSfxCardAppear();
-      setTimeout(() => { if (typeof playSfxCardAppear === 'function') playSfxCardAppear(); }, 400);
-      setTimeout(() => { if (typeof playSfxCardAppear === 'function') playSfxCardAppear(); }, 800);
-    }
+  // [한글 주석] 카드 출현 시 배경음 정지
+  if (typeof stopBGM === 'function') stopBGM();
+  // [한글 주석] 카드 출현 효과음 (띠링띠링 3번 반복)
+  if (typeof playSfxCardAppear === 'function') {
+    playSfxCardAppear();
+    setTimeout(() => { if (typeof playSfxCardAppear === 'function') playSfxCardAppear(); }, 400);
+    setTimeout(() => { if (typeof playSfxCardAppear === 'function') playSfxCardAppear(); }, 800);
+  }
 
-    const overlay = document.getElementById('shared-card-overlay');
-    
-    // [한글 주석] cardParam이 문자열(ID)인 경우와 객체(cardData)인 경우를 모두 완벽히 대응하여 window.allCardsData 원본 데이터를 우선 참조하도록 보장합니다.
-    let card = null;
-    if (typeof cardParam === 'string') {
-        card = window.allCardsData.find(c => c.id === cardParam);
-    } else if (cardParam && typeof cardParam === 'object') {
-        card = window.allCardsData.find(c => c.id === cardParam.id) || cardParam;
-    }
-    
-    if (!card) {
-        console.error("카드 데이터를 찾을 수 없습니다:", cardParam);
-        return;
-    }
-    
-    // [한글 주석] 팝업이 열릴 때 콘솔에 정밀한 카드 구조화 데이터를 출력합니다.
-    console.log('팝업 데이터:', {
-        name: card.name,
-        short: card.short_desc,
-        detail: card.detail_desc,
-        habitat: card.habitat
-    });
+  const overlay = document.getElementById('shared-card-overlay');
 
-    // [한글 주석] 팝업 열기 전에 뒷면 상태라면 앞면으로 초기화
-    document.getElementById('flip-card-inner').classList.remove('is-flipped');
-    
-    // [한글 주석] 이전 희귀도 이펙트 클래스 모두 제거 (초기화)
-    clearRarityEffects();
-    
-    // [한글 주석] 앞면 카드 이미지 또는 이모지 바인딩 (실사 이미지 기능 추가)
-    const popupEmojiEl = document.getElementById('popup-emoji');
-    popupEmojiEl.style.width = '100%';
-    popupEmojiEl.style.height = '100%';
-    popupEmojiEl.style.display = 'flex';
-    popupEmojiEl.style.alignItems = 'center';
-    popupEmojiEl.style.justifyContent = 'center';
-    popupEmojiEl.innerHTML = getCardImageHTML(card, 68);
-    document.getElementById('popup-name').textContent = card.name;
-    document.getElementById('popup-short-desc').textContent = card.short_desc || '새로운 발견입니다!';
-    // [한글 주석] 카테고리별 서식지 라벨 스마트 교체
-    // 유물이면 habitat 내용에 따라 라벨 자동 결정
-    window.getHabitatLabel = function(card) {
-        if (card.category !== 'artifact') {
-            return `📍 서식지: ${card.habitat || '알 수 없음'}`;
-        }
-        const h = card.habitat || '';
-        // [한글 주석] 시대 키워드 포함 여부 확인
-        const eraKeywords = ['시대', 'BC', 'AD', '세기', '년대', '왕조', '조선', '고려', '신라', '백제', '가야', '고구려', '조선시대', '고려시대'];
-        const placeKeywords = ['도', '시', '군', '구', '읍', '면', '리', '산', '강', '궁', '절', '사', '성', '터'];
-        const locationKeywords = ['박물관', '소장', '전시', '국립', '보관'];
+  // [한글 주석] cardParam이 문자열(ID)인 경우와 객체인 경우 모두 대응
+  let card = null;
+  if (typeof cardParam === 'string') {
+    card = window.allCardsData.find(c => c.id === cardParam);
+  } else if (cardParam && typeof cardParam === 'object') {
+    card = window.allCardsData.find(c => c.id === cardParam.id) || cardParam;
+  }
 
-        const isEra = eraKeywords.some(k => h.includes(k));
-        const isLocation = locationKeywords.some(k => h.includes(k));
-        const isPlace = placeKeywords.some(k => h.includes(k));
+  if (!card) {
+    console.error("카드 데이터를 찾을 수 없습니다:", cardParam);
+    return;
+  }
 
-        if (isEra) return `🏛️ 시대: ${h}`;
-        if (isLocation) return `📌 현재위치: ${h}`;
-        if (isPlace) return `📍 발견장소: ${h}`;
-        return `🏛️ 정보: ${h}`;
-    };
+  // [한글 주석] 팝업 열기 전에 뒷면 상태라면 앞면으로 초기화
+  document.getElementById('flip-card-inner').classList.remove('is-flipped');
 
-    document.getElementById('popup-habitat').textContent = window.getHabitatLabel(card);
-    
-    // 뒷면 데이터 바인딩
-    document.getElementById('popup-back-name').textContent = card.name;
-    document.getElementById('popup-detail-desc').textContent = card.detail_desc || ''; // detail_desc 필드 단일 참조
-    
-    // 탐험 중 새로 발견 시에는 '방금 수집'으로 표시 (수집 날짜 란)
-    document.getElementById('popup-date').textContent = '📅 방금 수집';
-    
-    // 희귀도 뱃지 세팅 (앞/뒷면 공통)
-    const rarityBadgeFront = document.getElementById('popup-rarity-badge');
-    const rarityBadgeBack = document.getElementById('popup-back-rarity');
-    let rarityText = '일반', rarityClass = 'badge-common';
-    if (card.rarity === 'rare') { rarityText = '희귀'; rarityClass = 'badge-rare'; }
-    else if (card.rarity === 'epic') { rarityText = '전설'; rarityClass = 'badge-epic'; }
-    
-    rarityBadgeFront.textContent = rarityText;
-    rarityBadgeFront.className = `card-badge ${rarityClass}`;
-    rarityBadgeBack.textContent = rarityText;
-    rarityBadgeBack.className = `card-badge ${rarityClass}`;
-    
-    // 카테고리 뱃지 세팅 (앞면)
-    const catBadge = document.getElementById('popup-category-badge');
-    if (card.category === 'plant') { catBadge.textContent = '🌱 식물'; catBadge.className = 'badge-category-plant'; }
-    else if (card.category === 'animal') { catBadge.textContent = '🦊 동물'; catBadge.className = 'badge-category-animal'; }
-    else if (card.category === 'artifact') { catBadge.textContent = '🏺 유물'; catBadge.className = 'badge-category-artifact'; }
-    
-    // 새로운 발견 시 이모지 반짝임 애니메이션
-    const emojiContainer = document.getElementById('popup-emoji-container');
-    emojiContainer.classList.remove('new-discovery-anim');
-    if (isNew) {
-        // DOM 렌더링 후 애니메이션 적용을 위해 약간의 지연
-        setTimeout(() => { emojiContainer.classList.add('new-discovery-anim'); }, 10);
-    }
-    
-    // 버튼 색상 (카테고리 색상에 맞춤)
-    const btnDetail = document.getElementById('btn-detail');
+  // [한글 주석] 이전 희귀도 이펙트 클래스 모두 제거
+  clearRarityEffects();
+
+  // [한글 주석] 카드 이미지 바인딩
+  const popupEmojiEl = document.getElementById('popup-emoji');
+  popupEmojiEl.style.width = '100%';
+  popupEmojiEl.style.height = '100%';
+  popupEmojiEl.style.display = 'flex';
+  popupEmojiEl.style.alignItems = 'center';
+  popupEmojiEl.style.justifyContent = 'center';
+  popupEmojiEl.innerHTML = getCardImageHTML(card, 68);
+
+  // [한글 주석] 현재 언어에 맞게 카드 텍스트 번역 (한국어면 원본 그대로)
+  const lang = window.currentLang || 'ko';
+  let translated = { name: card.name, short_desc: card.short_desc, detail_desc: card.detail_desc, habitat: card.habitat };
+  if (lang !== 'ko' && typeof applyCardTranslation === 'function') {
+    // [한글 주석] 번역 중 로딩 표시
+    document.getElementById('popup-name').textContent = '...';
+    document.getElementById('popup-short-desc').textContent = '...';
+    document.getElementById('popup-detail-desc').textContent = '...';
+    document.getElementById('popup-habitat').textContent = '...';
+    overlay.style.display = 'flex';
+    translated = await applyCardTranslation(card);
+  }
+
+  // [한글 주석] 번역된 텍스트 폰트 적용
+  const langFont = window.LANG_FONTS ? window.LANG_FONTS[lang] : "'Noto Sans KR', sans-serif";
+  const textStyle = `font-family:${langFont};`;
+
+  const nameEl = document.getElementById('popup-name');
+  nameEl.textContent = translated.name;
+  nameEl.style.cssText += textStyle;
+
+  const shortDescEl = document.getElementById('popup-short-desc');
+  shortDescEl.textContent = translated.short_desc || (lang === 'ko' ? '새로운 발견입니다!' : '...');
+  shortDescEl.style.cssText += textStyle;
+
+  const detailDescEl = document.getElementById('popup-detail-desc');
+  detailDescEl.textContent = translated.detail_desc || '';
+  detailDescEl.style.cssText += textStyle;
+
+  // [한글 주석] 서식지 라벨 (번역된 habitat 사용)
+  window.getHabitatLabel = function(card, habitatText) {
+    const h = habitatText || card.habitat || '';
+    if (card.category !== 'artifact') return `📍 ${h}`;
+    const eraKeywords = ['시대','BC','AD','세기','년대','왕조','조선','고려','신라','백제','가야','고구려'];
+    const locationKeywords = ['박물관','소장','전시','국립','보관'];
+    const placeKeywords = ['도','시','군','구','읍','면','리','산','강','궁','절','사','성','터'];
+    const isEra = eraKeywords.some(k => (card.habitat||'').includes(k));
+    const isLocation = locationKeywords.some(k => (card.habitat||'').includes(k));
+    const isPlace = placeKeywords.some(k => (card.habitat||'').includes(k));
+    if (isEra) return `🏛️ ${h}`;
+    if (isLocation) return `📌 ${h}`;
+    if (isPlace) return `📍 ${h}`;
+    return `🏛️ ${h}`;
+  };
+
+  const habitatEl = document.getElementById('popup-habitat');
+  habitatEl.textContent = window.getHabitatLabel(card, translated.habitat);
+  habitatEl.style.cssText += textStyle;
+
+  // [한글 주석] 뒷면 데이터 바인딩
+  const backNameEl = document.getElementById('popup-back-name');
+  backNameEl.textContent = translated.name;
+  backNameEl.style.cssText += textStyle;
+
+  // [한글 주석] 수집 날짜
+  document.getElementById('popup-date').textContent = '📅 방금 수집';
+
+  // [한글 주석] 희귀도 뱃지 (언어별 텍스트 적용)
+  const ui = window.LANG_UI ? window.LANG_UI[lang] : null;
+  const rarityBadgeFront = document.getElementById('popup-rarity-badge');
+  const rarityBadgeBack = document.getElementById('popup-back-rarity');
+  let rarityText = ui ? ui.rarityCommon : '일반';
+  let rarityClass = 'badge-common';
+  if (card.rarity === 'rare') { rarityText = ui ? ui.rarityRare : '희귀'; rarityClass = 'badge-rare'; }
+  else if (card.rarity === 'epic') { rarityText = ui ? ui.rarityEpic : '전설'; rarityClass = 'badge-epic'; }
+
+  rarityBadgeFront.textContent = rarityText;
+  rarityBadgeFront.className = `card-badge ${rarityClass}`;
+  rarityBadgeBack.textContent = rarityText;
+  rarityBadgeBack.className = `card-badge ${rarityClass}`;
+
+  // [한글 주석] 카테고리 뱃지
+  const catBadge = document.getElementById('popup-category-badge');
+  const catText = ui ? { plant: ui.categoryPlant, animal: ui.categoryAnimal, artifact: ui.categoryArtifact } : { plant: '🌱 식물', animal: '🦊 동물', artifact: '🏺 유물' };
+  if (card.category === 'plant') { catBadge.textContent = catText.plant; catBadge.className = 'badge-category-plant'; }
+  else if (card.category === 'animal') { catBadge.textContent = catText.animal; catBadge.className = 'badge-category-animal'; }
+  else if (card.category === 'artifact') { catBadge.textContent = catText.artifact; catBadge.className = 'badge-category-artifact'; }
+
+  // [한글 주석] 팝업 버튼 텍스트 언어 적용
+  const btnClose = document.querySelector('.btn-close');
+  const btnDetail = document.getElementById('btn-detail');
+  const btnFlipBack = document.querySelector('.btn-flip-back');
+  if (ui) {
+    if (btnClose) btnClose.textContent = ui.confirmBtn;
+    if (btnDetail) btnDetail.textContent = ui.detailBtn;
+    if (btnFlipBack) btnFlipBack.textContent = ui.backBtn;
+  }
+
+  // [한글 주석] 카테고리별 버튼 색상
+  if (btnDetail) {
     if (card.category === 'plant') btnDetail.style.backgroundColor = '#2d7a2d';
     else if (card.category === 'animal') btnDetail.style.backgroundColor = '#d4870a';
     else if (card.category === 'artifact') btnDetail.style.backgroundColor = '#8B6914';
-    
-    // ============================================
-    // [한글 주석] ★ 희귀도별 이펙트 적용 시작 ★
-    // ============================================
-    const rarity = card.rarity || 'common';
-    
-    // [한글 주석] 오버레이에 희귀도 이펙트 클래스 추가 (CSS 애니메이션 연동)
-    overlay.classList.add(`rarity-effect-${rarity}`);
-    
-    // [한글 주석] rare (희귀): 별 파티클 3개 흩날림
-    if (rarity === 'rare') {
-        spawnParticles(overlay, 3, 'star', '★');
+  }
+
+  // [한글 주석] 새로운 발견 애니메이션
+  const emojiContainer = document.getElementById('popup-emoji-container');
+  emojiContainer.classList.remove('new-discovery-anim');
+  if (isNew) {
+    setTimeout(() => { emojiContainer.classList.add('new-discovery-anim'); }, 10);
+  }
+
+  // [한글 주석] 희귀도별 이펙트
+  const rarity = card.rarity || 'common';
+  overlay.classList.add(`rarity-effect-${rarity}`);
+
+  if (rarity === 'rare') {
+    spawnParticles(overlay, 3, 'star', '★');
+  }
+
+  if (rarity === 'epic') {
+    const flash = document.createElement('div');
+    flash.className = 'epic-flash-overlay';
+    document.body.appendChild(flash);
+    flash.addEventListener('animationend', () => flash.remove());
+
+    const legendText = document.createElement('div');
+    legendText.className = 'epic-legendary-text';
+    legendText.textContent = '🎊 전설 카드 등장! 🎊';
+    overlay.appendChild(legendText);
+
+    spawnParticles(overlay, 8, 'gold', '✦');
+
+    if (navigator.vibrate) {
+      navigator.vibrate([100, 50, 100, 50, 200]);
     }
-    
-    // [한글 주석] epic (전설): 금색 파티클 8개 + 흰색 플래시 + "전설 카드 등장!" 텍스트 + 진동
-    if (rarity === 'epic') {
-        // 1. 화면 전체 흰색 플래시 효과
-        const flash = document.createElement('div');
-        flash.className = 'epic-flash-overlay';
-        document.body.appendChild(flash);
-        // [한글 주석] 플래시 애니메이션 종료 후 DOM에서 자동 제거
-        flash.addEventListener('animationend', () => flash.remove());
-        
-        // 2. 팝업 상단에 "🎊 전설 카드 등장! 🎊" 텍스트
-        const legendText = document.createElement('div');
-        legendText.className = 'epic-legendary-text';
-        legendText.textContent = '🎊 전설 카드 등장! 🎊';
-        overlay.appendChild(legendText);
-        
-        // 3. 금색 파티클 8개 흩날림
-        spawnParticles(overlay, 8, 'gold', '✦');
-        
-        // 4. 진동 효과 (지원하는 기기만)
-        if (navigator.vibrate) {
-            navigator.vibrate([100, 50, 100, 50, 200]);
-        }
-    }
-    
-    // 팝업 오버레이 표시
-    overlay.style.display = 'flex';
+  }
+
+  // [한글 주석] 팝업 표시
+  overlay.style.display = 'flex';
 }
 
 /**

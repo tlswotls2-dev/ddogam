@@ -12,7 +12,8 @@
   <!-- Leaflet.js 지도 라이브러리 CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <!-- [한글 주석] 우주/탐험 테마용 구글 폰트 (Noto Sans KR) -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+  <!-- [한글 주석] 다국어 폰트: KR(한국어), Noto Sans(영어+러시아어 키릴), SC(중국어 간체) - 모두 SIL OFL 라이선스 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Noto+Sans:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
   <!-- 우주/탐험 테마 스타일시트 연결 -->
   <link rel="stylesheet" href="css/style.css">
   <!-- [한글 주석] 서비스 워커 등록 (오프라인 캐시 지원) -->
@@ -434,8 +435,11 @@
 
     <!-- 하단 액션 버튼 2개 -->
     <div class="bottom-buttons">
-      <button class="action-btn btn-ai"><span class="btn-emoji">🤖</span><span class="btn-text">AI
-          챗봇</span></button>
+      <!-- [한글 주석] 언어 선택 버튼 (챗봇 버튼 자리에 배치) -->
+      <button class="action-btn btn-ai" id="lang-select-btn" onclick="showLangSelectPopup()">
+        <span class="btn-emoji">🌐</span>
+        <span class="btn-text" id="lang-btn-label">한국어</span>
+      </button>
       <button class="action-btn btn-explore">👟<br>탐험!</button>
     </div>
 
@@ -736,28 +740,7 @@
     </div>
   </div>
 
-  <!-- 🤖 AI 챗봇 화면 (슬라이드 애니메이션 적용) -->
-  <div id="chatbot-screen" class="chatbot-screen" style="display: none;">
-    <!-- 상단 헤더 -->
-    <div class="chatbot-header">
-      <button class="back-btn" onclick="hideChatbot()">←</button>
-      <h2 class="chatbot-title">🤖 학습 도우미 AI 챗봇</h2>
-      <div style="width: 40px;"></div>
-    </div>
-
-    <!-- 채팅 메시지 영역 (스크롤 가능) -->
-    <div id="chatbot-messages" class="chatbot-messages">
-      <!-- 말풍선들이 동적으로 추가됨 -->
-    </div>
-
-
-
-    <!-- 하단 메시지 텍스트 입력창 + 전송 버튼 -->
-    <div class="chatbot-input-area">
-      <input type="text" id="chatbot-input" placeholder="궁금한 것을 물어보세요!" onkeypress="handleChatInputKeyPress(event)">
-      <button class="chatbot-send-btn" onclick="sendMessage()">전송</button>
-    </div>
-  </div>
+  <!-- [한글 주석] 챗봇 화면 제거됨 - 언어 선택 기능으로 교체 -->
   <!-- 탐험 모드 오버레이 (검정 80% 반투명 배경) -->
   <div id="exploration-overlay" class="exploration-overlay" style="display: none;"
     onclick="handleExplorationOverlayClick()">
@@ -1025,15 +1008,7 @@
           </div>
         </div>
 
-        <!-- [한글 주석] AI 챗봇 -->
-        <div style="background:rgba(141,176,92,0.08);border:1px solid #6b8e3d;border-radius:14px;padding:14px;">
-          <div style="color:#8db05c;font-size:13px;font-weight:900;margin-bottom:8px;">🤖 AI 챗봇</div>
-          <div style="color:#d4c89c;font-size:11px;line-height:1.8;">
-            • 수집한 동식물·유물에 대해 질문할 수 있어요<br>
-            • 카드에 없는 더 자세한 정보도 알려줘요<br>
-            • 도감과 관련 없는 질문은 답하지 않아요
-          </div>
-        </div>
+  <!-- [한글 주석] AI 챗봇 항목 제거됨 -->
 
         <!-- [한글 주석] 복주머니 -->
         <div style="background:rgba(212,160,23,0.08);border:1px solid #a07c10;border-radius:14px;padding:14px;">
@@ -1072,7 +1047,8 @@
   <script src="js/quiz.js"></script>
   <script src="js/demo.js"></script>
   <script src="js/ai_battle.js"></script>
-  <script src="js/chatbot.js"></script>
+  <!-- [한글 주석] 챗봇 제거, 다국어 번역 시스템으로 교체 -->
+  <script src="js/lang.js"></script>
   <script src="js/avatar.js"></script>
   <!-- [한글 주석] 오프라인 WiFi 자동 동기화 시스템 연결 -->
   <script src="js/sync.js"></script>
@@ -1322,6 +1298,10 @@
   <script>
     // [한글 주석] 체험 모드 배너 체크 (앱 시작 시 실행)
     if (typeof checkDemoModeBanner === 'function') checkDemoModeBanner();
+    // [한글 주석] 저장된 언어 자동 적용
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof initLang === 'function') initLang();
+    });
   </script>
 
 </body>

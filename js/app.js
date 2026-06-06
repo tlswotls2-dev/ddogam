@@ -412,6 +412,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // 탐험 모드 관련 전역 함수들
     // ==========================================
     window.startExploration = function () {
+  // [한글 주석] 탐험 중 뒤로가기 버튼 차단 시작
+  function _blockBackButton() {
+    history.pushState(null, '', location.href);
+  }
+  window._explorationBackHandler = function() {
+    history.pushState(null, '', location.href);
+  };
+  window.addEventListener('popstate', window._explorationBackHandler);
+  _blockBackButton();
+
         // [한글 주석] 뒤로가기 스택에 추가
         if (typeof pushScreen === 'function') pushScreen('exploration-overlay');
         // [한글 주석] 탐험 배경음으로 전환
@@ -434,6 +444,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.stopExploration = function () {
+  // [한글 주석] 탐험 종료 시 뒤로가기 차단 해제
+  if (window._explorationBackHandler) {
+    window.removeEventListener('popstate', window._explorationBackHandler);
+    window._explorationBackHandler = null;
+  }
+
         // [한글 주석] 메인 배경음으로 복귀
         if (typeof stopBGM === 'function') stopBGM();
         setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 300);
