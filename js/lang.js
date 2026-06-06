@@ -45,11 +45,11 @@ const LANG_UI = {
   en: {
     langBtnLabel: 'English',
     exploreBtn: 'Go!',
-    dodamBtn: 'Guide',
+    dodamBtn: 'Collection',
     mapBtn: 'Map',
     itemBtn: 'Items',
     battleBtn: 'Battle',
-    dailyQuizBtn: 'Daily\nQuiz',
+    dailyQuizBtn: 'Daily<br>Quiz',
     helpBtn: 'Help',
     categoryPlant: '🌱 Plants',
     categoryAnimal: '🦊 Animals',
@@ -69,12 +69,12 @@ const LANG_UI = {
   },
   ru: {
     langBtnLabel: 'Русский',
-    exploreBtn: 'Идти!',
-    dodamBtn: 'Гид',
+    exploreBtn: 'Вперёд!',
+    dodamBtn: 'Сборник',
     mapBtn: 'Карта',
     itemBtn: 'Вещи',
     battleBtn: 'Бой',
-    dailyQuizBtn: 'Тест\nдня',
+    dailyQuizBtn: 'Тест<br>дня',
     helpBtn: 'Помощь',
     categoryPlant: '🌱 Растения',
     categoryAnimal: '🦊 Животные',
@@ -99,7 +99,7 @@ const LANG_UI = {
     mapBtn: '地图',
     itemBtn: '道具',
     battleBtn: '对战',
-    dailyQuizBtn: '每日\n测验',
+    dailyQuizBtn: '每日<br>测验',
     helpBtn: '帮助',
     categoryPlant: '🌱 植物',
     categoryAnimal: '🦊 动物',
@@ -239,7 +239,7 @@ function applyUIText(langCode) {
   const exploreBtn = document.querySelector('.action-btn.btn-explore');
   if (exploreBtn) exploreBtn.innerHTML = `👟<br>${ui.exploreBtn}`;
 
-  // [한글 주석] 사이드 버튼들
+  // [한글 주석] 사이드 버튼들 (btn-customize 내부에 span 구조 있으므로 innerHTML로 처리)
   const sideButtons = document.querySelectorAll('.side-btn');
   sideButtons.forEach(btn => {
     if (btn.classList.contains('btn-book')) btn.innerHTML = `📖<br>${ui.dodamBtn}`;
@@ -247,7 +247,7 @@ function applyUIText(langCode) {
     if (btn.classList.contains('btn-customize')) btn.innerHTML = `🎒<br>${ui.itemBtn}`;
   });
 
-  // [한글 주석] 배틀/일일시험/도움말 버튼
+  // [한글 주석] 배틀/일일시험/도움말 버튼 (innerHTML로 줄바꿈 적용)
   const battleBtn = document.getElementById('battle-mode-btn');
   if (battleBtn) battleBtn.innerHTML = `⚔️<br>${ui.battleBtn}`;
 
@@ -256,6 +256,19 @@ function applyUIText(langCode) {
 
   const helpBtn = document.getElementById('help-btn');
   if (helpBtn) helpBtn.innerHTML = `❓<br>${ui.helpBtn}`;
+
+  // [한글 주석] 상단 카테고리 탭
+  const tabs = document.querySelectorAll('.category-tabs .tab');
+  tabs.forEach(tab => {
+    const target = tab.getAttribute('data-target');
+    if (target === 'plant') tab.innerHTML = ui.categoryPlant;
+    else if (target === 'animal') tab.innerHTML = ui.categoryAnimal;
+    else if (target === 'artifact') tab.innerHTML = ui.categoryArtifact;
+  });
+
+  // [한글 주석] 상단 카테고리 배지
+  const badge = document.getElementById('current-category-badge');
+  if (badge) badge.textContent = ui.exploringBadge;
 
   // [한글 주석] 상태카드 제목
   const statusTitle = document.querySelector('.status-card h3');
