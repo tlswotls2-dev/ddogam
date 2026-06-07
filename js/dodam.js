@@ -196,7 +196,7 @@ function renderDodamGrid(category) {
 /**
  * 수집한 카드의 상세 정보를 3D 팝업(공통)에 띄웁니다.
  */
-async function showDodamDetail(card, dateString) {
+function showDodamDetail(card, dateString) {
   // [한글 주석] 팝업 열기 전에 뒷면 상태라면 앞면으로 초기화
   document.getElementById('flip-card-inner').classList.remove('is-flipped');
 
@@ -212,24 +212,11 @@ async function showDodamDetail(card, dateString) {
   popupEmojiEl.style.justifyContent = 'center';
   popupEmojiEl.innerHTML = getCardImageHTML(card, 68);
 
-  // [한글 주석] 현재 언어에 맞게 번역 (한국어면 원본 그대로)
+  // [한글 주석] 번역팩에서 즉시 텍스트 가져오기 (API 호출 없음)
   const lang = window.currentLang || 'ko';
-  let translated = {
-    name: card.name,
-    short_desc: card.short_desc,
-    detail_desc: card.detail_desc,
-    habitat: card.habitat
-  };
-
-  if (lang !== 'ko' && typeof applyCardTranslation === 'function') {
-    // [한글 주석] 번역 중 로딩 표시
-    document.getElementById('popup-name').textContent = '...';
-    document.getElementById('popup-short-desc').textContent = '...';
-    document.getElementById('popup-detail-desc').textContent = '...';
-    document.getElementById('popup-habitat').textContent = '...';
-    document.getElementById('shared-card-overlay').style.display = 'flex';
-    translated = await applyCardTranslation(card);
-  }
+  const translated = typeof applyCardTranslation === 'function'
+    ? applyCardTranslation(card)
+    : { name: card.name, short_desc: card.short_desc, detail_desc: card.detail_desc, habitat: card.habitat };
 
   // [한글 주석] 번역된 텍스트 폰트 적용
   const langFont = window.LANG_FONTS ? window.LANG_FONTS[lang] : "'Noto Sans KR', sans-serif";

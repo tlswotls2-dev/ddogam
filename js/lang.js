@@ -119,34 +119,13 @@ const LANG_UI = {
   }
 };
 
-// [한글 주석] Gemini API로 텍스트 번역 (한국어→선택언어)
-async function translateText(text, targetLang) {
+// [한글 주석] 번역팩에서 텍스트 반환 (API 호출 없음)
+// [한글 주석] cards.json의 name_en, short_desc_ru 등 필드를 직접 읽음
+function translateText(text, targetLang) {
+  // [한글 주석] 한국어는 원본 그대로 반환
   if (!text || targetLang === 'ko') return text;
-
-  // [한글 주석] 번역용 API 키 (Code.gs와 동일한 키 사용)
-  const GEMINI_API_KEY = 'AIzaSyC06cHpOGDbHrjidT3rRN91yJVaf7lya48';
-  if (!GEMINI_API_KEY) return text;
-
-  const langNames = { en: 'English', ru: 'Russian', zh: 'Simplified Chinese' };
-  // [한글 주석] chatbot.js와 동일한 모델명 사용
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: `Translate the following Korean text to ${langNames[targetLang]}. Return ONLY the translated text, no explanations, no quotes:\n\n${text}` }]
-        }]
-      })
-    });
-    const data = await response.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || text;
-  } catch (e) {
-    console.warn('[번역 실패]', e);
-    return text;
-  }
+  // [한글 주석] 번역팩 방식에서는 개별 텍스트 번역 불필요 (applyCardTranslation에서 처리)
+  return text;
 }
 
 // [한글 주석] 언어 선택 팝업 표시
@@ -287,9 +266,11 @@ function applyUIText(langCode) {
   if (discoveryContent) discoveryContent.textContent = ui.newDiscovery;
 }
 
-// [한글 주석] 카드 팝업 텍스트 번역 적용 (collection.js에서 호출)
-async function applyCardTranslation(card) {
+// [한글 주석] cards.json 번역팩에서 카드 텍스트 반환 (API 호출 없음, 즉시 반환)
+function applyCardTranslation(card) {
   const lang = window.currentLang || 'ko';
+
+  // [한글 주석] 한국어는 원본 필드 그대로
   if (lang === 'ko') return {
     name: card.name,
     short_desc: card.short_desc,
@@ -297,15 +278,13 @@ async function applyCardTranslation(card) {
     habitat: card.habitat
   };
 
-  // [한글 주석] 병렬 번역으로 속도 최적화
-  const [name, short_desc, detail_desc, habitat] = await Promise.all([
-    translateText(card.name, lang),
-    translateText(card.short_desc, lang),
-    translateText(card.detail_desc, lang),
-    translateText(card.habitat, lang)
-  ]);
-
-  return { name, short_desc, detail_desc, habitat };
+  // [한글 주석] 번역팩 필드명: name_en, short_desc_ru, detail_desc_zh 등
+  return {
+    name: card[`name_${lang}`] || card.name,
+    short_desc: card[`short_desc_${lang}`] || card.short_desc,
+    detail_desc: card[`detail_desc_${lang}`] || card.detail_desc,
+    habitat: card[`habitat_${lang}`] || card.habitat
+  };
 }
 
 // [한글 주석] 앱 시작 시 저장된 언어 자동 적용
