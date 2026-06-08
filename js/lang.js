@@ -243,6 +243,9 @@ window.LANG_UI = {
     safetyWarningDesc: '탐험 버튼을 누르고 걸어야\n카드가 나타나요 🌿\n안전한 곳에서 화면을 확인해요!',
     itemScreenTitle: '🎒 나의 아이템',
     itemEquipDone: '장착 완료!',
+    avatarSelectTitle: '🎮 탐험가를 선택하세요!',
+    avatarSelectSubtitle: '또감 세계를 함께 탐험할<br>캐릭터를 골라주세요',
+    avatarSelectConfirm: '선택 완료!',
   },
   en: {
     langBtnLabel: 'English',
@@ -470,6 +473,9 @@ window.LANG_UI = {
     safetyWarningDesc: 'Press Explore button first!\nCards appear while walking 🌿\nCheck screen in a safe place!',
     itemScreenTitle: '🎒 My Items',
     itemEquipDone: 'Done!',
+    avatarSelectTitle: '🎮 Choose Your Explorer!',
+    avatarSelectSubtitle: 'Pick a character to explore<br>the Ddogam world with you',
+    avatarSelectConfirm: 'Confirm!',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -697,6 +703,9 @@ window.LANG_UI = {
     safetyWarningDesc: 'Нажми кнопку Вперёд!\nКарточки появятся при ходьбе 🌿\nПроверяй экран в безопасном месте!',
     itemScreenTitle: '🎒 Мои вещи',
     itemEquipDone: 'Готово!',
+    avatarSelectTitle: '🎮 Выбери исследователя!',
+    avatarSelectSubtitle: 'Выбери персонажа для<br>исследования мира Ттогами',
+    avatarSelectConfirm: 'Выбрать!',
   },
   zh: {
     langBtnLabel: '中文',
@@ -924,6 +933,9 @@ window.LANG_UI = {
     safetyWarningDesc: '先按探索按钮再走路！\n行走时卡片会出现 🌿\n请在安全的地方查看屏幕！',
     itemScreenTitle: '🎒 我的道具',
     itemEquipDone: '装备完成！',
+    avatarSelectTitle: '🎮 选择你的探险家！',
+    avatarSelectSubtitle: '选择一个角色和你一起<br>探索又感世界吧',
+    avatarSelectConfirm: '选择完成！',
   }
 };
 
@@ -1123,6 +1135,14 @@ function applyUIText(langCode) {
   if (itemScreenTitle) itemScreenTitle.textContent = ui.itemScreenTitle || '🎒 나의 아이템';
   const itemEquipDoneBtn = document.getElementById('item-equip-done-btn');
   if (itemEquipDoneBtn) itemEquipDoneBtn.textContent = ui.itemEquipDone || '장착 완료!';
+
+  // [한글 주석] 아바타 선택 화면
+  const avatarSelectTitle = document.getElementById('avatar-select-title');
+  if (avatarSelectTitle) avatarSelectTitle.textContent = ui.avatarSelectTitle || '🎮 탐험가를 선택하세요!';
+  const avatarSelectSubtitle = document.getElementById('avatar-select-subtitle');
+  if (avatarSelectSubtitle) avatarSelectSubtitle.innerHTML = ui.avatarSelectSubtitle || '또감 세계를 함께 탐험할<br>캐릭터를 골라주세요';
+  const avatarSelectConfirmBtn = document.getElementById('avatar-select-confirm-btn');
+  if (avatarSelectConfirmBtn) avatarSelectConfirmBtn.textContent = ui.avatarSelectConfirm || '선택 완료!';
 
   // [한글 주석] 안전주의 팝업
   const safetyTitle = document.getElementById('safety-warning-title');

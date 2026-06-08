@@ -224,14 +224,14 @@
   <div id="gender-select-screen" class="gender-select-screen" style="display: none;">
     <div class="gender-select-card">
       <!-- 제목 -->
-      <h2 class="gender-title">🎮 탐험가를 선택하세요!</h2>
-      <p class="gender-subtitle">또감 세계를 함께 탐험할<br>캐릭터를 골라주세요</p>
+      <h2 class="gender-title" id="avatar-select-title">🎮 탐험가를 선택하세요!</h2>
+      <p class="gender-subtitle" id="avatar-select-subtitle">또감 세계를 함께 탐험할<br>캐릭터를 골라주세요</p>
 
       <!-- 아바타 선택 버튼 영역 (avatar.js에서 동적으로 8가지 아바타가 렌더링됩니다) -->
       <div class="gender-options"></div>
 
       <!-- 선택 완료 버튼 -->
-      <button class="confirm-avatar-btn" onclick="confirmAvatarSelection()">선택 완료!</button>
+      <button class="confirm-avatar-btn" id="avatar-select-confirm-btn" onclick="confirmAvatarSelection()">선택 완료!</button>
     </div>
   </div>
 
