@@ -45,10 +45,11 @@ function showBattleMode() {
   const unlockedCats = typeof getUnlockedCategories === 'function'
     ? getUnlockedCategories() : ['plant'];
 
+  const _Tcat = window.LANG_UI; const _Lcat = window.currentLang || 'ko';
   const catConfig = {
-    plant: { label: '🌱 식물 지식 배틀', color: '#8db05c', border: '#6b8e3d' },
-    animal: { label: '🦊 동물 지식 배틀', color: '#ff9500', border: '#cc7700' },
-    artifact: { label: '🏺 유물 지식 배틀', color: '#d4a017', border: '#a07c10' }
+    plant: { label: _Tcat?.[_Lcat]?.battleCatPlant || '🌱 식물 지식 배틀', color: '#8db05c', border: '#6b8e3d' },
+    animal: { label: _Tcat?.[_Lcat]?.battleCatAnimal || '🦊 동물 지식 배틀', color: '#ff9500', border: '#cc7700' },
+    artifact: { label: _Tcat?.[_Lcat]?.battleCatArtifact || '🏺 유물 지식 배틀', color: '#d4a017', border: '#a07c10' }
   };
 
   const overlay = document.createElement('div');

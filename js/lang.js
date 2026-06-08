@@ -222,6 +222,13 @@ window.LANG_UI = {
     levelUpConfirm: '확인!',
     itemUnlockToast: '🎉 새 아이템 해금! {names}',
     petUnlockSuffix: '(펫)',
+    battleCatPlant: '🌱 식물 지식 배틀',
+    battleCatAnimal: '🦊 동물 지식 배틀',
+    battleCatArtifact: '🏺 유물 지식 배틀',
+    workshopTab: '⚗️ 조합소',
+    exploreTitle: '🥾 탐험 중...',
+    exploreSafetyMsg: '두눈은 화면에서 잠시 벗어나<br>두 발로 걸으며 자연을 느껴봐요!',
+    exploreSafetyHint: '걷다 보면 신기한 카드가 나타날 거예요 🌿',
   },
   en: {
     langBtnLabel: 'English',
@@ -428,6 +435,13 @@ window.LANG_UI = {
     levelUpConfirm: 'OK!',
     itemUnlockToast: '🎉 New item unlocked! {names}',
     petUnlockSuffix: '(Pet)',
+    battleCatPlant: '🌱 Plant Knowledge Battle',
+    battleCatAnimal: '🦊 Animal Knowledge Battle',
+    battleCatArtifact: '🏺 Artifact Knowledge Battle',
+    workshopTab: '⚗️ Workshop',
+    exploreTitle: '🥾 Exploring...',
+    exploreSafetyMsg: 'Look away from the screen<br>and walk around safely!',
+    exploreSafetyHint: 'Keep walking and cards will appear 🌿',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -634,6 +648,13 @@ window.LANG_UI = {
     levelUpConfirm: 'ОК!',
     itemUnlockToast: '🎉 Новый предмет! {names}',
     petUnlockSuffix: '(Питомец)',
+    battleCatPlant: '🌱 Битва: Растения',
+    battleCatAnimal: '🦊 Битва: Животные',
+    battleCatArtifact: '🏺 Битва: Артефакты',
+    workshopTab: '⚗️ Мастерская',
+    exploreTitle: '🥾 Исследование...',
+    exploreSafetyMsg: 'Отведи взгляд от экрана<br>и безопасно прогуляйся!',
+    exploreSafetyHint: 'Иди вперёд — и карточки появятся 🌿',
   },
   zh: {
     langBtnLabel: '中文',
@@ -840,6 +861,13 @@ window.LANG_UI = {
     levelUpConfirm: '确认！',
     itemUnlockToast: '🎉 新道具解锁！{names}',
     petUnlockSuffix: '（宠物）',
+    battleCatPlant: '🌱 植物知识对战',
+    battleCatAnimal: '🦊 动物知识对战',
+    battleCatArtifact: '🏺 文物知识对战',
+    workshopTab: '⚗️ 合成所',
+    exploreTitle: '🥾 探索中...',
+    exploreSafetyMsg: '把视线从屏幕上移开<br>安全地四处走走吧！',
+    exploreSafetyHint: '继续走，神奇的卡片就会出现 🌿',
   }
 };
 
@@ -988,6 +1016,38 @@ function applyUIText(langCode) {
 
   const discoveryContent = document.getElementById('explore-discovery-content');
   if (discoveryContent) discoveryContent.textContent = ui.newDiscovery;
+
+  // [한글 주석] 탐험 화면 텍스트
+  const exploreTopText = document.getElementById('explore-top-text');
+  if (exploreTopText) exploreTopText.textContent = ui.exploreTitle || '🥾 탐험 중...';
+
+  const exploreSafetyMsg = document.getElementById('explore-safety-msg');
+  if (exploreSafetyMsg) exploreSafetyMsg.innerHTML = ui.exploreSafetyMsg || '두눈은 화면에서 잠시 벗어나<br>두 발로 걸으며 자연을 느껴봐요!';
+
+  const exploreSafetyHint = document.getElementById('explore-safety-hint');
+  if (exploreSafetyHint) exploreSafetyHint.textContent = ui.exploreSafetyHint || '걷다 보면 신기한 카드가 나타날 거예요 🌿';
+
+  // [한글 주석] 도감 조합소 탭
+  const workshopTabBtn = document.getElementById('workshop-tab-btn');
+  if (workshopTabBtn) workshopTabBtn.textContent = ui.workshopTab || '⚗️ 조합소';
+
+  // [한글 주석] 아이템 화면 탭 이름
+  const customizeTabLabels = {
+    avatar: { ko: '🧒<br>아바타', en: '🧒<br>Avatar', ru: '🧒<br>Аватар', zh: '🧒<br>头像' },
+    outfit: { ko: '👕<br>옷', en: '👕<br>Outfit', ru: '👕<br>Одежда', zh: '👕<br>服装' },
+    hat:    { ko: '🎩<br>모자', en: '🎩<br>Hat', ru: '🎩<br>Шляпа', zh: '🎩<br>帽子' },
+    glasses:{ ko: '👓<br>안경', en: '👓<br>Glasses', ru: '👓<br>Очки', zh: '👓<br>眼镜' },
+    earring:{ ko: '💚<br>귀걸이', en: '💚<br>Earring', ru: '💚<br>Серьги', zh: '💚<br>耳环' },
+    pet:    { ko: '🐾<br>펫', en: '🐾<br>Pet', ru: '🐾<br>Питомец', zh: '🐾<br>宠物' },
+    title:  { ko: '🏅<br>칭호', en: '🏅<br>Title', ru: '🏅<br>Звание', zh: '🏅<br>称号' },
+    reward: { ko: '🎁<br>복주머니', en: '🎁<br>Lucky Bag', ru: '🎁<br>Мешочек', zh: '🎁<br>福袋' },
+  };
+  document.querySelectorAll('.customize-slot-tab').forEach(tab => {
+    const slot = tab.dataset.slot;
+    if (customizeTabLabels[slot]) {
+      tab.innerHTML = customizeTabLabels[slot][langCode] || customizeTabLabels[slot].ko;
+    }
+  });
 }
 
 // [한글 주석] cards.json 번역팩에서 카드 텍스트 반환 (API 호출 없음, 즉시 반환)

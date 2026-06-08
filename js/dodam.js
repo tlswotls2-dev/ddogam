@@ -50,6 +50,8 @@ function switchDodamTab(category) {
   if (category === 'workshop') {
     document.querySelectorAll('.dodam-tab').forEach(t => t.classList.remove('active'));
     document.querySelector('[data-category="workshop"]').classList.add('active');
+    const _Twt = window.LANG_UI; const _Lwt = window.currentLang || 'ko';
+    document.querySelector('[data-category="workshop"]').textContent = _Twt?.[_Lwt]?.workshopTab || '⚗️ 조합소';
     renderWorkshop();
     return;
   }
