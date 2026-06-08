@@ -267,7 +267,8 @@ async function triggerImageCache() {
     if (event.data.type === 'cacheProgress') {
       const { cached, total } = event.data;
       if (cached === total) {
-        showSyncToast('✅ 이미지 300장 저장 완료! 오프라인에서도 볼 수 있어요', 'success');
+        const _Ts = window.LANG_UI; const _Ls = window.currentLang || 'ko';
+        showSyncToast(_Ts?.[_Ls]?.imagesCached || '✅ 이미지 300장 저장 완료! 오프라인에서도 볼 수 있어요', 'success');
       }
     }
   });

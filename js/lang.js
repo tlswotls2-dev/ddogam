@@ -237,6 +237,10 @@ window.LANG_UI = {
     titleBadgePro: 'PRO 탐험가',
     titleBadgeMaster: '마스터',
     dodamScreenTitle: '📖 나의 도감',
+    imagesCached: '✅ 이미지 300장 저장 완료! 오프라인에서도 볼 수 있어요',
+    wakeLockOn: '화면 꺼짐 방지 ON 🔆 탐험을 시작해요!',
+    safetyWarningTitle: '🚨 안 전 주 의!',
+    safetyWarningDesc: '탐험 버튼을 누르고 걸어야\n카드가 나타나요 🌿\n안전한 곳에서 화면을 확인해요!',
   },
   en: {
     langBtnLabel: 'English',
@@ -458,6 +462,10 @@ window.LANG_UI = {
     titleBadgePro: 'PRO Explorer',
     titleBadgeMaster: 'Master',
     dodamScreenTitle: '📖 My Collection',
+    imagesCached: '✅ 300 images saved! Available offline too',
+    wakeLockOn: 'Screen Stay-On ON 🔆 Let\'s explore!',
+    safetyWarningTitle: '🚨 S A F E T Y!',
+    safetyWarningDesc: 'Press Explore button first!\nCards appear while walking 🌿\nCheck screen in a safe place!',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -679,6 +687,10 @@ window.LANG_UI = {
     titleBadgePro: 'PRO Исследователь',
     titleBadgeMaster: 'Мастер',
     dodamScreenTitle: '📖 Мой сборник',
+    imagesCached: '✅ 300 изображений сохранено! Доступно офлайн',
+    wakeLockOn: 'Экран не гаснет ON 🔆 Начинаем!',
+    safetyWarningTitle: '🚨 О С Т О Р О Ж Н О!',
+    safetyWarningDesc: 'Нажми кнопку Вперёд!\nКарточки появятся при ходьбе 🌿\nПроверяй экран в безопасном месте!',
   },
   zh: {
     langBtnLabel: '中文',
@@ -900,6 +912,10 @@ window.LANG_UI = {
     titleBadgePro: 'PRO探险家',
     titleBadgeMaster: '大师',
     dodamScreenTitle: '📖 我的图鉴',
+    imagesCached: '✅ 300张图片已保存！离线也可以查看',
+    wakeLockOn: '防止熄屏 ON 🔆 开始探索！',
+    safetyWarningTitle: '🚨 注 意 安 全！',
+    safetyWarningDesc: '先按探索按钮再走路！\n行走时卡片会出现 🌿\n请在安全的地方查看屏幕！',
   }
 };
 
@@ -1093,6 +1109,12 @@ function applyUIText(langCode) {
   // [한글 주석] 도감 제목
   const dodamScreenTitle = document.getElementById('dodam-screen-title');
   if (dodamScreenTitle) dodamScreenTitle.textContent = ui.dodamScreenTitle || '📖 나의 도감';
+
+  // [한글 주석] 안전주의 팝업
+  const safetyTitle = document.getElementById('safety-warning-title');
+  const safetyDesc = document.getElementById('safety-warning-desc');
+  if (safetyTitle) safetyTitle.textContent = ui.safetyWarningTitle || '🚨 안 전 주 의!';
+  if (safetyDesc) safetyDesc.innerHTML = (ui.safetyWarningDesc || '탐험 버튼을 누르고 걸어야<br>카드가 나타나요 🌿<br>안전한 곳에서 화면을 확인해요!').replace(/\n/g, '<br>');
 
   // [한글 주석] 아이템 화면 탭 이름
   const customizeTabLabels = {

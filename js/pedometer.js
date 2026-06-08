@@ -246,7 +246,8 @@ function startPedometerExploration() {
     activateWakeLock();
 
     // [한글 주석] 탐험 시작 안내 토스트 메시지 표시
-    showToastMessage("화면 꺼짐 방지 ON 🔆 탐험을 시작해요!");
+    const _Tp = window.LANG_UI; const _Lp = window.currentLang || 'ko';
+    showToastMessage(_Tp?.[_Lp]?.wakeLockOn || '화면 꺼짐 방지 ON 🔆 탐험을 시작해요!');
 }
 
 /**
