@@ -35,7 +35,7 @@ function showBattleMode() {
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
   if (!userData.class || !userData.number) {
     const T4 = window.LANG_UI; const L4 = window.currentLang || 'ko';
-    alert(T4?.battleLoginRequired?.[L4] || '로그인이 필요해요!');
+    alert(T4?.[L4]?.battleLoginRequired || '로그인이 필요해요!');
     return;
   }
 
@@ -66,7 +66,7 @@ function showBattleMode() {
 
   const T = window.LANG_UI;
   const L = window.currentLang || 'ko';
-  const t = k => T[k]?.[L] || T[k]?.ko || '';
+  const t = k => T?.[L]?.[k] || T?.ko?.[k] || '';
 
   overlay.innerHTML = `
     <div style="
@@ -177,7 +177,7 @@ async function _fetchBattleCount() {
   } catch (e) {
     const infoEl = document.getElementById('battle-count-info');
     const T3 = window.LANG_UI; const L3 = window.currentLang || 'ko';
-    if (infoEl) infoEl.textContent = T3?.battleCountFail?.[L3] || '횟수 확인 실패';
+    if (infoEl) infoEl.textContent = T3?.[L3]?.battleCountFail || '횟수 확인 실패';
   }
 }
 
@@ -208,7 +208,7 @@ function startBattleStudy(category) {
   const cards = allCards.filter(c => c.category === category);
   if (cards.length === 0) {
     const T5 = window.LANG_UI; const L5 = window.currentLang || 'ko';
-    alert(T5?.battleDataLoading?.[L5] || '카드 데이터를 불러오는 중이에요. 잠시 후 다시 시도해줘요!');
+    alert(T5?.[L5]?.battleDataLoading || '카드 데이터를 불러오는 중이에요. 잠시 후 다시 시도해줘요!');
     return;
   }
 
@@ -372,7 +372,7 @@ function _renderBattleCard() {
           📍 ${card.habitat || ''}
         </div>
         <div style="color:#8db05c;font-size:11px;margin-top:12px;">
-          ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI.battleFlipHintFront?.[window.currentLang || 'ko'] || '🔄 뒤집기로 자세한 정보 확인!') : '🔄 뒤집기로 자세한 정보 확인!'}
+          ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleFlipHintFront || '🔄 뒤집기로 자세한 정보 확인!') : '🔄 뒤집기로 자세한 정보 확인!'}
         </div>
       </div>
       <div style="color:#888;font-size:11px;text-align:center;margin-top:8px;">
@@ -390,7 +390,7 @@ function _renderBattleCard() {
         box-shadow:0 0 20px ${cfg.color}44;
       ">
         <div style="color:${cfg.color};font-size:14px;font-weight:900;margin-bottom:12px;">
-          ${card.name} ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI.battleDetailLabel?.[window.currentLang || 'ko'] || '상세정보') : '상세정보'}
+          ${card.name} ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleDetailLabel || '상세정보') : '상세정보'}
         </div>
         <div style="
           color:#d4c89c;font-size:12px;
@@ -401,7 +401,7 @@ function _renderBattleCard() {
           ${card.detail_desc || card.short_desc || ''}
         </div>
         <div style="color:#8db05c;font-size:11px;margin-top:12px;">
-          ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI.battleFlipHintBack?.[window.currentLang || 'ko'] || '🔄 뒤집기로 앞면 확인!') : '🔄 뒤집기로 앞면 확인!'}
+          ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleFlipHintBack || '🔄 뒤집기로 앞면 확인!') : '🔄 뒤집기로 앞면 확인!'}
         </div>
       </div>
       <div style="color:#888;font-size:11px;text-align:center;margin-top:8px;">
@@ -455,7 +455,7 @@ function _startBattleTimer() {
       if (timerEl()) timerEl().textContent =
         `${m}:${String(s).padStart(2, '0')}`;
       const _T = window.LANG_UI; const _L = window.currentLang || 'ko';
-      if (msgEl()) msgEl().textContent = _T?.battleStudyMsg?.[_L] || '카드를 보며 공부해요!';
+      if (msgEl()) msgEl().textContent = _T?.[_L]?.battleStudyMsg || '카드를 보며 공부해요!';
 
     } else if (elapsed === STUDY_SEC + 1) {
       // [한글 주석] 공부 완료 → 대기 등록
@@ -463,7 +463,7 @@ function _startBattleTimer() {
       battleState.waitStartTime = Date.now();
       await _registerBattleWait();
       const _T2 = window.LANG_UI; const _L2 = window.currentLang || 'ko';
-      if (msgEl()) msgEl().textContent = _T2?.battleMatching?.[_L2] || '🔍 매칭 중...';
+      if (msgEl()) msgEl().textContent = _T2?.[_L2]?.battleMatching || '🔍 매칭 중...';
 
     } else if (elapsed > STUDY_SEC) {
       // [한글 주석] 대기 단계 (60초 이후)
@@ -484,7 +484,7 @@ function _startBattleTimer() {
       if (timerEl()) timerEl().textContent =
         `${m}:${String(s).padStart(2, '0')}`;
       const _T3 = window.LANG_UI; const _L3 = window.currentLang || 'ko';
-      if (msgEl()) msgEl().textContent = _T3?.battleSearching?.[_L3] || '🔍 상대방 찾는 중...';
+      if (msgEl()) msgEl().textContent = _T3?.[_L3]?.battleSearching || '🔍 상대방 찾는 중...';
 
       // [한글 주석] 30초마다 매칭 확인
       if (waitElapsed % 30 === 0) {
@@ -561,7 +561,7 @@ async function _cancelBattleWait() {
 // [한글 주석] 배틀 취소 (포기 버튼)
 async function cancelBattle() {
   const _Tc = window.LANG_UI; const _Lc = window.currentLang || 'ko';
-  if (!confirm(_Tc?.battleGiveUpConfirm?.[_Lc] || '배틀을 포기할까요?')) return;
+  if (!confirm(_Tc?.[_Lc]?.battleGiveUpConfirm || '배틀을 포기할까요?')) return;
   if (battleState.pollInterval) {
     clearInterval(battleState.pollInterval);
     battleState.pollInterval = null;
@@ -614,7 +614,7 @@ function _showMatchFailPopup() {
   `;
   document.body.appendChild(overlay);
   const _Tf = window.LANG_UI; const _Lf = window.currentLang || 'ko';
-  const _tf = k => _Tf?.[k]?.[_Lf] || _Tf?.[k]?.ko || '';
+  const _tf = k => _Tf?.[_Lf]?.[k] || _Tf?.ko?.[k] || '';
   const ft = document.getElementById('battle-fail-title');
   const fd = document.getElementById('battle-fail-desc');
   const fb = document.getElementById('battle-fail-btn');
@@ -697,7 +697,7 @@ function _showMatchedPopup() {
   `;
   document.body.appendChild(overlay);
   const _Tm = window.LANG_UI; const _Lm = window.currentLang || 'ko';
-  const _tm = k => _Tm?.[k]?.[_Lm] || _Tm?.[k]?.ko || '';
+  const _tm = k => _Tm?.[_Lm]?.[k] || _Tm?.ko?.[k] || '';
   const bmT = document.getElementById('bm-title');
   const bmD = document.getElementById('bm-desc');
   const bmH = document.getElementById('bm-hint');
@@ -750,7 +750,7 @@ function _startQuizTimer() {
       toast.className = 'item-unlock-toast';
       toast.style.background = 'linear-gradient(135deg,#ff4444,#cc0000)';
       const _Tto = window.LANG_UI; const _Lto = window.currentLang || 'ko';
-      toast.textContent = _Tto?.battleTimeout?.[_Lto] || '⏱ 시간 초과! 패배했어요.';
+      toast.textContent = _Tto?.[_Lto]?.battleTimeout || '⏱ 시간 초과! 패배했어요.';
       document.body.appendChild(toast);
       setTimeout(() => toast.classList.add('show'), 10);
       setTimeout(() => {
@@ -812,7 +812,7 @@ function _renderBattleQuiz() {
     ">
       <!-- [한글 주석] 헤더 -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <div style="color:#ff8080;font-size:12px;font-weight:700;">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI.battleQuizLabel?.[window.currentLang || 'ko'] || '⚔️ 배틀 퀴즈') : '⚔️ 배틀 퀴즈'}</div>
+        <div style="color:#ff8080;font-size:12px;font-weight:700;">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleQuizLabel || '⚔️ 배틀 퀴즈') : '⚔️ 배틀 퀴즈'}</div>
         <div style="display:flex;gap:8px;align-items:center;">
           <div id="battle-quiz-timer" style="color:#aaa;font-size:11px;">⏱ 2:00</div>
           <div style="color:#aaa;font-size:12px;">${battleState.currentQ + 1} / ${total}</div>
@@ -839,7 +839,7 @@ function _renderBattleQuiz() {
         ">${imgHTML}</div>
         <div>
           <div style="color:${rColor};font-size:10px;font-weight:700;margin-bottom:3px;">
-            ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI.battleQuizQuestion?.[window.currentLang || 'ko'] || '이 카드의 설명은?') : '이 카드의 설명은?'}
+            ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleQuizQuestion || '이 카드의 설명은?') : '이 카드의 설명은?'}
           </div>
           <div style="color:#fff;font-size:16px;font-weight:900;">${card.name}</div>
         </div>
@@ -865,7 +865,7 @@ function _renderBattleQuiz() {
       </div>
 
       <div style="text-align:center;margin-top:10px;color:#888;font-size:11px;">
-        ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI.battleScore?.[window.currentLang || 'ko'] || '현재 점수: {my} / {total}').replace('{my}', battleState.myScore).replace('{total}', battleState.currentQ) : '현재 점수: ' + battleState.myScore + ' / ' + battleState.currentQ}
+        ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleScore || '현재 점수: {my} / {total}').replace('{my}', battleState.myScore).replace('{total}', battleState.currentQ) : '현재 점수: ' + battleState.myScore + ' / ' + battleState.currentQ}
       </div>
     </div>
   `;
@@ -1040,8 +1040,8 @@ function _showWaitingResultPopup() {
   const _Tw = window.LANG_UI; const _Lw = window.currentLang || 'ko';
   const bwrT = document.getElementById('bwr-title');
   const bwrH = document.getElementById('bwr-hint');
-  if (bwrT) bwrT.textContent = _Tw?.battleWaitResult?.[_Lw] || '상대방 결과 기다리는 중...';
-  if (bwrH) bwrH.textContent = _Tw?.battleWaitHint?.[_Lw] || '잠시만 기다려요!';
+  if (bwrT) bwrT.textContent = _Tw?.[_Lw]?.battleWaitResult || '상대방 결과 기다리는 중...';
+  if (bwrH) bwrH.textContent = _Tw?.[_Lw]?.battleWaitHint || '잠시만 기다려요!';
 }
 
 // [한글 주석] 배틀 최종 결과 팝업
@@ -1053,7 +1053,7 @@ function _showBattleResult(myScore, opponentScore, result) {
   let resultLabel, resultColor, rewardMsg;
 
   const _Tr = window.LANG_UI; const _Lr = window.currentLang || 'ko';
-  const _tr = k => _Tr?.[k]?.[_Lr] || _Tr?.[k]?.ko || '';
+  const _tr = k => _Tr?.[_Lr]?.[k] || _Tr?.ko?.[k] || '';
   if (result === 'win') {
     resultLabel = _tr('battleWin');
     resultColor = '#ffd700';
@@ -1105,7 +1105,7 @@ function _showBattleResult(myScore, opponentScore, result) {
           border:1px solid ${resultColor};border-radius:14px;
           padding:14px 8px;text-align:center;
         ">
-          <div style="color:#aaa;font-size:10px;margin-bottom:4px;">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI.battleMe?.[window.currentLang||'ko']||'나') : '나'}</div>
+          <div style="color:#aaa;font-size:10px;margin-bottom:4px;">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleMe||'나') : '나'}</div>
           <div style="color:#fff;font-size:28px;font-weight:900;">${myScore}</div>
           <div style="color:#aaa;font-size:10px;">/ 5</div>
         </div>
@@ -1115,7 +1115,7 @@ function _showBattleResult(myScore, opponentScore, result) {
           border:1px solid #666;border-radius:14px;
           padding:14px 8px;text-align:center;
         ">
-          <div style="color:#aaa;font-size:10px;margin-bottom:4px;">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI.battleOpponent?.[window.currentLang||'ko']||'상대') : '상대'}</div>
+          <div style="color:#aaa;font-size:10px;margin-bottom:4px;">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleOpponent||'상대') : '상대'}</div>
           <div style="color:#fff;font-size:28px;font-weight:900;">
             ${opponentScore === -1 ? '?' : opponentScore}
           </div>
@@ -1128,7 +1128,7 @@ function _showBattleResult(myScore, opponentScore, result) {
         background:linear-gradient(135deg,${resultColor},${resultColor}aa);
         color:#000;border:none;border-radius:14px;
         padding:13px;font-size:15px;font-weight:900;cursor:pointer;
-      ">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI.battleConfirm?.[window.currentLang||'ko']||'확인!') : '확인!'}</button>
+      ">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleConfirm||'확인!') : '확인!'}</button>
     </div>
   `;
 
@@ -1212,7 +1212,7 @@ function _startAIBattleTransition() {
   document.body.appendChild(overlay);
 
   const _Tai = window.LANG_UI; const _Lai = window.currentLang || 'ko';
-  const _tai = k => _Tai?.[k]?.[_Lai] || _Tai?.[k]?.ko || '';
+  const _tai = k => _Tai?.[_Lai]?.[k] || _Tai?.ko?.[k] || '';
   const aiT = document.getElementById('ai-tr-title');
   const aiD = document.getElementById('ai-tr-desc');
   const aiH = document.getElementById('ai-tr-hint');

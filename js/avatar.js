@@ -276,7 +276,7 @@ function handleGenderSelect(gender) {
 function confirmAvatarSelection() {
   if (!tempSelectedAvatarId) {
     const _T = window.LANG_UI; const _L = window.currentLang || 'ko';
-    alert(_T?.avatarSelectPrompt?.[_L] || '원하는 아바타를 하나 선택해주세요!');
+    alert(_T?.[_L]?.avatarSelectPrompt || '원하는 아바타를 하나 선택해주세요!');
     return;
   }
   selectAvatar(tempSelectedAvatarId);
@@ -446,7 +446,7 @@ function showItemToast(names) {
   const toast = document.createElement('div');
   toast.className = 'item-unlock-toast';
   const _Tt = window.LANG_UI; const _Lt = window.currentLang || 'ko';
-  toast.textContent = (_Tt?.itemUnlockToast?.[_Lt] || '🎉 새 아이템 해금! {names}').replace('{names}', names.join(', '));
+  toast.textContent = (_Tt?.[_Lt]?.itemUnlockToast || '🎉 새 아이템 해금! {names}').replace('{names}', names.join(', '));
   document.body.appendChild(toast);
   setTimeout(() => { toast.classList.add('show'); }, 10);
   setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3000);
@@ -526,7 +526,7 @@ function checkAndUnlockPets() {
   if (newPets.length > 0) {
     saveUnlockedPets(unlocked);
     const _Tp = window.LANG_UI; const _Lp = window.currentLang || 'ko';
-    const _suffix = _Tp?.petUnlockSuffix?.[_Lp] || '(펫)';
+    const _suffix = _Tp?.[_Lp]?.petUnlockSuffix || '(펫)';
     showItemToast(newPets.map(name => name + _suffix));
   }
 }
@@ -770,8 +770,8 @@ function renderItemList() {
         <div class="customize-item-info">
           <div class="customize-item-name">${av.name}</div>
           ${isUnlocked
-          ? `<div class="customize-item-status">${isSelected ? (window.LANG_UI?.avatarSelectedStatus?.[window.currentLang || 'ko'] || '✅ 선택 중') : (window.LANG_UI?.avatarSelectAvailable?.[window.currentLang || 'ko'] || '선택 가능')}</div>`
-          : `<div class="customize-item-cond">${(window.LANG_UI?.avatarLockCond?.[window.currentLang || 'ko'] || '🔒 Lv.{n} 해금').replace('{n}', av.unlockLevel)}</div>`}
+          ? `<div class="customize-item-status">${isSelected ? (window.LANG_UI?.[window.currentLang || 'ko']?.avatarSelectedStatus || '✅ 선택 중') : (window.LANG_UI?.[window.currentLang || 'ko']?.avatarSelectAvailable || '선택 가능')}</div>`
+          : `<div class="customize-item-cond">${(window.LANG_UI?.[window.currentLang || 'ko']?.avatarLockCond || '🔒 Lv.{n} 해금').replace('{n}', av.unlockLevel)}</div>`}
         </div>
       `;
       if (isUnlocked) {
@@ -806,8 +806,8 @@ function renderItemList() {
             ${'★'.repeat(outfit.rarity === 'epic' ? 3 : outfit.rarity === 'rare' ? 2 : 1)}
           </div>
           ${isUnlocked
-          ? `<div class="customize-item-status">${isEquipped ? (window.LANG_UI?.outfitEquippedStatus?.[window.currentLang || 'ko'] || '✅ 착용 중') : (window.LANG_UI?.outfitEquipAvailable?.[window.currentLang || 'ko'] || '착용 가능')}</div>`
-          : `<div class="customize-item-cond">${(window.LANG_UI?.avatarLockCond?.[window.currentLang || 'ko'] || '🔒 Lv.{n} 해금').replace('{n}', outfit.unlockLevel)}</div>`}
+          ? `<div class="customize-item-status">${isEquipped ? (window.LANG_UI?.[window.currentLang || 'ko']?.outfitEquippedStatus || '✅ 착용 중') : (window.LANG_UI?.[window.currentLang || 'ko']?.outfitEquipAvailable || '착용 가능')}</div>`
+          : `<div class="customize-item-cond">${(window.LANG_UI?.[window.currentLang || 'ko']?.avatarLockCond || '🔒 Lv.{n} 해금').replace('{n}', outfit.unlockLevel)}</div>`}
         </div>
       `;
       if (isUnlocked) {
@@ -845,15 +845,15 @@ function renderItemList() {
       if (!isUnlocked && pet.condition) {
         const _Tpc = window.LANG_UI; const _Lpc = window.currentLang || 'ko';
         condText = pet.condition.total
-          ? (_Tpc?.petCondTotal?.[_Lpc] || '전체 {n}개 필요').replace('{n}', pet.condition.total)
-          : (_Tpc?.petCondAnimal?.[_Lpc] || '동물 {n}개 필요').replace('{n}', pet.condition.count);
+          ? (_Tpc?.[_Lpc]?.petCondTotal || '전체 {n}개 필요').replace('{n}', pet.condition.total)
+          : (_Tpc?.[_Lpc]?.petCondAnimal || '동물 {n}개 필요').replace('{n}', pet.condition.count);
       }
       div.innerHTML = `
         <div class="customize-item-emoji" style="font-size:2.2rem;">${pet.emoji}</div>
         <div class="customize-item-info">
           <div class="customize-item-name">${pet.name}</div>
           ${isUnlocked
-          ? `<div class="customize-item-status">${isEquipped ? (window.LANG_UI?.petEquippedStatus?.[window.currentLang || 'ko'] || '✅ 장착 중') : (window.LANG_UI?.petEquipAvailable?.[window.currentLang || 'ko'] || '장착 가능')}</div>`
+          ? `<div class="customize-item-status">${isEquipped ? (window.LANG_UI?.[window.currentLang || 'ko']?.petEquippedStatus || '✅ 장착 중') : (window.LANG_UI?.[window.currentLang || 'ko']?.petEquipAvailable || '장착 가능')}</div>`
           : `<div class="customize-item-cond">🔒 ${condText}</div>`}
         </div>
       `;
@@ -894,8 +894,8 @@ function renderItemList() {
             ${'★'.repeat(badge.unlockLevel === 30 ? 3 : badge.unlockLevel === 20 ? 2 : 1)}
           </div>
           ${isUnlocked
-          ? `<div class="customize-item-status">${isEquipped ? (window.LANG_UI?.titleEquippedStatus?.[window.currentLang || 'ko'] || '✅ 장착 중 (탭하여 해제)') : (window.LANG_UI?.titleEquipAvailable?.[window.currentLang || 'ko'] || '탭하여 장착')}</div>`
-          : `<div class="customize-item-cond">${(window.LANG_UI?.titleLockCond?.[window.currentLang || 'ko'] || '🔒 Lv.{n} 달성 시 해금').replace('{n}', badge.unlockLevel)}</div>`}
+          ? `<div class="customize-item-status">${isEquipped ? (window.LANG_UI?.[window.currentLang || 'ko']?.titleEquippedStatus || '✅ 장착 중 (탭하여 해제)') : (window.LANG_UI?.[window.currentLang || 'ko']?.titleEquipAvailable || '탭하여 장착')}</div>`
+          : `<div class="customize-item-cond">${(window.LANG_UI?.[window.currentLang || 'ko']?.titleLockCond || '🔒 Lv.{n} 달성 시 해금').replace('{n}', badge.unlockLevel)}</div>`}
         </div>
       `;
 
@@ -922,7 +922,7 @@ function renderItemList() {
 
     if (slotItems.length === 0) {
       const _Tni = window.LANG_UI; const _Lni = window.currentLang || 'ko';
-      listEl.innerHTML = `<div style="text-align:center;color:#888;padding:20px;">${_Tni?.itemNone?.[_Lni] || '아이템 없음'}</div>`;
+      listEl.innerHTML = `<div style="text-align:center;color:#888;padding:20px;">${_Tni?.[_Lni]?.itemNone || '아이템 없음'}</div>`;
       return;
     }
 
@@ -949,8 +949,8 @@ function renderItemList() {
             ${'★'.repeat(item.rarity === 'epic' ? 3 : item.rarity === 'rare' ? 2 : 1)}
           </div>
           ${isUnlocked
-          ? `<div class="customize-item-status">${isEquipped ? (window.LANG_UI?.itemEquippedStatus?.[window.currentLang || 'ko'] || '✅ 장착 중') : (window.LANG_UI?.itemEquipAvailable?.[window.currentLang || 'ko'] || '장착 가능')}</div>`
-          : `<div class="customize-item-cond">${(window.LANG_UI?.avatarLockCond?.[window.currentLang || 'ko'] || '🔒 Lv.{n} 해금').replace('{n}', item.unlockLevel)}</div>`}
+          ? `<div class="customize-item-status">${isEquipped ? (window.LANG_UI?.[window.currentLang || 'ko']?.itemEquippedStatus || '✅ 장착 중') : (window.LANG_UI?.[window.currentLang || 'ko']?.itemEquipAvailable || '장착 가능')}</div>`
+          : `<div class="customize-item-cond">${(window.LANG_UI?.[window.currentLang || 'ko']?.avatarLockCond || '🔒 Lv.{n} 해금').replace('{n}', item.unlockLevel)}</div>`}
         </div>
       `;
       if (isUnlocked) {
@@ -983,12 +983,12 @@ function renderRewardBagList() {
 
   if (bags.length === 0) {
     const _Tbn = window.LANG_UI; const _Lbn = window.currentLang || 'ko';
-    listEl.innerHTML = `<div style="text-align:center;color:#888;padding:40px;">${_Tbn?.bagNone?.[_Lbn] || '아직 받은 복주머니가 없어요 🎁'}</div>`;
+    listEl.innerHTML = `<div style="text-align:center;color:#888;padding:40px;">${_Tbn?.[_Lbn]?.bagNone || '아직 받은 복주머니가 없어요 🎁'}</div>`;
     return;
   }
 
   const _Tbl = window.LANG_UI; const _Lbl = window.currentLang || 'ko';
-  const _tbl = k => _Tbl?.[k]?.[_Lbl] || _Tbl?.[k]?.ko || '';
+  const _tbl = k => _Tbl?.[_Lbl]?.[k] || _Tbl?.ko?.[k] || '';
   listEl.innerHTML = bags.map((bag, idx) => `
     <div class="reward-bag-item" onclick="openOneBag(${idx})">
       <div style="font-size:2.5rem;">🎁</div>
@@ -1122,7 +1122,7 @@ function showBagOpenAnimation(reward, onComplete) {
   // [한글 주석] 복주머니 두구두구 효과음
   if (typeof playSfxBagDrumroll === 'function') playSfxBagDrumroll();
   const _Tba = window.LANG_UI; const _Lba = window.currentLang || 'ko';
-  const _tba = k => _Tba?.[k]?.[_Lba] || _Tba?.[k]?.ko || '';
+  const _tba = k => _Tba?.[_Lba]?.[k] || _Tba?.ko?.[k] || '';
   const bagOM = document.getElementById('bag-opening-msg');
   const bagDR = document.getElementById('bag-drumroll-msg');
   const bagCR = document.getElementById('bag-card-rarity');
@@ -1237,8 +1237,8 @@ function showLevelUpPopup(newLevel) {
   const _Tlu = window.LANG_UI; const _Llu = window.currentLang || 'ko';
   const luM = document.getElementById('levelup-msg');
   const luB = document.getElementById('levelup-confirm-btn');
-  if (luM) luM.textContent = _Tlu?.levelUpMsg?.[_Llu] || '축하해요! 레벨이 올랐어요! 🎉';
-  if (luB) luB.textContent = _Tlu?.levelUpConfirm?.[_Llu] || '확인!';
+  if (luM) luM.textContent = _Tlu?.[_Llu]?.levelUpMsg || '축하해요! 레벨이 올랐어요! 🎉';
+  if (luB) luB.textContent = _Tlu?.[_Llu]?.levelUpConfirm || '확인!';
 
   // [한글 주석] 진동 알림
   if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 200]);

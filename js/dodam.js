@@ -59,7 +59,7 @@ function switchDodamTab(category) {
   // 아직 해금되지 않은 카테고리라면 거부
   if (!unlocked.includes(category)) {
     const _T = window.LANG_UI; const _L = window.currentLang || 'ko';
-    alert(_T?.dodamLocked?.[_L] || '아직 열리지 않은 도감입니다! 이전 도감을 더 채워주세요.');
+    alert(_T?.[_L]?.dodamLocked || '아직 열리지 않은 도감입니다! 이전 도감을 더 채워주세요.');
     return;
   }
 
@@ -80,7 +80,7 @@ function renderDodamTabs() {
 
     // 1. 잠금/해금 상태 표시 업데이트
     const _T = window.LANG_UI; const _L = window.currentLang || 'ko';
-    const _t = k => _T?.[k]?.[_L] || _T?.[k]?.ko || '';
+    const _t = k => _T?.[_L]?.[k] || _T?.ko?.[k] || '';
     if (unlocked.includes(cat)) {
       tab.classList.remove('locked');
       if (cat === 'plant') tab.textContent = _t('dodamTabPlant');
@@ -137,7 +137,7 @@ function renderDodamGrid(category) {
   const totalCount = 100;
   const _Ts = window.LANG_UI; const _Ls = window.currentLang || 'ko';
   document.querySelector('.dodam-summary-text').textContent =
-    (_Ts?.dodamSummary?.[_Ls] || '{n} / {total} 수집').replace('{n}', collectedCount).replace('{total}', totalCount);
+    (_Ts?.[_Ls]?.dodamSummary || '{n} / {total} 수집').replace('{n}', collectedCount).replace('{total}', totalCount);
   document.getElementById('dodam-progress').style.width = `${(collectedCount / totalCount) * 100}%`;
 
   // 1. 실제 존재하는 카드들을 그리기
@@ -179,7 +179,7 @@ function renderDodamGrid(category) {
       cardEl.innerHTML = `
                 <div class="dodam-card-icon-unknown">🔒</div>
                 <div class="dodam-card-name-unknown">???</div>
-                <div class="dodam-card-desc-unknown">${_Tu?.dodamUnknownDesc?.[_Lu] || '미발견'}</div>
+                <div class="dodam-card-desc-unknown">${_Tu?.[_Lu]?.dodamUnknownDesc || '미발견'}</div>
             `;
     }
     gridEl.appendChild(cardEl);
@@ -194,7 +194,7 @@ function renderDodamGrid(category) {
     emptyEl.innerHTML = `
             <div class="dodam-card-icon-unknown">🔒</div>
             <div class="dodam-card-name-unknown">???</div>
-            <div class="dodam-card-desc-unknown">${_Te?.dodamUnknownDesc?.[_Le] || '미발견'}</div>
+            <div class="dodam-card-desc-unknown">${_Te?.[_Le]?.dodamUnknownDesc || '미발견'}</div>
         `;
     gridEl.appendChild(emptyEl);
   }
@@ -254,7 +254,7 @@ function showDodamDetail(card, dateString) {
   const _Td = window.LANG_UI; const _Ld = window.currentLang || 'ko';
   document.getElementById('popup-date').textContent = dateString
     ? `📅 ${dateString}`
-    : (_Td?.dodamDateDefault?.[_Ld] || '📅 최근 수집');
+    : (_Td?.[_Ld]?.dodamDateDefault || '📅 최근 수집');
 
   // [한글 주석] 희귀도 뱃지 (언어별 텍스트)
   const ui = window.LANG_UI ? window.LANG_UI[lang] : null;
@@ -322,7 +322,7 @@ function renderWorkshop() {
   // [한글 주석] 수집 현황 요약 업데이트
   const _Tw = window.LANG_UI; const _Lw = window.currentLang || 'ko';
   document.querySelector('.dodam-summary-text').textContent =
-    _Tw?.workshopSummary?.[_Lw] || '중복 카드 조합소';
+    _Tw?.[_Lw]?.workshopSummary || '중복 카드 조합소';
   document.getElementById('dodam-progress').style.width = '0%';
 
   const workshopCards = typeof getWorkshopCards === 'function' ? getWorkshopCards() : [];
@@ -331,7 +331,7 @@ function renderWorkshop() {
   // [한글 주석] 조합소가 비어있을 때
   if (workshopCards.length === 0) {
     const _Twe = window.LANG_UI; const _Lwe = window.currentLang || 'ko';
-    const _twe = k => _Twe?.[k]?.[_Lwe] || _Twe?.[k]?.ko || '';
+    const _twe = k => _Twe?.[_Lwe]?.[k] || _Twe?.ko?.[k] || '';
     gridEl.innerHTML = `
       <div style="
         grid-column:1/-1;
@@ -359,7 +359,7 @@ function renderWorkshop() {
     const infoEl = document.getElementById('workshop-selected-info');
     const btnEl = document.getElementById('workshop-craft-btn');
     const _Tsi = window.LANG_UI; const _Lsi = window.currentLang || 'ko';
-    if (infoEl) infoEl.textContent = (_Tsi?.workshopSelectedInfo?.[_Lsi] || '선택: {n} / 5장').replace('{n}', totalSelected);
+    if (infoEl) infoEl.textContent = (_Tsi?.[_Lsi]?.workshopSelectedInfo || '선택: {n} / 5장').replace('{n}', totalSelected);
     if (btnEl) btnEl.style.display = totalSelected === 5 ? 'block' : 'none';
   }
 
@@ -374,7 +374,7 @@ function renderWorkshop() {
     margin-bottom:4px;
   `;
   const _Th = window.LANG_UI; const _Lh = window.currentLang || 'ko';
-  const _th = k => _Th?.[k]?.[_Lh] || _Th?.[k]?.ko || '';
+  const _th = k => _Th?.[_Lh]?.[k] || _Th?.ko?.[k] || '';
   header.innerHTML = `
     <div style="color:#ffd700;font-size:13px;font-weight:700;margin-bottom:4px;">
       ${_th('workshopHeaderTitle')}
@@ -483,7 +483,7 @@ function renderWorkshop() {
         // [한글 주석] 첫번째 클릭: 1장 선택
         if (totalSelected >= 5) {
           const _Tm = window.LANG_UI; const _Lm = window.currentLang || 'ko';
-          if (typeof showSyncToast === 'function') showSyncToast(_Tm?.workshopMaxSelect?.[_Lm] || '5장만 선택할 수 있어요!', 'warning');
+          if (typeof showSyncToast === 'function') showSyncToast(_Tm?.[_Lm]?.workshopMaxSelect || '5장만 선택할 수 있어요!', 'warning');
           return;
         }
         selectedForCraft[cardId] = 1;
@@ -680,7 +680,7 @@ function showCraftResultPopup(card, isNew, resultRarity) {
 
   document.body.appendChild(overlay);
   const _Tcr = window.LANG_UI; const _Lcr = window.currentLang || 'ko';
-  const _tcr = k => _Tcr?.[k]?.[_Lcr] || _Tcr?.[k]?.ko || '';
+  const _tcr = k => _Tcr?.[_Lcr]?.[k] || _Tcr?.ko?.[k] || '';
   const crT = document.getElementById('craft-success-title');
   const crD = document.getElementById('craft-success-desc');
   const crB = document.getElementById('craft-confirm-btn');

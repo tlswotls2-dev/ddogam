@@ -101,7 +101,7 @@ function startQuiz(targetCategory) {
   // 퀴즈 데이터가 아직 로드되지 않은 경우 안내
   if (!quizData) {
     const _T = window.LANG_UI; const _L = window.currentLang || 'ko';
-    alert(_T?.quizDataLoading?.[_L] || '퀴즈 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+    alert(_T?.[_L]?.quizDataLoading || '퀴즈 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
     return;
   }
 
@@ -217,13 +217,13 @@ function handleAnswer(selectedBtn, isCorrect, correctAnswerIndex) {
     // 정답인 경우: 초록색 강조 + 정답 피드백
     selectedBtn.classList.add('correct');
     const _Tc = window.LANG_UI; const _Lc = window.currentLang || 'ko';
-    selectedBtn.innerHTML += " <span class='quiz-feedback'>" + (_Tc?.quizCorrect?.[_Lc] || '🎉 정답!') + "</span>";
+    selectedBtn.innerHTML += " <span class='quiz-feedback'>" + (_Tc?.[_Lc]?.quizCorrect || '🎉 정답!') + "</span>";
     currentScore++;
   } else {
     // 오답인 경우: 빨간색 강조 + 오답 피드백
     selectedBtn.classList.add('wrong');
     const _Tw = window.LANG_UI; const _Lw = window.currentLang || 'ko';
-    selectedBtn.innerHTML += " <span class='quiz-feedback'>" + (_Tw?.quizWrong?.[_Lw] || '❌ 틀렸어요') + "</span>";
+    selectedBtn.innerHTML += " <span class='quiz-feedback'>" + (_Tw?.[_Lw]?.quizWrong || '❌ 틀렸어요') + "</span>";
 
     // [한글 주석] 정답이 무엇이었는지 알려주기 위해 정답 버튼에 초록색 표시
     buttons[correctAnswerIndex].classList.add('correct');
@@ -248,7 +248,7 @@ function showQuizResult() {
   const isPass = currentScore >= QUIZ_PASS_SCORE;
 
   const _Tq = window.LANG_UI; const _Lq = window.currentLang || 'ko';
-  const _tq = k => _Tq?.[k]?.[_Lq] || _Tq?.[k]?.ko || '';
+  const _tq = k => _Tq?.[_Lq]?.[k] || _Tq?.ko?.[k] || '';
   if (isPass) {
     document.getElementById('quiz-result-title').innerHTML = _tq('quizPassTitle');
     const descKey = currentQuizCategory === 'animal' ? 'quizPassDescAnimal' : 'quizPassDescArtifact';
@@ -440,7 +440,7 @@ function _showLevelQuizPopup(newLevel, questionCard, choices, triggerCardId) {
 
   document.body.appendChild(overlay);
   const _Tl = window.LANG_UI; const _Ll = window.currentLang || 'ko';
-  const _tl = k => _Tl?.[k]?.[_Ll] || _Tl?.[k]?.ko || '';
+  const _tl = k => _Tl?.[_Ll]?.[k] || _Tl?.ko?.[k] || '';
   const lqH = document.getElementById('lq-header');
   const lqS = document.getElementById('lq-subheader');
   const lqQ = document.getElementById('lq-question');
@@ -600,7 +600,7 @@ function _showCategoryUnlockPopup(category, categoryLabel) {
 
   document.body.appendChild(overlay);
   const _Tcu = window.LANG_UI; const _Lcu = window.currentLang || 'ko';
-  const _tcu = k => _Tcu?.[k]?.[_Lcu] || _Tcu?.[k]?.ko || '';
+  const _tcu = k => _Tcu?.[_Lcu]?.[k] || _Tcu?.ko?.[k] || '';
   const cuTitle = document.getElementById('cu-title');
   const cuLabel = document.getElementById('cu-label');
   const cuDesc  = document.getElementById('cu-desc');
@@ -620,7 +620,7 @@ function _showQuizFailToast() {
   toast.className = 'item-unlock-toast';
   toast.style.background = 'linear-gradient(135deg,#ff4444,#cc0000)';
   const _Tft = window.LANG_UI; const _Lft = window.currentLang || 'ko';
-  toast.textContent = _Tft?.levelQuizFailToast?.[_Lft] || '❌ 아쉽! 다음 카드를 모으면 다시 도전해요!';
+  toast.textContent = _Tft?.[_Lft]?.levelQuizFailToast || '❌ 아쉽! 다음 카드를 모으면 다시 도전해요!';
   document.body.appendChild(toast);
   setTimeout(() => toast.classList.add('show'), 10);
   setTimeout(() => {
@@ -661,11 +661,11 @@ function updateDailyQuizBtn() {
   if (isDailyQuizDone()) {
     btn.style.opacity = '0.4';
     btn.style.cursor = 'not-allowed';
-    btn.innerHTML = '📝<br>' + (_Td?.dailyQuizDoneLabel?.[_Ld] || '완료') + '<br>✅';
+    btn.innerHTML = '📝<br>' + (_Td?.[_Ld]?.dailyQuizDoneLabel || '완료') + '<br>✅';
   } else {
     btn.style.opacity = '1';
     btn.style.cursor = 'pointer';
-    const lbl = (_Td?.dailyQuizLabel?.[_Ld] || '일일\\n시험').replace('\\n', '<br>');
+    const lbl = (_Td?.[_Ld]?.dailyQuizLabel || '일일\\n시험').replace('\\n', '<br>');
     btn.innerHTML = '📝<br>' + lbl;
   }
 }
@@ -712,7 +712,7 @@ function showDailyQuiz() {
 
   if (collectedCards.length === 0) {
     const _Tnc = window.LANG_UI; const _Lnc = window.currentLang || 'ko';
-    alert(_Tnc?.dailyQuizNoCard?.[_Lnc] || '카드를 먼저 수집해야 시험을 볼 수 있어요!');
+    alert(_Tnc?.[_Lnc]?.dailyQuizNoCard || '카드를 먼저 수집해야 시험을 볼 수 있어요!');
     return;
   }
 
@@ -808,8 +808,8 @@ function _showOXQuizPopup(question) {
   const _Tdq = window.LANG_UI; const _Ldq = window.currentLang || 'ko';
   const dqT = document.getElementById('dq-title');
   const dqD = document.getElementById('dq-desc');
-  if (dqT) dqT.textContent = _Tdq?.dailyQuizTitle?.[_Ldq] || '📝 오늘의 일일 시험';
-  if (dqD) dqD.textContent = _Tdq?.dailyQuizDesc?.[_Ldq] || '이 설명이 맞으면 ⭕, 틀리면 ❌';
+  if (dqT) dqT.textContent = _Tdq?.[_Ldq]?.dailyQuizTitle || '📝 오늘의 일일 시험';
+  if (dqD) dqD.textContent = _Tdq?.[_Ldq]?.dailyQuizDesc || '이 설명이 맞으면 ⭕, 틀리면 ❌';
 }
 
 // [한글 주석] OX 답 처리
@@ -913,7 +913,7 @@ function _showOXResult(isCorrect) {
   `;
 
   const _Tor = window.LANG_UI; const _Lor = window.currentLang || 'ko';
-  const _tor = k => _Tor?.[k]?.[_Lor] || _Tor?.[k]?.ko || '';
+  const _tor = k => _Tor?.[_Lor]?.[k] || _Tor?.ko?.[k] || '';
   overlay.innerHTML = isCorrect ? `
     <div style="
       background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
@@ -1018,7 +1018,7 @@ function _showDailyQuizDonePopup() {
   `;
   document.body.appendChild(overlay);
   const _Tdd = window.LANG_UI; const _Ldd = window.currentLang || 'ko';
-  const _tdd = k => _Tdd?.[k]?.[_Ldd] || _Tdd?.[k]?.ko || '';
+  const _tdd = k => _Tdd?.[_Ldd]?.[k] || _Tdd?.ko?.[k] || '';
   const ddT = document.getElementById('dd-title');
   const ddD = document.getElementById('dd-desc');
   const ddB = document.getElementById('dd-btn');
@@ -1090,10 +1090,10 @@ function _buildRadarSVG() {
       <circle id="ai-dot-plant"    cx="${cx}" cy="${cy}" r="4" fill="#84ff00" style="transition:all 1.2s cubic-bezier(0.4,0,0.2,1);"/>
       <circle id="ai-dot-animal"   cx="${cx}" cy="${cy}" r="4" fill="#ff9d00" style="transition:all 1.2s cubic-bezier(0.4,0,0.2,1);"/>
       <circle id="ai-dot-artifact" cx="${cx}" cy="${cy}" r="4" fill="#4a9eff" style="transition:all 1.2s cubic-bezier(0.4,0,0.2,1);"/>
-      <text x="${cx}" y="${ends[0][1] - 9}"  text-anchor="middle" fill="#84ff00" font-size="10" font-family="sans-serif">${(window.LANG_UI?.radarPlant?.[window.currentLang||'ko']||'식물')}</text>
-      <text x="${ends[1][0] + 14}" y="${ends[1][1]}" text-anchor="middle" fill="#ff9d00" font-size="10" font-family="sans-serif">${(window.LANG_UI?.radarAnimal?.[window.currentLang||'ko']||'동물')}</text>
-      <text x="${ends[2][0] - 14}" y="${ends[2][1]}" text-anchor="middle" fill="#4a9eff" font-size="10" font-family="sans-serif">${(window.LANG_UI?.radarArtifact?.[window.currentLang||'ko']||'유물')}</text>
-      <text x="${cx}" y="192" text-anchor="middle" fill="#333" font-size="9" font-family="sans-serif">${(window.LANG_UI?.aiRadarLabel?.[window.currentLang||'ko']||'학습 정확도 레이더')}</text>
+      <text x="${cx}" y="${ends[0][1] - 9}"  text-anchor="middle" fill="#84ff00" font-size="10" font-family="sans-serif">${(window.LANG_UI?.[window.currentLang || 'ko']?.radarPlant||'식물')}</text>
+      <text x="${ends[1][0] + 14}" y="${ends[1][1]}" text-anchor="middle" fill="#ff9d00" font-size="10" font-family="sans-serif">${(window.LANG_UI?.[window.currentLang || 'ko']?.radarAnimal||'동물')}</text>
+      <text x="${ends[2][0] - 14}" y="${ends[2][1]}" text-anchor="middle" fill="#4a9eff" font-size="10" font-family="sans-serif">${(window.LANG_UI?.[window.currentLang || 'ko']?.radarArtifact||'유물')}</text>
+      <text x="${cx}" y="192" text-anchor="middle" fill="#333" font-size="9" font-family="sans-serif">${(window.LANG_UI?.[window.currentLang || 'ko']?.aiRadarLabel||'학습 정확도 레이더')}</text>
     </svg>`;
 }
 
@@ -1143,7 +1143,7 @@ function _showFirstTimeAnalysis() {
     </div>`;
   document.body.appendChild(overlay);
   const _Tft2 = window.LANG_UI; const _Lft2 = window.currentLang || 'ko';
-  const _tft2 = k => _Tft2?.[k]?.[_Lft2] || _Tft2?.[k]?.ko || '';
+  const _tft2 = k => _Tft2?.[_Lft2]?.[k] || _Tft2?.ko?.[k] || '';
   const ftT = document.getElementById('ft-title');
   const ftD = document.getElementById('ft-desc');
   const ftS = document.getElementById('ft-start-btn');
@@ -1195,8 +1195,8 @@ function showAIQuizAnalysis() {
           <div style="height:7px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;">
             <div id="aiq-bar-${c}" style="height:100%;width:0%;background:${color};border-radius:4px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);"></div>
           </div>
-          <div style="color:#555;font-size:10px;margin-top:2px;">${(window.LANG_UI?.aiScoreDesc?.[window.currentLang||'ko']||'{c}/{t}문제 정답').replace('{c}',s.correct).replace('{t}',s.total)}</div>
-        ` : `<div style="color:#444;font-size:10px;">${(window.LANG_UI?.aiNoHistory?.[window.currentLang||'ko']||'아직 퀴즈 기록 없음')}</div>`}
+          <div style="color:#555;font-size:10px;margin-top:2px;">${(window.LANG_UI?.[window.currentLang || 'ko']?.aiScoreDesc||'{c}/{t}문제 정답').replace('{c}',s.correct).replace('{t}',s.total)}</div>
+        ` : `<div style="color:#444;font-size:10px;">${(window.LANG_UI?.[window.currentLang || 'ko']?.aiNoHistory||'아직 퀴즈 기록 없음')}</div>`}
       </div>`;
   }).join('');
 
@@ -1265,13 +1265,13 @@ function showAIQuizAnalysis() {
 
   const scanTxtInit = document.getElementById('aiq-scan-txt');
   const _Tsc = window.LANG_UI; const _Lsc = window.currentLang || 'ko';
-  if (scanTxtInit) scanTxtInit.textContent = _Tsc?.aiAnalyzing?.[_Lsc] || 'ANALYZING...';
+  if (scanTxtInit) scanTxtInit.textContent = _Tsc?.[_Lsc]?.aiAnalyzing || 'ANALYZING...';
 
   // [한글 주석] 1.5초 스캔 애니메이션 → 결과 표시
   setTimeout(() => {
     const scanTxt = document.getElementById('aiq-scan-txt');
     const _Tai2 = window.LANG_UI; const _Lai2 = window.currentLang || 'ko';
-    if (scanTxt) { scanTxt.textContent = _Tai2?.aiComplete?.[_Lai2] || 'COMPLETE ✓'; scanTxt.style.color = '#ffd700'; }
+    if (scanTxt) { scanTxt.textContent = _Tai2?.[_Lai2]?.aiComplete || 'COMPLETE ✓'; scanTxt.style.color = '#ffd700'; }
     setTimeout(() => {
       const scan   = document.getElementById('aiq-scan-layer');
       const result = document.getElementById('aiq-result-layer');
@@ -1279,7 +1279,7 @@ function showAIQuizAnalysis() {
       if (result) { result.style.opacity = '1'; result.style.transform = 'scale(1)'; }
       // [한글 주석] AI 분석 결과 텍스트 채우기
       const _Tar = window.LANG_UI; const _Lar = window.currentLang || 'ko';
-      const _tar = k => _Tar?.[k]?.[_Lar] || _Tar?.[k]?.ko || '';
+      const _tar = k => _Tar?.[_Lar]?.[k] || _Tar?.ko?.[k] || '';
       const aiTL = document.getElementById('ai-title-label');
       const aiCL = document.getElementById('ai-complete-label');
       const aiAB = document.getElementById('ai-analysis-badge');
@@ -1305,7 +1305,7 @@ function showAIQuizAnalysis() {
         const rate   = stats[c].rate ?? 0;
         if (bar) requestAnimationFrame(() => { bar.style.width = rate + '%'; });
           const _Trd = window.LANG_UI; const _Lrd = window.currentLang || 'ko';
-          if (rateEl && stats[c].total === 0) rateEl.textContent = _Trd?.aiNoData?.[_Lrd] || '데이터 없음';
+          if (rateEl && stats[c].total === 0) rateEl.textContent = _Trd?.[_Lrd]?.aiNoData || '데이터 없음';
           if (rateEl && stats[c].total > 0) {
           let cur = 0;
           const step = Math.max(rate / 30, 1);

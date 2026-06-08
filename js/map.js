@@ -93,14 +93,14 @@ function initMap() {
 
                 // [한글 주석] 상태 텍스트 업데이트
                 const _T1 = window.LANG_UI; const _L1 = window.currentLang || 'ko';
-                document.getElementById('map-status-text').textContent = _T1?.mapStatusTracking?.[_L1] || '📍 현재 위치 추적 중';
+                document.getElementById('map-status-text').textContent = _T1?.[_L1]?.mapStatusTracking || '📍 현재 위치 추적 중';
             },
             (error) => {
                 // [한글 주석] 위치 가져오기 실패 → 서울시청 기본 좌표 사용
                 console.warn('위치 정보를 가져올 수 없습니다:', error.message);
                 setUserMarker(DEFAULT_LAT, DEFAULT_LNG);
                 const _T2 = window.LANG_UI; const _L2 = window.currentLang || 'ko';
-                document.getElementById('map-status-text').textContent = _T2?.mapStatusNoPermission?.[_L2] || '📍 위치 권한 필요 (기본 위치 표시 중)';
+                document.getElementById('map-status-text').textContent = _T2?.[_L2]?.mapStatusNoPermission || '📍 위치 권한 필요 (기본 위치 표시 중)';
             },
             {
                 enableHighAccuracy: true, // [한글 주석] GPS 고정밀도 모드
@@ -112,7 +112,7 @@ function initMap() {
         // [한글 주석] Geolocation API 미지원 브라우저
         setUserMarker(DEFAULT_LAT, DEFAULT_LNG);
         const _T3 = window.LANG_UI; const _L3 = window.currentLang || 'ko';
-        document.getElementById('map-status-text').textContent = _T3?.mapStatusNoSupport?.[_L3] || '📍 이 브라우저는 위치를 지원하지 않습니다';
+        document.getElementById('map-status-text').textContent = _T3?.[_L3]?.mapStatusNoSupport || '📍 이 브라우저는 위치를 지원하지 않습니다';
     }
 
     // 저장된 수집 마커들 지도에 복원
@@ -139,7 +139,7 @@ function setUserMarker(lat, lng) {
     }).addTo(map);
     
     const _T4 = window.LANG_UI; const _L4 = window.currentLang || 'ko';
-    userMarker.bindPopup(_T4?.mapMyLocation?.[_L4] || '📍 내 위치').openPopup();
+    userMarker.bindPopup(_T4?.[_L4]?.mapMyLocation || '📍 내 위치').openPopup();
 }
 
 /**
@@ -170,7 +170,7 @@ function addCollectionMarker(lat, lng, cardData) {
     // 수집 날짜 가져오기
     const dates = typeof getCollectionDates === 'function' ? getCollectionDates() : {};
     const _T5 = window.LANG_UI; const _L5 = window.currentLang || 'ko';
-    const dateStr = dates[cardData.id] || (_T5?.mapDateUnknown?.[_L5] || '날짜 정보 없음');
+    const dateStr = dates[cardData.id] || (_T5?.[_L5]?.mapDateUnknown || '날짜 정보 없음');
     
     // 마커 생성 및 지도에 추가 (단일 추가 시에도 레이어 그룹에 포함시킴)
     const marker = L.marker([lat, lng], { icon: customIcon });
@@ -283,7 +283,7 @@ function loadSavedMarkers() {
             });
 
             const marker = L.marker([cluster.lat, cluster.lng], { icon: customIcon });
-            const _dateStr6 = item.dateStr !== '날짜 정보 없음' ? item.dateStr : (_T6?.mapDateUnknown?.[_L6] || '날짜 정보 없음');
+            const _dateStr6 = item.dateStr !== '날짜 정보 없음' ? item.dateStr : (_T6?.[_L6]?.mapDateUnknown || '날짜 정보 없음');
             marker.bindPopup(`
                 <div style="text-align:center; font-family:'Jua',sans-serif;">
                     <div style="font-size:30px;">${item.cardData.emoji}</div>
@@ -332,7 +332,7 @@ function showClusterPopup(cluster) {
     
     const _T7 = window.LANG_UI; const _L7 = window.currentLang || 'ko';
     document.querySelector('.cluster-popup-title').textContent =
-      (_T7?.mapClusterTitle?.[_L7] || '이 장소에서 {n}개 발견!').replace('{n}', cluster.items.length);
+      (_T7?.[_L7]?.mapClusterTitle || '이 장소에서 {n}개 발견!').replace('{n}', cluster.items.length);
     
     const listEl = document.querySelector('.cluster-popup-list');
     listEl.innerHTML = ''; // 초기화
@@ -340,10 +340,10 @@ function showClusterPopup(cluster) {
     cluster.items.forEach(item => {
         const _T8 = window.LANG_UI; const _L8 = window.currentLang || 'ko';
         const rarityText = item.cardData.rarity === 'epic'
-          ? (_T8?.mapRarityEpic?.[_L8] || '전설')
+          ? (_T8?.[_L8]?.mapRarityEpic || '전설')
           : item.cardData.rarity === 'rare'
-          ? (_T8?.mapRarityRare?.[_L8] || '희귀')
-          : (_T8?.mapRarityCommon?.[_L8] || '일반');
+          ? (_T8?.[_L8]?.mapRarityRare || '희귀')
+          : (_T8?.[_L8]?.mapRarityCommon || '일반');
         const rarityClass = `badge-${item.cardData.rarity || 'common'}`;
 
         const listItem = document.createElement('div');
@@ -378,6 +378,6 @@ function updateMapInfoBar() {
     const countEl = document.getElementById('map-collected-count');
     if (countEl) {
         const _T9 = window.LANG_UI; const _L9 = window.currentLang || 'ko';
-        countEl.textContent = (_T9?.mapCollectedCount?.[_L9] || '🎒 수집한 아이템: {n}개').replace('{n}', collection.length);
+        countEl.textContent = (_T9?.[_L9]?.mapCollectedCount || '🎒 수집한 아이템: {n}개').replace('{n}', collection.length);
     }
 }
