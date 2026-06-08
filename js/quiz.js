@@ -670,15 +670,26 @@ function updateDailyQuizBtn() {
   }
 }
 
-// [한글 주석] OX 문제 1개 생성
+// [한글 주석] OX 문제 1개 생성 (다국어 번역팩 지원)
 // 50% 확률로 정답 문장, 50% 확률로 다른 카드 설명 붙인 오답 문장
 function generateOXQuestion(card) {
   const isTrue = Math.random() < 0.5;
   const allCards = window.allCardsData || [];
+  const lang = window.currentLang || 'ko';
+
+  // [한글 주석] 현재 언어에 맞는 카드 이름/설명 가져오기 (번역팩 사용, API 없음)
+  function getCardName(c) {
+    if (lang === 'ko') return c.name;
+    return c[`name_${lang}`] || c.name;
+  }
+  function getCardDesc(c) {
+    if (lang === 'ko') return c.short_desc;
+    return c[`short_desc_${lang}`] || c.short_desc;
+  }
 
   if (isTrue) {
     // [한글 주석] 정답 문장 - 카드 실제 설명 사용
-    return { text: `"${card.name}"\n\n${card.short_desc}`, answer: true };
+    return { text: `"${getCardName(card)}"\n\n${getCardDesc(card)}`, answer: true };
   } else {
     // [한글 주석] 오답 문장 - 같은 카테고리 다른 카드 설명 사용
     const others = allCards.filter(c =>
@@ -687,8 +698,10 @@ function generateOXQuestion(card) {
     const wrongCard = others.length > 0
       ? others[Math.floor(Math.random() * others.length)]
       : null;
-    const wrongDesc = wrongCard ? wrongCard.short_desc : '알 수 없는 설명이에요.';
-    return { text: `"${card.name}"\n\n${wrongDesc}`, answer: false };
+    const wrongDesc = wrongCard
+      ? getCardDesc(wrongCard)
+      : (lang === 'ko' ? '알 수 없는 설명이에요.' : '...');
+    return { text: `"${getCardName(card)}"\n\n${wrongDesc}`, answer: false };
   }
 }
 
