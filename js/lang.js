@@ -236,6 +236,7 @@ window.LANG_UI = {
     titleBadgeExplorer: '탐험가',
     titleBadgePro: 'PRO 탐험가',
     titleBadgeMaster: '마스터',
+    dodamScreenTitle: '📖 나의 도감',
   },
   en: {
     langBtnLabel: 'English',
@@ -456,6 +457,7 @@ window.LANG_UI = {
     titleBadgeExplorer: 'Explorer',
     titleBadgePro: 'PRO Explorer',
     titleBadgeMaster: 'Master',
+    dodamScreenTitle: '📖 My Collection',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -676,6 +678,7 @@ window.LANG_UI = {
     titleBadgeExplorer: 'Исследователь',
     titleBadgePro: 'PRO Исследователь',
     titleBadgeMaster: 'Мастер',
+    dodamScreenTitle: '📖 Мой сборник',
   },
   zh: {
     langBtnLabel: '中文',
@@ -896,6 +899,7 @@ window.LANG_UI = {
     titleBadgeExplorer: '探险家',
     titleBadgePro: 'PRO探险家',
     titleBadgeMaster: '大师',
+    dodamScreenTitle: '📖 我的图鉴',
   }
 };
 
@@ -1085,6 +1089,10 @@ function applyUIText(langCode) {
   // [한글 주석] 지도 제목
   const mapScreenTitle = document.getElementById('map-screen-title');
   if (mapScreenTitle) mapScreenTitle.textContent = ui.mapScreenTitle || '🗺️ 탐험 지도';
+
+  // [한글 주석] 도감 제목
+  const dodamScreenTitle = document.getElementById('dodam-screen-title');
+  if (dodamScreenTitle) dodamScreenTitle.textContent = ui.dodamScreenTitle || '📖 나의 도감';
 
   // [한글 주석] 아이템 화면 탭 이름
   const customizeTabLabels = {
