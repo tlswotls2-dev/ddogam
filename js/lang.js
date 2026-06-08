@@ -16,7 +16,7 @@ const LANG_FONTS = {
 };
 
 // [한글 주석] 언어별 UI 텍스트 (버튼, 메뉴, 고정 텍스트)
-const LANG_UI = {
+window.LANG_UI = {
   ko: {
     langBtnLabel: '한국어',
     exploreBtn: '탐험!',
