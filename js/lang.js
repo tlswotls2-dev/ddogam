@@ -229,6 +229,13 @@ window.LANG_UI = {
     exploreTitle: '🥾 탐험 중...',
     exploreSafetyMsg: '두눈은 화면에서 잠시 벗어나<br>두 발로 걸으며 자연을 느껴봐요!',
     exploreSafetyHint: '걷다 보면 신기한 카드가 나타날 거예요 🌿',
+    mapScreenTitle: '🗺️ 탐험 지도',
+    tabExploringBadge: '{emoji} {name} 탐험 중',
+    tabAnimalLocked: '레벨 5가 되면 동물 탐험이 열려요!\\n(현재 Lv.{cur}, 레벨업 {needed}번 더 필요해요)',
+    tabArtifactLocked: '레벨 10이 되면 유물 탐험이 열려요!\\n(현재 Lv.{cur}, 레벨업 {needed}번 더 필요해요)',
+    titleBadgeExplorer: '탐험가',
+    titleBadgePro: 'PRO 탐험가',
+    titleBadgeMaster: '마스터',
   },
   en: {
     langBtnLabel: 'English',
@@ -442,6 +449,13 @@ window.LANG_UI = {
     exploreTitle: '🥾 Exploring...',
     exploreSafetyMsg: 'Look away from the screen<br>and walk around safely!',
     exploreSafetyHint: 'Keep walking and cards will appear 🌿',
+    mapScreenTitle: '🗺️ Explorer Map',
+    tabExploringBadge: 'Exploring {name} {emoji}',
+    tabAnimalLocked: 'Reach Level 5 to unlock Animals!\\n(Current Lv.{cur}, {needed} more level-ups needed)',
+    tabArtifactLocked: 'Reach Level 10 to unlock Artifacts!\\n(Current Lv.{cur}, {needed} more level-ups needed)',
+    titleBadgeExplorer: 'Explorer',
+    titleBadgePro: 'PRO Explorer',
+    titleBadgeMaster: 'Master',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -655,6 +669,13 @@ window.LANG_UI = {
     exploreTitle: '🥾 Исследование...',
     exploreSafetyMsg: 'Отведи взгляд от экрана<br>и безопасно прогуляйся!',
     exploreSafetyHint: 'Иди вперёд — и карточки появятся 🌿',
+    mapScreenTitle: '🗺️ Карта',
+    tabExploringBadge: 'Исследование {name} {emoji}',
+    tabAnimalLocked: 'Достигни уровня 5 для Животных!\\n(Сейчас Ур.{cur}, нужно ещё {needed} уровней)',
+    tabArtifactLocked: 'Достигни уровня 10 для Артефактов!\\n(Сейчас Ур.{cur}, нужно ещё {needed} уровней)',
+    titleBadgeExplorer: 'Исследователь',
+    titleBadgePro: 'PRO Исследователь',
+    titleBadgeMaster: 'Мастер',
   },
   zh: {
     langBtnLabel: '中文',
@@ -868,6 +889,13 @@ window.LANG_UI = {
     exploreTitle: '🥾 探索中...',
     exploreSafetyMsg: '把视线从屏幕上移开<br>安全地四处走走吧！',
     exploreSafetyHint: '继续走，神奇的卡片就会出现 🌿',
+    mapScreenTitle: '🗺️ 探险地图',
+    tabExploringBadge: '探索{name}中 {emoji}',
+    tabAnimalLocked: '达到5级即可解锁动物！\\n(当前Lv.{cur}，还需要升级{needed}次)',
+    tabArtifactLocked: '达到10级即可解锁文物！\\n(当前Lv.{cur}，还需要升级{needed}次)',
+    titleBadgeExplorer: '探险家',
+    titleBadgePro: 'PRO探险家',
+    titleBadgeMaster: '大师',
   }
 };
 
@@ -994,10 +1022,33 @@ function applyUIText(langCode) {
   const tabs = document.querySelectorAll('.category-tabs .tab');
   tabs.forEach(tab => {
     const target = tab.getAttribute('data-target');
-    if (target === 'plant') tab.innerHTML = ui.categoryPlant;
-    else if (target === 'animal') tab.innerHTML = ui.categoryAnimal;
-    else if (target === 'artifact') tab.innerHTML = ui.categoryArtifact;
+    if (target === 'plant') {
+      tab.innerHTML = ui.categoryPlant;
+      tab.setAttribute('data-name', ui.categoryPlant.replace(/[^\uAC00-\uD7A3a-zA-Zа-яёА-ЯЁ\u4e00-\u9fff]/g, '').trim());
+    } else if (target === 'animal') {
+      tab.innerHTML = ui.categoryAnimal;
+      tab.setAttribute('data-name', ui.categoryAnimal.replace(/[^\uAC00-\uD7A3a-zA-Zа-яёА-ЯЁ\u4e00-\u9fff]/g, '').trim());
+    } else if (target === 'artifact') {
+      tab.innerHTML = ui.categoryArtifact;
+      tab.setAttribute('data-name', ui.categoryArtifact.replace(/[^\uAC00-\uD7A3a-zA-Zа-яёА-ЯЁ\u4e00-\u9fff]/g, '').trim());
+    }
   });
+
+  // [한글 주석] 현재 배지 텍스트도 현재 언어로 갱신
+  const currentBadge = document.getElementById('current-category-badge');
+  if (currentBadge) {
+    const activeTab = document.querySelector('.category-tabs .tab.active');
+    if (activeTab) {
+      const emoji = activeTab.getAttribute('data-emoji');
+      const badgeTpl = ui.tabExploringBadge || '{emoji} {name} 탐험 중';
+      const catTarget = activeTab.getAttribute('data-target');
+      const catName = catTarget === 'plant' ? ui.categoryPlant :
+                      catTarget === 'animal' ? ui.categoryAnimal :
+                      ui.categoryArtifact;
+      const cleanName = catName.replace(/[^\uAC00-\uD7A3a-zA-Zа-яёА-ЯЁ\u4e00-\u9fff\s]/g, '').trim();
+      currentBadge.textContent = badgeTpl.replace('{emoji}', emoji).replace('{name}', cleanName);
+    }
+  }
 
   // [한글 주석] 상단 카테고리 배지
   const badge = document.getElementById('current-category-badge');
@@ -1030,6 +1081,10 @@ function applyUIText(langCode) {
   // [한글 주석] 도감 조합소 탭
   const workshopTabBtn = document.getElementById('workshop-tab-btn');
   if (workshopTabBtn) workshopTabBtn.textContent = ui.workshopTab || '⚗️ 조합소';
+
+  // [한글 주석] 지도 제목
+  const mapScreenTitle = document.getElementById('map-screen-title');
+  if (mapScreenTitle) mapScreenTitle.textContent = ui.mapScreenTitle || '🗺️ 탐험 지도';
 
   // [한글 주석] 아이템 화면 탭 이름
   const customizeTabLabels = {

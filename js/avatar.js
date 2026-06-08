@@ -23,34 +23,34 @@ const AVATAR_LIST = [
 
 // [한글 주석] 아이템 정의 (액세서리)
 const AVATAR_ITEMS = {
-  'earring_emerald': { slot: 'earring', name: '에메랄드 귀걸이', unlockLevel: 3, rarity: 'common', emoji: '💚' },
-  'glasses': { slot: 'glasses', name: '안경', unlockLevel: 5, rarity: 'common', emoji: '👓' },
-  'hat_cowboy': { slot: 'hat', name: '카우보이 모자', unlockLevel: 8, rarity: 'common', emoji: '🤠' },
-  'glasses_sun': { slot: 'glasses', name: '선글라스', unlockLevel: 10, rarity: 'rare', emoji: '🕶️' },
-  'earring_red': { slot: 'earring', name: '레드 귀걸이', unlockLevel: 13, rarity: 'common', emoji: '❤️' },
-  'hat_lucky': { slot: 'hat', name: '행운 모자', unlockLevel: 15, rarity: 'rare', emoji: '🍀' },
-  'hat_pumpkin': { slot: 'hat', name: '호박 모자', unlockLevel: 20, rarity: 'rare', emoji: '🎃' },
-  'hat_witch': { slot: 'hat', name: '마녀 모자', unlockLevel: 23, rarity: 'epic', emoji: '🧙' },
-  'earring_emerald_silver': { slot: 'earring', name: '에메랄드 실버 귀걸이', unlockLevel: 25, rarity: 'epic', emoji: '💎' },
-  'hat_pumpkin_purple': { slot: 'hat', name: '보라 호박 모자', unlockLevel: 27, rarity: 'epic', emoji: '🟣' },
-  'earring_red_silver': { slot: 'earring', name: '레드 실버 귀걸이', unlockLevel: 30, rarity: 'epic', emoji: '👑' },
+  'earring_emerald': { slot: 'earring', name: '에메랄드 귀걸이', name_en: 'Emerald Earring', name_ru: 'Изумрудные серьги', name_zh: '翡翠耳环', unlockLevel: 3, rarity: 'common', emoji: '💚' },
+  'glasses': { slot: 'glasses', name: '안경', name_en: 'Glasses', name_ru: 'Очки', name_zh: '眼镜', unlockLevel: 5, rarity: 'common', emoji: '👓' },
+  'hat_cowboy': { slot: 'hat', name: '카우보이 모자', name_en: 'Cowboy Hat', name_ru: 'Ковбойская шляпа', name_zh: '牛仔帽', unlockLevel: 8, rarity: 'common', emoji: '🤠' },
+  'glasses_sun': { slot: 'glasses', name: '선글라스', name_en: 'Sunglasses', name_ru: 'Солнечные очки', name_zh: '太阳镜', unlockLevel: 10, rarity: 'rare', emoji: '🕶️' },
+  'earring_red': { slot: 'earring', name: '레드 귀걸이', name_en: 'Red Earring', name_ru: 'Красные серьги', name_zh: '红色耳环', unlockLevel: 13, rarity: 'common', emoji: '❤️' },
+  'hat_lucky': { slot: 'hat', name: '행운 모자', name_en: 'Lucky Hat', name_ru: 'Шляпа удачи', name_zh: '幸运帽', unlockLevel: 15, rarity: 'rare', emoji: '🍀' },
+  'hat_pumpkin': { slot: 'hat', name: '호박 모자', name_en: 'Pumpkin Hat', name_ru: 'Тыквенная шляпа', name_zh: '南瓜帽', unlockLevel: 20, rarity: 'rare', emoji: '🎃' },
+  'hat_witch': { slot: 'hat', name: '마녀 모자', name_en: 'Witch Hat', name_ru: 'Шляпа ведьмы', name_zh: '女巫帽', unlockLevel: 23, rarity: 'epic', emoji: '🧙' },
+  'earring_emerald_silver': { slot: 'earring', name: '에메랄드 실버 귀걸이', name_en: 'Emerald Silver Earring', name_ru: 'Серебряные изумрудные серьги', name_zh: '翡翠银耳环', unlockLevel: 25, rarity: 'epic', emoji: '💎' },
+  'hat_pumpkin_purple': { slot: 'hat', name: '보라 호박 모자', name_en: 'Purple Pumpkin Hat', name_ru: 'Фиолетовая тыквенная шляпа', name_zh: '紫色南瓜帽', unlockLevel: 27, rarity: 'epic', emoji: '🟣' },
+  'earring_red_silver': { slot: 'earring', name: '레드 실버 귀걸이', name_en: 'Red Silver Earring', name_ru: 'Серебряные красные серьги', name_zh: '红色银耳环', unlockLevel: 30, rarity: 'epic', emoji: '👑' },
 };
 
 // [한글 주석] 옷 정의
 const OUTFIT_LIST = [
-  { id: 'default', name: '기본 복장', unlockLevel: 1, rarity: 'common', emoji: '👕' },
-  { id: 'outfit_sporty_red', name: '빨간 스포츠', unlockLevel: 7, rarity: 'common', emoji: '🏃' },
-  { id: 'outfit_sporty_green', name: '초록 스포츠', unlockLevel: 7, rarity: 'common', emoji: '🏃' },
-  { id: 'outfit_floral_pink', name: '핑크 꽃무늬', unlockLevel: 7, rarity: 'common', emoji: '🌸' },
-  { id: 'outfit_floral_purple', name: '보라 꽃무늬', unlockLevel: 7, rarity: 'common', emoji: '💜' },
-  { id: 'outfit_stripe_blue', name: '파란 스트라이프', unlockLevel: 13, rarity: 'rare', emoji: '🔵' },
-  { id: 'outfit_stripe_green', name: '초록 스트라이프', unlockLevel: 13, rarity: 'rare', emoji: '🟢' },
-  { id: 'outfit_sailor_blue', name: '파란 세일러', unlockLevel: 13, rarity: 'rare', emoji: '⛵' },
-  { id: 'outfit_sailor_pink', name: '핑크 세일러', unlockLevel: 13, rarity: 'rare', emoji: '🌸' },
-  { id: 'outfit_suit_blue', name: '파란 정장', unlockLevel: 23, rarity: 'epic', emoji: '🤵' },
-  { id: 'outfit_suit_black', name: '검정 정장', unlockLevel: 23, rarity: 'epic', emoji: '🖤' },
-  { id: 'outfit_dress_purple', name: '보라 드레스', unlockLevel: 23, rarity: 'epic', emoji: '👗' },
-  { id: 'outfit_dress_pink', name: '핑크 드레스', unlockLevel: 23, rarity: 'epic', emoji: '💗' },
+  { id: 'default', name: '기본 복장', name_en: 'Default Outfit', name_ru: 'Обычная одежда', name_zh: '默认服装', unlockLevel: 1, rarity: 'common', emoji: '👕' },
+  { id: 'outfit_sporty_red', name: '빨간 스포츠', name_en: 'Red Sporty', name_ru: 'Красный спортивный', name_zh: '红色运动装', unlockLevel: 7, rarity: 'common', emoji: '🏃' },
+  { id: 'outfit_sporty_green', name: '초록 스포츠', name_en: 'Green Sporty', name_ru: 'Зелёный спортивный', name_zh: '绿色运动装', unlockLevel: 7, rarity: 'common', emoji: '🏃' },
+  { id: 'outfit_floral_pink', name: '핑크 꽃무늬', name_en: 'Pink Floral', name_ru: 'Розовый цветочный', name_zh: '粉色花纹', unlockLevel: 7, rarity: 'common', emoji: '🌸' },
+  { id: 'outfit_floral_purple', name: '보라 꽃무늬', name_en: 'Purple Floral', name_ru: 'Фиолетовый цветочный', name_zh: '紫色花纹', unlockLevel: 7, rarity: 'common', emoji: '💜' },
+  { id: 'outfit_stripe_blue', name: '파란 스트라이프', name_en: 'Blue Stripe', name_ru: 'Синяя полоска', name_zh: '蓝色条纹', unlockLevel: 13, rarity: 'rare', emoji: '🔵' },
+  { id: 'outfit_stripe_green', name: '초록 스트라이프', name_en: 'Green Stripe', name_ru: 'Зелёная полоска', name_zh: '绿色条纹', unlockLevel: 13, rarity: 'rare', emoji: '🟢' },
+  { id: 'outfit_sailor_blue', name: '파란 세일러', name_en: 'Blue Sailor', name_ru: 'Синий матросский', name_zh: '蓝色水手服', unlockLevel: 13, rarity: 'rare', emoji: '⛵' },
+  { id: 'outfit_sailor_pink', name: '핑크 세일러', name_en: 'Pink Sailor', name_ru: 'Розовый матросский', name_zh: '粉色水手服', unlockLevel: 13, rarity: 'rare', emoji: '🌸' },
+  { id: 'outfit_suit_blue', name: '파란 정장', name_en: 'Blue Suit', name_ru: 'Синий костюм', name_zh: '蓝色正装', unlockLevel: 23, rarity: 'epic', emoji: '🤵' },
+  { id: 'outfit_suit_black', name: '검정 정장', name_en: 'Black Suit', name_ru: 'Чёрный костюм', name_zh: '黑色正装', unlockLevel: 23, rarity: 'epic', emoji: '🖤' },
+  { id: 'outfit_dress_purple', name: '보라 드레스', name_en: 'Purple Dress', name_ru: 'Фиолетовое платье', name_zh: '紫色连衣裙', unlockLevel: 23, rarity: 'epic', emoji: '👗' },
+  { id: 'outfit_dress_pink', name: '핑크 드레스', name_en: 'Pink Dress', name_ru: 'Розовое платье', name_zh: '粉色连衣裙', unlockLevel: 23, rarity: 'epic', emoji: '💗' },
 ];
 
 // [한글 주석] 레벨 달성 특별 칭호/뱃지 정의
@@ -58,6 +58,7 @@ const LEVEL_BADGES = [
   {
     id: 'explorer',
     name: '탐험가',
+    name_en: 'Explorer', name_ru: 'Исследователь', name_zh: '探险家',
     unlockLevel: 10,
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" width="100%" height="100%">
       <path d="M32,0 L62,12 L62,38 Q62,58 32,70 Q2,58 2,38 L2,12 Z" fill="#4a7aaa" stroke="#6aacee" stroke-width="1.5"/>
@@ -75,6 +76,7 @@ const LEVEL_BADGES = [
   {
     id: 'pro',
     name: 'PRO 탐험가',
+    name_en: 'PRO Explorer', name_ru: 'PRO Исследователь', name_zh: 'PRO探险家',
     unlockLevel: 20,
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 75" width="100%" height="100%">
       <path d="M12,8 Q8,28 12,44 L52,44 Q56,28 52,8 Z" fill="#ffd700" stroke="#ff9500" stroke-width="1.5"/>
@@ -94,6 +96,7 @@ const LEVEL_BADGES = [
   {
     id: 'master',
     name: '마스터',
+    name_en: 'Master', name_ru: 'Мастер', name_zh: '大师',
     unlockLevel: 30,
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 75" width="100%" height="100%">
       <circle cx="32" cy="33" r="30" fill="#1a2a1a" stroke="#ffd700" stroke-width="2.5"/>
@@ -115,14 +118,14 @@ const LEVEL_BADGES = [
 
 // [한글 주석] 펫 목록
 const PET_LIST = [
-  { id: 'pet_none', name: '없음', emoji: '❌', condition: null },
-  { id: 'pet_chick', name: '병아리', emoji: '🐥', condition: { category: 'animal', count: 5 } },
-  { id: 'pet_rabbit', name: '토끼', emoji: '🐰', condition: { category: 'animal', count: 15 } },
-  { id: 'pet_squirrel', name: '다람쥐', emoji: '🐿️', condition: { category: 'animal', count: 30 } },
-  { id: 'pet_butterfly', name: '나비', emoji: '🦋', condition: { category: 'animal', count: 50 } },
-  { id: 'pet_fox', name: '여우', emoji: '🦊', condition: { category: 'animal', count: 70 } },
-  { id: 'pet_deer', name: '사슴', emoji: '🦌', condition: { category: 'animal', count: 90 } },
-  { id: 'pet_crane', name: '두루미', emoji: '🦢', condition: { total: 200 } },
+  { id: 'pet_none', name: '없음', name_en: 'None', name_ru: 'Нет', name_zh: '无', emoji: '❌', condition: null },
+  { id: 'pet_chick', name: '병아리', name_en: 'Chick', name_ru: 'Цыплёнок', name_zh: '小鸡', emoji: '🐥', condition: { category: 'animal', count: 5 } },
+  { id: 'pet_rabbit', name: '토끼', name_en: 'Rabbit', name_ru: 'Кролик', name_zh: '兔子', emoji: '🐰', condition: { category: 'animal', count: 15 } },
+  { id: 'pet_squirrel', name: '다람쥐', name_en: 'Squirrel', name_ru: 'Белка', name_zh: '松鼠', emoji: '🐿️', condition: { category: 'animal', count: 30 } },
+  { id: 'pet_butterfly', name: '나비', name_en: 'Butterfly', name_ru: 'Бабочка', name_zh: '蝴蝶', emoji: '🦋', condition: { category: 'animal', count: 50 } },
+  { id: 'pet_fox', name: '여우', name_en: 'Fox', name_ru: 'Лиса', name_zh: '狐狸', emoji: '🦊', condition: { category: 'animal', count: 70 } },
+  { id: 'pet_deer', name: '사슴', name_en: 'Deer', name_ru: 'Олень', name_zh: '鹿', emoji: '🦌', condition: { category: 'animal', count: 90 } },
+  { id: 'pet_crane', name: '두루미', name_en: 'Crane', name_ru: 'Журавль', name_zh: '仙鹤', emoji: '🦢', condition: { total: 200 } },
 ];
 
 // [한글 주석] 현재 선택된 아바타 ID 가져오기
@@ -446,7 +449,14 @@ function showItemToast(names) {
   const toast = document.createElement('div');
   toast.className = 'item-unlock-toast';
   const _Tt = window.LANG_UI; const _Lt = window.currentLang || 'ko';
-  toast.textContent = (_Tt?.[_Lt]?.itemUnlockToast || '🎉 새 아이템 해금! {names}').replace('{names}', names.join(', '));
+  // [한글 주석] 아이템 이름 번역 적용
+  const translatedNames = names.map(n => {
+    const allItems = [...Object.values(AVATAR_ITEMS), ...OUTFIT_LIST, ...PET_LIST];
+    const found = allItems.find(i => i.name === n || (i.name + (_Lt !== 'ko' ? '' : '')) === n);
+    if (found && _Lt !== 'ko' && found[`name_${_Lt}`]) return found[`name_${_Lt}`];
+    return n;
+  });
+  toast.textContent = (_Tt?.[_Lt]?.itemUnlockToast || '🎉 새 아이템 해금! {names}').replace('{names}', translatedNames.join(', '));
   document.body.appendChild(toast);
   setTimeout(() => { toast.classList.add('show'); }, 10);
   setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3000);
@@ -768,7 +778,7 @@ function renderItemList() {
             image-rendering:pixelated;position:absolute;top:0;">
         </div>
         <div class="customize-item-info">
-          <div class="customize-item-name">${av.name}</div>
+          <div class="customize-item-name">${(window.currentLang && window.currentLang !== 'ko' && av[`name_${window.currentLang}`]) ? av[`name_${window.currentLang}`] : av.name}</div>
           ${isUnlocked
           ? `<div class="customize-item-status">${isSelected ? (window.LANG_UI?.[window.currentLang || 'ko']?.avatarSelectedStatus || '✅ 선택 중') : (window.LANG_UI?.[window.currentLang || 'ko']?.avatarSelectAvailable || '선택 가능')}</div>`
           : `<div class="customize-item-cond">${(window.LANG_UI?.[window.currentLang || 'ko']?.avatarLockCond || '🔒 Lv.{n} 해금').replace('{n}', av.unlockLevel)}</div>`}
@@ -801,7 +811,7 @@ function renderItemList() {
       div.innerHTML = `
         <div class="customize-item-emoji">${outfit.emoji}</div>
         <div class="customize-item-info">
-          <div class="customize-item-name">${outfit.name}</div>
+          <div class="customize-item-name">${(window.currentLang && window.currentLang !== 'ko' && outfit[`name_${window.currentLang}`]) ? outfit[`name_${window.currentLang}`] : outfit.name}</div>
           <div style="color:${rColor};font-size:10px;">
             ${'★'.repeat(outfit.rarity === 'epic' ? 3 : outfit.rarity === 'rare' ? 2 : 1)}
           </div>
@@ -851,7 +861,7 @@ function renderItemList() {
       div.innerHTML = `
         <div class="customize-item-emoji" style="font-size:2.2rem;">${pet.emoji}</div>
         <div class="customize-item-info">
-          <div class="customize-item-name">${pet.name}</div>
+          <div class="customize-item-name">${(window.currentLang && window.currentLang !== 'ko' && pet[`name_${window.currentLang}`]) ? pet[`name_${window.currentLang}`] : pet.name}</div>
           ${isUnlocked
           ? `<div class="customize-item-status">${isEquipped ? (window.LANG_UI?.[window.currentLang || 'ko']?.petEquippedStatus || '✅ 장착 중') : (window.LANG_UI?.[window.currentLang || 'ko']?.petEquipAvailable || '장착 가능')}</div>`
           : `<div class="customize-item-cond">🔒 ${condText}</div>`}
@@ -889,7 +899,7 @@ function renderItemList() {
           ${badge.svg}
         </div>
         <div class="customize-item-info">
-          <div class="customize-item-name">${badge.name}</div>
+          <div class="customize-item-name">${(window.currentLang && window.currentLang !== 'ko' && badge[`name_${window.currentLang}`]) ? badge[`name_${window.currentLang}`] : badge.name}</div>
           <div style="color:#ffd700;font-size:10px;">
             ${'★'.repeat(badge.unlockLevel === 30 ? 3 : badge.unlockLevel === 20 ? 2 : 1)}
           </div>
@@ -944,7 +954,7 @@ function renderItemList() {
             onerror="this.parentElement.innerHTML='<div style=font-size:1.8rem;text-align:center;padding-top:16px>${item.emoji}</div>'">
         </div>
         <div class="customize-item-info">
-          <div class="customize-item-name">${item.name}</div>
+          <div class="customize-item-name">${(window.currentLang && window.currentLang !== 'ko' && item[`name_${window.currentLang}`]) ? item[`name_${window.currentLang}`] : item.name}</div>
           <div style="color:${rColor};font-size:10px;">
             ${'★'.repeat(item.rarity === 'epic' ? 3 : item.rarity === 'rare' ? 2 : 1)}
           </div>

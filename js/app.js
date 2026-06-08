@@ -61,19 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // [한글 주석] 체험 모드 자동 진입 — setTimeout으로 감싸야 proceedToMainScreen 접근 가능
     setTimeout(() => {
-      if (localStorage.getItem('demoMode') === 'true' &&
-          localStorage.getItem('isTeacher') === 'false') {
-        const _demoUserData = localStorage.getItem('userData');
-        if (_demoUserData) {
-          loginContainer.style.display = 'none';
-          if (typeof proceedToMainScreen === 'function') {
-            proceedToMainScreen();
-            setTimeout(() => {
-              if (typeof showDemoBanner === 'function') showDemoBanner();
-            }, 800);
-          }
+        if (localStorage.getItem('demoMode') === 'true' &&
+            localStorage.getItem('isTeacher') === 'false') {
+            const _demoUserData = localStorage.getItem('userData');
+            if (_demoUserData) {
+                loginContainer.style.display = 'none';
+                if (typeof proceedToMainScreen === 'function') {
+                    proceedToMainScreen();
+                    setTimeout(() => {
+                        if (typeof showDemoBanner === 'function') showDemoBanner();
+                    }, 800);
+                }
+            }
         }
-      }
     }, 0);
 
     if (loginForm) {
@@ -267,19 +267,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 잠금 상태인 탭을 누르면 수집 개수를 확인하고 퀴즈를 띄우거나 경고 메시지를 표시합니다.
             if (tab.classList.contains('locked')) {
-                // [한글 주석] 레벨 기반 해금 안내
+                // [한글 주석] 레벨 기반 해금 안내 (다국어)
                 const currentLevel = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
+                const _Tl = window.LANG_UI; const _Ll = window.currentLang || 'ko';
                 if (target === 'animal') {
-                    // [한글 주석] 동물은 레벨 5 필요
                     const needed = 5 - currentLevel;
                     if (needed > 0) {
-                        alert(`레벨 5가 되면 동물 탐험이 열려요!\n(현재 Lv.${currentLevel}, 레벨업 ${needed}번 더 필요해요)`);
+                        alert((_Tl?.[_Ll]?.tabAnimalLocked || '레벨 5가 되면 동물 탐험이 열려요!\\n(현재 Lv.{cur}, 레벨업 {needed}번 더 필요해요)')
+                            .replace('{cur}', currentLevel).replace('{needed}', needed));
                     }
                 } else if (target === 'artifact') {
-                    // [한글 주석] 유물은 레벨 10 필요
                     const needed = 10 - currentLevel;
                     if (needed > 0) {
-                        alert(`레벨 10이 되면 유물 탐험이 열려요!\n(현재 Lv.${currentLevel}, 레벨업 ${needed}번 더 필요해요)`);
+                        alert((_Tl?.[_Ll]?.tabArtifactLocked || '레벨 10이 되면 유물 탐험이 열려요!\\n(현재 Lv.{cur}, 레벨업 {needed}번 더 필요해요)')
+                            .replace('{cur}', currentLevel).replace('{needed}', needed));
                     }
                 }
                 return;
@@ -290,10 +291,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // 클릭한 탭에 active 클래스 추가 (강조 표시)
             tab.classList.add('active');
 
-            // 배지 텍스트를 클릭한 탭의 정보로 변경
+            // [한글 주석] 배지 텍스트 다국어 적용
             const emoji = tab.getAttribute('data-emoji');
             const name = tab.getAttribute('data-name');
-            categoryBadge.textContent = `${emoji} ${name} 탐험 중`;
+            const _Tb = window.LANG_UI; const _Lb = window.currentLang || 'ko';
+            const _badgeTpl = _Tb?.[_Lb]?.tabExploringBadge || '{emoji} {name} 탐험 중';
+            categoryBadge.textContent = _badgeTpl.replace('{emoji}', emoji).replace('{name}', name);
 
             // [한글 주석] 현재 카테고리 전역 변수 업데이트 (아이템 뽑기에서 사용)
             window.currentCategory = target;
@@ -344,13 +347,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // [한글 주석] 레벨 기반 탭 해금 (레벨5 → 동물, 레벨10 → 유물)
         const currentLevel = typeof getCurrentLevel === 'function' ? getCurrentLevel() : 1;
+        const _Tu = window.LANG_UI; const _Lu = window.currentLang || 'ko';
         if (currentLevel >= 5 && animalTab) {
             animalTab.classList.remove('locked');
-            animalTab.textContent = '🦊 동물';
+            animalTab.textContent = _Tu?.[_Lu]?.dodamTabAnimal || '🦊 동물';
         }
         if (currentLevel >= 10 && artifactTab) {
             artifactTab.classList.remove('locked');
-            artifactTab.textContent = '🏺 유물';
+            artifactTab.textContent = _Tu?.[_Lu]?.dodamTabArtifact || '🏺 유물';
         }
     };
 
@@ -412,15 +416,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // 탐험 모드 관련 전역 함수들
     // ==========================================
     window.startExploration = function () {
-  // [한글 주석] 탐험 중 뒤로가기 버튼 차단 시작
-  function _blockBackButton() {
-    history.pushState(null, '', location.href);
-  }
-  window._explorationBackHandler = function() {
-    history.pushState(null, '', location.href);
-  };
-  window.addEventListener('popstate', window._explorationBackHandler);
-  _blockBackButton();
+        // [한글 주석] 탐험 중 뒤로가기 버튼 차단 시작
+        function _blockBackButton() {
+            history.pushState(null, '', location.href);
+        }
+        window._explorationBackHandler = function () {
+            history.pushState(null, '', location.href);
+        };
+        window.addEventListener('popstate', window._explorationBackHandler);
+        _blockBackButton();
 
         // [한글 주석] 뒤로가기 스택에 추가
         if (typeof pushScreen === 'function') pushScreen('exploration-overlay');
@@ -444,11 +448,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.stopExploration = function () {
-  // [한글 주석] 탐험 종료 시 뒤로가기 차단 해제
-  if (window._explorationBackHandler) {
-    window.removeEventListener('popstate', window._explorationBackHandler);
-    window._explorationBackHandler = null;
-  }
+        // [한글 주석] 탐험 종료 시 뒤로가기 차단 해제
+        if (window._explorationBackHandler) {
+            window.removeEventListener('popstate', window._explorationBackHandler);
+            window._explorationBackHandler = null;
+        }
 
         // [한글 주석] 메인 배경음으로 복귀
         if (typeof stopBGM === 'function') stopBGM();
