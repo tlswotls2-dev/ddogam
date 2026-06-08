@@ -13,7 +13,9 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <!-- [한글 주석] 우주/탐험 테마용 구글 폰트 (Noto Sans KR) -->
   <!-- [한글 주석] 다국어 폰트: KR(한국어), Noto Sans(영어+러시아어 키릴), SC(중국어 간체) - 모두 SIL OFL 라이선스 -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Noto+Sans:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Noto+Sans:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap"
+    rel="stylesheet">
   <!-- 우주/탐험 테마 스타일시트 연결 -->
   <link rel="stylesheet" href="css/style.css">
   <!-- [한글 주석] 서비스 워커 등록 (오프라인 캐시 지원) -->
@@ -173,7 +175,8 @@
           시작!</button>
 
         <!-- [한글 주석] 체험 모드 버튼 - loginForm 안으로 이동하여 반응형 너비 자동 적용 -->
-        <button type="button" class="start-btn" onclick="if(typeof showDemoModeEntry==='function') showDemoModeEntry();" style="
+        <button type="button" class="start-btn" onclick="if(typeof showDemoModeEntry==='function') showDemoModeEntry();"
+          style="
           background:linear-gradient(135deg,#0d2035,#1a3a5a) !important;
           border:1.5px solid #4a9eff !important;
           color:#4a9eff !important;
@@ -1008,7 +1011,7 @@
           </div>
         </div>
 
-  <!-- [한글 주석] AI 챗봇 항목 제거됨 -->
+        <!-- [한글 주석] AI 챗봇 항목 제거됨 -->
 
         <!-- [한글 주석] 복주머니 -->
         <div style="background:rgba(212,160,23,0.08);border:1px solid #a07c10;border-radius:14px;padding:14px;">
@@ -1302,6 +1305,15 @@
     window.addEventListener('DOMContentLoaded', () => {
       if (typeof initLang === 'function') initLang();
     });
+    // [한글 주석] 언어 선택 팝업 전역 안전 등록 (lang.js 로드 완료 보장)
+    window.addEventListener('load', () => {
+      if (typeof showLangSelectPopup === 'function') {
+        window._showLangSelectPopupFn = showLangSelectPopup;
+      }
+    });
+    function showLangSelectPopup() {
+      if (window._showLangSelectPopupFn) window._showLangSelectPopupFn();
+    }
   </script>
 
 </body>
