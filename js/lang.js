@@ -241,6 +241,8 @@ window.LANG_UI = {
     wakeLockOn: '화면 꺼짐 방지 ON 🔆 탐험을 시작해요!',
     safetyWarningTitle: '🚨 안 전 주 의!',
     safetyWarningDesc: '탐험 버튼을 누르고 걸어야\n카드가 나타나요 🌿\n안전한 곳에서 화면을 확인해요!',
+    itemScreenTitle: '🎒 나의 아이템',
+    itemEquipDone: '장착 완료!',
   },
   en: {
     langBtnLabel: 'English',
@@ -466,6 +468,8 @@ window.LANG_UI = {
     wakeLockOn: 'Screen Stay-On ON 🔆 Let\'s explore!',
     safetyWarningTitle: '🚨 S A F E T Y!',
     safetyWarningDesc: 'Press Explore button first!\nCards appear while walking 🌿\nCheck screen in a safe place!',
+    itemScreenTitle: '🎒 My Items',
+    itemEquipDone: 'Done!',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -691,6 +695,8 @@ window.LANG_UI = {
     wakeLockOn: 'Экран не гаснет ON 🔆 Начинаем!',
     safetyWarningTitle: '🚨 О С Т О Р О Ж Н О!',
     safetyWarningDesc: 'Нажми кнопку Вперёд!\nКарточки появятся при ходьбе 🌿\nПроверяй экран в безопасном месте!',
+    itemScreenTitle: '🎒 Мои вещи',
+    itemEquipDone: 'Готово!',
   },
   zh: {
     langBtnLabel: '中文',
@@ -916,6 +922,8 @@ window.LANG_UI = {
     wakeLockOn: '防止熄屏 ON 🔆 开始探索！',
     safetyWarningTitle: '🚨 注 意 安 全！',
     safetyWarningDesc: '先按探索按钮再走路！\n行走时卡片会出现 🌿\n请在安全的地方查看屏幕！',
+    itemScreenTitle: '🎒 我的道具',
+    itemEquipDone: '装备完成！',
   }
 };
 
@@ -1109,6 +1117,12 @@ function applyUIText(langCode) {
   // [한글 주석] 도감 제목
   const dodamScreenTitle = document.getElementById('dodam-screen-title');
   if (dodamScreenTitle) dodamScreenTitle.textContent = ui.dodamScreenTitle || '📖 나의 도감';
+
+  // [한글 주석] 아이템 화면 제목 및 버튼
+  const itemScreenTitle = document.getElementById('item-screen-title');
+  if (itemScreenTitle) itemScreenTitle.textContent = ui.itemScreenTitle || '🎒 나의 아이템';
+  const itemEquipDoneBtn = document.getElementById('item-equip-done-btn');
+  if (itemEquipDoneBtn) itemEquipDoneBtn.textContent = ui.itemEquipDone || '장착 완료!';
 
   // [한글 주석] 안전주의 팝업
   const safetyTitle = document.getElementById('safety-warning-title');
