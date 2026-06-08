@@ -92,13 +92,15 @@ function initMap() {
                 setUserMarker(lat, lng);
 
                 // [한글 주석] 상태 텍스트 업데이트
-                document.getElementById('map-status-text').textContent = '📍 현재 위치 추적 중';
+                const _T1 = window.LANG_UI; const _L1 = window.currentLang || 'ko';
+                document.getElementById('map-status-text').textContent = _T1?.mapStatusTracking?.[_L1] || '📍 현재 위치 추적 중';
             },
             (error) => {
                 // [한글 주석] 위치 가져오기 실패 → 서울시청 기본 좌표 사용
                 console.warn('위치 정보를 가져올 수 없습니다:', error.message);
                 setUserMarker(DEFAULT_LAT, DEFAULT_LNG);
-                document.getElementById('map-status-text').textContent = '📍 위치 권한 필요 (기본 위치 표시 중)';
+                const _T2 = window.LANG_UI; const _L2 = window.currentLang || 'ko';
+                document.getElementById('map-status-text').textContent = _T2?.mapStatusNoPermission?.[_L2] || '📍 위치 권한 필요 (기본 위치 표시 중)';
             },
             {
                 enableHighAccuracy: true, // [한글 주석] GPS 고정밀도 모드
@@ -109,7 +111,8 @@ function initMap() {
     } else {
         // [한글 주석] Geolocation API 미지원 브라우저
         setUserMarker(DEFAULT_LAT, DEFAULT_LNG);
-        document.getElementById('map-status-text').textContent = '📍 이 브라우저는 위치를 지원하지 않습니다';
+        const _T3 = window.LANG_UI; const _L3 = window.currentLang || 'ko';
+        document.getElementById('map-status-text').textContent = _T3?.mapStatusNoSupport?.[_L3] || '📍 이 브라우저는 위치를 지원하지 않습니다';
     }
 
     // 저장된 수집 마커들 지도에 복원
@@ -135,7 +138,8 @@ function setUserMarker(lat, lng) {
         fillOpacity: 0.8
     }).addTo(map);
     
-    userMarker.bindPopup('📍 내 위치').openPopup();
+    const _T4 = window.LANG_UI; const _L4 = window.currentLang || 'ko';
+    userMarker.bindPopup(_T4?.mapMyLocation?.[_L4] || '📍 내 위치').openPopup();
 }
 
 /**
@@ -165,7 +169,8 @@ function addCollectionMarker(lat, lng, cardData) {
     
     // 수집 날짜 가져오기
     const dates = typeof getCollectionDates === 'function' ? getCollectionDates() : {};
-    const dateStr = dates[cardData.id] || '날짜 정보 없음';
+    const _T5 = window.LANG_UI; const _L5 = window.currentLang || 'ko';
+    const dateStr = dates[cardData.id] || (_T5?.mapDateUnknown?.[_L5] || '날짜 정보 없음');
     
     // 마커 생성 및 지도에 추가 (단일 추가 시에도 레이어 그룹에 포함시킴)
     const marker = L.marker([lat, lng], { icon: customIcon });
@@ -264,10 +269,11 @@ function loadSavedMarkers() {
         if (cluster.items.length === 1) {
             // --- 단일 마커 (1개) ---
             const item = cluster.items[0];
-            let markerColor = '#4caf50';  // 기본 초록 (common)
+            const _T6 = window.LANG_UI; const _L6 = window.currentLang || 'ko';
+            let markerColor = '#4caf50';
             if (item.cardData.rarity === 'rare') markerColor = '#2196F3';
             if (item.cardData.rarity === 'epic') markerColor = '#ffc107';
-            
+
             const customIcon = L.divIcon({
                 className: 'custom-map-marker',
                 html: `<div class="marker-dot" style="background-color: ${markerColor};">${item.cardData.emoji}</div>`,
@@ -275,13 +281,14 @@ function loadSavedMarkers() {
                 iconAnchor: [18, 18],
                 popupAnchor: [0, -20]
             });
-            
+
             const marker = L.marker([cluster.lat, cluster.lng], { icon: customIcon });
+            const _dateStr6 = item.dateStr !== '날짜 정보 없음' ? item.dateStr : (_T6?.mapDateUnknown?.[_L6] || '날짜 정보 없음');
             marker.bindPopup(`
                 <div style="text-align:center; font-family:'Jua',sans-serif;">
                     <div style="font-size:30px;">${item.cardData.emoji}</div>
                     <strong>${item.cardData.name}</strong><br>
-                    <span style="font-size:12px; color:#888;">${item.dateStr}</span>
+                    <span style="font-size:12px; color:#888;">${_dateStr6}</span>
                 </div>
             `);
             if (markersLayer) marker.addTo(markersLayer);
@@ -323,13 +330,20 @@ function showClusterPopup(cluster) {
     const popupEl = document.getElementById('cluster-popup');
     if (!popupEl) return;
     
-    document.querySelector('.cluster-popup-title').textContent = `이 장소에서 ${cluster.items.length}개 발견!`;
+    const _T7 = window.LANG_UI; const _L7 = window.currentLang || 'ko';
+    document.querySelector('.cluster-popup-title').textContent =
+      (_T7?.mapClusterTitle?.[_L7] || '이 장소에서 {n}개 발견!').replace('{n}', cluster.items.length);
     
     const listEl = document.querySelector('.cluster-popup-list');
     listEl.innerHTML = ''; // 초기화
     
     cluster.items.forEach(item => {
-        const rarityText = item.cardData.rarity === 'epic' ? '전설' : (item.cardData.rarity === 'rare' ? '희귀' : '일반');
+        const _T8 = window.LANG_UI; const _L8 = window.currentLang || 'ko';
+        const rarityText = item.cardData.rarity === 'epic'
+          ? (_T8?.mapRarityEpic?.[_L8] || '전설')
+          : item.cardData.rarity === 'rare'
+          ? (_T8?.mapRarityRare?.[_L8] || '희귀')
+          : (_T8?.mapRarityCommon?.[_L8] || '일반');
         const rarityClass = `badge-${item.cardData.rarity || 'common'}`;
 
         const listItem = document.createElement('div');
@@ -363,6 +377,7 @@ function updateMapInfoBar() {
     const collection = getCollection();
     const countEl = document.getElementById('map-collected-count');
     if (countEl) {
-        countEl.textContent = `🎒 수집한 아이템: ${collection.length}개`;
+        const _T9 = window.LANG_UI; const _L9 = window.currentLang || 'ko';
+        countEl.textContent = (_T9?.mapCollectedCount?.[_L9] || '🎒 수집한 아이템: {n}개').replace('{n}', collection.length);
     }
 }

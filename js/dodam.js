@@ -58,7 +58,8 @@ function switchDodamTab(category) {
 
   // 아직 해금되지 않은 카테고리라면 거부
   if (!unlocked.includes(category)) {
-    alert("아직 열리지 않은 도감입니다! 이전 도감을 더 채워주세요.");
+    const _T = window.LANG_UI; const _L = window.currentLang || 'ko';
+    alert(_T?.dodamLocked?.[_L] || '아직 열리지 않은 도감입니다! 이전 도감을 더 채워주세요.');
     return;
   }
 
@@ -78,15 +79,17 @@ function renderDodamTabs() {
     const cat = tab.getAttribute('data-category');
 
     // 1. 잠금/해금 상태 표시 업데이트
+    const _T = window.LANG_UI; const _L = window.currentLang || 'ko';
+    const _t = k => _T?.[k]?.[_L] || _T?.[k]?.ko || '';
     if (unlocked.includes(cat)) {
       tab.classList.remove('locked');
-      if (cat === 'plant') tab.textContent = '🌱 식물';
-      if (cat === 'animal') tab.textContent = '🦊 동물';
-      if (cat === 'artifact') tab.textContent = '🏺 유물';
+      if (cat === 'plant') tab.textContent = _t('dodamTabPlant');
+      if (cat === 'animal') tab.textContent = _t('dodamTabAnimal');
+      if (cat === 'artifact') tab.textContent = _t('dodamTabArtifact');
     } else {
       tab.classList.add('locked');
-      if (cat === 'animal') tab.textContent = '🔒 동물';
-      if (cat === 'artifact') tab.textContent = '🔒 유물';
+      if (cat === 'animal') tab.textContent = _t('dodamTabAnimalLocked');
+      if (cat === 'artifact') tab.textContent = _t('dodamTabArtifactLocked');
     }
 
     // 2. 현재 선택된 탭 강조(active) 처리
@@ -132,7 +135,9 @@ function renderDodamGrid(category) {
 
   // 요구사항: 도감 UI 상의 전체 수집 기준은 100개
   const totalCount = 100;
-  document.querySelector('.dodam-summary-text').textContent = `${collectedCount} / ${totalCount} 수집`;
+  const _Ts = window.LANG_UI; const _Ls = window.currentLang || 'ko';
+  document.querySelector('.dodam-summary-text').textContent =
+    (_Ts?.dodamSummary?.[_Ls] || '{n} / {total} 수집').replace('{n}', collectedCount).replace('{total}', totalCount);
   document.getElementById('dodam-progress').style.width = `${(collectedCount / totalCount) * 100}%`;
 
   // 1. 실제 존재하는 카드들을 그리기
@@ -170,10 +175,11 @@ function renderDodamGrid(category) {
     } else {
       // 미수집 카드의 디자인 (클릭 불가)
       cardEl.className = 'dodam-card unknown';
+      const _Tu = window.LANG_UI; const _Lu = window.currentLang || 'ko';
       cardEl.innerHTML = `
                 <div class="dodam-card-icon-unknown">🔒</div>
                 <div class="dodam-card-name-unknown">???</div>
-                <div class="dodam-card-desc-unknown">미발견</div>
+                <div class="dodam-card-desc-unknown">${_Tu?.dodamUnknownDesc?.[_Lu] || '미발견'}</div>
             `;
     }
     gridEl.appendChild(cardEl);
@@ -184,10 +190,11 @@ function renderDodamGrid(category) {
   for (let i = 0; i < emptySlots; i++) {
     const emptyEl = document.createElement('div');
     emptyEl.className = 'dodam-card unknown';
+    const _Te = window.LANG_UI; const _Le = window.currentLang || 'ko';
     emptyEl.innerHTML = `
             <div class="dodam-card-icon-unknown">🔒</div>
             <div class="dodam-card-name-unknown">???</div>
-            <div class="dodam-card-desc-unknown">미발견</div>
+            <div class="dodam-card-desc-unknown">${_Te?.dodamUnknownDesc?.[_Le] || '미발견'}</div>
         `;
     gridEl.appendChild(emptyEl);
   }
@@ -244,7 +251,10 @@ function showDodamDetail(card, dateString) {
   habitatEl.style.fontFamily = langFont;
 
   // [한글 주석] 수집 날짜
-  document.getElementById('popup-date').textContent = dateString ? `📅 ${dateString}` : '📅 최근 수집';
+  const _Td = window.LANG_UI; const _Ld = window.currentLang || 'ko';
+  document.getElementById('popup-date').textContent = dateString
+    ? `📅 ${dateString}`
+    : (_Td?.dodamDateDefault?.[_Ld] || '📅 최근 수집');
 
   // [한글 주석] 희귀도 뱃지 (언어별 텍스트)
   const ui = window.LANG_UI ? window.LANG_UI[lang] : null;
@@ -310,7 +320,9 @@ function renderWorkshop() {
   gridEl.innerHTML = '';
 
   // [한글 주석] 수집 현황 요약 업데이트
-  document.querySelector('.dodam-summary-text').textContent = '중복 카드 조합소';
+  const _Tw = window.LANG_UI; const _Lw = window.currentLang || 'ko';
+  document.querySelector('.dodam-summary-text').textContent =
+    _Tw?.workshopSummary?.[_Lw] || '중복 카드 조합소';
   document.getElementById('dodam-progress').style.width = '0%';
 
   const workshopCards = typeof getWorkshopCards === 'function' ? getWorkshopCards() : [];
@@ -318,6 +330,8 @@ function renderWorkshop() {
 
   // [한글 주석] 조합소가 비어있을 때
   if (workshopCards.length === 0) {
+    const _Twe = window.LANG_UI; const _Lwe = window.currentLang || 'ko';
+    const _twe = k => _Twe?.[k]?.[_Lwe] || _Twe?.[k]?.ko || '';
     gridEl.innerHTML = `
       <div style="
         grid-column:1/-1;
@@ -326,12 +340,10 @@ function renderWorkshop() {
       ">
         <div style="font-size:48px;margin-bottom:12px;">⚗️</div>
         <div style="font-size:15px;font-weight:700;color:#aaa;margin-bottom:8px;">
-          조합소가 비어있어요
+          ${_twe('workshopEmptyTitle')}
         </div>
         <div style="font-size:12px;line-height:1.6;">
-          이미 가진 카드를 또 수집하면<br>
-          여기에 쌍여요!<br>
-          <span style="color:#ffd700;">5장</span>을 모아 새 카드로 조합해봐요 ✨
+          ${_twe('workshopEmptyDesc')}
         </div>
       </div>
     `;
@@ -346,7 +358,8 @@ function renderWorkshop() {
     const totalSelected = Object.values(selectedForCraft).reduce((a, b) => a + b, 0);
     const infoEl = document.getElementById('workshop-selected-info');
     const btnEl = document.getElementById('workshop-craft-btn');
-    if (infoEl) infoEl.textContent = `선택: ${totalSelected} / 5장`;
+    const _Tsi = window.LANG_UI; const _Lsi = window.currentLang || 'ko';
+    if (infoEl) infoEl.textContent = (_Tsi?.workshopSelectedInfo?.[_Lsi] || '선택: {n} / 5장').replace('{n}', totalSelected);
     if (btnEl) btnEl.style.display = totalSelected === 5 ? 'block' : 'none';
   }
 
@@ -360,18 +373,19 @@ function renderWorkshop() {
     padding:12px 16px;
     margin-bottom:4px;
   `;
+  const _Th = window.LANG_UI; const _Lh = window.currentLang || 'ko';
+  const _th = k => _Th?.[k]?.[_Lh] || _Th?.[k]?.ko || '';
   header.innerHTML = `
     <div style="color:#ffd700;font-size:13px;font-weight:700;margin-bottom:4px;">
-      ⚗️ 카드 조합소
+      ${_th('workshopHeaderTitle')}
     </div>
     <div style="color:#aaa;font-size:11px;line-height:1.5;">
-      중복 카드 <span style="color:#ffd700;">5장</span>을 선택해 새 카드로 조합해요!<br>
-      조합 규칙에 따라 다른 희귀도 카드가 나와요 🎲
+      ${_th('workshopHeaderDesc')}
     </div>
     <div id="workshop-selected-info" style="
       margin-top:8px;
       color:#84ff00;font-size:12px;font-weight:700;
-    ">선택: 0 / 5장</div>
+    ">${_th('workshopSelectedInfo').replace('{n}', '0')}</div>
     <button id="workshop-craft-btn" onclick="startCrafting()" style="
       display:none;
       width:100%;margin-top:8px;
@@ -379,7 +393,7 @@ function renderWorkshop() {
       color:#000;border:none;border-radius:10px;
       padding:10px;font-size:14px;font-weight:900;
       cursor:pointer;
-    ">✨ 조합하기!</button>
+    ">${_th('workshopCraftBtn')}</button>
   `;
   gridEl.appendChild(header);
 
@@ -468,7 +482,8 @@ function renderWorkshop() {
       if (currentSelected === 0) {
         // [한글 주석] 첫번째 클릭: 1장 선택
         if (totalSelected >= 5) {
-          if (typeof showSyncToast === 'function') showSyncToast('5장만 선택할 수 있어요!', 'warning');
+          const _Tm = window.LANG_UI; const _Lm = window.currentLang || 'ko';
+          if (typeof showSyncToast === 'function') showSyncToast(_Tm?.workshopMaxSelect?.[_Lm] || '5장만 선택할 수 있어요!', 'warning');
           return;
         }
         selectedForCraft[cardId] = 1;
@@ -620,12 +635,8 @@ function showCraftResultPopup(card, isNew, resultRarity) {
       animation:bounceIn 0.5s ease;
     ">
       <div style="font-size:28px;margin-bottom:4px;">⚗️</div>
-      <div style="color:${cfg.color};font-size:16px;font-weight:900;margin-bottom:4px;">
-        조합 성공!
-      </div>
-      <div style="color:#aaa;font-size:11px;margin-bottom:16px;">
-        ${isNew ? '새로운 카드를 얻었어요!' : '이미 있는 카드지만 획득했어요!'}
-      </div>
+      <div style="color:${cfg.color};font-size:16px;font-weight:900;margin-bottom:4px;" id="craft-success-title"></div>
+      <div style="color:#aaa;font-size:11px;margin-bottom:16px;" id="craft-success-desc"></div>
 
       <!-- [한글 주석] 결과 카드 -->
       <div style="
@@ -663,11 +674,19 @@ function showCraftResultPopup(card, isNew, resultRarity) {
         padding:12px 40px;
         font-size:15px;font-weight:900;
         cursor:pointer;width:100%;
-      ">🎉 확인!</button>
+      " id="craft-confirm-btn"></button>
     </div>
   `;
 
   document.body.appendChild(overlay);
+  const _Tcr = window.LANG_UI; const _Lcr = window.currentLang || 'ko';
+  const _tcr = k => _Tcr?.[k]?.[_Lcr] || _Tcr?.[k]?.ko || '';
+  const crT = document.getElementById('craft-success-title');
+  const crD = document.getElementById('craft-success-desc');
+  const crB = document.getElementById('craft-confirm-btn');
+  if (crT) crT.textContent = _tcr('craftSuccess');
+  if (crD) crD.textContent = isNew ? _tcr('craftNewCard') : _tcr('craftDupCard');
+  if (crB) crB.textContent = _tcr('craftConfirm');
   if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
 
   // [한글 주석] 새 카드면 NEW! 이펙트 표시

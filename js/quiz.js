@@ -100,7 +100,8 @@ function shuffleArray(array) {
 function startQuiz(targetCategory) {
   // 퀴즈 데이터가 아직 로드되지 않은 경우 안내
   if (!quizData) {
-    alert("퀴즈 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+    const _T = window.LANG_UI; const _L = window.currentLang || 'ko';
+    alert(_T?.quizDataLoading?.[_L] || '퀴즈 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
     return;
   }
 
@@ -215,12 +216,14 @@ function handleAnswer(selectedBtn, isCorrect, correctAnswerIndex) {
   if (isCorrect) {
     // 정답인 경우: 초록색 강조 + 정답 피드백
     selectedBtn.classList.add('correct');
-    selectedBtn.innerHTML += " <span class='quiz-feedback'>🎉 정답!</span>";
+    const _Tc = window.LANG_UI; const _Lc = window.currentLang || 'ko';
+    selectedBtn.innerHTML += " <span class='quiz-feedback'>" + (_Tc?.quizCorrect?.[_Lc] || '🎉 정답!') + "</span>";
     currentScore++;
   } else {
     // 오답인 경우: 빨간색 강조 + 오답 피드백
     selectedBtn.classList.add('wrong');
-    selectedBtn.innerHTML += " <span class='quiz-feedback'>❌ 틀렸어요</span>";
+    const _Tw = window.LANG_UI; const _Lw = window.currentLang || 'ko';
+    selectedBtn.innerHTML += " <span class='quiz-feedback'>" + (_Tw?.quizWrong?.[_Lw] || '❌ 틀렸어요') + "</span>";
 
     // [한글 주석] 정답이 무엇이었는지 알려주기 위해 정답 버튼에 초록색 표시
     buttons[correctAnswerIndex].classList.add('correct');
@@ -244,22 +247,19 @@ function showQuizResult() {
   // [한글 주석] 통과 기준(3개 이상 정답) 충족 여부 판단
   const isPass = currentScore >= QUIZ_PASS_SCORE;
 
+  const _Tq = window.LANG_UI; const _Lq = window.currentLang || 'ko';
+  const _tq = k => _Tq?.[k]?.[_Lq] || _Tq?.[k]?.ko || '';
   if (isPass) {
-    // 통과 시: 축하 메시지 + 카테고리 해금 처리
-    document.getElementById('quiz-result-title').innerHTML = "🎊 해금 성공! 🎊";
-    document.getElementById('quiz-result-desc').textContent = `${currentScore}개 정답! 이제 ${currentQuizCategory === 'animal' ? '동물' : '유물'} 탐험이 가능해요!`;
-
-    // storage.js에 퀴즈 통과 기록 저장
+    document.getElementById('quiz-result-title').innerHTML = _tq('quizPassTitle');
+    const descKey = currentQuizCategory === 'animal' ? 'quizPassDescAnimal' : 'quizPassDescArtifact';
+    document.getElementById('quiz-result-desc').textContent = _tq(descKey).replace('{n}', currentScore);
     setQuizPassed(currentQuizCategory);
-
-    // 메인 화면 UI 즉시 갱신 (잠금 풀림 반영)
     if (typeof window.updateMainScreenData === 'function') {
       window.updateMainScreenData();
     }
   } else {
-    // 실패 시: 재도전 안내
-    document.getElementById('quiz-result-title').textContent = "조금 더 공부해봐요! 😊";
-    document.getElementById('quiz-result-desc').textContent = `${currentScore}개를 맞췄어요. (통과 기준: ${QUIZ_PASS_SCORE}개)`;
+    document.getElementById('quiz-result-title').textContent = _tq('quizFailTitle');
+    document.getElementById('quiz-result-desc').textContent = _tq('quizFailDesc').replace('{score}', currentScore).replace('{pass}', QUIZ_PASS_SCORE);
   }
 }
 
@@ -385,12 +385,8 @@ function _showLevelQuizPopup(newLevel, questionCard, choices, triggerCardId) {
     ">
       <!-- [한글 주석] 헤더 -->
       <div style="text-align:center;margin-bottom:16px;">
-        <div style="font-size:13px;color:#ffd700;font-weight:700;margin-bottom:4px;">
-          🎯 Lv.${newLevel} 달성 퀴즈!
-        </div>
-        <div style="font-size:11px;color:#aaa;">
-          맞추면 레벨업! 틀리면 다음 기회에 도전해요
-        </div>
+        <div style="font-size:13px;color:#ffd700;font-weight:700;margin-bottom:4px;" id="lq-header"></div>
+        <div style="font-size:11px;color:#aaa;" id="lq-subheader"></div>
       </div>
 
       <!-- [한글 주석] 카드 이미지 + 이름 -->
@@ -409,9 +405,7 @@ function _showLevelQuizPopup(newLevel, questionCard, choices, triggerCardId) {
           background:rgba(0,0,0,0.2);
         ">${cardImgHTML}</div>
         <div>
-          <div style="color:${rColor};font-size:11px;font-weight:700;margin-bottom:4px;">
-            이 카드의 설명은?
-          </div>
+          <div style="color:${rColor};font-size:11px;font-weight:700;margin-bottom:4px;" id="lq-question"></div>
           <div style="color:#fff;font-size:16px;font-weight:900;">
             ${questionCard.name}
           </div>
@@ -445,6 +439,14 @@ function _showLevelQuizPopup(newLevel, questionCard, choices, triggerCardId) {
   `;
 
   document.body.appendChild(overlay);
+  const _Tl = window.LANG_UI; const _Ll = window.currentLang || 'ko';
+  const _tl = k => _Tl?.[k]?.[_Ll] || _Tl?.[k]?.ko || '';
+  const lqH = document.getElementById('lq-header');
+  const lqS = document.getElementById('lq-subheader');
+  const lqQ = document.getElementById('lq-question');
+  if (lqH) lqH.textContent = _tl('levelQuizHeader').replace('{n}', newLevel);
+  if (lqS) lqS.textContent = _tl('levelQuizSubHeader');
+  if (lqQ) lqQ.textContent = _tl('levelQuizQuestion');
 }
 
 // [한글 주석] 퀴즈 답 선택 처리
@@ -576,18 +578,15 @@ function _showCategoryUnlockPopup(category, categoryLabel) {
         color:#ffd700;font-size:20px;font-weight:900;
         margin-bottom:8px;
         text-shadow:0 0 20px rgba(255,215,0,0.5);
-      ">🎉 해금!</div>
+      " id="cu-title"></div>
       <div style="
         color:#fff;font-size:16px;font-weight:700;
         margin-bottom:8px;
-      ">${categoryLabel} 탐험 해금!</div>
+      " id="cu-label"></div>
       <div style="
         color:#aaa;font-size:12px;line-height:1.6;
         margin-bottom:20px;
-      ">
-        레벨 ${category === 'animal' ? '5' : '10'} 달성!<br>
-        이제 ${categoryLabel} 카드를 수집할 수 있어요!
-      </div>
+      " id="cu-desc"></div>
       <button onclick="document.getElementById('category-unlock-overlay').remove()" style="
         background:linear-gradient(135deg,#ffd700,#ff9500);
         color:#000;border:none;border-radius:14px;
@@ -595,11 +594,21 @@ function _showCategoryUnlockPopup(category, categoryLabel) {
         font-size:15px;font-weight:900;
         cursor:pointer;width:100%;
         box-shadow:0 4px 12px rgba(255,215,0,0.4);
-      ">🚀 탐험하러 가기!</button>
+      " id="cu-btn"></button>
     </div>
   `;
 
   document.body.appendChild(overlay);
+  const _Tcu = window.LANG_UI; const _Lcu = window.currentLang || 'ko';
+  const _tcu = k => _Tcu?.[k]?.[_Lcu] || _Tcu?.[k]?.ko || '';
+  const cuTitle = document.getElementById('cu-title');
+  const cuLabel = document.getElementById('cu-label');
+  const cuDesc  = document.getElementById('cu-desc');
+  const cuBtn   = document.getElementById('cu-btn');
+  if (cuTitle) cuTitle.textContent = _tcu('categoryUnlockTitle');
+  if (cuLabel) cuLabel.textContent = category === 'animal' ? _tcu('categoryUnlockAnimal') : _tcu('categoryUnlockArtifact');
+  if (cuDesc)  cuDesc.innerHTML    = category === 'animal' ? _tcu('categoryUnlockDescAnimal') : _tcu('categoryUnlockDescArtifact');
+  if (cuBtn)   cuBtn.textContent   = _tcu('categoryUnlockBtn');
   if (navigator.vibrate) navigator.vibrate([200, 100, 300]);
 }
 
@@ -610,7 +619,8 @@ function _showQuizFailToast() {
   const toast = document.createElement('div');
   toast.className = 'item-unlock-toast';
   toast.style.background = 'linear-gradient(135deg,#ff4444,#cc0000)';
-  toast.textContent = '❌ 아쉽! 다음 카드를 모으면 다시 도전해요!';
+  const _Tft = window.LANG_UI; const _Lft = window.currentLang || 'ko';
+  toast.textContent = _Tft?.levelQuizFailToast?.[_Lft] || '❌ 아쉽! 다음 카드를 모으면 다시 도전해요!';
   document.body.appendChild(toast);
   setTimeout(() => toast.classList.add('show'), 10);
   setTimeout(() => {
@@ -647,14 +657,16 @@ function saveDailyQuizTime() {
 function updateDailyQuizBtn() {
   const btn = document.getElementById('daily-quiz-btn');
   if (!btn) return;
+  const _Td = window.LANG_UI; const _Ld = window.currentLang || 'ko';
   if (isDailyQuizDone()) {
     btn.style.opacity = '0.4';
     btn.style.cursor = 'not-allowed';
-    btn.innerHTML = '📝<br>완료<br>✅';
+    btn.innerHTML = '📝<br>' + (_Td?.dailyQuizDoneLabel?.[_Ld] || '완료') + '<br>✅';
   } else {
     btn.style.opacity = '1';
     btn.style.cursor = 'pointer';
-    btn.innerHTML = '📝<br>일일<br>시험';
+    const lbl = (_Td?.dailyQuizLabel?.[_Ld] || '일일\\n시험').replace('\\n', '<br>');
+    btn.innerHTML = '📝<br>' + lbl;
   }
 }
 
@@ -699,7 +711,8 @@ function showDailyQuiz() {
     .filter(c => c && c.short_desc && unlockedCats.includes(c.category));
 
   if (collectedCards.length === 0) {
-    alert('카드를 먼저 수집해야 시험을 볼 수 있어요!');
+    const _Tnc = window.LANG_UI; const _Lnc = window.currentLang || 'ko';
+    alert(_Tnc?.dailyQuizNoCard?.[_Lnc] || '카드를 먼저 수집해야 시험을 볼 수 있어요!');
     return;
   }
 
@@ -739,14 +752,9 @@ function _showOXQuizPopup(question) {
       max-width:340px;width:100%;
       box-shadow:0 0 40px rgba(141,176,92,0.3);
     ">
-      <!-- [한글 주석] 헤더 -->
       <div style="text-align:center;margin-bottom:16px;">
-        <div style="color:#8db05c;font-size:14px;font-weight:700;margin-bottom:4px;">
-          📝 오늘의 일일 시험
-        </div>
-        <div style="color:#aaa;font-size:11px;">
-          이 설명이 맞으면 ⭕, 틀리면 ❌
-        </div>
+        <div style="color:#8db05c;font-size:14px;font-weight:700;margin-bottom:4px;" id="dq-title"></div>
+        <div style="color:#aaa;font-size:11px;" id="dq-desc"></div>
       </div>
 
       <!-- [한글 주석] 문제 박스 -->
@@ -797,6 +805,11 @@ function _showOXQuizPopup(question) {
   `;
 
   document.body.appendChild(overlay);
+  const _Tdq = window.LANG_UI; const _Ldq = window.currentLang || 'ko';
+  const dqT = document.getElementById('dq-title');
+  const dqD = document.getElementById('dq-desc');
+  if (dqT) dqT.textContent = _Tdq?.dailyQuizTitle?.[_Ldq] || '📝 오늘의 일일 시험';
+  if (dqD) dqD.textContent = _Tdq?.dailyQuizDesc?.[_Ldq] || '이 설명이 맞으면 ⭕, 틀리면 ❌';
 }
 
 // [한글 주석] OX 답 처리
@@ -899,6 +912,8 @@ function _showOXResult(isCorrect) {
     animation:fadeIn 0.3s ease;
   `;
 
+  const _Tor = window.LANG_UI; const _Lor = window.currentLang || 'ko';
+  const _tor = k => _Tor?.[k]?.[_Lor] || _Tor?.[k]?.ko || '';
   overlay.innerHTML = isCorrect ? `
     <div style="
       background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
@@ -910,9 +925,9 @@ function _showOXResult(isCorrect) {
       box-shadow:0 0 40px rgba(212,160,23,0.4);
     ">
       <div style="font-size:52px;margin-bottom:10px;">🎉</div>
-      <div style="color:#d4a017;font-size:20px;font-weight:900;margin-bottom:8px;">정답!</div>
+      <div style="color:#d4a017;font-size:20px;font-weight:900;margin-bottom:8px;">${_tor('oxCorrect')}</div>
       <div style="color:#f0e6c8;font-size:14px;margin-bottom:20px;line-height:1.6;">
-        훌륭해요! 복주머니 1개를 받았어요!
+        ${_tor('oxCorrectDesc')}
       </div>
       <div style="
         background:rgba(255,215,0,0.1);
@@ -923,15 +938,15 @@ function _showOXResult(isCorrect) {
         box-shadow:0 0 16px rgba(255,215,0,0.3);
       ">
         <div style="font-size:44px;">🎁</div>
-        <div style="color:#ffd700;font-size:12px;font-weight:700;margin-top:6px;">복주머니 획득!</div>
-        <div style="color:#888;font-size:11px;margin-top:4px;">아이템 탭 → 복주머니에서 열어봐요!</div>
+        <div style="color:#ffd700;font-size:12px;font-weight:700;margin-top:6px;">${_tor('oxCorrectBagLabel')}</div>
+        <div style="color:#888;font-size:11px;margin-top:4px;">${_tor('oxCorrectBagHint')}</div>
       </div>
       <button onclick="document.getElementById('daily-result-overlay').remove()" style="
         width:100%;
         background:linear-gradient(135deg,#d4a017,#b3850e);
         color:#1e2e1f;border:none;border-radius:14px;
         padding:13px;font-size:15px;font-weight:900;cursor:pointer;
-      ">🎁 확인!</button>
+      ">${_tor('oxCorrectBtn')}</button>
     </div>
   ` : `
     <div style="
@@ -944,17 +959,17 @@ function _showOXResult(isCorrect) {
       box-shadow:0 0 30px rgba(141,176,92,0.2);
     ">
       <div style="font-size:52px;margin-bottom:10px;">😅</div>
-      <div style="color:#ff8080;font-size:20px;font-weight:900;margin-bottom:8px;">아쉽!</div>
+      <div style="color:#ff8080;font-size:20px;font-weight:900;margin-bottom:8px;">${_tor('oxWrong')}</div>
       <div style="color:#f0e6c8;font-size:14px;margin-bottom:20px;line-height:1.6;">
-        내일 다시 도전해봐요!<br>
-        <span style="color:#8db05c;font-size:12px;">카드 정보를 잘 읽어두면 도움이 돼요 📖</span>
+        ${_tor('oxWrongDesc')}<br>
+        <span style="color:#8db05c;font-size:12px;">${_tor('oxWrongHint')}</span>
       </div>
       <button onclick="document.getElementById('daily-result-overlay').remove()" style="
         width:100%;
         background:linear-gradient(135deg,#8db05c,#6b8e3d);
         color:#1e2e1f;border:none;border-radius:14px;
         padding:13px;font-size:15px;font-weight:900;cursor:pointer;
-      ">확인</button>
+      ">${_tor('oxWrongBtn')}</button>
     </div>
   `;
 
@@ -991,22 +1006,25 @@ function _showDailyQuizDonePopup() {
       box-shadow:0 0 30px rgba(141,176,92,0.3);
     ">
       <div style="font-size:44px;margin-bottom:12px;">✅</div>
-      <div style="color:#8db05c;font-size:16px;font-weight:900;margin-bottom:8px;">
-        오늘 시험 완료!
-      </div>
-      <div style="color:#d4c89c;font-size:13px;line-height:1.7;margin-bottom:20px;">
-        내일 자정 이후 다시 도전해요!<br>
-        <span style="color:#ffd700;">⏰ ${diffH}시간 ${diffM}분 후 초기화</span>
-      </div>
+      <div style="color:#8db05c;font-size:16px;font-weight:900;margin-bottom:8px;" id="dd-title"></div>
+      <div style="color:#d4c89c;font-size:13px;line-height:1.7;margin-bottom:20px;" id="dd-desc"></div>
       <button onclick="document.getElementById('daily-done-overlay').remove()" style="
         width:100%;
         background:linear-gradient(135deg,#8db05c,#6b8e3d);
         color:#1e2e1f;border:none;border-radius:14px;
         padding:12px;font-size:14px;font-weight:900;cursor:pointer;
-      ">확인</button>
+      " id="dd-btn"></button>
     </div>
   `;
   document.body.appendChild(overlay);
+  const _Tdd = window.LANG_UI; const _Ldd = window.currentLang || 'ko';
+  const _tdd = k => _Tdd?.[k]?.[_Ldd] || _Tdd?.[k]?.ko || '';
+  const ddT = document.getElementById('dd-title');
+  const ddD = document.getElementById('dd-desc');
+  const ddB = document.getElementById('dd-btn');
+  if (ddT) ddT.textContent = _tdd('dailyDoneTitle');
+  if (ddD) ddD.innerHTML = _tdd('dailyDoneDesc') + '<br><span style="color:#ffd700;">⏰ ' + _tdd('dailyDoneTimer').replace('{h}', diffH).replace('{m}', diffM) + '</span>';
+  if (ddB) ddB.textContent = _tdd('dailyDoneBtn');
 }
 
 // [한글 주석] 앱 초기화 시 버튼 상태 업데이트
@@ -1072,10 +1090,10 @@ function _buildRadarSVG() {
       <circle id="ai-dot-plant"    cx="${cx}" cy="${cy}" r="4" fill="#84ff00" style="transition:all 1.2s cubic-bezier(0.4,0,0.2,1);"/>
       <circle id="ai-dot-animal"   cx="${cx}" cy="${cy}" r="4" fill="#ff9d00" style="transition:all 1.2s cubic-bezier(0.4,0,0.2,1);"/>
       <circle id="ai-dot-artifact" cx="${cx}" cy="${cy}" r="4" fill="#4a9eff" style="transition:all 1.2s cubic-bezier(0.4,0,0.2,1);"/>
-      <text x="${cx}" y="${ends[0][1] - 9}"  text-anchor="middle" fill="#84ff00" font-size="10" font-family="sans-serif">식물</text>
-      <text x="${ends[1][0] + 14}" y="${ends[1][1]}" text-anchor="middle" fill="#ff9d00" font-size="10" font-family="sans-serif">동물</text>
-      <text x="${ends[2][0] - 14}" y="${ends[2][1]}" text-anchor="middle" fill="#4a9eff" font-size="10" font-family="sans-serif">유물</text>
-      <text x="${cx}" y="192" text-anchor="middle" fill="#333" font-size="9" font-family="sans-serif">학습 정확도 레이더</text>
+      <text x="${cx}" y="${ends[0][1] - 9}"  text-anchor="middle" fill="#84ff00" font-size="10" font-family="sans-serif">${(window.LANG_UI?.radarPlant?.[window.currentLang||'ko']||'식물')}</text>
+      <text x="${ends[1][0] + 14}" y="${ends[1][1]}" text-anchor="middle" fill="#ff9d00" font-size="10" font-family="sans-serif">${(window.LANG_UI?.radarAnimal?.[window.currentLang||'ko']||'동물')}</text>
+      <text x="${ends[2][0] - 14}" y="${ends[2][1]}" text-anchor="middle" fill="#4a9eff" font-size="10" font-family="sans-serif">${(window.LANG_UI?.radarArtifact?.[window.currentLang||'ko']||'유물')}</text>
+      <text x="${cx}" y="192" text-anchor="middle" fill="#333" font-size="9" font-family="sans-serif">${(window.LANG_UI?.aiRadarLabel?.[window.currentLang||'ko']||'학습 정확도 레이더')}</text>
     </svg>`;
 }
 
@@ -1114,21 +1132,26 @@ function _showFirstTimeAnalysis() {
     <div style="background:linear-gradient(160deg,#0a1628,#0d1e38);border:1.5px solid #4a9eff;border-radius:22px;padding:28px 20px;max-width:320px;width:100%;text-align:center;">
       <div style="font-size:52px;margin-bottom:14px;">🤖</div>
       <div style="color:#4a9eff;font-size:14px;font-weight:700;margin-bottom:8px;">AI 또감이</div>
-      <div style="color:#f0e6c8;font-size:15px;font-weight:700;margin-bottom:10px;">오늘의 첫 시험이에요!</div>
-      <div style="color:#888;font-size:12px;line-height:1.8;margin-bottom:24px;">
-        시험을 풀수록 AI가 학습 데이터를<br>
-        모아서 다음번에 분석해줄게요 📊
-      </div>
+      <div style="color:#f0e6c8;font-size:15px;font-weight:700;margin-bottom:10px;" id="ft-title"></div>
+      <div style="color:#888;font-size:12px;line-height:1.8;margin-bottom:24px;" id="ft-desc"></div>
       <button onclick="document.getElementById('ai-analysis-overlay').remove(); if(typeof showDailyQuiz==='function') showDailyQuiz();"
-        style="width:100%;background:linear-gradient(135deg,#0d2035,#1a3a5a);border:1.5px solid #4a9eff;border-radius:12px;padding:14px;color:#4a9eff;font-size:14px;font-weight:700;cursor:pointer;">
-        📝 시험 시작하기
+        style="width:100%;background:linear-gradient(135deg,#0d2035,#1a3a5a);border:1.5px solid #4a9eff;border-radius:12px;padding:14px;color:#4a9eff;font-size:14px;font-weight:700;cursor:pointer;" id="ft-start-btn">
       </button>
       <button onclick="document.getElementById('ai-analysis-overlay').remove();"
-        style="width:100%;margin-top:8px;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;color:#555;font-size:12px;cursor:pointer;">
-        닫기
+        style="width:100%;margin-top:8px;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;color:#555;font-size:12px;cursor:pointer;" id="ft-close-btn">
       </button>
     </div>`;
   document.body.appendChild(overlay);
+  const _Tft2 = window.LANG_UI; const _Lft2 = window.currentLang || 'ko';
+  const _tft2 = k => _Tft2?.[k]?.[_Lft2] || _Tft2?.[k]?.ko || '';
+  const ftT = document.getElementById('ft-title');
+  const ftD = document.getElementById('ft-desc');
+  const ftS = document.getElementById('ft-start-btn');
+  const ftC = document.getElementById('ft-close-btn');
+  if (ftT) ftT.textContent = _tft2('firstTimeTitle');
+  if (ftD) ftD.innerHTML = _tft2('firstTimeDesc').replace('\\n', '<br>');
+  if (ftS) ftS.textContent = _tft2('firstTimeStartBtn');
+  if (ftC) ftC.textContent = _tft2('firstTimeClose');
 }
 
 // [한글 주석] AI 분석 팝업 메인 함수 (일일시험 버튼에서 호출)
@@ -1172,8 +1195,8 @@ function showAIQuizAnalysis() {
           <div style="height:7px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;">
             <div id="aiq-bar-${c}" style="height:100%;width:0%;background:${color};border-radius:4px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);"></div>
           </div>
-          <div style="color:#555;font-size:10px;margin-top:2px;">${s.correct}/${s.total}문제 정답</div>
-        ` : `<div style="color:#444;font-size:10px;">아직 퀴즈 기록 없음</div>`}
+          <div style="color:#555;font-size:10px;margin-top:2px;">${(window.LANG_UI?.aiScoreDesc?.[window.currentLang||'ko']||'{c}/{t}문제 정답').replace('{c}',s.correct).replace('{t}',s.total)}</div>
+        ` : `<div style="color:#444;font-size:10px;">${(window.LANG_UI?.aiNoHistory?.[window.currentLang||'ko']||'아직 퀴즈 기록 없음')}</div>`}
       </div>`;
   }).join('');
 
@@ -1208,10 +1231,10 @@ function showAIQuizAnalysis() {
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
         <span style="font-size:26px;">🤖</span>
         <div>
-          <div style="color:#4a9eff;font-size:12px;font-weight:700;letter-spacing:1px;">AI 또감이</div>
-          <div style="color:#3a4a5a;font-size:10px;">ANALYSIS COMPLETE ✓</div>
+          <div style="color:#4a9eff;font-size:12px;font-weight:700;letter-spacing:1px;" id="ai-title-label"></div>
+          <div style="color:#3a4a5a;font-size:10px;" id="ai-complete-label"></div>
         </div>
-        <div style="margin-left:auto;background:rgba(74,158,255,0.15);border:1px solid #4a9eff;border-radius:6px;padding:2px 9px;color:#4a9eff;font-size:10px;font-weight:700;">AI 분석</div>
+        <div style="margin-left:auto;background:rgba(74,158,255,0.15);border:1px solid #4a9eff;border-radius:6px;padding:2px 9px;color:#4a9eff;font-size:10px;font-weight:700;" id="ai-analysis-badge"></div>
       </div>
 
       <div style="text-align:center;margin-bottom:14px;">${_buildRadarSVG()}</div>
@@ -1219,19 +1242,17 @@ function showAIQuizAnalysis() {
       <div style="margin-bottom:14px;">${barsHTML}</div>
 
       <div style="background:rgba(255,80,80,0.08);border:1px solid rgba(255,80,80,0.3);border-radius:12px;padding:12px;margin-bottom:14px;">
-        <div style="color:#ff8080;font-size:11px;font-weight:700;margin-bottom:4px;">⚡ 취약 영역 분석</div>
-        <div style="color:#fff;font-size:14px;font-weight:700;">${catLabel[weakCat]} 집중 연습 필요!</div>
-        <div style="color:#777;font-size:10px;margin-top:3px;">정답률 ${stats[weakCat].rate ?? 0}%</div>
+        <div style="color:#ff8080;font-size:11px;font-weight:700;margin-bottom:4px;" id="ai-weak-title"></div>
+        <div style="color:#fff;font-size:14px;font-weight:700;" id="ai-weak-desc"></div>
+        <div style="color:#777;font-size:10px;margin-top:3px;" id="ai-weak-rate"></div>
       </div>
 
-      <div style="color:#4a9eff;font-size:10px;font-weight:700;margin-bottom:7px;">🎯 오늘의 AI 추천 퀴즈</div>
+      <div style="color:#4a9eff;font-size:10px;font-weight:700;margin-bottom:7px;" id="ai-recommend-label"></div>
       <button onclick="document.getElementById('ai-analysis-overlay').remove(); if(typeof showDailyQuiz==='function') showDailyQuiz();"
-        style="width:100%;background:linear-gradient(135deg,#0d2035,#1a3a5a);border:1.5px solid #4a9eff;border-radius:12px;padding:14px;color:#4a9eff;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:0.5px;">
-        🤖 AI 추천 일일 시험 시작
+        style="width:100%;background:linear-gradient(135deg,#0d2035,#1a3a5a);border:1.5px solid #4a9eff;border-radius:12px;padding:14px;color:#4a9eff;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:0.5px;" id="ai-start-btn">
       </button>
       <button onclick="document.getElementById('ai-analysis-overlay').remove();"
-        style="width:100%;margin-top:8px;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;color:#555;font-size:12px;cursor:pointer;">
-        닫기
+        style="width:100%;margin-top:8px;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;color:#555;font-size:12px;cursor:pointer;" id="ai-close-btn">
       </button>
     </div>
 
@@ -1242,22 +1263,50 @@ function showAIQuizAnalysis() {
 
   document.body.appendChild(overlay);
 
+  const scanTxtInit = document.getElementById('aiq-scan-txt');
+  const _Tsc = window.LANG_UI; const _Lsc = window.currentLang || 'ko';
+  if (scanTxtInit) scanTxtInit.textContent = _Tsc?.aiAnalyzing?.[_Lsc] || 'ANALYZING...';
+
   // [한글 주석] 1.5초 스캔 애니메이션 → 결과 표시
   setTimeout(() => {
     const scanTxt = document.getElementById('aiq-scan-txt');
-    if (scanTxt) { scanTxt.textContent = 'COMPLETE ✓'; scanTxt.style.color = '#ffd700'; }
+    const _Tai2 = window.LANG_UI; const _Lai2 = window.currentLang || 'ko';
+    if (scanTxt) { scanTxt.textContent = _Tai2?.aiComplete?.[_Lai2] || 'COMPLETE ✓'; scanTxt.style.color = '#ffd700'; }
     setTimeout(() => {
       const scan   = document.getElementById('aiq-scan-layer');
       const result = document.getElementById('aiq-result-layer');
       if (scan)   scan.style.display = 'none';
       if (result) { result.style.opacity = '1'; result.style.transform = 'scale(1)'; }
+      // [한글 주석] AI 분석 결과 텍스트 채우기
+      const _Tar = window.LANG_UI; const _Lar = window.currentLang || 'ko';
+      const _tar = k => _Tar?.[k]?.[_Lar] || _Tar?.[k]?.ko || '';
+      const aiTL = document.getElementById('ai-title-label');
+      const aiCL = document.getElementById('ai-complete-label');
+      const aiAB = document.getElementById('ai-analysis-badge');
+      const aiWT = document.getElementById('ai-weak-title');
+      const aiWD = document.getElementById('ai-weak-desc');
+      const aiWR = document.getElementById('ai-weak-rate');
+      const aiRL = document.getElementById('ai-recommend-label');
+      const aiSB = document.getElementById('ai-start-btn');
+      const aiCB = document.getElementById('ai-close-btn');
+      if (aiTL) aiTL.textContent = _tar('aiTitle');
+      if (aiCL) aiCL.textContent = _tar('aiComplete');
+      if (aiAB) aiAB.textContent = _tar('aiAnalysisLabel');
+      if (aiWT) aiWT.textContent = _tar('aiWeakTitle');
+      if (aiWD) aiWD.textContent = _tar('aiWeakDesc').replace('{cat}', catLabel[weakCat]);
+      if (aiWR) aiWR.textContent = _tar('aiWeakRate').replace('{n}', stats[weakCat].rate ?? 0);
+      if (aiRL) aiRL.textContent = _tar('aiRecommendLabel');
+      if (aiSB) aiSB.textContent = _tar('aiStartBtn');
+      if (aiCB) aiCB.textContent = _tar('aiClose');
       // [한글 주석] 바 채우기 + 숫자 카운팅업 애니메이션
       ['plant', 'animal', 'artifact'].forEach(c => {
         const bar    = document.getElementById('aiq-bar-' + c);
         const rateEl = document.getElementById('aiq-rate-' + c);
         const rate   = stats[c].rate ?? 0;
         if (bar) requestAnimationFrame(() => { bar.style.width = rate + '%'; });
-        if (rateEl && stats[c].total > 0) {
+          const _Trd = window.LANG_UI; const _Lrd = window.currentLang || 'ko';
+          if (rateEl && stats[c].total === 0) rateEl.textContent = _Trd?.aiNoData?.[_Lrd] || '데이터 없음';
+          if (rateEl && stats[c].total > 0) {
           let cur = 0;
           const step = Math.max(rate / 30, 1);
           const timer = setInterval(() => {
