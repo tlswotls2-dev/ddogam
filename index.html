@@ -439,7 +439,8 @@
     <!-- 하단 액션 버튼 2개 -->
     <div class="bottom-buttons">
       <!-- [한글 주석] 언어 선택 버튼 (챗봇 버튼 자리에 배치) -->
-      <button class="action-btn btn-ai" id="lang-select-btn" onclick="showLangSelectPopup()">
+      <button class="action-btn btn-ai" id="lang-select-btn"
+        onclick="if(window.showLangSelectPopup) window.showLangSelectPopup();">
         <span class="btn-emoji">🌐</span>
         <span class="btn-text" id="lang-btn-label">한국어</span>
       </button>
@@ -1305,15 +1306,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       if (typeof initLang === 'function') initLang();
     });
-    // [한글 주석] 언어 선택 팝업 전역 안전 등록 (lang.js 로드 완료 보장)
-    window.addEventListener('load', () => {
-      if (typeof showLangSelectPopup === 'function') {
-        window._showLangSelectPopupFn = showLangSelectPopup;
-      }
-    });
-    function showLangSelectPopup() {
-      if (window._showLangSelectPopupFn) window._showLangSelectPopupFn();
-    }
+    // [한글 주석] 언어 선택 팝업 전역 안전 등록 제거 (lang.js에서 직접 처리)
   </script>
 
 </body>
