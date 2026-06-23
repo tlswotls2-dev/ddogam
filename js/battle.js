@@ -159,9 +159,9 @@ async function _fetchBattleCount() {
     const infoEl = document.getElementById('battle-count-info');
     if (infoEl) {
       const T2 = window.LANG_UI;
-    const L2 = window.currentLang || 'ko';
-    const t2 = k => T2[k]?.[L2] || T2[k]?.ko || '';
-    if (count >= 3) {
+      const L2 = window.currentLang || 'ko';
+      const t2 = k => T2[k]?.[L2] || T2[k]?.ko || '';
+      if (count >= 3) {
         infoEl.textContent = t2('battleCountMax');
         infoEl.style.color = '#ff4444';
         document.querySelectorAll('#battle-overlay button[onclick^="startBattleStudy"]')
@@ -245,6 +245,8 @@ function _renderStudyScreen() {
     align-items:center;
     padding:16px;
     overflow-y:auto;
+    justify-content:flex-start;
+    box-sizing:border-box;
   `;
 
   const Ts = window.LANG_UI;
@@ -263,8 +265,8 @@ function _renderStudyScreen() {
       <button onclick="cancelBattle()" style="
         background:rgba(255,68,68,0.15);
         border:1px solid #ff4444;border-radius:8px;
-        color:#ff4444;font-size:11px;padding:4px 10px;
-        cursor:pointer;
+        color:#ff4444;font-size:12px;padding:8px 14px;
+        cursor:pointer;min-height:36px;
       ">${ts('battleGiveUp')}</button>
     </div>
 
@@ -289,31 +291,35 @@ function _renderStudyScreen() {
     </div>
 
     <div id="battle-card-area" style="
-      width:100%;max-width:360px;flex:1;
+      width:100%;max-width:360px;
     "></div>
 
     <div style="
       display:flex;gap:10px;
       width:100%;max-width:360px;
       margin-top:12px;
+      flex-shrink:0;
     ">
       <button onclick="battlePrevCard()" style="
-        flex:1;padding:10px;
+        flex:1;padding:12px 8px;
         background:rgba(255,255,255,0.05);
         border:1px solid #444;border-radius:12px;
         color:#aaa;font-size:13px;cursor:pointer;
+        min-height:44px;
       ">${ts('battlePrev')}</button>
       <button onclick="battleFlipCard()" style="
-        flex:1;padding:10px;
+        flex:1;padding:12px 8px;
         background:rgba(141,176,92,0.1);
         border:1px solid #6b8e3d;border-radius:12px;
         color:#8db05c;font-size:13px;cursor:pointer;
+        min-height:44px;
       ">${ts('battleFlip')}</button>
       <button onclick="battleNextCard()" style="
-        flex:1;padding:10px;
+        flex:1;padding:12px 8px;
         background:rgba(255,255,255,0.05);
         border:1px solid #444;border-radius:12px;
         color:#aaa;font-size:13px;cursor:pointer;
+        min-height:44px;
       ">${ts('battleNext')}</button>
     </div>
   `;
@@ -1106,7 +1112,7 @@ function _showBattleResult(myScore, opponentScore, result) {
           border:1px solid ${resultColor};border-radius:14px;
           padding:14px 8px;text-align:center;
         ">
-          <div style="color:#aaa;font-size:10px;margin-bottom:4px;">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleMe||'나') : '나'}</div>
+          <div style="color:#aaa;font-size:10px;margin-bottom:4px;">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleMe || '나') : '나'}</div>
           <div style="color:#fff;font-size:28px;font-weight:900;">${myScore}</div>
           <div style="color:#aaa;font-size:10px;">/ 5</div>
         </div>
@@ -1116,7 +1122,7 @@ function _showBattleResult(myScore, opponentScore, result) {
           border:1px solid #666;border-radius:14px;
           padding:14px 8px;text-align:center;
         ">
-          <div style="color:#aaa;font-size:10px;margin-bottom:4px;">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleOpponent||'상대') : '상대'}</div>
+          <div style="color:#aaa;font-size:10px;margin-bottom:4px;">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleOpponent || '상대') : '상대'}</div>
           <div style="color:#fff;font-size:28px;font-weight:900;">
             ${opponentScore === -1 ? '?' : opponentScore}
           </div>
@@ -1129,7 +1135,7 @@ function _showBattleResult(myScore, opponentScore, result) {
         background:linear-gradient(135deg,${resultColor},${resultColor}aa);
         color:#000;border:none;border-radius:14px;
         padding:13px;font-size:15px;font-weight:900;cursor:pointer;
-      ">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleConfirm||'확인!') : '확인!'}</button>
+      ">${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleConfirm || '확인!') : '확인!'}</button>
     </div>
   `;
 
