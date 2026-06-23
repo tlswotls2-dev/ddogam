@@ -1254,14 +1254,6 @@ function initLang() {
 function _compressData() {
   const collection = JSON.parse(localStorage.getItem('userCollection') || '[]');
   const level = localStorage.getItem('confirmedLevel') || localStorage.getItem('currentLevel') || '1';
-  const selectedAvatar = localStorage.getItem('selectedAvatar') || '';
-  const equippedItems = localStorage.getItem('equippedItems') || '{}';
-  const equippedOutfit = localStorage.getItem('equippedOutfit') || 'default';
-  const equippedPet = localStorage.getItem('equippedPet') || 'pet_none';
-  const equippedTitle = localStorage.getItem('equippedTitle') || '';
-  const unlockedItems = localStorage.getItem('unlockedItems') || '[]';
-  const unlockedAvatars = localStorage.getItem('unlockedAvatars') || '[]';
-  const unlockedPets = localStorage.getItem('unlockedPets') || '[]';
 
   // [한글 주석] 카드 ID 압축 (plant_001 → p1, animal_050 → a50, artifact_100 → r100)
   const compressedCards = collection.map(id => {
@@ -1271,18 +1263,11 @@ function _compressData() {
     return id;
   });
 
+  // [한글 주석] 카드 + 레벨만 저장 (아바타/아이템은 레벨로 자동 해금됨)
   const data = {
-    v: 1, // [한글 주석] 버전
+    v: 2,
     c: compressedCards,
     l: level,
-    av: selectedAvatar,
-    ei: equippedItems,
-    eo: equippedOutfit,
-    ep: equippedPet,
-    et: equippedTitle,
-    ui: unlockedItems,
-    ua: unlockedAvatars,
-    up: unlockedPets,
   };
 
   return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
@@ -1292,7 +1277,7 @@ function _compressData() {
 function _restoreData(encoded) {
   try {
     const data = JSON.parse(decodeURIComponent(escape(atob(encoded))));
-    if (!data || data.v !== 1) return false;
+    if (!data || (data.v !== 1 && data.v !== 2)) return false;
 
     // [한글 주석] 카드 ID 복원 (p1 → plant_001, a50 → animal_050)
     const cards = (data.c || []).map(id => {
@@ -1302,19 +1287,24 @@ function _restoreData(encoded) {
       return id;
     });
 
+    // [한글 주석] 카드 + 레벨 복원
     localStorage.setItem('userCollection', JSON.stringify(cards));
     if (data.l) {
       localStorage.setItem('confirmedLevel', data.l);
       localStorage.setItem('currentLevel', data.l);
     }
-    if (data.av) localStorage.setItem('selectedAvatar', data.av);
-    if (data.ei) localStorage.setItem('equippedItems', data.ei);
-    if (data.eo) localStorage.setItem('equippedOutfit', data.eo);
-    if (data.ep) localStorage.setItem('equippedPet', data.ep);
-    if (data.et) localStorage.setItem('equippedTitle', data.et);
-    if (data.ui) localStorage.setItem('unlockedItems', data.ui);
-    if (data.ua) localStorage.setItem('unlockedAvatars', data.ua);
-    if (data.up) localStorage.setItem('unlockedPets', data.up);
+
+    // [한글 주석] v1 구버전 호환 - 아바타/아이템도 복원
+    if (data.v === 1) {
+      if (data.av) localStorage.setItem('selectedAvatar', data.av);
+      if (data.ei) localStorage.setItem('equippedItems', data.ei);
+      if (data.eo) localStorage.setItem('equippedOutfit', data.eo);
+      if (data.ep) localStorage.setItem('equippedPet', data.ep);
+      if (data.et) localStorage.setItem('equippedTitle', data.et);
+      if (data.ui) localStorage.setItem('unlockedItems', data.ui);
+      if (data.ua) localStorage.setItem('unlockedAvatars', data.ua);
+      if (data.up) localStorage.setItem('unlockedPets', data.up);
+    }
 
     return true;
   } catch (e) {
