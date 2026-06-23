@@ -1339,7 +1339,7 @@ function checkRestoreFromURL() {
   if (!restoreData) {
     if (localStorage.getItem('_justRestored') === '1') {
       localStorage.removeItem('_justRestored');
-      setTimeout(() => _showRestoreSuccessPopup(), 800);
+      setTimeout(() => _showRestoreSuccessPopup(), 1500);
     }
     return;
   }
@@ -1352,7 +1352,15 @@ function checkRestoreFromURL() {
   if (ok) {
     // [한글 주석] 성공 플래그 저장 후 새로고침 (깨끗한 상태로 시작)
     localStorage.setItem('_justRestored', '1');
-    location.reload();
+    // [한글 주석] localStorage 저장 확인 후 새로고침
+    setTimeout(() => {
+      if (localStorage.getItem('_justRestored') === '1') {
+        location.reload();
+      } else {
+        // [한글 주석] 저장 실패 시 바로 팝업 표시
+        _showRestoreSuccessPopup();
+      }
+    }, 200);
   } else {
     // [한글 주석] 복원 실패 팝업
     const overlay = document.createElement('div');
