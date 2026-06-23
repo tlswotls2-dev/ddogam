@@ -1497,18 +1497,19 @@ function showExportQR() {
 
   document.body.appendChild(overlay);
 
-  // [한글 주석] QR코드 생성
+  // [한글 주석] Google Chart API로 QR코드 생성 (단순하고 확실)
   setTimeout(() => {
     const container = document.getElementById('qr-code-container');
-    if (container && typeof QRCode !== 'undefined') {
-      new QRCode(container, {
-        text: url,
-        width: 200,
-        height: 200,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M
-      });
+    if (container) {
+      const encodedUrl = encodeURIComponent(url);
+      const qrApiUrl = `https://chart.googleapis.com/chart?cht=qr&chs=240x240&chl=${encodedUrl}&choe=UTF-8&chld=L|1`;
+      const img = document.createElement('img');
+      img.src = qrApiUrl;
+      img.width = 240;
+      img.height = 240;
+      img.style.display = 'block';
+      img.alt = 'QR Code';
+      container.appendChild(img);
     }
   }, 100);
 }
