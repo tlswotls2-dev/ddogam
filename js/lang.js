@@ -293,6 +293,36 @@ window.LANG_UI = {
     exportCopied: '✅ 복사됐어요!',
     exportCopyGuide: '이 URL을 새 기기의 크롬 브라우저 주소창에 붙여넣고 열면 데이터가 복원돼요!',
     exportBagWarning: '🎁 복주머니는 전송되지 않아요!\n데이터를 옮기기 전에 복주머니를 모두 열어서 카드로 만들어주세요.',
+    helpMainSubtitle: '걷고, 수집하며, 배워요!',
+    helpStep1Title: 'STEP 1. 탐험 시작!',
+    helpStep1Desc: '주황색 탐험 버튼을 눌러요.',
+    helpStep2Title: 'STEP 2. 주변을 걸어요!',
+    helpStep2Desc: '화면을 끄지 말고 주머니에 넣고 걸어요. 진동이 울리면 안전한 곳에서 확인!',
+    helpStep3Title: 'STEP 3. 카드를 수집해요!',
+    helpStep3Desc: '도감을 완성하며 레벨을 올려요!',
+    helpStep4Title: 'STEP 4. 레벨업 퀴즈!',
+    helpStep4Desc: '퀴즈를 풀고 레벨을 올리면 다음 단계를 해금할 수 있어요!',
+    helpMainCloseBtn: '확인',
+    helpDetailBtn: '📚 자세히 알아보기',
+    helpBackBtn: '← 뒤로',
+    helpDetailTitle: '📚 자세한 사용법',
+    helpExploreTitle: '👟 탐험 방법',
+    helpExploreDesc: '• 주황색 탐험! 버튼을 누르면 탐험 시작\n• ⚠️ 걸을 때는 절대 스마트기기 화면을 보면서 걷지 마세요!\n• 탐험 버튼을 누른 후 화면을 끄지 않고 주머니에 넣고 걸어요\n• 걷다 보면 현재 위치 주변에서 랜덤으로 카드 등장\n• 진동이 울리면 안전한 곳에 멈춰서 화면을 확인해요\n• 30% 확률로 카드 3장 중 1장을 선택하는 이벤트 발생!',
+    helpDodamTitle: '📖 도감',
+    helpDodamDesc: '• 수집한 카드를 모두 볼 수 있어요\n• 식물 100종, 동물 100종, 유물 100종\n• 카드 희귀도: ★ 일반 / ★★ 희귀 / ★★★ 전설\n• 카드를 탭하면 자세한 정보를 볼 수 있어요\n• ⚗️ 조합소 탭에서 중복 카드를 새 카드로 바꿀 수 있어요',
+    helpWorkshopTitle: '⚗️ 조합소',
+    helpWorkshopDesc: '• 이미 가진 카드가 또 나오면 조합소에 쌓여요\n• 중복 카드 5장을 선택해 새 카드로 조합!\n• 전설 1장 이상 → 무조건 전설\n• 희귀 4~5장 → 전설 50% / 희귀 50%\n• 희귀 3장 + 일반 2장 → 희귀 100%\n• 희귀 1~2장 + 일반 → 희귀 60% / 일반 40%\n• 일반 5장 → 일반 75% / 희귀 15% / 전설 10%',
+    helpLevelTitle: '⭐ 레벨 & 아이템',
+    helpLevelDesc: '• 카드 10장마다 레벨업 퀴즈 도전!\n• 퀴즈를 맞춰야 레벨이 올라가요\n• Lv.5 달성 → 동물 탐험 해금\n• Lv.10 달성 → 유물 탐험 해금\n• 레벨에 따라 아바타/옷/아이템/펫/칭호 해금\n• 아바타를 탭하면 꾸미기 화면으로 이동',
+    helpQuizTitle: '📝 일일 시험',
+    helpQuizDesc: '• 하루에 한 번 OX 퀴즈에 도전해요\n• 내가 수집한 카드의 설명이 맞는지 틀리는지 맞춰요\n• 정답이면 복주머니 1개 획득!\n• AI 또감이가 취약 영역을 분석해줘요\n• 자정이 지나면 다시 도전할 수 있어요',
+    helpBattleTitle: '⚔️ 지식 배틀',
+    helpBattleDesc: '• 같은 반 친구와 지식 대결!\n• 카테고리 선택 후 1분 공부 → 자동 매칭\n• 매칭 후 5문제(3분 제한)를 풀어 승부!\n• 승리 → 복주머니 1개 / 무승부 → 복주머니 조각 1개\n• 조각 2개를 모으면 복주머니 1개로 변환\n• 하루 3회 제한 / 매칭 실패 시 AI 또감이와 배틀!',
+    helpBagTitle: '🎁 복주머니',
+    helpBagDesc: '• 일일 시험 정답 / 배틀 승리 시 받아요\n• 선생님이 특별 선물을 보내줄 수도 있어요\n• 아이템 → 복주머니 탭에서 확인·개봉해요\n• 두구두구 애니메이션으로 카드를 뽑아요!',
+    helpSettingsTitle: '⚙️ 설정',
+    helpSettingsDesc: '• 언어 설정: 한국어/영어/러시아어/중국어 지원\n• 내 데이터 내보내기: QR코드로 다른 기기에 데이터 전송\n• 복주머니는 전송되지 않으니 먼저 열어두세요!',
+    helpDetailCloseBtn: '확인!',
   },
   en: {
     langBtnLabel: 'English',
@@ -538,6 +568,36 @@ window.LANG_UI = {
     exportCopied: '✅ Copied!',
     exportCopyGuide: 'Paste this URL in Chrome on your new device to restore your data!',
     exportBagWarning: '🎁 Lucky bags are not transferred!\nOpen all your lucky bags before exporting.',
+    helpMainSubtitle: 'Walk, collect, and learn!',
+    helpStep1Title: 'STEP 1. Start Exploring!',
+    helpStep1Desc: 'Tap the orange Explore button.',
+    helpStep2Title: 'STEP 2. Walk Around!',
+    helpStep2Desc: 'Keep screen on and put in pocket. Check when you feel vibration in a safe place!',
+    helpStep3Title: 'STEP 3. Collect Cards!',
+    helpStep3Desc: 'Complete your collection and level up!',
+    helpStep4Title: 'STEP 4. Level Up Quiz!',
+    helpStep4Desc: 'Answer quizzes to unlock the next stage!',
+    helpMainCloseBtn: 'OK',
+    helpDetailBtn: '📚 Learn More',
+    helpBackBtn: '← Back',
+    helpDetailTitle: '📚 Detailed Guide',
+    helpExploreTitle: '👟 How to Explore',
+    helpExploreDesc: '• Tap the orange Explore! button to start\n• ⚠️ Never look at your screen while walking!\n• Keep screen on and put device in your pocket\n• Cards appear randomly around your location\n• Stop safely when you feel vibration to check\n• 30% chance to choose 1 of 3 cards!',
+    helpDodamTitle: '📖 Collection',
+    helpDodamDesc: '• View all collected cards\n• 100 Plants, 100 Animals, 100 Artifacts\n• Rarity: ★ Common / ★★ Rare / ★★★ Legendary\n• Tap a card to see detailed info\n• Use ⚗️ Workshop to exchange duplicate cards',
+    helpWorkshopTitle: '⚗️ Workshop',
+    helpWorkshopDesc: '• Duplicate cards go to the Workshop\n• Select 5 cards to craft a new one!\n• 1+ Legendary → Always Legendary\n• 4-5 Rare → 50% Legendary / 50% Rare\n• 3 Rare + 2 Common → 100% Rare\n• 1-2 Rare + Common → 60% Rare / 40% Common\n• 5 Common → 75% Common / 15% Rare / 10% Legendary',
+    helpLevelTitle: '⭐ Level & Items',
+    helpLevelDesc: '• Level-up quiz every 10 cards!\n• Must answer correctly to level up\n• Lv.5 → Unlock Animal exploration\n• Lv.10 → Unlock Artifact exploration\n• Unlock avatars/outfits/items/pets/titles by level\n• Tap avatar to open customization screen',
+    helpQuizTitle: '📝 Daily Quiz',
+    helpQuizDesc: '• One OX quiz per day\n• Guess if a card description is correct\n• Correct answer = 1 Lucky Bag!\n• AI Ddogam analyzes your weak areas\n• Resets after midnight',
+    helpBattleTitle: '⚔️ Knowledge Battle',
+    helpBattleDesc: '• Battle classmates in knowledge!\n• Select category → 1 min study → auto match\n• Answer 5 questions (3 min limit) to win!\n• Win → 1 Lucky Bag / Draw → 1 Lucky Piece\n• 2 pieces = 1 Lucky Bag\n• Max 3 battles/day / AI battle if no match!',
+    helpBagTitle: '🎁 Lucky Bag',
+    helpBagDesc: '• Earned from daily quiz / battle wins\n• Teachers can send special gifts too\n• Open in Items → Lucky Bag tab\n• Fun drumroll animation when opening!',
+    helpSettingsTitle: '⚙️ Settings',
+    helpSettingsDesc: '• Language: Korean/English/Russian/Chinese\n• Export Data: Transfer via QR code to new device\n• Open all Lucky Bags before transferring!',
+    helpDetailCloseBtn: 'OK!',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -783,6 +843,36 @@ window.LANG_UI = {
     exportCopied: '✅ Скопировано!',
     exportCopyGuide: 'Вставь этот URL в Chrome на новом устройстве для восстановления данных!',
     exportBagWarning: '🎁 Мешочки удачи не переносятся!\nОткрой все мешочки перед экспортом.',
+    helpMainSubtitle: 'Ходи, собирай и учись!',
+    helpStep1Title: 'ШАГ 1. Начни исследование!',
+    helpStep1Desc: 'Нажми оранжевую кнопку Вперёд!',
+    helpStep2Title: 'ШАГ 2. Прогуляйся!',
+    helpStep2Desc: 'Не выключай экран, убери в карман. При вибрации остановись в безопасном месте!',
+    helpStep3Title: 'ШАГ 3. Собирай карточки!',
+    helpStep3Desc: 'Заполняй коллекцию и повышай уровень!',
+    helpStep4Title: 'ШАГ 4. Квиз на уровень!',
+    helpStep4Desc: 'Отвечай на вопросы, чтобы открыть следующий этап!',
+    helpMainCloseBtn: 'ОК',
+    helpDetailBtn: '📚 Подробнее',
+    helpBackBtn: '← Назад',
+    helpDetailTitle: '📚 Подробное руководство',
+    helpExploreTitle: '👟 Как исследовать',
+    helpExploreDesc: '• Нажми кнопку Вперёд! для начала\n• ⚠️ Никогда не смотри в экран при ходьбе!\n• Не выключай экран, убери устройство в карман\n• Карточки появляются рядом с твоим местом\n• При вибрации остановись и проверь экран\n• 30% шанс выбрать 1 из 3 карточек!',
+    helpDodamTitle: '📖 Коллекция',
+    helpDodamDesc: '• Просматривай все собранные карточки\n• 100 Растений, 100 Животных, 100 Артефактов\n• Редкость: ★ Обычная / ★★ Редкая / ★★★ Легендарная\n• Нажми карточку для подробной информации\n• В ⚗️ Мастерской меняй дубликаты на новые',
+    helpWorkshopTitle: '⚗️ Мастерская',
+    helpWorkshopDesc: '• Дубликаты попадают в Мастерскую\n• Выбери 5 карточек для создания новой!\n• 1+ Легендарная → Всегда Легендарная\n• 4-5 Редких → 50% Легендарная / 50% Редкая\n• 3 Редких + 2 Обычных → 100% Редкая\n• 1-2 Редких + Обычные → 60% Редкая / 40% Обычная\n• 5 Обычных → 75% Обычная / 15% Редкая / 10% Легендарная',
+    helpLevelTitle: '⭐ Уровень и предметы',
+    helpLevelDesc: '• Квиз на уровень каждые 10 карточек!\n• Нужно ответить верно для повышения\n• Ур.5 → Открываются Животные\n• Ур.10 → Открываются Артефакты\n• По уровню открываются аватары/одежда/предметы/питомцы/звания\n• Нажми аватар для настройки',
+    helpQuizTitle: '📝 Ежедневный тест',
+    helpQuizDesc: '• Один OX вопрос в день\n• Угадай, верно ли описание карточки\n• Верный ответ = 1 Мешочек удачи!\n• ИИ Ттогами анализирует твои слабые места\n• Сбрасывается после полуночи',
+    helpBattleTitle: '⚔️ Битва знаний',
+    helpBattleDesc: '• Соревнуйся с одноклассниками!\n• Выбери категорию → 1 мин учёбы → матч\n• Ответь на 5 вопросов (3 мин) для победы!\n• Победа → 1 Мешочек / Ничья → 1 Осколок\n• 2 осколка = 1 Мешочек\n• Макс. 3 битвы/день / При неудаче — бой с ИИ!',
+    helpBagTitle: '🎁 Мешочек удачи',
+    helpBagDesc: '• Получай за тест / победу в битве\n• Учитель тоже может прислать подарок\n• Открывай в Вещи → Мешочек удачи\n• Барабанная дробь при открытии!',
+    helpSettingsTitle: '⚙️ Настройки',
+    helpSettingsDesc: '• Язык: Корейский/Английский/Русский/Китайский\n• Экспорт данных: QR-код для переноса на новое устройство\n• Сначала открой все мешочки перед переносом!',
+    helpDetailCloseBtn: 'ОК!',
   },
   zh: {
     langBtnLabel: '中文',
@@ -1028,6 +1118,36 @@ window.LANG_UI = {
     exportCopied: '✅ 已复制！',
     exportCopyGuide: '将此链接粘贴到新设备的Chrome浏览器地址栏中打开，即可恢复数据！',
     exportBagWarning: '🎁 福袋不会被传输！\n请在导出前打开所有福袋将其变成卡片。',
+    helpMainSubtitle: '走路、收集、学习！',
+    helpStep1Title: 'STEP 1. 开始探索！',
+    helpStep1Desc: '点击橙色的探索按钮。',
+    helpStep2Title: 'STEP 2. 四处走走！',
+    helpStep2Desc: '保持屏幕亮着放入口袋走路。感到振动时在安全地方查看！',
+    helpStep3Title: 'STEP 3. 收集卡片！',
+    helpStep3Desc: '完成图鉴并提升等级！',
+    helpStep4Title: 'STEP 4. 升级测验！',
+    helpStep4Desc: '答对测验，升级解锁下一阶段！',
+    helpMainCloseBtn: '确认',
+    helpDetailBtn: '📚 了解更多',
+    helpBackBtn: '← 返回',
+    helpDetailTitle: '📚 详细说明',
+    helpExploreTitle: '👟 探索方法',
+    helpExploreDesc: '• 点击橙色探索！按钮开始\n• ⚠️ 走路时绝对不要看手机屏幕！\n• 按下探索按钮后保持屏幕亮着放入口袋\n• 走路时周围会随机出现卡片\n• 感到振动时在安全地方停下查看\n• 有30%的概率从3张卡中选择1张！',
+    helpDodamTitle: '📖 图鉴',
+    helpDodamDesc: '• 查看所有收集的卡片\n• 植物100种、动物100种、文物100种\n• 稀有度：★普通 / ★★稀有 / ★★★传说\n• 点击卡片查看详细信息\n• 在⚗️合成所用重复卡片换新卡片',
+    helpWorkshopTitle: '⚗️ 合成所',
+    helpWorkshopDesc: '• 重复的卡片会进入合成所\n• 选择5张卡片合成新卡片！\n• 1张以上传说 → 必定传说\n• 4-5张稀有 → 50%传说 / 50%稀有\n• 3张稀有+2张普通 → 100%稀有\n• 1-2张稀有+普通 → 60%稀有 / 40%普通\n• 5张普通 → 75%普通 / 15%稀有 / 10%传说',
+    helpLevelTitle: '⭐ 等级与道具',
+    helpLevelDesc: '• 每收集10张卡片挑战升级测验！\n• 答对才能升级\n• Lv.5达成 → 解锁动物探索\n• Lv.10达成 → 解锁文物探索\n• 根据等级解锁头像/服装/道具/宠物/称号\n• 点击头像进入装扮界面',
+    helpQuizTitle: '📝 每日测验',
+    helpQuizDesc: '• 每天一次OX测验\n• 猜猜收集的卡片描述是否正确\n• 答对获得1个福袋！\n• AI又感分析你的薄弱领域\n• 过了零点可以再次挑战',
+    helpBattleTitle: '⚔️ 知识对战',
+    helpBattleDesc: '• 和同班同学比拼知识！\n• 选择类别→学习1分钟→自动匹配\n• 回答5道题（3分钟限制）决胜负！\n• 获胜→1个福袋 / 平局→1个碎片\n• 2个碎片=1个福袋\n• 每天最多3次 / 匹配失败则与AI对战！',
+    helpBagTitle: '🎁 福袋',
+    helpBagDesc: '• 每日测验答对/对战获胜时获得\n• 老师也可以发送特别礼物\n• 在道具→福袋标签中查看开启\n• 开启时有咚咚咚动画！',
+    helpSettingsTitle: '⚙️ 设置',
+    helpSettingsDesc: '• 语言设置：支持韩语/英语/俄语/中文\n• 导出数据：通过二维码将数据传输到新设备\n• 传输前请先打开所有福袋！',
+    helpDetailCloseBtn: '确认！',
   }
 };
 
@@ -1245,6 +1365,9 @@ function applyUIText(langCode) {
   if (safetyTitle) safetyTitle.textContent = ui.safetyWarningTitle || '🚨 안 전 주 의!';
   if (safetyDesc) safetyDesc.innerHTML = (ui.safetyWarningDesc || '탐험 버튼을 누르고 걸어야<br>카드가 나타나요 🌿<br>안전한 곳에서 화면을 확인해요!').replace(/\n/g, '<br>');
 
+  // [한글 주석] 도움말 번역 적용
+  if (typeof applyHelpText === 'function') applyHelpText(langCode);
+
   // [한글 주석] 아이템 화면 탭 이름
   const customizeTabLabels = {
     avatar: { ko: '🧒<br>아바타', en: '🧒<br>Avatar', ru: '🧒<br>Аватар', zh: '🧒<br>头像' },
@@ -1426,6 +1549,53 @@ function checkRestoreFromURL() {
     document.body.appendChild(overlay);
   }
 }
+
+// [한글 주석] 도움말 번역 적용 함수
+function applyHelpText(langCode) {
+  const ui = window.LANG_UI?.[langCode];
+  if (!ui) return;
+  const t = k => ui[k] || window.LANG_UI?.ko?.[k] || '';
+
+  const els = {
+    'help-main-subtitle': t('helpMainSubtitle'),
+    'help-step1-title': t('helpStep1Title'),
+    'help-step1-desc': t('helpStep1Desc'),
+    'help-step2-title': t('helpStep2Title'),
+    'help-step2-desc': t('helpStep2Desc'),
+    'help-step3-title': t('helpStep3Title'),
+    'help-step3-desc': t('helpStep3Desc'),
+    'help-step4-title': t('helpStep4Title'),
+    'help-step4-desc': t('helpStep4Desc'),
+    'help-main-close-btn': t('helpMainCloseBtn'),
+    'help-detail-btn': t('helpDetailBtn'),
+    'help-back-btn': t('helpBackBtn'),
+    'help-detail-title': t('helpDetailTitle'),
+    'help-explore-title': t('helpExploreTitle'),
+    'help-explore-desc': t('helpExploreDesc'),
+    'help-dodam-title': t('helpDodamTitle'),
+    'help-dodam-desc': t('helpDodamDesc'),
+    'help-workshop-title': t('helpWorkshopTitle'),
+    'help-workshop-desc': t('helpWorkshopDesc'),
+    'help-level-title': t('helpLevelTitle'),
+    'help-level-desc': t('helpLevelDesc'),
+    'help-quiz-title': t('helpQuizTitle'),
+    'help-quiz-desc': t('helpQuizDesc'),
+    'help-battle-title': t('helpBattleTitle'),
+    'help-battle-desc': t('helpBattleDesc'),
+    'help-bag-title': t('helpBagTitle'),
+    'help-bag-desc': t('helpBagDesc'),
+    'help-settings-title': t('helpSettingsTitle'),
+    'help-settings-desc': t('helpSettingsDesc'),
+    'help-detail-close-btn': t('helpDetailCloseBtn'),
+  };
+
+  Object.entries(els).forEach(([id, text]) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = text.replace(/\n/g, '<br>');
+  });
+}
+
+window.applyHelpText = applyHelpText;
 
 // [한글 주석] 설정 팝업 표시
 function showSettingsPopup() {
