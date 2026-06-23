@@ -1252,8 +1252,8 @@ function initLang() {
 
 // [한글 주석] 데이터 압축 - 카드 ID를 짧게 변환
 function _compressData() {
-  const collection = JSON.parse(localStorage.getItem('collectedCards') || '[]');
-  const level = localStorage.getItem('currentLevel') || '1';
+  const collection = JSON.parse(localStorage.getItem('userCollection') || '[]');
+  const level = localStorage.getItem('confirmedLevel') || localStorage.getItem('currentLevel') || '1';
   const selectedAvatar = localStorage.getItem('selectedAvatar') || '';
   const equippedItems = localStorage.getItem('equippedItems') || '{}';
   const equippedOutfit = localStorage.getItem('equippedOutfit') || 'default';
@@ -1302,8 +1302,11 @@ function _restoreData(encoded) {
       return id;
     });
 
-    localStorage.setItem('collectedCards', JSON.stringify(cards));
-    if (data.l) localStorage.setItem('currentLevel', data.l);
+    localStorage.setItem('userCollection', JSON.stringify(cards));
+    if (data.l) {
+      localStorage.setItem('confirmedLevel', data.l);
+      localStorage.setItem('currentLevel', data.l);
+    }
     if (data.av) localStorage.setItem('selectedAvatar', data.av);
     if (data.ei) localStorage.setItem('equippedItems', data.ei);
     if (data.eo) localStorage.setItem('equippedOutfit', data.eo);
@@ -1320,38 +1323,60 @@ function _restoreData(encoded) {
   }
 }
 
-// [한글 주석] URL 파라미터에서 restore 감지 및 복원
-function checkRestoreFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  const restoreData = params.get('restore');
-  if (!restoreData) return;
-
-  // [한글 주석] URL 파라미터 제거
-  const newUrl = window.location.pathname;
-  window.history.replaceState({}, '', newUrl);
-
-  const success = _restoreData(restoreData);
+// [한글 주석] 복원 성공 팝업
+function _showRestoreSuccessPopup() {
   const T = window.LANG_UI; const L = window.currentLang || 'ko';
   const t = k => T?.[L]?.[k] || T?.ko?.[k] || '';
-
   const overlay = document.createElement('div');
   overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:999999;display:flex;align-items:center;justify-content:center;padding:20px;';
-  overlay.innerHTML = success ? `
+  overlay.innerHTML = `
     <div style="background:linear-gradient(135deg,#1e2e1f,#2c3e2d);border:2px solid #8db05c;border-radius:24px;padding:32px 24px;max-width:300px;width:100%;text-align:center;">
       <div style="font-size:52px;margin-bottom:12px;">🎉</div>
       <div style="color:#8db05c;font-size:18px;font-weight:900;margin-bottom:8px;">${t('exportSuccess')}</div>
       <div style="color:#d4c89c;font-size:13px;margin-bottom:20px;">${t('exportSuccessDesc')}</div>
-      <button onclick="this.closest('div[style]').remove();location.reload();" style="width:100%;background:linear-gradient(135deg,#8db05c,#6b8e3d);color:#1e2e1f;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;">✅ 확인</button>
-    </div>
-  ` : `
-    <div style="background:linear-gradient(135deg,#2e1e1e,#3e2c2c);border:2px solid #ff4444;border-radius:24px;padding:32px 24px;max-width:300px;width:100%;text-align:center;">
-      <div style="font-size:52px;margin-bottom:12px;">❌</div>
-      <div style="color:#ff4444;font-size:18px;font-weight:900;margin-bottom:8px;">복원 실패</div>
-      <div style="color:#d4c89c;font-size:13px;margin-bottom:20px;">QR코드가 올바르지 않아요.</div>
-      <button onclick="this.closest('div[style]').remove();" style="width:100%;background:linear-gradient(135deg,#ff4444,#cc0000);color:#fff;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;">닫기</button>
+      <button onclick="this.closest('div[style]').remove();" style="width:100%;background:linear-gradient(135deg,#8db05c,#6b8e3d);color:#1e2e1f;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;">✅ 확인</button>
     </div>
   `;
   document.body.appendChild(overlay);
+}
+
+// [한글 주석] URL 파라미터에서 restore 감지 및 복원
+function checkRestoreFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const restoreData = params.get('restore');
+
+  // [한글 주석] 복원 후 새로고침된 경우 → 성공 팝업만 표시
+  if (!restoreData) {
+    if (localStorage.getItem('_justRestored') === '1') {
+      localStorage.removeItem('_justRestored');
+      setTimeout(() => _showRestoreSuccessPopup(), 800);
+    }
+    return;
+  }
+
+  // [한글 주석] URL 파라미터 즉시 제거
+  window.history.replaceState({}, '', window.location.pathname);
+
+  // [한글 주석] 복원 실행
+  const ok = _restoreData(restoreData);
+  if (ok) {
+    // [한글 주석] 성공 플래그 저장 후 새로고침 (깨끗한 상태로 시작)
+    localStorage.setItem('_justRestored', '1');
+    location.reload();
+  } else {
+    // [한글 주석] 복원 실패 팝업
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:999999;display:flex;align-items:center;justify-content:center;padding:20px;';
+    overlay.innerHTML = `
+      <div style="background:linear-gradient(135deg,#2e1e1e,#3e2c2c);border:2px solid #ff4444;border-radius:24px;padding:32px 24px;max-width:300px;width:100%;text-align:center;">
+        <div style="font-size:52px;margin-bottom:12px;">❌</div>
+        <div style="color:#ff4444;font-size:18px;font-weight:900;margin-bottom:8px;">복원 실패</div>
+        <div style="color:#d4c89c;font-size:13px;margin-bottom:20px;">QR코드가 올바르지 않아요.</div>
+        <button onclick="this.closest('div[style]').remove();" style="width:100%;background:linear-gradient(135deg,#ff4444,#cc0000);color:#fff;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;">닫기</button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
 }
 
 // [한글 주석] 설정 팝업 표시
