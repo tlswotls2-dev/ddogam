@@ -26,19 +26,7 @@ for (let i = 1; i <= 100; i++) {
 const APP_URLS = [
   '/',
   '/index.html',
-  '/css/style.css',
-  '/js/app.js',
-  '/js/collection.js',
-  '/js/dodam.js',
-  '/js/map.js',
-  '/js/pedometer.js',
-  '/js/quiz.js',
-  '/js/storage.js',
-  '/js/avatar.js',
-  '/js/chatbot.js',
-  '/js/sync.js',
-  '/js/teacher.js',
-  '/js/testmode.js',
+  // [한글 주석] CSS/JS는 캐시 제외 - 항상 최신 버전 사용
   '/data/cards.json',
   '/data/quiz.json',
   // [한글 주석] 배경음악 파일 - 오프라인에서도 재생 가능하도록 미리 캐시
@@ -138,6 +126,14 @@ self.addEventListener('fetch', event => {
           // [한글 주석] 오프라인 시 캐시 버전 사용
           return caches.match(event.request);
         })
+    );
+    return;
+  }
+
+  // [한글 주석] CSS/JS 파일 - 항상 네트워크 우선 (최신 버전 유지)
+  if (url.pathname.endsWith('.css') || url.pathname.endsWith('.js')) {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match(event.request))
     );
     return;
   }
