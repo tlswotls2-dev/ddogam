@@ -30,6 +30,7 @@ window.currentLang = localStorage.getItem('selectedLang') || 'ko';
           localStorage.setItem('currentLevel', data.l);
         }
         localStorage.setItem('_justRestored', '1');
+        // [한글 주석] reload는 팝업 확인 버튼에서 처리
         console.log('[복원] 성공:', cards.length, '개 카드, 레벨', data.l);
       }
     } catch(e) {
@@ -288,6 +289,9 @@ window.LANG_UI = {
     exportClose: '닫기',
     exportSuccess: '✅ 데이터 복원 완료!',
     exportSuccessDesc: '수집한 카드와 레벨이 복원됐어요!',
+    exportCopyBtn: '🔗 URL 복사',
+    exportCopied: '✅ 복사됐어요!',
+    exportCopyGuide: '이 URL을 새 기기의 크롬 브라우저 주소창에 붙여넣고 열면 데이터가 복원돼요!',
   },
   en: {
     langBtnLabel: 'English',
@@ -529,6 +533,9 @@ window.LANG_UI = {
     exportClose: 'Close',
     exportSuccess: '✅ Data Restored!',
     exportSuccessDesc: 'Your cards and level have been restored!',
+    exportCopyBtn: '🔗 Copy URL',
+    exportCopied: '✅ Copied!',
+    exportCopyGuide: 'Paste this URL in Chrome on your new device to restore your data!',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -770,6 +777,9 @@ window.LANG_UI = {
     exportClose: 'Закрыть',
     exportSuccess: '✅ Данные восстановлены!',
     exportSuccessDesc: 'Твои карточки и уровень восстановлены!',
+    exportCopyBtn: '🔗 Копировать URL',
+    exportCopied: '✅ Скопировано!',
+    exportCopyGuide: 'Вставь этот URL в Chrome на новом устройстве для восстановления данных!',
   },
   zh: {
     langBtnLabel: '中文',
@@ -1011,6 +1021,9 @@ window.LANG_UI = {
     exportClose: '关闭',
     exportSuccess: '✅ 数据恢复完成！',
     exportSuccessDesc: '你的卡片和等级已恢复！',
+    exportCopyBtn: '🔗 复制链接',
+    exportCopied: '✅ 已复制！',
+    exportCopyGuide: '将此链接粘贴到新设备的Chrome浏览器地址栏中打开，即可恢复数据！',
   }
 };
 
@@ -1344,7 +1357,7 @@ function _restoreData(encoded) {
   }
 }
 
-// [한글 주석] 복원 성공 팝업
+// [한글 주석] 복원 성공 팝업 (확인 누르면 새로고침)
 function _showRestoreSuccessPopup() {
   const T = window.LANG_UI; const L = window.currentLang || 'ko';
   const t = k => T?.[L]?.[k] || T?.ko?.[k] || '';
@@ -1355,7 +1368,8 @@ function _showRestoreSuccessPopup() {
       <div style="font-size:52px;margin-bottom:12px;">🎉</div>
       <div style="color:#8db05c;font-size:18px;font-weight:900;margin-bottom:8px;">${t('exportSuccess')}</div>
       <div style="color:#d4c89c;font-size:13px;margin-bottom:20px;">${t('exportSuccessDesc')}</div>
-      <button onclick="this.closest('div[style]').remove();" style="width:100%;background:linear-gradient(135deg,#8db05c,#6b8e3d);color:#1e2e1f;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;">✅ 확인</button>
+      <div style="color:#aaa;font-size:11px;margin-bottom:16px;">확인을 누르면 앱이 새로고침됩니다</div>
+      <button onclick="location.reload();" style="width:100%;background:linear-gradient(135deg,#8db05c,#6b8e3d);color:#1e2e1f;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;">✅ 확인 후 시작!</button>
     </div>
   `;
   document.body.appendChild(overlay);
@@ -1518,6 +1532,23 @@ function showExportQR() {
         ${t('exportWarning').replace(/\n/g, '<br>')}
       </div>
 
+      <!-- [한글 주석] URL 복사 버튼 -->
+      <button id="export-copy-btn" style="
+        width:100%;
+        background:rgba(141,176,92,0.15);
+        border:1.5px solid #8db05c;
+        color:#8db05c;border-radius:14px;
+        padding:12px;font-size:14px;font-weight:700;cursor:pointer;
+        margin-bottom:8px;
+      ">${t('exportCopyBtn')}</button>
+
+      <!-- [한글 주석] 안내 메시지 -->
+      <div id="export-copy-guide" style="
+        color:#aaa;font-size:10px;line-height:1.6;
+        margin-bottom:12px;display:none;
+        background:rgba(0,0,0,0.2);border-radius:10px;padding:10px;
+      ">${t('exportCopyGuide')}</div>
+
       <button onclick="document.getElementById('export-qr-overlay').remove()" style="
         width:100%;
         background:linear-gradient(135deg,#8db05c,#6b8e3d);
@@ -1528,6 +1559,38 @@ function showExportQR() {
   `;
 
   document.body.appendChild(overlay);
+
+  // [한글 주석] URL 복사 버튼 이벤트
+  setTimeout(() => {
+    const copyBtn = document.getElementById('export-copy-btn');
+    const guideEl = document.getElementById('export-copy-guide');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(url).then(() => {
+          copyBtn.textContent = t('exportCopied');
+          copyBtn.style.background = 'rgba(141,176,92,0.3)';
+          if (guideEl) guideEl.style.display = 'block';
+          setTimeout(() => {
+            copyBtn.textContent = t('exportCopyBtn');
+            copyBtn.style.background = 'rgba(141,176,92,0.15)';
+          }, 3000);
+        }).catch(() => {
+          // [한글 주석] clipboard API 미지원 시 폴백
+          const ta = document.createElement('textarea');
+          ta.value = url;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          copyBtn.textContent = t('exportCopied');
+          if (guideEl) guideEl.style.display = 'block';
+          setTimeout(() => {
+            copyBtn.textContent = t('exportCopyBtn');
+          }, 3000);
+        });
+      });
+    }
+  }, 150);
 
   // [한글 주석] QRServer API로 QR코드 생성
   setTimeout(() => {
