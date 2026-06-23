@@ -4,13 +4,20 @@
 
 /* 1. 디자인 시스템 변수 정의 (숲/자연 테마) */
 :root {
-    --bg-color: #2c3e2d;           /* 짙은 숲 녹색 배경 */
-    --panel-bg: #3d5239;           /* 패널 배경 (이끼 녹색) */
-    --accent-color: #8db05c;       /* 주 강조색 (연한 녹색) */
-    --secondary-color: #d4a017;    /* 보조색 (황금빛) */
-    --text-color: #f0e6c8;         /* 기본 텍스트 (따뜻한 크림) */
-    --border-color: #6b8e3d;       /* 테두리 (이끼 녹색) */
-    --border-radius: 14px;         /* 공통 둥근 모서리 */
+    --bg-color: #2c3e2d;
+    /* 짙은 숲 녹색 배경 */
+    --panel-bg: #3d5239;
+    /* 패널 배경 (이끼 녹색) */
+    --accent-color: #8db05c;
+    /* 주 강조색 (연한 녹색) */
+    --secondary-color: #d4a017;
+    /* 보조색 (황금빛) */
+    --text-color: #f0e6c8;
+    /* 기본 텍스트 (따뜻한 크림) */
+    --border-color: #6b8e3d;
+    /* 테두리 (이끼 녹색) */
+    --border-radius: 14px;
+    /* 공통 둥근 모서리 */
     --font-main: 'Noto Sans KR', sans-serif;
 }
 
@@ -53,15 +60,21 @@ button:active {
     width: 8px;
     height: 8px;
 }
+
 ::-webkit-scrollbar-track {
-    background: #1e2e1f; /* 어두운 숲 바닥색 */
+    background: #1e2e1f;
+    /* 어두운 숲 바닥색 */
 }
+
 ::-webkit-scrollbar-thumb {
-    background: #6b8e3d; /* 이끼 녹색 */
+    background: #6b8e3d;
+    /* 이끼 녹색 */
     border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-    background: #8db05c; /* 연한 녹색 (호버 시 밝아짐) */
+    background: #8db05c;
+    /* 연한 녹색 (호버 시 밝아짐) */
 }
 
 /* ==========================================================
@@ -79,7 +92,7 @@ button:active {
     position: relative;
     border-radius: 24px;
     border: 1px solid #6b8e3d;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* 로그인 화면 내부 (투명 배경으로 부모 그라데이션 활용) */
@@ -96,7 +109,7 @@ button:active {
     color: #8db05c;
     font-size: 3rem;
     font-weight: 900;
-    text-shadow: 0 0 20px rgba(141,176,92,0.5), 0 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 0 0 20px rgba(141, 176, 92, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
     margin-bottom: 8px;
     letter-spacing: 2px;
 }
@@ -140,14 +153,14 @@ button:active {
     font-size: 1.1rem;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 /* 입력칸 포커스 시 이끼 녹색 발광 */
 .input-group input:focus,
 .input-group select:focus {
     border-color: #8db05c;
-    box-shadow: 0 0 12px rgba(141,176,92,0.3);
+    box-shadow: 0 0 12px rgba(141, 176, 92, 0.3);
 }
 
 /* 학급 선택 드롭다운 옵션 스타일 (이끼 녹색 배경) */
@@ -163,9 +176,11 @@ button:active {
     margin-bottom: 15px;
     font-weight: bold;
 }
+
 .error {
     color: #ff4444;
 }
+
 .success {
     color: var(--accent-color);
 }
@@ -188,7 +203,7 @@ button:active {
     background: linear-gradient(135deg, #d4a017, #b3850e);
     color: #2c3e2d;
     margin-top: 15px;
-    box-shadow: 0 5px 0 #8a5f0a, 0 8px 20px rgba(212,160,23,0.3);
+    box-shadow: 0 5px 0 #8a5f0a, 0 8px 20px rgba(212, 160, 23, 0.3);
 }
 
 /* 로그인 버튼 클릭 시 눌림 효과 */
@@ -212,7 +227,10 @@ button:active {
 /* 선생님 전용 API 설정 모달 (어두운 숲 오버레이) */
 .api-key-modal {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-color: rgba(20, 30, 20, 0.92);
     z-index: 10000;
     display: flex;
@@ -303,12 +321,20 @@ button:active {
 }
 
 @keyframes starBlink {
-    from { opacity: 0.2; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1.2); }
+    from {
+        opacity: 0.2;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.2);
+    }
 }
 
 /* [한글 주석] 상단 헤더 영역 (반응형 대응 및 숲 배경 반투명) */
-.header-area, .main-header {
+.header-area,
+.main-header {
     position: relative;
     z-index: 10;
     display: flex;
@@ -389,7 +415,8 @@ button:active {
 }
 
 /* 카테고리 탭 버튼 (이끼 녹색/크림 톤) */
-.tab, .tab-btn {
+.tab,
+.tab-btn {
     flex: 1;
     background-color: var(--panel-bg);
     border: 2px solid var(--border-color);
@@ -402,7 +429,8 @@ button:active {
 }
 
 /* 활성화 탭 (이끼 녹색 강조) */
-.tab.active, .tab-btn.active {
+.tab.active,
+.tab-btn.active {
     background: #8db05c;
     color: #2c3e2d;
     border-color: #8db05c;
@@ -411,7 +439,8 @@ button:active {
 }
 
 /* 잠금 탭 (어두운 숲 테마) */
-.tab.locked, .tab-btn.locked {
+.tab.locked,
+.tab-btn.locked {
     background-color: #1e2e1f;
     color: #5a6b5c;
     border-color: #1e2e1f;
@@ -420,7 +449,8 @@ button:active {
 }
 
 /* 수집 상태 정보 카드 (숲 패널 배경) */
-.status-card, .collection-card {
+.status-card,
+.collection-card {
     position: relative;
     z-index: 10;
     margin: 4px 14px 12px 14px;
@@ -428,7 +458,7 @@ button:active {
     border: 1px solid #6b8e3d;
     border-radius: var(--border-radius);
     padding: 16px 14px;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.3);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .status-card h3 {
@@ -440,7 +470,8 @@ button:active {
 }
 
 /* 진행 바 컨테이너 (어두운 숲 바닥) */
-.progress-bar-container, .small-bar-bg {
+.progress-bar-container,
+.small-bar-bg {
     width: 100%;
     height: 14px;
     background-color: #1e2e1f;
@@ -451,16 +482,29 @@ button:active {
 }
 
 /* 진행 게이지 필 */
-.progress-bar, .small-bar {
+.progress-bar,
+.small-bar {
     height: 100%;
     border-radius: 10px;
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* 게이지 채우기 컴러 테마 (숲/자연 컨셉) */
-.fill-plant { background: linear-gradient(90deg, #8db05c, #d4a017); } /* 식물: 녹색~황금 그라데이션 */
-.fill-animal { background-color: #d4a017; } /* 동물: 황금빛 */
-.fill-artifact { background-color: #8db05c; } /* 유물: 연한 녹색 */
+.fill-plant {
+    background: linear-gradient(90deg, #8db05c, #d4a017);
+}
+
+/* 식물: 녹색~황금 그라데이션 */
+.fill-animal {
+    background-color: #d4a017;
+}
+
+/* 동물: 황금빛 */
+.fill-artifact {
+    background-color: #8db05c;
+}
+
+/* 유물: 연한 녹색 */
 
 /* 수집 수치 정보 (황금빛 강조) */
 .progress-text {
@@ -502,7 +546,8 @@ button:active {
 .status-item span:last-child {
     min-width: 60px;
     text-align: right;
-    color: #d4c89c; /* 따뜻한 크림색 */
+    color: #d4c89c;
+    /* 따뜻한 크림색 */
     font-weight: 700;
     font-size: 0.8rem;
 }
@@ -528,7 +573,7 @@ button:active {
     border-radius: 20px;
     padding: 3px 8px;
     z-index: 20;
-    box-shadow: 0 2px 8px rgba(255,215,0,0.5);
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.5);
     border: 2px solid #fff;
     white-space: nowrap;
 }
@@ -542,8 +587,13 @@ button:active {
 }
 
 @keyframes characterFloat {
-    from { transform: translateY(0); }
-    to { transform: translateY(-8px); }
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-8px);
+    }
 }
 
 /* 펫 표시 영역 (아바타 우측 하단 발 옆) */
@@ -565,12 +615,18 @@ button:active {
 }
 
 @keyframes petBounce {
-    from { transform: translateY(0); }
-    to { transform: translateY(-4px); }
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-4px);
+    }
 }
 
 /* 바닥 레이아웃 (나무/메탈 데크 패턴) */
-.grass-bg, .grass-area {
+.grass-bg,
+.grass-area {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -581,10 +637,14 @@ button:active {
 }
 
 /* 나무판자 / 메탈 데크 스타일의 세로줄 장식 */
-.grass-bg::before, .grass-area::before {
+.grass-bg::before,
+.grass-area::before {
     content: "";
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     background-size: 100% 12px;
     pointer-events: none;
@@ -603,7 +663,8 @@ button:active {
 }
 
 /* 오른쪽 세로 사이드 버튼 (숲 그라데이션 + 이끼 테두리) */
-.side-btn, .icon-btn {
+.side-btn,
+.icon-btn {
     width: 56px;
     height: 56px;
     background: linear-gradient(180deg, #3d5239, #2c3e2d);
@@ -617,15 +678,17 @@ button:active {
     align-items: center;
     justify-content: center;
     line-height: 1.3;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 /* 사이드 버튼 내 이모지 최적화 */
-.side-btn::first-line, .icon-btn::first-line {
+.side-btn::first-line,
+.icon-btn::first-line {
     font-size: 28px;
 }
 
-.side-btn:hover, .icon-btn:hover {
+.side-btn:hover,
+.icon-btn:hover {
     border-color: var(--accent-color);
     color: var(--text-color);
 }
@@ -643,7 +706,8 @@ button:active {
 }
 
 /* AI 학습 도우미 버튼 (숲 녹색 테마) */
-.action-btn.btn-ai, .chat-btn {
+.action-btn.btn-ai,
+.chat-btn {
     background: linear-gradient(135deg, #4a6a4b, #3d5239);
     color: #d4c89c;
     border: 1px solid #6b8e3d;
@@ -672,7 +736,8 @@ button:active {
 }
 
 /* 슈즈 탐험 출발! 버튼 (황금빛 테마) */
-.action-btn.btn-explore, .explore-btn {
+.action-btn.btn-explore,
+.explore-btn {
     background: linear-gradient(135deg, #d4a017, #b3850e);
     color: #2c3e2d;
     border-radius: 16px;
@@ -684,11 +749,12 @@ button:active {
     align-items: center;
     justify-content: center;
     line-height: 1.1;
-    box-shadow: 0 5px 0 #8a5f0a, 0 4px 12px rgba(212,160,23,0.4);
+    box-shadow: 0 5px 0 #8a5f0a, 0 4px 12px rgba(212, 160, 23, 0.4);
     font-size: 0.75rem;
 }
 
-.action-btn.btn-explore::first-line, .explore-btn::first-line {
+.action-btn.btn-explore::first-line,
+.explore-btn::first-line {
     font-size: 32px;
 }
 
@@ -704,14 +770,19 @@ button:active {
 /* 안전 경고 오버레이 (어두운 숲 필터) */
 .safety-overlay {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(20, 30, 20, 0.96); /* 어두운 숲 필터 */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(20, 30, 20, 0.96);
+    /* 어두운 숲 필터 */
     z-index: 9999;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    border: 4px solid #ff4444; /* 위험 외곽 테두리 */
+    border: 4px solid #ff4444;
+    /* 위험 외곽 테두리 */
 }
 
 .safety-message {
@@ -725,8 +796,17 @@ button:active {
 
 /* 현대적인 부드러운 경고 점멸 애니메이션 */
 @keyframes alertPulse {
-    from { opacity: 0.5; transform: scale(0.96); text-shadow: 0 0 10px rgba(255, 68, 68, 0.3); }
-    to { opacity: 1; transform: scale(1.02); text-shadow: 0 0 25px rgba(255, 68, 68, 0.8); }
+    from {
+        opacity: 0.5;
+        transform: scale(0.96);
+        text-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.02);
+        text-shadow: 0 0 25px rgba(255, 68, 68, 0.8);
+    }
 }
 
 
@@ -736,8 +816,12 @@ button:active {
 /* 카드 상세 정보 팝업 오버레이 (어두운 숲 필터) */
 .shared-card-overlay {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(20, 30, 20, 0.92); /* 반투명 숲 필터 */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(20, 30, 20, 0.92);
+    /* 반투명 숲 필터 */
     backdrop-filter: blur(10px);
     z-index: 10001;
     display: flex;
@@ -771,7 +855,8 @@ button:active {
 }
 
 /* 카드 면 공통 스타일 (우주 탐색 대원 증서 테마) */
-.flip-card-front, .flip-card-back {
+.flip-card-front,
+.flip-card-back {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -809,14 +894,40 @@ button:active {
 }
 
 /* 희귀도 배지 테마 컬러 */
-.badge-common { background-color: #2d7a2d; border-color: var(--accent-color) !important; }
-.badge-rare { background-color: #1565c0; border-color: var(--secondary-color) !important; }
-.badge-epic { background-color: #8b6b00; border-color: #ffd700 !important; color: #ffffff !important; }
+.badge-common {
+    background-color: #2d7a2d;
+    border-color: var(--accent-color) !important;
+}
+
+.badge-rare {
+    background-color: #1565c0;
+    border-color: var(--secondary-color) !important;
+}
+
+.badge-epic {
+    background-color: #8b6b00;
+    border-color: #ffd700 !important;
+    color: #ffffff !important;
+}
 
 /* 카테고리 배지 테마 컬러 */
-.badge-category-plant { background-color: #102a0a; color: var(--accent-color) !important; border-color: var(--accent-color) !important; }
-.badge-category-animal { background-color: #381a05; color: #ff9500 !important; border-color: #ff9500 !important; }
-.badge-category-artifact { background-color: #260a3d; color: #9b59ff !important; border-color: #9b59ff !important; }
+.badge-category-plant {
+    background-color: #102a0a;
+    color: var(--accent-color) !important;
+    border-color: var(--accent-color) !important;
+}
+
+.badge-category-animal {
+    background-color: #381a05;
+    color: #ff9500 !important;
+    border-color: #ff9500 !important;
+}
+
+.badge-category-artifact {
+    background-color: #260a3d;
+    color: #9b59ff !important;
+    border-color: #9b59ff !important;
+}
 
 /* 이모지 및 카드 중앙 디자인 */
 .popup-emoji-container {
@@ -839,16 +950,21 @@ button:active {
 /* 팝업 이미지: 모든 카테고리에서 contain으로 통일 및 밝은 베이지 배경 지정 */
 .popup-emoji img,
 #popup-emoji img {
-  object-fit: contain !important; /* 가로세로 비율 유지하며 박스 안에 맞춤 */
-  background: #f5f5f0; /* 밝은 베이지/흰색 배경 */
-  width: 120px;
-  height: 120px;
-  border-radius: 12px; /* 둥근 모서리 */
-  padding: 8px; /* 내부 여백 */
+    object-fit: contain !important;
+    /* 가로세로 비율 유지하며 박스 안에 맞춤 */
+    background: #f5f5f0;
+    /* 밝은 베이지/흰색 배경 */
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    /* 둥근 모서리 */
+    padding: 8px;
+    /* 내부 여백 */
 }
 
 /* 카드 이름 및 설명 스타일 */
-#popup-name, #popup-back-name {
+#popup-name,
+#popup-back-name {
     font-size: 1.4rem;
     font-weight: 900;
     color: #ffffff;
@@ -887,9 +1003,20 @@ button:active {
     border-radius: 10px;
 }
 
-.btn-close { background-color: #4a5568; color: #ffffff; }
-.btn-detail { background-color: var(--accent-color); color: #000000; }
-.btn-flip-back { background-color: var(--secondary-color); color: #ffffff; }
+.btn-close {
+    background-color: #4a5568;
+    color: #ffffff;
+}
+
+.btn-detail {
+    background-color: var(--accent-color);
+    color: #000000;
+}
+
+.btn-flip-back {
+    background-color: var(--secondary-color);
+    color: #ffffff;
+}
 
 /* 카드 뒷면 상세정보 레이아웃 */
 .back-header {
@@ -953,10 +1080,11 @@ button:active {
 /* 도감 화면 (숲 그라데이션 배경) */
 #dodam-screen {
     position: fixed;
-    top: 0; left: 50%;
+    top: 0;
+    left: 50%;
     transform: translateX(50vw);
     width: 100%;
-    max-width: 400px;
+    max-width: 480px;
     height: 100vh;
     background: linear-gradient(180deg, #2c3e2d, #3d5239);
     z-index: 200;
@@ -1060,30 +1188,31 @@ button:active {
 
 /* 도감 내 카드 격자 그리드 */
 .dodam-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  padding: 8px;
-  flex: 1;
-  overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 10px;
+    flex: 1;
+    overflow-y: auto;
+    align-content: start;
 }
 
-/* 카드 기본 크기 및 세로 비율 지정 (aspect-ratio: 5/7) */
+/* 카드 기본 크기 및 세로 비율 지정 */
 .dodam-card {
-  width: 100%;
-  aspect-ratio: 5/7;  /* 세로가 더 긴 프리미엄 카드 비율 */
-  min-height: 110px;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
 }
 
 .dodam-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
 /* 수집한 카드 기본 배경 및 테두리 */
@@ -1091,77 +1220,97 @@ button:active {
 .dodam-card-plant,
 .dodam-card-animal,
 .dodam-card-artifact {
-  background: #223754;
-  border: 2px solid #4a6fa5;
+    background: #223754;
+    border: 2px solid #4a6fa5;
 }
 
 /* 카드 상단 이름 영역 */
 .dodam-card .card-name,
 .dodam-card .dodam-card-top {
-  padding: 6px 4px;
-  font-size: 10px;
-  font-weight: 700;
-  text-align: center;
-  color: #fff;
-  line-height: 1.2;
+    padding: 6px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+    color: #fff;
+    line-height: 1.2;
 }
 
 /* 식물/동물/유물 상단 컬러 테마 */
 .dodam-card.plant .card-name,
-.dodam-card-plant .dodam-card-top { background: #1a5c1a; }
+.dodam-card-plant .dodam-card-top {
+    background: #1a5c1a;
+}
+
 .dodam-card.animal .card-name,
-.dodam-card-animal .dodam-card-top { background: #8b4500; }
+.dodam-card-animal .dodam-card-top {
+    background: #8b4500;
+}
+
 .dodam-card.artifact .card-name,
-.dodam-card-artifact .dodam-card-top { background: #4a3800; }
+.dodam-card-artifact .dodam-card-top {
+    background: #4a3800;
+}
 
 /* 카드 중앙 이모지 영역 */
 .dodam-card .card-emoji,
 .dodam-card .dodam-card-mid {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #0a1321;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a1321;
 }
 
 /* 이모지 폰트 사이즈 조정 */
 .dodam-card .card-emoji,
 .dodam-card .dodam-card-emoji {
-  font-size: 36px;
+    font-size: 36px;
 }
 
 /* 도감 카드 이미지: 모든 카테고리에서 contain으로 통일 및 밝은 베이지 배경 지정 */
 .dodam-card .card-emoji img,
 .dodam-card .dodam-card-emoji img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain !important; /* 가로세로 비율 유지하며 박스 안에 맞춤 */
-  background: #f5f5f0; /* 밝은 베이지/흰색 배경 */
-  padding: 4px; /* 내부 여백 */
-  border-radius: 4px; /* 둥근 모서리 */
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;
+    /* 가로세로 비율 유지하며 박스 안에 맞춤 */
+    background: #f5f5f0;
+    /* 밝은 베이지/흰색 배경 */
+    padding: 4px;
+    /* 내부 여백 */
+    border-radius: 4px;
+    /* 둥근 모서리 */
 }
 
 /* 카드 하단 설명 영역 */
 .dodam-card .card-desc,
 .dodam-card .dodam-card-bottom {
-  padding: 4px 6px;
-  font-size: 8px;
-  color: #a0b4c8;
-  text-align: center;
-  line-height: 1.3;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+    padding: 4px 6px;
+    font-size: 8px;
+    color: #a0b4c8;
+    text-align: center;
+    line-height: 1.3;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 /* 식물/동물/유물 하단 설명 영역 컬러 테마 */
 .dodam-card.plant .card-desc,
-.dodam-card-plant .dodam-card-bottom { background: #0f3a0f; }
+.dodam-card-plant .dodam-card-bottom {
+    background: #0f3a0f;
+}
+
 .dodam-card.animal .card-desc,
-.dodam-card-animal .dodam-card-bottom { background: #3a2000; }
+.dodam-card-animal .dodam-card-bottom {
+    background: #3a2000;
+}
+
 .dodam-card.artifact .card-desc,
-.dodam-card-artifact .dodam-card-bottom { background: #2a2000; }
+.dodam-card-artifact .dodam-card-bottom {
+    background: #2a2000;
+}
 
 /* ==========================================================
    도감 카드 희귀도별 디자인 (common, rare, epic)
@@ -1169,157 +1318,190 @@ button:active {
 
 /* 1. Common (일반) */
 .dodam-card.common {
-  border: 2px solid #4a8c3f;
-  background-color: #1a2a1a;
+    border: 2px solid #4a8c3f;
+    background-color: #1a2a1a;
 }
+
 .dodam-card.common .dodam-card-top {
-  position: relative;
+    position: relative;
 }
+
 .dodam-card.common .dodam-card-top::after {
-  content: '★';
-  color: #888;
-  position: absolute;
-  right: 4px;
+    content: '★';
+    color: #888;
+    position: absolute;
+    right: 4px;
 }
+
 .dodam-card.common .dodam-card-mid {
-  background: #1a2a1a;
+    background: #1a2a1a;
 }
 
 /* 2. Rare (희귀) */
 .dodam-card.rare {
-  border: 2px solid #4a9eff;
-  background-color: #0a1a2e;
-  box-shadow: 0 0 8px rgba(74, 158, 255, 0.4);
-  position: relative;
-  overflow: hidden;
+    border: 2px solid #4a9eff;
+    background-color: #0a1a2e;
+    box-shadow: 0 0 8px rgba(74, 158, 255, 0.4);
+    position: relative;
+    overflow: hidden;
 }
+
 .dodam-card.rare .dodam-card-top {
-  background: #1a3a6a;
-  position: relative;
+    background: #1a3a6a;
+    position: relative;
 }
+
 .dodam-card.rare .dodam-card-top::after {
-  content: '★★';
-  color: #4a9eff;
-  position: absolute;
-  right: 4px;
+    content: '★★';
+    color: #4a9eff;
+    position: absolute;
+    right: 4px;
 }
+
 .dodam-card.rare .dodam-card-mid {
-  background: #0a1a2e;
+    background: #0a1a2e;
 }
+
 .dodam-card.rare::before {
-  content: "";
-  position: absolute;
-  top: 0; left: -100%;
-  width: 50%; height: 100%;
-  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(74,158,255,0.2) 50%, rgba(255,255,255,0) 100%);
-  transform: skewX(-20deg);
-  animation: shine 3s infinite;
-  pointer-events: none;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(74, 158, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+    transform: skewX(-20deg);
+    animation: shine 3s infinite;
+    pointer-events: none;
 }
+
 @keyframes shine {
-  0% { left: -100%; }
-  20% { left: 200%; }
-  100% { left: 200%; }
+    0% {
+        left: -100%;
+    }
+
+    20% {
+        left: 200%;
+    }
+
+    100% {
+        left: 200%;
+    }
 }
 
 /* 3. Epic (전설) */
 .dodam-card.epic {
-  border: 2px solid #ffd700;
-  background-color: #1a1400;
-  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
-  position: relative;
-  overflow: hidden;
+    border: 2px solid #ffd700;
+    background-color: #1a1400;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+    position: relative;
+    overflow: hidden;
 }
+
 .dodam-card.epic .dodam-card-top {
-  background: linear-gradient(90deg, #8b6914, #ffd700) !important;
-  color: #fff;
-  text-shadow: 0 0 4px rgba(0,0,0,0.8);
-  position: relative;
+    background: linear-gradient(90deg, #8b6914, #ffd700) !important;
+    color: #fff;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+    position: relative;
 }
+
 .dodam-card.epic .dodam-card-top::after {
-  content: '★★★';
-  color: #ffd700;
-  position: absolute;
-  right: 4px;
-  text-shadow: 0 0 4px rgba(0,0,0,0.8);
+    content: '★★★';
+    color: #ffd700;
+    position: absolute;
+    right: 4px;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
 }
+
 .dodam-card.epic .dodam-card-mid {
-  background: #1a1400;
+    background: #1a1400;
 }
+
 .dodam-card.epic::before {
-  content: "";
-  position: absolute;
-  top: 0; left: -100%;
-  width: 50%; height: 100%;
-  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,215,0,0.4) 50%, rgba(255,255,255,0) 100%);
-  transform: skewX(-20deg);
-  animation: shimmer 2.5s infinite;
-  pointer-events: none;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 215, 0, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
+    transform: skewX(-20deg);
+    animation: shimmer 2.5s infinite;
+    pointer-events: none;
 }
+
 @keyframes shimmer {
-  0% { left: -100%; }
-  15% { left: 200%; }
-  100% { left: 200%; }
+    0% {
+        left: -100%;
+    }
+
+    15% {
+        left: 200%;
+    }
+
+    100% {
+        left: 200%;
+    }
 }
 
 /* 미수집 카드 스타일 */
 .dodam-card.unknown {
-  background: #1a2a40;
-  border: 1px solid #2a3a50;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  min-height: 110px;
-  box-shadow: none !important;
-  transform: none !important;
-  aspect-ratio: 5/7;
+    background: #1a2a40;
+    border: 1px solid #2a3a50;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 110px;
+    box-shadow: none !important;
+    transform: none !important;
+    aspect-ratio: 5/7;
 }
 
 /* 미수집 자물쇠 아이콘 */
 .dodam-card.unknown .lock-icon,
 .dodam-card.unknown .dodam-card-icon-unknown {
-  font-size: 28px;
-  color: #4a6fa5;
+    font-size: 28px;
+    color: #4a6fa5;
 }
 
 /* 미수집 카드 대체 이름 */
 .dodam-card.unknown .unknown-text,
 .dodam-card.unknown .dodam-card-name-unknown {
-  font-size: 12px;
-  color: #4a6fa5;
-  font-weight: 700;
+    font-size: 12px;
+    color: #4a6fa5;
+    font-weight: 700;
 }
 
 /* 미수집 카드 대체 설명 */
 .dodam-card.unknown .undiscovered-text,
 .dodam-card.unknown .dodam-card-desc-unknown {
-  font-size: 9px;
-  color: #2a3a50;
-  font-weight: normal;
+    font-size: 9px;
+    color: #2a3a50;
+    font-weight: normal;
 }
 
 /* 모바일 이상 해상도의 반응형 그리드 단수 설정 */
 @media (min-width: 481px) {
-  .dodam-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+    .dodam-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 /* 태블릿 해상도의 반응형 그리드 단수 설정 */
 @media (min-width: 769px) {
-  .dodam-grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
+    .dodam-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
 }
 
 /* PC 해상도의 반응형 그리드 단수 설정 */
 @media (min-width: 1025px) {
-  .dodam-grid {
-    grid-template-columns: repeat(8, 1fr);
-  }
+    .dodam-grid {
+        grid-template-columns: repeat(8, 1fr);
+    }
 }
 
 
@@ -1328,7 +1510,8 @@ button:active {
    ========================================================== */
 #map-screen {
     position: fixed;
-    top: 0; left: 50%;
+    top: 0;
+    left: 50%;
     transform: translateX(50vw);
     width: 100%;
     max-width: 400px;
@@ -1423,7 +1606,8 @@ button:active {
    ========================================================== */
 #quiz-screen {
     position: fixed;
-    top: 0; left: 50%;
+    top: 0;
+    left: 50%;
     transform: translateX(50vw);
     width: 100%;
     max-width: 400px;
@@ -1602,8 +1786,12 @@ button:active {
 /* 탐험 모드 오버레이 (어두운 숲 밀폐 오버레이) */
 .exploration-overlay {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(20, 30, 20, 0.97); /* 어두운 숲 밀폐 오버레이 */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(20, 30, 20, 0.97);
+    /* 어두운 숲 밀폐 오버레이 */
     z-index: 9000;
     display: flex;
     flex-direction: column;
@@ -1689,8 +1877,15 @@ button:active {
 }
 
 @keyframes blinkDiscovery {
-    from { opacity: 0.6; transform: translate(-50%, -50%) scale(0.96); }
-    to { opacity: 1; transform: translate(-50%, -50%) scale(1.04); }
+    from {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.04);
+    }
 }
 
 
@@ -1699,7 +1894,8 @@ button:active {
    ========================================================== */
 #chatbot-screen {
     position: fixed;
-    top: 0; left: 50%;
+    top: 0;
+    left: 50%;
     transform: translateX(50vw);
     width: 100%;
     max-width: 400px;
@@ -1844,7 +2040,10 @@ button:active {
    ========================================================== */
 .gender-select-screen {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-color: var(--bg-color);
     z-index: 15000;
     display: flex;
@@ -1896,16 +2095,22 @@ button:active {
 .gender-options::-webkit-scrollbar {
     width: 6px;
 }
+
 .gender-options::-webkit-scrollbar-track {
-    background: #1e2e1f; /* 어두운 숲 바닥 */
+    background: #1e2e1f;
+    /* 어두운 숲 바닥 */
     border-radius: 3px;
 }
+
 .gender-options::-webkit-scrollbar-thumb {
-    background: #6b8e3d; /* 이끼 녹색 */
+    background: #6b8e3d;
+    /* 이끼 녹색 */
     border-radius: 3px;
 }
+
 .gender-options::-webkit-scrollbar-thumb:hover {
-    background: #8db05c; /* 연한 녹색 */
+    background: #8db05c;
+    /* 연한 녹색 */
 }
 
 /* 개별 아바타 카드 선택 영역 (숲 테마) */
@@ -1995,9 +2200,11 @@ button:active {
    ========================================================== */
 .customize-screen {
     position: fixed;
-    top: 0; left: 50%;
+    top: 0;
+    left: 50%;
     transform: translateX(50vw);
-    width: 100%; max-width: 400px;
+    width: 100%;
+    max-width: 400px;
     height: 100vh;
     background-color: var(--bg-color);
     z-index: 200;
@@ -2006,106 +2213,211 @@ button:active {
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border: 3px solid var(--border-color);
 }
-.customize-screen.slide-in { transform: translateX(-50%); }
+
+.customize-screen.slide-in {
+    transform: translateX(-50%);
+}
 
 .customize-header {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 16px; background-color: var(--panel-bg); border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--border-color);
 }
-.customize-title { font-size: 1.1rem; color: #ffffff; font-weight: 900; }
+
+.customize-title {
+    font-size: 1.1rem;
+    color: #ffffff;
+    font-weight: 900;
+}
 
 .customize-body {
-    flex: 1; display: flex; flex-direction: column; overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 /* 꾸미기 미리보기 영역 (어두운 숲 배경) */
 .customize-preview-area {
-    display: flex; justify-content: center; align-items: center;
-    padding: 24px; background-color: #1e2e1f; border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background-color: #1e2e1f;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .customize-avatar-box {
-    width: 150px; height: 225px; background-color: var(--panel-bg);
-    border: 2px dashed var(--border-color); border-radius: 16px;
-    display: flex; align-items: center; justify-content: center; padding: 12px;
+    width: 150px;
+    height: 225px;
+    background-color: var(--panel-bg);
+    border: 2px dashed var(--border-color);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
 }
 
-.customize-avatar-box svg { width: 100%; height: 100%; }
+.customize-avatar-box svg {
+    width: 100%;
+    height: 100%;
+}
 
-.customize-items-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.customize-items-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
 
 /* 꾸미기 슬롯 체인저 */
 .customize-slot-tabs {
-    display: flex; gap: 6px; padding: 10px;
-    background-color: var(--panel-bg); border-bottom: 1px solid var(--border-color);
+    display: flex;
+    gap: 6px;
+    padding: 10px;
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--border-color);
 }
 
 /* 꾸미기 슬롯 탭 (숲 테마) */
 .customize-slot-tab {
-    flex: 1; padding: 10px 2px; font-size: 0.8rem; font-weight: 700;
-    background-color: #1e2e1f; border: 1px solid var(--border-color);
-    border-radius: 8px; color: #d4c89c; cursor: pointer; text-align: center;
+    flex: 1;
+    padding: 10px 2px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background-color: #1e2e1f;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: #d4c89c;
+    cursor: pointer;
+    text-align: center;
 }
 
 /* 꾸미기 활성 슬롯 탭 (이끼 녹색) */
 .customize-slot-tab.active {
-    background: #8db05c; border-color: #8db05c; color: #2c3e2d;
+    background: #8db05c;
+    border-color: #8db05c;
+    color: #2c3e2d;
 }
 
 /* 아이템 세부 카드 그리드 */
 .customize-item-list {
-    flex: 1; overflow-y: auto; padding: 10px;
-    display: flex; flex-direction: column; gap: 10px;
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .customize-item {
-    display: flex; align-items: center; gap: 12px; padding: 14px;
-    background-color: var(--panel-bg); border: 2px solid var(--border-color);
-    border-radius: 12px; cursor: pointer; transition: border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background-color: var(--panel-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s;
 }
 
 /* 잠금된 아이템 (어두운 숲) */
 .customize-item.locked {
-    background-color: #1e2e1f; opacity: 0.5; cursor: not-allowed; border-style: dashed;
+    background-color: #1e2e1f;
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-style: dashed;
 }
 
 /* 장착 중인 아이템 (질은 녹색 발광) */
 .customize-item.equipped {
-    background-color: #1e3a1f; border-color: var(--accent-color);
+    background-color: #1e3a1f;
+    border-color: var(--accent-color);
     box-shadow: 0 0 10px rgba(141, 176, 92, 0.25);
 }
 
-.customize-item-emoji { font-size: 28px; width: 40px; text-align: center; flex-shrink: 0; }
-.customize-item-info { flex: 1; }
-.customize-item-name { font-size: 0.95rem; color: #ffffff; font-weight: 900; margin-bottom: 4px; }
-.customize-item-status { font-size: 0.8rem; color: var(--accent-color); font-weight: 700; }
-.customize-item-cond { font-size: 0.75rem; color: #d4c89c; line-height: 1.4; } /* 조건 텍스트 (크림색) */
+.customize-item-emoji {
+    font-size: 28px;
+    width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.customize-item-info {
+    flex: 1;
+}
+
+.customize-item-name {
+    font-size: 0.95rem;
+    color: #ffffff;
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+
+.customize-item-status {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+.customize-item-cond {
+    font-size: 0.75rem;
+    color: #d4c89c;
+    line-height: 1.4;
+}
+
+/* 조건 텍스트 (크림색) */
 
 .customize-footer {
-    padding: 14px; background-color: var(--panel-bg); border-top: 1px solid var(--border-color);
+    padding: 14px;
+    background-color: var(--panel-bg);
+    border-top: 1px solid var(--border-color);
 }
 
 /* 꾸미기 완료 버튼 (황금빛 테마) */
 .customize-done-btn {
-    width: 100%; background: linear-gradient(135deg, #d4a017, #b3850e); color: #2c3e2d;
-    border-radius: 12px; font-size: 1.15rem; padding: 16px; font-weight: 900;
+    width: 100%;
+    background: linear-gradient(135deg, #d4a017, #b3850e);
+    color: #2c3e2d;
+    border-radius: 12px;
+    font-size: 1.15rem;
+    padding: 16px;
+    font-weight: 900;
     box-shadow: 0 4px 0 #8a5f0a;
 }
 
 .customize-done-btn:active {
-    transform: translateY(4px) !important; box-shadow: none !important;
+    transform: translateY(4px) !important;
+    box-shadow: none !important;
 }
 
 /* 수집 아이템 해금 토스트 알림 */
 .item-unlock-toast {
-    position: fixed; bottom: -80px; left: 50%; transform: translateX(-50%);
-    background-color: var(--panel-bg); border: 2px solid #ffd700; color: #ffd700;
-    padding: 14px 24px; font-size: 0.9rem; border-radius: 30px;
-    z-index: 99998; transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    white-space: nowrap; font-weight: 900;
+    position: fixed;
+    bottom: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--panel-bg);
+    border: 2px solid #ffd700;
+    color: #ffd700;
+    padding: 14px 24px;
+    font-size: 0.9rem;
+    border-radius: 30px;
+    z-index: 99998;
+    transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    white-space: nowrap;
+    font-weight: 900;
     box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
 }
-.item-unlock-toast.show { bottom: 32px; }
+
+.item-unlock-toast.show {
+    bottom: 32px;
+}
 
 /* ==========================================================
    16. 지도 클러스터 & 팝업 스타일
@@ -2133,6 +2445,7 @@ button:active {
     cursor: pointer;
     transition: transform 0.2s ease;
 }
+
 .cluster-marker:hover {
     transform: scale(1.1);
 }
@@ -2140,9 +2453,13 @@ button:active {
 /* 클러스터 팝업 전체 화면 오버레이 (어두운 숲 필터) */
 .cluster-popup {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-color: rgba(20, 30, 20, 0.85);
-    z-index: 20000; /* 매우 높게 */
+    z-index: 20000;
+    /* 매우 높게 */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2168,7 +2485,7 @@ button:active {
     font-weight: 900;
     text-align: center;
     margin-bottom: 16px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .cluster-popup-list {
@@ -2182,9 +2499,19 @@ button:active {
 }
 
 /* 클러스터 팝업 스크롤바 (숲 테마) */
-.cluster-popup-list::-webkit-scrollbar { width: 6px; }
-.cluster-popup-list::-webkit-scrollbar-track { background: #1e2e1f; border-radius: 3px; }
-.cluster-popup-list::-webkit-scrollbar-thumb { background: #6b8e3d; border-radius: 3px; }
+.cluster-popup-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cluster-popup-list::-webkit-scrollbar-track {
+    background: #1e2e1f;
+    border-radius: 3px;
+}
+
+.cluster-popup-list::-webkit-scrollbar-thumb {
+    background: #6b8e3d;
+    border-radius: 3px;
+}
 
 /* 팝업 내 개별 카드 아이템 (어두운 숲 배경) */
 .cluster-popup-item {
@@ -2256,7 +2583,10 @@ button:active {
 /* [한글 주석] 대시보드 전체 화면 컨테이너 (숲 배경) */
 .teacher-dashboard-screen {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-color: #2c3e2d;
     z-index: 10000;
     overflow-y: auto;
@@ -2283,7 +2613,7 @@ button:active {
     font-weight: 900;
     color: #ffffff;
     margin: 0;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .dashboard-header-actions {
@@ -2308,6 +2638,7 @@ button:active {
     background-color: #6b8e3d;
     color: #f0e6c8;
 }
+
 .dashboard-refresh-btn:hover {
     background-color: #8db05c;
     transform: translateY(-1px);
@@ -2317,6 +2648,7 @@ button:active {
     background-color: #ff4444;
     color: #ffffff;
 }
+
 .dashboard-logout-btn:hover {
     background-color: #ff6666;
     transform: translateY(-1px);
@@ -2324,21 +2656,22 @@ button:active {
 
 /* [한글 주석] 대시보드 통계 카드 행 - 5개 한줄 */
 .dashboard-stats-row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  padding: 12px 16px;
-  flex-shrink: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    padding: 12px 16px;
+    flex-shrink: 0;
 }
 
 /* [한글 주석] 대시보드 통계 카드 - 크기 축소 */
 .dashboard-stat-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  padding: 10px 8px;
-  text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
 }
+
 .dashboard-stat-card:hover {
     transform: translateY(-2px);
     border-color: #8db05c;
@@ -2346,26 +2679,26 @@ button:active {
 
 /* [한글 주석] 통계 아이콘 크기 축소 */
 .stat-icon {
-  font-size: 1.4rem;
-  margin-bottom: 4px;
+    font-size: 1.4rem;
+    margin-bottom: 4px;
 }
 
 /* [한글 주석] 통계 레이블 크기 축소 */
 .stat-label {
-  font-size: 0.65rem;
-  color: #a0c4ff;
-  margin-bottom: 4px;
-  white-space: nowrap;
+    font-size: 0.65rem;
+    color: #a0c4ff;
+    margin-bottom: 4px;
+    white-space: nowrap;
 }
 
 /* [한글 주석] 통계 값 크기 축소 */
 .stat-value {
-  font-size: 0.9rem;
-  font-weight: 900;
-  color: #ffffff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-size: 0.9rem;
+    font-weight: 900;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* [한글 주석] 학생 목록 그리드 (PC: 5열) */
@@ -2389,6 +2722,7 @@ button:active {
     flex-direction: column;
     gap: 6px;
 }
+
 /* [한글 주석] 학생 카드 호버 시 이끼 녹색 강조 */
 .dashboard-student-card:hover {
     border-color: #8db05c;
@@ -2456,9 +2790,21 @@ button:active {
 }
 
 /* [한글 주석] 진행바 카테고리별 색상 (숲 테마) */
-.dsc-fill-plant { background-color: #8db05c; } /* 식물: 연한 녹색 */
-.dsc-fill-animal { background-color: #d4a017; } /* 동물: 황금빛 */
-.dsc-fill-artifact { background-color: #6b8e3d; } /* 유물: 이끼 녹색 */
+.dsc-fill-plant {
+    background-color: #8db05c;
+}
+
+/* 식물: 연한 녹색 */
+.dsc-fill-animal {
+    background-color: #d4a017;
+}
+
+/* 동물: 황금빛 */
+.dsc-fill-artifact {
+    background-color: #6b8e3d;
+}
+
+/* 유물: 이끼 녹색 */
 
 /* [한글 주석] 진행바 수치 (크림색) */
 .dsc-progress-count {
@@ -2507,17 +2853,20 @@ button:active {
     font-family: 'Noto Sans KR', sans-serif;
     box-shadow: 0 2px 0 #8a5f0a;
 }
+
 .dsc-reward-btn:hover {
     filter: brightness(1.1);
     transform: translateY(-1px);
 }
+
 .dsc-reward-btn:active {
     transform: translateY(3px);
     box-shadow: none;
 }
 
 /* [한글 주석] 대시보드 로딩 및 빈 상태 (크림색) */
-.dashboard-loading, .dashboard-empty {
+.dashboard-loading,
+.dashboard-empty {
     grid-column: 1 / -1;
     text-align: center;
     padding: 60px 20px;
@@ -2533,7 +2882,10 @@ button:active {
 /* [한글 주석] 모달 오버레이 (어둡게 처리) */
 .reward-modal-overlay {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(6px);
     z-index: 30000;
@@ -2543,6 +2895,7 @@ button:active {
     opacity: 0;
     transition: opacity 0.3s ease;
 }
+
 .reward-modal-overlay.show {
     opacity: 1;
 }
@@ -2559,6 +2912,7 @@ button:active {
     transform: scale(0.8);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
 .reward-modal-overlay.show .reward-modal-card {
     transform: scale(1);
 }
@@ -2568,6 +2922,7 @@ button:active {
     text-align: center;
     margin-bottom: 20px;
 }
+
 .reward-modal-header h3 {
     font-size: 1.4rem;
     font-weight: 900;
@@ -2575,6 +2930,7 @@ button:active {
     margin: 0 0 8px;
     text-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
 }
+
 /* [한글 주석] 모달 헤더 설명 (크림색) */
 .reward-modal-header p {
     font-size: 0.9rem;
@@ -2604,11 +2960,13 @@ button:active {
     transition: all 0.2s ease;
     font-family: 'Noto Sans KR', sans-serif;
 }
+
 .reward-option-btn:hover {
     border-color: #ffd700;
     background-color: #3d5239;
     transform: translateY(-1px);
 }
+
 .reward-option-btn:active {
     transform: translateY(1px);
 }
@@ -2637,6 +2995,7 @@ button:active {
     transition: background-color 0.2s ease;
     font-family: 'Noto Sans KR', sans-serif;
 }
+
 .reward-modal-close:hover {
     background-color: #8db05c;
 }
@@ -2650,6 +3009,7 @@ button:active {
     .dashboard-stats-row {
         grid-template-columns: repeat(2, 1fr);
     }
+
     .dashboard-student-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -2662,14 +3022,17 @@ button:active {
         gap: 12px;
         padding: 16px 20px;
     }
+
     .dashboard-stats-row {
         grid-template-columns: repeat(2, 1fr);
         padding: 0 16px;
     }
+
     .dashboard-student-grid {
         grid-template-columns: repeat(2, 1fr);
         padding: 0 16px;
     }
+
     .reward-options-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -2680,6 +3043,7 @@ button:active {
     .dashboard-student-grid {
         grid-template-columns: 1fr;
     }
+
     .dashboard-title {
         font-size: 1.2rem;
     }
@@ -2687,717 +3051,1006 @@ button:active {
 
 /* [한글 주석] 복주머니 팝업 바운스 등장 애니메이션 */
 @keyframes bounceIn {
-  0% { transform: scale(0.5); opacity: 0; }
-  70% { transform: scale(1.05); }
-  100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* [한글 주석] 복주머니 흔들기 애니메이션 */
 @keyframes bagShake {
-  0%   { transform: rotate(0deg) scale(1); }
-  25%  { transform: rotate(-15deg) scale(1.1); }
-  50%  { transform: rotate(15deg) scale(1.1); }
-  75%  { transform: rotate(-10deg) scale(1.05); }
-  100% { transform: rotate(0deg) scale(1); }
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    25% {
+        transform: rotate(-15deg) scale(1.1);
+    }
+
+    50% {
+        transform: rotate(15deg) scale(1.1);
+    }
+
+    75% {
+        transform: rotate(-10deg) scale(1.05);
+    }
+
+    100% {
+        transform: rotate(0deg) scale(1);
+    }
 }
 
 /* [한글 주석] 카드 뒤집기 컨테이너 */
 .card-flip-container {
-  width: 220px;
-  height: 280px;
-  perspective: 1000px;
-  margin: 0 auto;
+    width: 220px;
+    height: 280px;
+    perspective: 1000px;
+    margin: 0 auto;
 }
 
 /* [한글 주석] 카드 안쪽 (앞/뒤 감싸는 래퍼) */
 .card-flip-inner {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.7s ease;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.7s ease;
 }
 
 /* [한글 주석] 뒤집힌 상태 */
 .card-flip-inner.flipped {
-  transform: rotateY(180deg);
+    transform: rotateY(180deg);
 }
 
 /* [한글 주석] 카드 앞면 / 뒷면 공통 */
 .card-flip-front,
 .card-flip-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
 /* [한글 주석] 카드 뒷면 (물음표) */
 .card-flip-back {
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
-  border: 3px solid #4a9eff;
-  font-size: 60px;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 3px solid #4a9eff;
+    font-size: 60px;
 }
 
 /* [한글 주석] 카드 앞면 (실제 카드) */
 .card-flip-front {
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
-  border: 3px solid #ffd700;
-  transform: rotateY(180deg);
-  box-shadow: 0 0 30px rgba(255,215,0,0.3);
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 3px solid #ffd700;
+    transform: rotateY(180deg);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
 }
 
 /* [한글 주석] 복주머니 목록 아이템 */
 .reward-bag-item {
-  background: rgba(255,215,0,0.08);
-  border: 2px solid #ffd700;
-  border-radius: 16px;
-  padding: 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+    background: rgba(255, 215, 0, 0.08);
+    border: 2px solid #ffd700;
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
+
 .reward-bag-item:active {
-  transform: scale(0.95);
-  box-shadow: 0 0 20px rgba(255,215,0,0.4);
+    transform: scale(0.95);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
 }
 
 /* [한글 주석] 레벨업 팝업 별 회전 애니메이션 */
 @keyframes spin {
-  0%   { transform: rotate(0deg) scale(1); }
-  50%  { transform: rotate(180deg) scale(1.2); }
-  100% { transform: rotate(360deg) scale(1); }
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(180deg) scale(1.2);
+    }
+
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
 }
 
 /* [한글 주석] 스플래시 스크린 전체 */
-#splash-screen { font-family: 'Noto Sans KR', sans-serif; }
+#splash-screen {
+    font-family: 'Noto Sans KR', sans-serif;
+}
 
 /* [한글 주석] 스플래시 각 단계 */
 .splash-phase {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
 }
 
 /* [한글 주석] 큰 텍스트 */
 .splash-word {
-  font-size: 52px;
-  font-weight: 900;
-  color: #fff;
-  opacity: 0;
-  transform: translateY(30px);
-  animation: splashWordIn 0.6s ease forwards;
-  text-shadow: 0 0 30px rgba(132,255,0,0.6);
-  letter-spacing: 4px;
+    font-size: 52px;
+    font-weight: 900;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: splashWordIn 0.6s ease forwards;
+    text-shadow: 0 0 30px rgba(132, 255, 0, 0.6);
+    letter-spacing: 4px;
 }
+
 @keyframes splashWordIn {
-  to { opacity: 1; transform: translateY(0); }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* [한글 주석] 1단계 아바타 걷기 */
 .splash-avatar-walk {
-  width: 80px;
-  height: 120px;
-  animation: splashWalk 0.5s steps(1) infinite;
+    width: 80px;
+    height: 120px;
+    animation: splashWalk 0.5s steps(1) infinite;
 }
+
 @keyframes splashWalk {
-  0%   { transform: translateX(-6px); }
-  50%  { transform: translateX(6px); }
-  100% { transform: translateX(-6px); }
+    0% {
+        transform: translateX(-6px);
+    }
+
+    50% {
+        transform: translateX(6px);
+    }
+
+    100% {
+        transform: translateX(-6px);
+    }
 }
 
 /* [한글 주석] 2단계 수집 애니메이션 컨테이너 */
 .splash-collect-anim {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    position: relative;
 }
 
 /* [한글 주석] 전설 카드 */
 .splash-epic-card {
-  background: linear-gradient(135deg, #1a0a2e, #2d1a4e);
-  border: 3px solid #ffd700;
-  border-radius: 20px;
-  padding: 20px 28px;
-  text-align: center;
-  box-shadow: 0 0 40px rgba(255,215,0,0.6), 0 0 80px rgba(255,215,0,0.3);
-  opacity: 0;
-  transform: scale(0.3) rotate(-10deg);
-  animation: epicCardAppear 0.6s cubic-bezier(0.175,0.885,0.32,1.275) 0.3s forwards;
-  position: relative;
-  z-index: 10;
-  transition: transform 0.7s ease, opacity 0.3s ease;
+    background: linear-gradient(135deg, #1a0a2e, #2d1a4e);
+    border: 3px solid #ffd700;
+    border-radius: 20px;
+    padding: 20px 28px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.6), 0 0 80px rgba(255, 215, 0, 0.3);
+    opacity: 0;
+    transform: scale(0.3) rotate(-10deg);
+    animation: epicCardAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards;
+    position: relative;
+    z-index: 10;
+    transition: transform 0.7s ease, opacity 0.3s ease;
 }
+
 @keyframes epicCardAppear {
-  to { opacity: 1; transform: scale(1) rotate(0deg); }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
 }
 
 /* [한글 주석] 카드 빠르게 사라지기 (0.1초) */
 .splash-card-fly {
-  transform: scale(0.1) translate(60px, 120px) !important;
-  opacity: 0 !important;
-  transition: transform 0.1s ease, opacity 0.1s ease !important;
+    transform: scale(0.1) translate(60px, 120px) !important;
+    opacity: 0 !important;
+    transition: transform 0.1s ease, opacity 0.1s ease !important;
 }
 
 .splash-epic-rarity {
-  color: #ffd700;
-  font-size: 12px;
-  font-weight: 900;
-  margin-bottom: 8px;
-  letter-spacing: 2px;
+    color: #ffd700;
+    font-size: 12px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
 }
-.splash-epic-emoji { font-size: 50px; margin: 8px 0; }
+
+.splash-epic-emoji {
+    font-size: 50px;
+    margin: 8px 0;
+}
+
 .splash-epic-name {
-  color: #fff;
-  font-size: 18px;
-  font-weight: 900;
-  margin-bottom: 6px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 6px;
 }
+
 .splash-epic-desc {
-  color: #ccc;
-  font-size: 11px;
-  line-height: 1.6;
+    color: #ccc;
+    font-size: 11px;
+    line-height: 1.6;
 }
 
 /* [한글 주석] 도감 격자 */
 .splash-dodam-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 52px);
-  grid-template-rows: repeat(3, 52px);
-  gap: 6px;
-  opacity: 0;
-  animation: splashFadeIn 0.4s ease 0.2s forwards;
+    display: grid;
+    grid-template-columns: repeat(3, 52px);
+    grid-template-rows: repeat(3, 52px);
+    gap: 6px;
+    opacity: 0;
+    animation: splashFadeIn 0.4s ease 0.2s forwards;
 }
+
 .splash-grid-cell {
-  background: rgba(255,255,255,0.05);
-  border: 2px solid rgba(255,255,255,0.15);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555;
-  font-size: 18px;
-  font-weight: 700;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    font-size: 18px;
+    font-weight: 700;
 }
 
 /* [한글 주석] 도감 칸에 카드 착! */
 .splash-grid-target {
-  border-color: rgba(255,215,0,0.4);
-  color: #555;
-  font-size: 14px;
-  transition: all 0.3s ease;
+    border-color: rgba(255, 215, 0, 0.4);
+    color: #555;
+    font-size: 14px;
+    transition: all 0.3s ease;
 }
+
 /* [한글 주석] 도감 칸에 착! 바운스 애니메이션 */
 .splash-grid-filled {
-  background: linear-gradient(135deg, #1a0a2e, #2d1a4e) !important;
-  border-color: #ffd700 !important;
-  color: #fff !important;
-  font-size: 26px !important;
-  box-shadow: 0 0 20px rgba(255,215,0,0.6);
-  animation: gridFilledBounce 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+    background: linear-gradient(135deg, #1a0a2e, #2d1a4e) !important;
+    border-color: #ffd700 !important;
+    color: #fff !important;
+    font-size: 26px !important;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    animation: gridFilledBounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes gridFilledBounce {
-  0%   { transform: scale(0.3); }
-  60%  { transform: scale(1.3); }
-  100% { transform: scale(1); }
+    0% {
+        transform: scale(0.3);
+    }
+
+    60% {
+        transform: scale(1.3);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* [한글 주석] 3단계 배운다 씬 */
-.splash-learn-anim { width: 100%; display: flex; justify-content: center; }
+.splash-learn-anim {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .splash-learn-scene {
-  position: relative;
-  width: 200px;
-  height: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: relative;
+    width: 200px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* [한글 주석] 배운다 아바타 */
 #splash-avatar-learn {
-  width: 80px;
-  height: 120px;
-  position: relative;
-  z-index: 2;
-  opacity: 0;
-  animation: splashFadeIn 0.5s ease 0.2s forwards;
+    width: 80px;
+    height: 120px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: splashFadeIn 0.5s ease 0.2s forwards;
 }
 
 /* [한글 주석] 전구들 */
 .splash-bulbs {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-around;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
 }
+
 .splash-bulb {
-  font-size: 28px;
-  opacity: 0.2;
-  transition: all 0.3s ease;
+    font-size: 28px;
+    opacity: 0.2;
+    transition: all 0.3s ease;
 }
+
 .bulb-flash {
-  opacity: 1 !important;
-  animation: bulbFlash 0.6s ease infinite alternate;
+    opacity: 1 !important;
+    animation: bulbFlash 0.6s ease infinite alternate;
 }
+
 @keyframes bulbFlash {
-  0%  { transform: scale(1);   filter: brightness(1); opacity: 0.7; }
-  100%{ transform: scale(1.4); filter: brightness(2); opacity: 1; }
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1.4);
+        filter: brightness(2);
+        opacity: 1;
+    }
 }
 
 /* [한글 주석] 파티클 별빛 */
 .splash-particles {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
 }
+
 .splash-particle {
-  position: absolute;
-  font-size: 18px;
-  opacity: 0;
-  animation: particleFly 1.2s ease forwards;
+    position: absolute;
+    font-size: 18px;
+    opacity: 0;
+    animation: particleFly 1.2s ease forwards;
 }
-.splash-particle:nth-child(1) { left: 10%;  top: 20%; animation-delay: 0.1s; }
-.splash-particle:nth-child(2) { left: 80%;  top: 10%; animation-delay: 0.3s; }
-.splash-particle:nth-child(3) { left: 20%;  top: 80%; animation-delay: 0.2s; }
-.splash-particle:nth-child(4) { left: 75%;  top: 70%; animation-delay: 0.4s; }
-.splash-particle:nth-child(5) { left: 50%;  top: 5%;  animation-delay: 0.5s; }
+
+.splash-particle:nth-child(1) {
+    left: 10%;
+    top: 20%;
+    animation-delay: 0.1s;
+}
+
+.splash-particle:nth-child(2) {
+    left: 80%;
+    top: 10%;
+    animation-delay: 0.3s;
+}
+
+.splash-particle:nth-child(3) {
+    left: 20%;
+    top: 80%;
+    animation-delay: 0.2s;
+}
+
+.splash-particle:nth-child(4) {
+    left: 75%;
+    top: 70%;
+    animation-delay: 0.4s;
+}
+
+.splash-particle:nth-child(5) {
+    left: 50%;
+    top: 5%;
+    animation-delay: 0.5s;
+}
+
 @keyframes particleFly {
-  0%   { opacity: 0; transform: translateY(0) scale(0.5); }
-  50%  { opacity: 1; transform: translateY(-30px) scale(1.2); }
-  100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(-30px) scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-60px) scale(0.8);
+    }
 }
 
 /* [한글 주석] 별 반짝임 */
 @keyframes starTwinkle {
-  from { opacity: 0.2; }
-  to   { opacity: 1; }
+    from {
+        opacity: 0.2;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes splashFadeIn {
-  to { opacity: 1; }
+    to {
+        opacity: 1;
+    }
 }
 
 /* [한글 주석] 별 배경 */
 #splash-stars {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
 }
 
 /* [한글 주석] 새 카드 NEW! 이펙트 애니메이션 */
 @keyframes newCardEffectAnim {
-  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-  20%  { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-  40%  { transform: translate(-50%, -50%) scale(1.0); }
-  70%  { opacity: 1; transform: translate(-50%, -50%) scale(1.0); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    40% {
+        transform: translate(-50%, -50%) scale(1.0);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
 }
 
 /* [한글 주석] 책 씬 전체 */
 .splash-book-scene {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
 }
 
 /* [한글 주석] 책 컨테이너 */
 .splash-book {
-  display: flex;
-  align-items: stretch;
-  width: 220px;
-  height: 160px;
-  border-radius: 4px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  opacity: 0;
-  animation: splashFadeIn 0.5s ease 0.2s forwards;
-  position: relative;
-  overflow: hidden;
+    display: flex;
+    align-items: stretch;
+    width: 220px;
+    height: 160px;
+    border-radius: 4px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    animation: splashFadeIn 0.5s ease 0.2s forwards;
+    position: relative;
+    overflow: hidden;
 }
 
 /* [한글 주석] 책 왼쪽 페이지 */
 .splash-book-left {
-  flex: 1;
-  background: linear-gradient(135deg, #f5f0e8, #ede8d8);
-  padding: 16px 12px;
-  border-radius: 4px 0 0 4px;
+    flex: 1;
+    background: linear-gradient(135deg, #f5f0e8, #ede8d8);
+    padding: 16px 12px;
+    border-radius: 4px 0 0 4px;
 }
 
 /* [한글 주석] 책 중앙 등 */
 .splash-book-spine {
-  width: 8px;
-  background: linear-gradient(to right, #8b6914, #c8914a, #8b6914);
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    width: 8px;
+    background: linear-gradient(to right, #8b6914, #c8914a, #8b6914);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 /* [한글 주석] 책 오른쪽 페이지 */
 .splash-book-right {
-  flex: 1;
-  background: linear-gradient(135deg, #ede8d8, #f5f0e8);
-  padding: 16px 12px;
-  border-radius: 0 4px 4px 0;
+    flex: 1;
+    background: linear-gradient(135deg, #ede8d8, #f5f0e8);
+    padding: 16px 12px;
+    border-radius: 0 4px 4px 0;
 }
 
 /* [한글 주석] 책 줄들 */
 .splash-book-lines {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
 }
+
 .splash-book-line {
-  height: 3px;
-  background: #8b6914;
-  border-radius: 2px;
-  opacity: 0.4;
+    height: 3px;
+    background: #8b6914;
+    border-radius: 2px;
+    opacity: 0.4;
 }
-.splash-book-line.short { width: 60%; }
+
+.splash-book-line.short {
+    width: 60%;
+}
 
 /* [한글 주석] 페이지 넘기기 */
 .splash-page-turn {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(135deg, #fff8ee, #f5f0e8);
-  transform-origin: left center;
-  transform: rotateY(0deg);
-  box-shadow: -4px 0 12px rgba(0,0,0,0.15);
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(135deg, #fff8ee, #f5f0e8);
+    transform-origin: left center;
+    transform: rotateY(0deg);
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
 }
+
 .page-turning {
-  animation: pageTurn 1s ease forwards;
+    animation: pageTurn 1s ease forwards;
 }
+
 @keyframes pageTurn {
-  0%   { transform: rotateY(0deg);    opacity: 1; }
-  50%  { transform: rotateY(-60deg);  opacity: 0.8; box-shadow: -20px 0 30px rgba(0,0,0,0.3); }
-  100% { transform: rotateY(-170deg); opacity: 0.3; }
+    0% {
+        transform: rotateY(0deg);
+        opacity: 1;
+    }
+
+    50% {
+        transform: rotateY(-60deg);
+        opacity: 0.8;
+        box-shadow: -20px 0 30px rgba(0, 0, 0, 0.3);
+    }
+
+    100% {
+        transform: rotateY(-170deg);
+        opacity: 0.3;
+    }
 }
 
 /* [한글 주석] 반짝반짝 파티클 */
 .splash-book-sparkles {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 260px;
-  height: 200px;
-  pointer-events: none;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 260px;
+    height: 200px;
+    pointer-events: none;
 }
+
 .splash-sparkle {
-  position: absolute;
-  font-size: 20px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+    position: absolute;
+    font-size: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
-.splash-sparkle.s1 { top: 10%;  left: 5%; }
-.splash-sparkle.s2 { top: 0%;   left: 40%; }
-.splash-sparkle.s3 { top: 10%;  left: 80%; }
-.splash-sparkle.s4 { top: 60%;  left: 0%; }
-.splash-sparkle.s5 { top: 70%;  left: 55%; }
-.splash-sparkle.s6 { top: 55%;  left: 90%; }
+
+.splash-sparkle.s1 {
+    top: 10%;
+    left: 5%;
+}
+
+.splash-sparkle.s2 {
+    top: 0%;
+    left: 40%;
+}
+
+.splash-sparkle.s3 {
+    top: 10%;
+    left: 80%;
+}
+
+.splash-sparkle.s4 {
+    top: 60%;
+    left: 0%;
+}
+
+.splash-sparkle.s5 {
+    top: 70%;
+    left: 55%;
+}
+
+.splash-sparkle.s6 {
+    top: 55%;
+    left: 90%;
+}
 
 @keyframes sparkleFloat {
-  0%   { transform: translateY(0) scale(1); }
-  100% { transform: translateY(-12px) scale(1.3); }
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(-12px) scale(1.3);
+    }
 }
 
 /* [한글 주석] 카드 선택 모드 - 카드 hover 효과 */
 .choice-card:hover {
-  transform: scale(1.05) translateY(-4px) !important;
-  box-shadow: 0 8px 24px rgba(74,158,255,0.4) !important;
-  border-color: #ffd700 !important;
+    transform: scale(1.05) translateY(-4px) !important;
+    box-shadow: 0 8px 24px rgba(74, 158, 255, 0.4) !important;
+    border-color: #ffd700 !important;
 }
 
 /* [한글 주석] 카드 선택 모드 - 선택 전 물음표 펄스 */
 .choice-question {
-  animation: choicePulse 1s ease infinite alternate;
+    animation: choicePulse 1s ease infinite alternate;
 }
 
 @keyframes choicePulse {
-  0%   { transform: scale(1);    opacity: 0.8; }
-  100% { transform: scale(1.15); opacity: 1;   }
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
 }
 
 /* [한글 주석] 조합소 카드 hover 효과 */
 .workshop-card:hover {
-  transform: scale(1.04) !important;
-  box-shadow: 0 4px 16px rgba(255,215,0,0.2) !important;
+    transform: scale(1.04) !important;
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.2) !important;
 }
 
 /* [한글 주석] 탐험 걷기 씬 전체 */
 .explore-walk-scene {
-  position: relative;
-  width: 100%;
-  height: 140px;
-  overflow: hidden;
-  margin-bottom: 16px;
-  border-radius: 16px;
-  background: linear-gradient(180deg, #1a3324 0%, #2c5239 60%, #4a6a3a 100%);
+    position: relative;
+    width: 100%;
+    height: 140px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #1a3324 0%, #2c5239 60%, #4a6a3a 100%);
 }
 
 /* [한글 주석] 길 */
 .explore-road {
-  position: absolute;
-  bottom: 0;
-  left: 0; right: 0;
-  height: 28px;
-  background: linear-gradient(180deg, #8b6914, #6b4a1a);
-  border-top: 2px solid #c8914a;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: linear-gradient(180deg, #8b6914, #6b4a1a);
+    border-top: 2px solid #c8914a;
 }
 
 /* [한글 주석] 나무 */
 .explore-tree {
-  position: absolute;
-  font-size: 28px;
-  bottom: 22px;
-  animation: treeScroll 3s linear infinite;
+    position: absolute;
+    font-size: 28px;
+    bottom: 22px;
+    animation: treeScroll 3s linear infinite;
 }
-.tree-far  { font-size: 20px; animation-duration: 6s; opacity: 0.6; }
-.tree-mid  { font-size: 26px; animation-duration: 4s; animation-delay: -1s; }
-.tree-near { font-size: 32px; animation-duration: 3s; animation-delay: -2s; }
+
+.tree-far {
+    font-size: 20px;
+    animation-duration: 6s;
+    opacity: 0.6;
+}
+
+.tree-mid {
+    font-size: 26px;
+    animation-duration: 4s;
+    animation-delay: -1s;
+}
+
+.tree-near {
+    font-size: 32px;
+    animation-duration: 3s;
+    animation-delay: -2s;
+}
 
 @keyframes treeScroll {
-  0%   { left: 110%; }
-  100% { left: -15%; }
+    0% {
+        left: 110%;
+    }
+
+    100% {
+        left: -15%;
+    }
 }
 
 /* [한글 주석] 아바타 */
 .explore-avatar-walk {
-  position: absolute;
-  bottom: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 52px;
-  height: 80px;
-  animation: avatarWalk 0.5s steps(1) infinite;
-  z-index: 2;
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 52px;
+    height: 80px;
+    animation: avatarWalk 0.5s steps(1) infinite;
+    z-index: 2;
 }
+
 @keyframes avatarWalk {
-  0%   { transform: translateX(-50%) scaleX(1)  translateY(0); }
-  25%  { transform: translateX(-50%) scaleX(1)  translateY(-2px); }
-  50%  { transform: translateX(-50%) scaleX(-1) translateY(0); }
-  75%  { transform: translateX(-50%) scaleX(-1) translateY(-2px); }
-  100% { transform: translateX(-50%) scaleX(1)  translateY(0); }
+    0% {
+        transform: translateX(-50%) scaleX(1) translateY(0);
+    }
+
+    25% {
+        transform: translateX(-50%) scaleX(1) translateY(-2px);
+    }
+
+    50% {
+        transform: translateX(-50%) scaleX(-1) translateY(0);
+    }
+
+    75% {
+        transform: translateX(-50%) scaleX(-1) translateY(-2px);
+    }
+
+    100% {
+        transform: translateX(-50%) scaleX(1) translateY(0);
+    }
 }
 
 /* [한글 주석] 발자국 */
 .explore-footprint {
-  position: absolute;
-  bottom: 4px;
-  font-size: 12px;
-  opacity: 0;
-  animation: footprintAppear 1.5s ease infinite;
+    position: absolute;
+    bottom: 4px;
+    font-size: 12px;
+    opacity: 0;
+    animation: footprintAppear 1.5s ease infinite;
 }
-.fp1 { left: 30%; animation-delay: 0s; }
-.fp2 { left: 45%; animation-delay: 0.5s; }
-.fp3 { left: 60%; animation-delay: 1s; }
+
+.fp1 {
+    left: 30%;
+    animation-delay: 0s;
+}
+
+.fp2 {
+    left: 45%;
+    animation-delay: 0.5s;
+}
+
+.fp3 {
+    left: 60%;
+    animation-delay: 1s;
+}
 
 @keyframes footprintAppear {
-  0%   { opacity: 0; transform: scale(0.5); }
-  20%  { opacity: 0.8; transform: scale(1); }
-  60%  { opacity: 0.4; }
-  100% { opacity: 0; }
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    20% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+
+    60% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 /* [한글 주석] 안내 문구 박스 */
 .explore-safety-msg {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  background: rgba(255,150,0,0.1);
-  border: 1px solid rgba(255,150,0,0.4);
-  border-radius: 14px;
-  padding: 12px 14px;
-  margin: 0 4px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: rgba(255, 150, 0, 0.1);
+    border: 1px solid rgba(255, 150, 0, 0.4);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin: 0 4px;
 }
+
 .explore-safety-icon {
-  font-size: 20px;
-  flex-shrink: 0;
-  margin-top: 2px;
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
 }
+
 .explore-safety-text {
-  color: #f0e6c8;
-  font-size: 12px;
-  line-height: 1.7;
-  text-align: left;
+    color: #f0e6c8;
+    font-size: 12px;
+    line-height: 1.7;
+    text-align: left;
 }
 
 /* [한글 주석] 꾸미기 화면 미리보기 패널 - 세로 50% */
 #avatar-customize-screen {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 /* [한글 주석] 아바타 미리보기 영역 - 세로 50% 고정 */
 .customize-preview-area {
-  flex: 0 0 50%;
-  min-height: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+    flex: 0 0 50%;
+    min-height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 /* [한글 주석] 아이템 선택 영역 - 나머지 50% */
 .customize-item-area {
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
 }
 
 /* [한글 주석] 아이템 버튼 크기 축소 */
 .customize-item {
-  padding: 8px 10px !important;
-  min-height: 56px !important;
-  gap: 8px !important;
+    padding: 8px 10px !important;
+    min-height: 56px !important;
+    gap: 8px !important;
 }
 
 .customize-item-emoji {
-  font-size: 1.4rem !important;
+    font-size: 1.4rem !important;
 }
 
 .customize-item-name {
-  font-size: 12px !important;
+    font-size: 12px !important;
 }
 
 .customize-item-status,
 .customize-item-cond {
-  font-size: 10px !important;
+    font-size: 10px !important;
 }
 
 /* [한글 주석] 꾸미기 탭 버튼 크기 축소 */
 .customize-slot-tab {
-  padding: 6px 4px !important;
-  font-size: 10px !important;
-  min-width: 36px !important;
+    padding: 6px 4px !important;
+    font-size: 10px !important;
+    min-width: 36px !important;
 }
 
 /* [한글 주석] 레벨 칭호 뱃지 둥실둥실 애니메이션 */
 @keyframes badgeFloat {
-  0%   { transform: translateY(0px);  }
-  50%  { transform: translateY(-4px); }
-  100% { transform: translateY(0px);  }
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
 }
 
 /* [한글 주석] 튜토리얼 버튼 강조 애니메이션 */
 @keyframes tutorialPulse {
-  0%   { box-shadow: 0 0 0 4px rgba(255,215,0,0.6); }
-  50%  { box-shadow: 0 0 0 8px rgba(255,215,0,0.2); }
-  100% { box-shadow: 0 0 0 4px rgba(255,215,0,0.6); }
+    0% {
+        box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.6);
+    }
+
+    50% {
+        box-shadow: 0 0 0 8px rgba(255, 215, 0, 0.2);
+    }
+
+    100% {
+        box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.6);
+    }
 }
 
 /* PWA 홈 화면 추가 버튼 - 화면 우상단 고정 */
 #pwa-install-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: linear-gradient(135deg, #1a3a2a, #2d6a4f);
-  color: #a8f0c6;
-  border: 1px solid #52b788;
-  border-radius: 20px;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 12px rgba(82, 183, 136, 0.25);
-  transition: all 0.2s ease;
-  letter-spacing: -0.3px;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: linear-gradient(135deg, #1a3a2a, #2d6a4f);
+    color: #a8f0c6;
+    border: 1px solid #52b788;
+    border-radius: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(82, 183, 136, 0.25);
+    transition: all 0.2s ease;
+    letter-spacing: -0.3px;
 }
 
 /* 호버 효과 */
 #pwa-install-btn:hover {
-  background: linear-gradient(135deg, #2d6a4f, #52b788);
-  color: #ffffff;
-  box-shadow: 0 4px 16px rgba(82, 183, 136, 0.4);
-  transform: translateY(-1px);
+    background: linear-gradient(135deg, #2d6a4f, #52b788);
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(82, 183, 136, 0.4);
+    transform: translateY(-1px);
 }
 
 /* 클릭 효과 */
 #pwa-install-btn:active {
-  transform: scale(0.96) translateY(0);
-  box-shadow: 0 2px 8px rgba(82, 183, 136, 0.2);
+    transform: scale(0.96) translateY(0);
+    box-shadow: 0 2px 8px rgba(82, 183, 136, 0.2);
 }
 
 /* 집 아이콘 크기 */
 .pwa-btn-icon {
-  font-size: 15px;
-  line-height: 1;
+    font-size: 15px;
+    line-height: 1;
 }
 
 /* 버튼 텍스트 */
 .pwa-btn-text {
-  line-height: 1;
+    line-height: 1;
 }
 
 /* [한글 주석] 태블릿 전용 레이아웃 (768px ~ 1024px 사이 세로 모드) */
 @media (min-width: 768px) and (max-width: 1200px) and (orientation: portrait) {
-  /* [한글 주석] 앱 래퍼 너비를 태블릿에 맞게 확장 */
-  #app-wrapper,
-  .app-wrapper,
-  #student-app-wrapper {
-    max-width: 680px !important;
-    width: 90% !important;
-  }
 
-  /* [한글 주석] 헤더 폰트 및 패딩 태블릿 최적화 */
-  #app-header,
-  .app-header {
-    font-size: clamp(13px, 2vw, 18px) !important;
-    padding: 10px 16px !important;
-  }
+    /* [한글 주석] 앱 래퍼 너비를 태블릿에 맞게 확장 */
+    #app-wrapper,
+    .app-wrapper,
+    #student-app-wrapper {
+        max-width: 680px !important;
+        width: 90% !important;
+    }
 
-  /* [한글 주석] 탐험 버튼 태블릿 크기 조정 */
-  #explore-btn,
-  .explore-btn {
-    font-size: clamp(16px, 2.5vw, 22px) !important;
-    padding: 16px 32px !important;
-  }
+    /* [한글 주석] 헤더 폰트 및 패딩 태블릿 최적화 */
+    #app-header,
+    .app-header {
+        font-size: clamp(13px, 2vw, 18px) !important;
+        padding: 10px 16px !important;
+    }
 
-  /* [한글 주석] 도감/지도/아이템 버튼 태블릿 크기 조정 */
-  .side-btn,
-  .quick-btn {
-    width: 64px !important;
-    height: 64px !important;
-    font-size: 12px !important;
-  }
+    /* [한글 주석] 탐험 버튼 태블릿 크기 조정 */
+    #explore-btn,
+    .explore-btn {
+        font-size: clamp(16px, 2.5vw, 22px) !important;
+        padding: 16px 32px !important;
+    }
 
-  /* [한글 주석] 카드 그리드 태블릿에서 3열로 확장 */
-  .card-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
+    /* [한글 주석] 도감/지도/아이템 버튼 태블릿 크기 조정 */
+    .side-btn,
+    .quick-btn {
+        width: 64px !important;
+        height: 64px !important;
+        font-size: 12px !important;
+    }
 
-  /* [한글 주석] 아바타 영역 태블릿 크기 조정 */
-  #main-character-area,
-  .main-character-area {
-    transform: scale(1.3) !important;
-    transform-origin: center bottom !important;
-  }
+    /* [한글 주석] 카드 그리드 태블릿에서 3열로 확장 */
+    .card-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    /* [한글 주석] 아바타 영역 태블릿 크기 조정 */
+    #main-character-area,
+    .main-character-area {
+        transform: scale(1.3) !important;
+        transform-origin: center bottom !important;
+    }
 }
 
 /* [한글 주석] 체험 모드(교사용) 버튼 - 로그인 폼과 동일한 너비로 정렬 */
-.app-container > button.start-btn {
+.app-container>button.start-btn {
     width: 100% !important;
     box-sizing: border-box !important;
     display: block !important;
@@ -3406,8 +4059,8 @@ button:active {
 }
 
 /* [한글 주석] 체험 모드(교사용) 버튼 - 로그인 폼과 동일한 너비 강제 적용 */
-#login-screen > button.start-btn {
-    width: calc(100% ) !important;
+#login-screen>button.start-btn {
+    width: calc(100%) !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
     box-sizing: border-box !important;
