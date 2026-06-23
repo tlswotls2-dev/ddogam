@@ -1497,18 +1497,32 @@ function showExportQR() {
 
   document.body.appendChild(overlay);
 
-  // [한글 주석] Google Chart API로 QR코드 생성 (단순하고 확실)
+  // [한글 주석] QRServer API로 QR코드 생성
   setTimeout(() => {
     const container = document.getElementById('qr-code-container');
     if (container) {
       const encodedUrl = encodeURIComponent(url);
-      const qrApiUrl = `https://chart.googleapis.com/chart?cht=qr&chs=240x240&chl=${encodedUrl}&choe=UTF-8&chld=L|1`;
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodedUrl}&ecc=L&margin=4`;
       const img = document.createElement('img');
       img.src = qrApiUrl;
       img.width = 240;
       img.height = 240;
       img.style.display = 'block';
       img.alt = 'QR Code';
+      img.onerror = () => {
+        // [한글 주석] API 실패 시 qrcode.js 라이브러리로 폴백
+        container.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          new QRCode(container, {
+            text: url,
+            width: 240,
+            height: 240,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.L
+          });
+        }
+      };
       container.appendChild(img);
     }
   }, 100);
