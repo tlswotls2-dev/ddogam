@@ -1186,6 +1186,13 @@ button:active {
     transition: width 0.4s ease;
 }
 
+/* 도감 내 카드 격자 그리드 래퍼 */
+.dodam-grid-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+}
+
 /* 도감 내 카드 격자 그리드 */
 .dodam-grid {
     display: grid;
@@ -1193,12 +1200,9 @@ button:active {
     grid-auto-rows: minmax(120px, auto);
     gap: 8px;
     padding: 8px;
-    overflow-y: auto;
     align-content: start;
     width: 100%;
     box-sizing: border-box;
-    flex: none;
-    height: auto;
 }
 
 /* 카드 기본 크기 및 세로 비율 지정 */
