@@ -251,7 +251,7 @@ function _renderStudyScreen() {
 
   const Ts = window.LANG_UI;
   const Ls = window.currentLang || 'ko';
-  const ts = k => Ts[k]?.[Ls] || Ts[k]?.ko || '';
+  const ts = k => Ts?.[Ls]?.[k] || Ts?.ko?.[k] || '';
 
   overlay.innerHTML = `
     <div style="
