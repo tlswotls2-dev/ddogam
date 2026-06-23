@@ -292,6 +292,7 @@ window.LANG_UI = {
     exportCopyBtn: '🔗 URL 복사',
     exportCopied: '✅ 복사됐어요!',
     exportCopyGuide: '이 URL을 새 기기의 크롬 브라우저 주소창에 붙여넣고 열면 데이터가 복원돼요!',
+    exportBagWarning: '🎁 복주머니는 전송되지 않아요!\n데이터를 옮기기 전에 복주머니를 모두 열어서 카드로 만들어주세요.',
   },
   en: {
     langBtnLabel: 'English',
@@ -536,6 +537,7 @@ window.LANG_UI = {
     exportCopyBtn: '🔗 Copy URL',
     exportCopied: '✅ Copied!',
     exportCopyGuide: 'Paste this URL in Chrome on your new device to restore your data!',
+    exportBagWarning: '🎁 Lucky bags are not transferred!\nOpen all your lucky bags before exporting.',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -780,6 +782,7 @@ window.LANG_UI = {
     exportCopyBtn: '🔗 Копировать URL',
     exportCopied: '✅ Скопировано!',
     exportCopyGuide: 'Вставь этот URL в Chrome на новом устройстве для восстановления данных!',
+    exportBagWarning: '🎁 Мешочки удачи не переносятся!\nОткрой все мешочки перед экспортом.',
   },
   zh: {
     langBtnLabel: '中文',
@@ -1024,6 +1027,7 @@ window.LANG_UI = {
     exportCopyBtn: '🔗 复制链接',
     exportCopied: '✅ 已复制！',
     exportCopyGuide: '将此链接粘贴到新设备的Chrome浏览器地址栏中打开，即可恢复数据！',
+    exportBagWarning: '🎁 福袋不会被传输！\n请在导出前打开所有福袋将其变成卡片。',
   }
 };
 
@@ -1528,9 +1532,16 @@ function showExportQR() {
         margin-bottom:14px;
       "></div>
 
-      <div style="color:#ff8080;font-size:10px;line-height:1.6;margin-bottom:16px;">
+      <div style="color:#ff8080;font-size:10px;line-height:1.6;margin-bottom:8px;">
         ${t('exportWarning').replace(/\n/g, '<br>')}
       </div>
+      <div style="
+        color:#ffd700;font-size:10px;line-height:1.6;
+        margin-bottom:16px;
+        background:rgba(255,215,0,0.08);
+        border:1px solid rgba(255,215,0,0.3);
+        border-radius:8px;padding:8px;
+      ">${t('exportBagWarning').replace(/\n/g, '<br>')}</div>
 
       <!-- [한글 주석] URL 복사 버튼 -->
       <button id="export-copy-btn" style="
