@@ -1496,7 +1496,7 @@ button:active {
 /* 태블릿 해상도의 반응형 그리드 단수 설정 */
 @media (min-width: 769px) {
     .dodam-grid {
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
