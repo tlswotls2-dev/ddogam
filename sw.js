@@ -4,7 +4,7 @@
 // ================================
 
 // [한글 주석] 캐시 버전 업 - index.html 네트워크 우선 전략 적용
-const CACHE_NAME = 'ttogam-images-v6';
+const CACHE_NAME = 'ttogam-images-v7';
 
 // 캐시할 파일 목록 생성
 const IMAGE_URLS = [];
