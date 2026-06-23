@@ -438,11 +438,10 @@
 
     <!-- 하단 액션 버튼 2개 -->
     <div class="bottom-buttons">
-      <!-- [한글 주석] 언어 선택 버튼 (챗봇 버튼 자리에 배치) -->
-      <button class="action-btn btn-ai" id="lang-select-btn"
-        onclick="if(window.showLangSelectPopup) window.showLangSelectPopup();">
-        <span class="btn-emoji">🌐</span>
-        <span class="btn-text" id="lang-btn-label">한국어</span>
+      <!-- [한글 주석] 설정 버튼 -->
+      <button class="action-btn btn-ai" id="settings-btn" onclick="if(window.showSettingsPopup) window.showSettingsPopup();">
+        <span class="btn-emoji">⚙️</span>
+        <span class="btn-text" id="settings-btn-label">설정</span>
       </button>
       <button class="action-btn btn-explore">👟<br>탐험!</button>
     </div>
@@ -1041,6 +1040,8 @@
 
   <!-- Leaflet.js 지도 라이브러리 JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- [한글 주석] QR코드 생성 라이브러리 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <!-- 기능 스크립트 연결 -->
   <script src="js/storage.js"></script>
@@ -1302,9 +1303,10 @@
   <script>
     // [한글 주석] 체험 모드 배너 체크 (앱 시작 시 실행)
     if (typeof checkDemoModeBanner === 'function') checkDemoModeBanner();
-    // [한글 주석] 저장된 언어 자동 적용
+    // [한글 주석] 저장된 언어 자동 적용 + URL 복원 감지
     window.addEventListener('DOMContentLoaded', () => {
       if (typeof initLang === 'function') initLang();
+      if (typeof checkRestoreFromURL === 'function') checkRestoreFromURL();
     });
     // [한글 주석] 언어 선택 팝업 전역 안전 등록 제거 (lang.js에서 직접 처리)
   </script>

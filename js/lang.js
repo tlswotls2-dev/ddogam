@@ -246,6 +246,17 @@ window.LANG_UI = {
     avatarSelectTitle: '🎮 탐험가를 선택하세요!',
     avatarSelectSubtitle: '또감 세계를 함께 탐험할<br>캐릭터를 골라주세요',
     avatarSelectConfirm: '선택 완료!',
+    settingsTitle: '⚙️ 설정',
+    settingsLang: '🌐 언어 설정',
+    settingsExport: '📤 내 데이터 내보내기',
+    settingsExportDesc: 'QR코드를 스캔하면 다른 기기로 데이터를 옮길 수 있어요',
+    settingsClose: '닫기',
+    exportTitle: '📤 내 데이터 QR코드',
+    exportDesc: '다른 기기에서 이 QR코드를 스캔하세요!',
+    exportWarning: '⚠️ QR코드는 내 수집 데이터를 담고 있어요.\n다른 사람에게 보여주지 마세요!',
+    exportClose: '닫기',
+    exportSuccess: '✅ 데이터 복원 완료!',
+    exportSuccessDesc: '수집한 카드와 레벨이 복원됐어요!',
   },
   en: {
     langBtnLabel: 'English',
@@ -476,6 +487,17 @@ window.LANG_UI = {
     avatarSelectTitle: '🎮 Choose Your Explorer!',
     avatarSelectSubtitle: 'Pick a character to explore<br>the Ddogam world with you',
     avatarSelectConfirm: 'Confirm!',
+    settingsTitle: '⚙️ Settings',
+    settingsLang: '🌐 Language',
+    settingsExport: '📤 Export My Data',
+    settingsExportDesc: 'Scan QR code to transfer data to another device',
+    settingsClose: 'Close',
+    exportTitle: '📤 My Data QR Code',
+    exportDesc: 'Scan this QR code on your other device!',
+    exportWarning: '⚠️ This QR contains your collection data.\nDo not show it to others!',
+    exportClose: 'Close',
+    exportSuccess: '✅ Data Restored!',
+    exportSuccessDesc: 'Your cards and level have been restored!',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -706,6 +728,17 @@ window.LANG_UI = {
     avatarSelectTitle: '🎮 Выбери исследователя!',
     avatarSelectSubtitle: 'Выбери персонажа для<br>исследования мира Ттогами',
     avatarSelectConfirm: 'Выбрать!',
+    settingsTitle: '⚙️ Настройки',
+    settingsLang: '🌐 Язык',
+    settingsExport: '📤 Экспорт данных',
+    settingsExportDesc: 'Сканируй QR-код для переноса данных',
+    settingsClose: 'Закрыть',
+    exportTitle: '📤 QR-код данных',
+    exportDesc: 'Сканируй этот QR-код на другом устройстве!',
+    exportWarning: '⚠️ QR содержит твои данные.\nНе показывай его другим!',
+    exportClose: 'Закрыть',
+    exportSuccess: '✅ Данные восстановлены!',
+    exportSuccessDesc: 'Твои карточки и уровень восстановлены!',
   },
   zh: {
     langBtnLabel: '中文',
@@ -936,6 +969,17 @@ window.LANG_UI = {
     avatarSelectTitle: '🎮 选择你的探险家！',
     avatarSelectSubtitle: '选择一个角色和你一起<br>探索又感世界吧',
     avatarSelectConfirm: '选择完成！',
+    settingsTitle: '⚙️ 设置',
+    settingsLang: '🌐 语言设置',
+    settingsExport: '📤 导出我的数据',
+    settingsExportDesc: '扫描二维码可将数据转移到其他设备',
+    settingsClose: '关闭',
+    exportTitle: '📤 我的数据二维码',
+    exportDesc: '在其他设备上扫描此二维码！',
+    exportWarning: '⚠️ 二维码包含你的收集数据。\n请勿向他人展示！',
+    exportClose: '关闭',
+    exportSuccess: '✅ 数据恢复完成！',
+    exportSuccessDesc: '你的卡片和等级已恢复！',
   }
 };
 
@@ -1023,9 +1067,12 @@ function selectLanguage(langCode) {
   // [한글 주석] body 폰트 변경
   document.body.style.fontFamily = LANG_FONTS[langCode];
 
-  // [한글 주석] 언어 버튼 라벨 업데이트
-  const langBtnLabel = document.getElementById('lang-btn-label');
-  if (langBtnLabel) langBtnLabel.textContent = LANG_UI[langCode].langBtnLabel;
+  // [한글 주석] 설정 버튼 라벨 업데이트 (언어 버튼이 설정 버튼으로 변경됨)
+  const settingsBtnLabel = document.getElementById('settings-btn-label');
+  if (settingsBtnLabel) {
+    const settingsLabels = { ko: '설정', en: 'Settings', ru: 'Настройки', zh: '设置' };
+    settingsBtnLabel.textContent = settingsLabels[langCode] || '설정';
+  }
 
   // [한글 주석] UI 텍스트 일괄 적용
   applyUIText(langCode);
@@ -1195,11 +1242,257 @@ function initLang() {
   const saved = localStorage.getItem('selectedLang') || 'ko';
   window.currentLang = saved;
   document.body.style.fontFamily = LANG_FONTS[saved];
-  const langBtnLabel = document.getElementById('lang-btn-label');
-  if (langBtnLabel) langBtnLabel.textContent = LANG_UI[saved].langBtnLabel;
+  const settingsBtnLabel = document.getElementById('settings-btn-label');
+  if (settingsBtnLabel) {
+    const settingsLabels = { ko: '설정', en: 'Settings', ru: 'Настройки', zh: '设置' };
+    settingsBtnLabel.textContent = settingsLabels[saved] || '설정';
+  }
   applyUIText(saved);
 }
 
+// [한글 주석] 데이터 압축 - 카드 ID를 짧게 변환
+function _compressData() {
+  const collection = JSON.parse(localStorage.getItem('collectedCards') || '[]');
+  const level = localStorage.getItem('currentLevel') || '1';
+  const selectedAvatar = localStorage.getItem('selectedAvatar') || '';
+  const equippedItems = localStorage.getItem('equippedItems') || '{}';
+  const equippedOutfit = localStorage.getItem('equippedOutfit') || 'default';
+  const equippedPet = localStorage.getItem('equippedPet') || 'pet_none';
+  const equippedTitle = localStorage.getItem('equippedTitle') || '';
+  const unlockedItems = localStorage.getItem('unlockedItems') || '[]';
+  const unlockedAvatars = localStorage.getItem('unlockedAvatars') || '[]';
+  const unlockedPets = localStorage.getItem('unlockedPets') || '[]';
+
+  // [한글 주석] 카드 ID 압축 (plant_001 → p1, animal_050 → a50, artifact_100 → r100)
+  const compressedCards = collection.map(id => {
+    if (id.startsWith('plant_')) return 'p' + parseInt(id.replace('plant_', ''));
+    if (id.startsWith('animal_')) return 'a' + parseInt(id.replace('animal_', ''));
+    if (id.startsWith('artifact_')) return 'r' + parseInt(id.replace('artifact_', ''));
+    return id;
+  });
+
+  const data = {
+    v: 1, // [한글 주석] 버전
+    c: compressedCards,
+    l: level,
+    av: selectedAvatar,
+    ei: equippedItems,
+    eo: equippedOutfit,
+    ep: equippedPet,
+    et: equippedTitle,
+    ui: unlockedItems,
+    ua: unlockedAvatars,
+    up: unlockedPets,
+  };
+
+  return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+}
+
+// [한글 주석] 데이터 복원 - 압축된 데이터를 localStorage에 저장
+function _restoreData(encoded) {
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(encoded))));
+    if (!data || data.v !== 1) return false;
+
+    // [한글 주석] 카드 ID 복원 (p1 → plant_001, a50 → animal_050)
+    const cards = (data.c || []).map(id => {
+      if (id.startsWith('p')) return 'plant_' + String(parseInt(id.slice(1))).padStart(3, '0');
+      if (id.startsWith('a')) return 'animal_' + String(parseInt(id.slice(1))).padStart(3, '0');
+      if (id.startsWith('r')) return 'artifact_' + String(parseInt(id.slice(1))).padStart(3, '0');
+      return id;
+    });
+
+    localStorage.setItem('collectedCards', JSON.stringify(cards));
+    if (data.l) localStorage.setItem('currentLevel', data.l);
+    if (data.av) localStorage.setItem('selectedAvatar', data.av);
+    if (data.ei) localStorage.setItem('equippedItems', data.ei);
+    if (data.eo) localStorage.setItem('equippedOutfit', data.eo);
+    if (data.ep) localStorage.setItem('equippedPet', data.ep);
+    if (data.et) localStorage.setItem('equippedTitle', data.et);
+    if (data.ui) localStorage.setItem('unlockedItems', data.ui);
+    if (data.ua) localStorage.setItem('unlockedAvatars', data.ua);
+    if (data.up) localStorage.setItem('unlockedPets', data.up);
+
+    return true;
+  } catch (e) {
+    console.error('[데이터 복원 실패]', e);
+    return false;
+  }
+}
+
+// [한글 주석] URL 파라미터에서 restore 감지 및 복원
+function checkRestoreFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const restoreData = params.get('restore');
+  if (!restoreData) return;
+
+  // [한글 주석] URL 파라미터 제거
+  const newUrl = window.location.pathname;
+  window.history.replaceState({}, '', newUrl);
+
+  const success = _restoreData(restoreData);
+  const T = window.LANG_UI; const L = window.currentLang || 'ko';
+  const t = k => T?.[L]?.[k] || T?.ko?.[k] || '';
+
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:999999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  overlay.innerHTML = success ? `
+    <div style="background:linear-gradient(135deg,#1e2e1f,#2c3e2d);border:2px solid #8db05c;border-radius:24px;padding:32px 24px;max-width:300px;width:100%;text-align:center;">
+      <div style="font-size:52px;margin-bottom:12px;">🎉</div>
+      <div style="color:#8db05c;font-size:18px;font-weight:900;margin-bottom:8px;">${t('exportSuccess')}</div>
+      <div style="color:#d4c89c;font-size:13px;margin-bottom:20px;">${t('exportSuccessDesc')}</div>
+      <button onclick="this.closest('div[style]').remove();location.reload();" style="width:100%;background:linear-gradient(135deg,#8db05c,#6b8e3d);color:#1e2e1f;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;">✅ 확인</button>
+    </div>
+  ` : `
+    <div style="background:linear-gradient(135deg,#2e1e1e,#3e2c2c);border:2px solid #ff4444;border-radius:24px;padding:32px 24px;max-width:300px;width:100%;text-align:center;">
+      <div style="font-size:52px;margin-bottom:12px;">❌</div>
+      <div style="color:#ff4444;font-size:18px;font-weight:900;margin-bottom:8px;">복원 실패</div>
+      <div style="color:#d4c89c;font-size:13px;margin-bottom:20px;">QR코드가 올바르지 않아요.</div>
+      <button onclick="this.closest('div[style]').remove();" style="width:100%;background:linear-gradient(135deg,#ff4444,#cc0000);color:#fff;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;">닫기</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+// [한글 주석] 설정 팝업 표시
+function showSettingsPopup() {
+  const existing = document.getElementById('settings-popup');
+  if (existing) { existing.remove(); return; }
+
+  const T = window.LANG_UI; const L = window.currentLang || 'ko';
+  const t = k => T?.[L]?.[k] || T?.ko?.[k] || '';
+
+  const popup = document.createElement('div');
+  popup.id = 'settings-popup';
+  popup.style.cssText = `
+    position:fixed;
+    bottom:90px;
+    left:14px;
+    background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
+    border:1.5px solid #6b8e3d;
+    border-radius:16px;
+    padding:12px;
+    z-index:99999;
+    box-shadow:0 8px 24px rgba(0,0,0,0.5);
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    min-width:200px;
+  `;
+
+  popup.innerHTML = `
+    <div style="color:#8db05c;font-size:13px;font-weight:900;padding:4px 8px;border-bottom:1px solid #6b8e3d;margin-bottom:4px;">
+      ${t('settingsTitle')}
+    </div>
+
+    <!-- [한글 주석] 언어 설정 -->
+    <button id="settings-lang-btn" style="
+      background:transparent;border:1px solid #6b8e3d;border-radius:10px;
+      color:#f0e6c8;font-size:13px;font-weight:700;
+      padding:10px 14px;text-align:left;cursor:pointer;width:100%;
+    ">${t('settingsLang')}: <span id="settings-lang-label" style="color:#8db05c;">${T?.[L]?.langBtnLabel || '한국어'}</span></button>
+
+    <!-- [한글 주석] 데이터 내보내기 -->
+    <button onclick="showExportQR()" style="
+      background:transparent;border:1px solid #6b8e3d;border-radius:10px;
+      color:#f0e6c8;font-size:13px;font-weight:700;
+      padding:10px 14px;text-align:left;cursor:pointer;width:100%;
+    ">${t('settingsExport')}</button>
+
+    <div style="color:#666;font-size:10px;padding:0 4px;line-height:1.5;">
+      ${t('settingsExportDesc')}
+    </div>
+
+    <!-- [한글 주석] 닫기 -->
+    <button onclick="document.getElementById('settings-popup').remove()" style="
+      background:rgba(255,255,255,0.05);border:1px solid #444;border-radius:10px;
+      color:#aaa;font-size:12px;padding:8px;cursor:pointer;width:100%;
+    ">${t('settingsClose')}</button>
+  `;
+
+  document.body.appendChild(popup);
+
+  // [한글 주석] 언어 버튼 클릭 시 언어 선택 팝업 열기
+  document.getElementById('settings-lang-btn').onclick = () => {
+    popup.remove();
+    showLangSelectPopup();
+  };
+
+  // [한글 주석] 팝업 외부 클릭 시 닫기
+  setTimeout(() => {
+    document.addEventListener('click', function closeSettings(e) {
+      if (!popup.contains(e.target) && e.target.id !== 'settings-btn') {
+        popup.remove();
+        document.removeEventListener('click', closeSettings);
+      }
+    });
+  }, 100);
+}
+
+// [한글 주석] QR코드 내보내기 팝업
+function showExportQR() {
+  const existing = document.getElementById('export-qr-overlay');
+  if (existing) existing.remove();
+
+  const T = window.LANG_UI; const L = window.currentLang || 'ko';
+  const t = k => T?.[L]?.[k] || T?.ko?.[k] || '';
+
+  // [한글 주석] 데이터 압축
+  const encoded = _compressData();
+  const url = `${location.origin}${location.pathname}?restore=${encoded}`;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'export-qr-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(135deg,#1e2e1f,#2c3e2d);border:2px solid #8db05c;border-radius:24px;padding:24px 20px;max-width:320px;width:100%;text-align:center;">
+      <div style="color:#8db05c;font-size:16px;font-weight:900;margin-bottom:6px;">${t('exportTitle')}</div>
+      <div style="color:#aaa;font-size:11px;margin-bottom:16px;">${t('exportDesc')}</div>
+
+      <!-- [한글 주석] QR코드 렌더링 영역 -->
+      <div id="qr-code-container" style="
+        background:#fff;
+        border-radius:12px;
+        padding:12px;
+        display:inline-block;
+        margin-bottom:14px;
+      "></div>
+
+      <div style="color:#ff8080;font-size:10px;line-height:1.6;margin-bottom:16px;">
+        ${t('exportWarning').replace(/\n/g, '<br>')}
+      </div>
+
+      <button onclick="document.getElementById('export-qr-overlay').remove()" style="
+        width:100%;
+        background:linear-gradient(135deg,#8db05c,#6b8e3d);
+        color:#1e2e1f;border:none;border-radius:14px;
+        padding:13px;font-size:15px;font-weight:900;cursor:pointer;
+      ">${t('exportClose')}</button>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  // [한글 주석] QR코드 생성
+  setTimeout(() => {
+    const container = document.getElementById('qr-code-container');
+    if (container && typeof QRCode !== 'undefined') {
+      new QRCode(container, {
+        text: url,
+        width: 200,
+        height: 200,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+  }, 100);
+}
+
+window.showSettingsPopup = showSettingsPopup;
+window.showExportQR = showExportQR;
+window.checkRestoreFromURL = checkRestoreFromURL;
 window.showLangSelectPopup = showLangSelectPopup;
 window.selectLanguage = selectLanguage;
 window.applyCardTranslation = applyCardTranslation;
