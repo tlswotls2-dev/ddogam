@@ -1454,10 +1454,8 @@ button:active {
     align-items: center;
     justify-content: center;
     gap: 4px;
-    min-height: 110px;
     box-shadow: none !important;
     transform: none !important;
-    aspect-ratio: 5/7;
 }
 
 /* 미수집 자물쇠 아이콘 */
