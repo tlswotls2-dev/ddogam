@@ -162,11 +162,20 @@ function renderDodamGrid(category) {
         showDodamDetail(exactCard, collectionDates[exactCard.id]);
       };
 
-      // [한글 주석] 요약 설명(short_desc)이 없는 경우 서식지(habitat) 정보로 대체 표시하고, 이마저도 없을 경우 빈 문자열로 안전 처리하여 'undefined' 등의 불필요한 텍스트 노출을 방지합니다.
-      const descToShow = exactCard.short_desc || exactCard.habitat || "";
+      // [한글 주석] 현재 언어에 맞는 간단정보 가져오기 (번역팩 사용)
+      const _descLang = window.currentLang || 'ko';
+      const descToShow = _descLang !== 'ko' && exactCard[`short_desc_${_descLang}`]
+        ? exactCard[`short_desc_${_descLang}`]
+        : (exactCard.short_desc || exactCard.habitat || "");
+
+      // [한글 주석] 현재 언어에 맞는 카드 이름 가져오기
+      const _lang = window.currentLang || 'ko';
+      const _cardName = _lang !== 'ko' && exactCard[`name_${_lang}`]
+        ? exactCard[`name_${_lang}`]
+        : exactCard.name;
 
       cardEl.innerHTML = `
-                <div class="dodam-card-top">${exactCard.name}</div>
+                <div class="dodam-card-top">${_cardName}</div>
                 <div class="dodam-card-mid">
                     <div class="dodam-card-emoji" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
                         ${getCardImageHTML(exactCard)}
@@ -441,7 +450,7 @@ function renderWorkshop() {
         color:${cfg.color};font-size:10px;font-weight:700;
         padding:4px;text-align:center;
         border-bottom:1px solid ${cfg.border};
-      ">${card.name}</div>
+      ">${(window.currentLang && window.currentLang !== 'ko' && card[`name_${window.currentLang}`]) ? card[`name_${window.currentLang}`] : card.name}</div>
 
       <!-- [한글 주석] 카드 이미지 -->
       <div style="
