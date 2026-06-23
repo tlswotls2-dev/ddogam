@@ -1332,8 +1332,9 @@ function _showRestoreSuccessPopup() {
 
 // [한글 주석] URL 파라미터에서 restore 감지 및 복원
 function checkRestoreFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  const restoreData = params.get('restore');
+  // [한글 주석] hash(#) 방식으로 restore 파라미터 감지 (서비스워커/PWA에 의해 날아가지 않음)
+  const hash = window.location.hash;
+  const restoreData = hash.startsWith('#restore=') ? hash.slice('#restore='.length) : null;
 
   // [한글 주석] 복원 후 새로고침된 경우 → 성공 팝업만 표시
   if (!restoreData) {
@@ -1344,7 +1345,7 @@ function checkRestoreFromURL() {
     return;
   }
 
-  // [한글 주석] URL 파라미터 즉시 제거
+  // [한글 주석] hash 즉시 제거
   window.history.replaceState({}, '', window.location.pathname);
 
   // [한글 주석] 복원 실행
@@ -1462,7 +1463,7 @@ function showExportQR() {
 
   // [한글 주석] 데이터 압축
   const encoded = _compressData();
-  const url = `${location.origin}${location.pathname}?restore=${encoded}`;
+  const url = `${location.origin}${location.pathname}#restore=${encoded}`;
 
   const overlay = document.createElement('div');
   overlay.id = 'export-qr-overlay';

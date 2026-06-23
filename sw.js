@@ -11,15 +11,15 @@ const IMAGE_URLS = [];
 
 // 식물 이미지 100개 (plant_001.png ~ plant_100.png) 경로 생성
 for (let i = 1; i <= 100; i++) {
-  IMAGE_URLS.push(`images/plant/plant_${String(i).padStart(3,'0')}.png`);
+  IMAGE_URLS.push(`images/plant/plant_${String(i).padStart(3, '0')}.png`);
 }
 // 동물 이미지 100개 (animal_001.png ~ animal_100.png) 경로 생성
 for (let i = 1; i <= 100; i++) {
-  IMAGE_URLS.push(`images/animal/animal_${String(i).padStart(3,'0')}.png`);
+  IMAGE_URLS.push(`images/animal/animal_${String(i).padStart(3, '0')}.png`);
 }
 // 유물 이미지 100개 (artifact_001.png ~ artifact_100.png) 경로 생성
 for (let i = 1; i <= 100; i++) {
-  IMAGE_URLS.push(`images/artifact/artifact_${String(i).padStart(3,'0')}.png`);
+  IMAGE_URLS.push(`images/artifact/artifact_${String(i).padStart(3, '0')}.png`);
 }
 
 // 오프라인에서 작동하는 데 필요한 핵심 앱 리소스 파일 목록
@@ -65,7 +65,7 @@ self.addEventListener('install', event => {
 // fetch 이벤트 핸들러 - 네트워크 요청을 가로채어 캐시 우선 전략을 적용합니다.
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
-  
+
   // [한글 주석] 오디오(/audio/) 요청 - 캐시 우선 전략
   if (url.pathname.includes('/audio/')) {
     event.respondWith(
@@ -91,7 +91,7 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       caches.match(event.request).then(cached => {
         if (cached) return cached; // 캐시에 파일이 존재하면 즉시 캐시 파일 반환
-        
+
         // 캐시에 없으면 네트워크에서 새로 받아온 뒤 캐시에 저장(런타임 캐싱)
         return fetch(event.request).then(response => {
           if (response.ok) {
@@ -109,7 +109,7 @@ self.addEventListener('fetch', event => {
     );
     return;
   }
-  
+
   // [한글 주석] index.html은 항상 네트워크 우선 (새로고침 시 항상 최신 버전)
   if (url.pathname === '/' || url.pathname === '/index.html') {
     event.respondWith(
@@ -144,19 +144,19 @@ self.addEventListener('message', event => {
     caches.open(CACHE_NAME).then(cache => {
       let cached = 0; // 캐싱 성공한 이미지 개수 카운터
       const total = IMAGE_URLS.length; // 전체 캐싱할 이미지 수 (300개)
-      
+
       // 서버 과부하를 막기 위해 10개씩 묶어서 순차적으로 다운로드(배치 다운로드)
       const batchSize = 10;
       const batches = [];
       for (let i = 0; i < IMAGE_URLS.length; i += batchSize) {
         batches.push(IMAGE_URLS.slice(i, i + batchSize));
       }
-      
+
       // 비동기 루프를 사용하여 배치 단위로 이미지 다운로드 수행
       batches.reduce((promise, batch) => {
         return promise.then(() => {
           return Promise.allSettled(
-            batch.map(url => 
+            batch.map(url =>
               fetch(url).then(res => {
                 if (res.ok) {
                   cache.put(url, res); // 캐시에 다운로드한 이미지 저장
@@ -172,7 +172,7 @@ self.addEventListener('message', event => {
                     });
                   });
                 }
-              }).catch(() => {}) // 개별 요청 실패 시 오류 무시하고 계속 진행
+              }).catch(() => { }) // 개별 요청 실패 시 오류 무시하고 계속 진행
             )
           );
         });
