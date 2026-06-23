@@ -62,6 +62,20 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
+// [한글 주석] 서비스워커 활성화 시 이전 버전 캐시 자동 삭제
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(k => k !== CACHE_NAME).map(k => {
+          console.log('[SW] 이전 캐시 삭제:', k);
+          return caches.delete(k);
+        })
+      )
+    ).then(() => self.clients.claim())
+  );
+});
+
 // fetch 이벤트 핸들러 - 네트워크 요청을 가로채어 캐시 우선 전략을 적용합니다.
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
