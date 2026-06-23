@@ -7,6 +7,37 @@
 // [한글 주석] 현재 선택된 언어 (기본값: 한국어)
 window.currentLang = localStorage.getItem('selectedLang') || 'ko';
 
+// [한글 주석] 페이지 로드 즉시 해시 감지 (DOMContentLoaded 전에 실행)
+(function() {
+  const hash = window.location.hash;
+  if (hash.startsWith('#restore=')) {
+    const encoded = hash.slice('#restore='.length);
+    // [한글 주석] 해시 즉시 제거
+    window.history.replaceState({}, '', window.location.pathname);
+    // [한글 주석] 복원 실행 (LANG_UI 로드 전이므로 직접 처리)
+    try {
+      const data = JSON.parse(decodeURIComponent(escape(atob(encoded))));
+      if (data && (data.v === 1 || data.v === 2)) {
+        const cards = (data.c || []).map(id => {
+          if (id.startsWith('p')) return 'plant_' + String(parseInt(id.slice(1))).padStart(3, '0');
+          if (id.startsWith('a')) return 'animal_' + String(parseInt(id.slice(1))).padStart(3, '0');
+          if (id.startsWith('r')) return 'artifact_' + String(parseInt(id.slice(1))).padStart(3, '0');
+          return id;
+        });
+        localStorage.setItem('userCollection', JSON.stringify(cards));
+        if (data.l) {
+          localStorage.setItem('confirmedLevel', data.l);
+          localStorage.setItem('currentLevel', data.l);
+        }
+        localStorage.setItem('_justRestored', '1');
+        console.log('[복원] 성공:', cards.length, '개 카드, 레벨', data.l);
+      }
+    } catch(e) {
+      console.error('[복원] 실패:', e);
+    }
+  }
+})();
+
 // [한글 주석] 언어별 폰트 설정
 const LANG_FONTS = {
   ko: "'Noto Sans KR', sans-serif",
