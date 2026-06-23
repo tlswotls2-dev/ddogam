@@ -1189,7 +1189,12 @@ function showAIQuizAnalysis() {
   const weakCat = available.reduce((a, b) =>
     (stats[a].rate ?? 100) <= (stats[b].rate ?? 100) ? a : b
   );
-  const catLabel = { plant: '🌿 식물', animal: '🦔 동물', artifact: '🏺 유물' };
+  const _Tql = window.LANG_UI; const _Lql = window.currentLang || 'ko';
+  const catLabel = {
+    plant: '🌿 ' + (_Tql?.[_Lql]?.radarPlant || '식물'),
+    animal: '🦔 ' + (_Tql?.[_Lql]?.radarAnimal || '동물'),
+    artifact: '🏺 ' + (_Tql?.[_Lql]?.radarArtifact || '유물')
+  };
   const catColor = { plant: '#84ff00', animal: '#ff9d00', artifact: '#4a9eff' };
 
   // [한글 주석] 정답률 바 HTML 생성

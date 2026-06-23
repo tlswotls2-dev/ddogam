@@ -221,6 +221,14 @@ function showDodamDetail(card, dateString) {
   // [한글 주석] 도감에서 열 때는 희귀도 이펙트 없이 깔끔하게 표시
   if (typeof clearRarityEffects === 'function') clearRarityEffects();
 
+  // [한글 주석] 뒷면 카드 이름도 번역 적용
+  const _backLang = window.currentLang || 'ko';
+  const _backName = _backLang !== 'ko' && card[`name_${_backLang}`]
+    ? card[`name_${_backLang}`]
+    : card.name;
+  const popupBackName = document.getElementById('popup-back-name');
+  if (popupBackName) popupBackName.textContent = _backName;
+
   // [한글 주석] 카드 이미지 바인딩
   const popupEmojiEl = document.getElementById('popup-emoji');
   popupEmojiEl.style.width = '100%';
@@ -413,10 +421,11 @@ function renderWorkshop() {
     const card = allCards.find(c => c.id === id);
     if (!card) return;
 
+    const _Tr = window.LANG_UI; const _Lr = window.currentLang || 'ko';
     const rarityConfig = {
-      common: { border: '#84ff00', label: '★ 일반', color: '#84ff00' },
-      rare: { border: '#4a9eff', label: '★★ 희귀', color: '#4a9eff' },
-      epic: { border: '#ffd700', label: '★★★ 전설', color: '#ffd700' }
+      common: { border: '#84ff00', label: '★ ' + (_Tr?.[_Lr]?.mapRarityCommon || '일반'), color: '#84ff00' },
+      rare: { border: '#4a9eff', label: '★★ ' + (_Tr?.[_Lr]?.mapRarityRare || '희귀'), color: '#4a9eff' },
+      epic: { border: '#ffd700', label: '★★★ ' + (_Tr?.[_Lr]?.mapRarityEpic || '전설'), color: '#ffd700' }
     };
     const cfg = rarityConfig[card.rarity] || rarityConfig.common;
 
