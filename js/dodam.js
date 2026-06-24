@@ -159,7 +159,19 @@ function renderDodamGrid(category) {
       cardEl.classList.add(exactCard.rarity || 'common');
       // 카드 클릭 시 상세 팝업 열기 (정확한 카드 데이터를 ID 기반으로 window.allCardsData에서 재조회)
       cardEl.onclick = () => {
-        showDodamDetail(exactCard, collectionDates[exactCard.id]);
+        // [한글 주석] 날짜 타임스탬프를 현재 언어에 맞게 변환
+        const _rawDate = collectionDates[exactCard.id];
+        let _dateStr = '';
+        if (_rawDate) {
+          if (typeof _rawDate === 'number') {
+            const _lang = window.currentLang || 'ko';
+            const _localeMap = { ko: 'ko-KR', en: 'en-US', ru: 'ru-RU', zh: 'zh-CN' };
+            _dateStr = new Date(_rawDate).toLocaleDateString(_localeMap[_lang] || 'ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+          } else {
+            _dateStr = _rawDate; // [한글 주석] 구버전 한국어 날짜 문자열
+          }
+        }
+        showDodamDetail(exactCard, _dateStr);
       };
 
       // [한글 주석] 현재 언어에 맞는 간단정보 가져오기 (번역팩 사용)

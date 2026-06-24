@@ -231,8 +231,11 @@ function _renderStudyScreen() {
   const existing = document.getElementById('battle-study-overlay');
   if (existing) existing.remove();
 
+  const _Tbl = window.LANG_UI; const _Lbl = window.currentLang || 'ko';
   const catLabel = {
-    plant: '🌱 식물', animal: '🦊 동물', artifact: '🏺 유물'
+    plant: '🌱 ' + (_Tbl?.[_Lbl]?.radarPlant || '식물'),
+    animal: '🦊 ' + (_Tbl?.[_Lbl]?.radarAnimal || '동물'),
+    artifact: '🏺 ' + (_Tbl?.[_Lbl]?.radarArtifact || '유물')
   }[battleState.category] || '';
 
   const overlay = document.createElement('div');
@@ -376,7 +379,7 @@ function _renderBattleCard() {
           ${(window.currentLang && window.currentLang !== 'ko' && card[`short_desc_${window.currentLang}`]) ? card[`short_desc_${window.currentLang}`] : (card.short_desc || '')}
         </div>
         <div style="color:#666;font-size:10px;margin-top:8px;">
-          📍 ${card.habitat || ''}
+          📍 ${(window.currentLang && window.currentLang !== 'ko' && card[`habitat_${window.currentLang}`]) ? card[`habitat_${window.currentLang}`] : (card.habitat || '')}
         </div>
         <div style="color:#8db05c;font-size:11px;margin-top:12px;">
           ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleFlipHintFront || '🔄 뒤집기로 자세한 정보 확인!') : '🔄 뒤집기로 자세한 정보 확인!'}

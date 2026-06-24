@@ -581,8 +581,10 @@ function showCardPopup(cardParam, isNew) {
   backNameEl.textContent = translated.name;
   backNameEl.style.cssText += textStyle;
 
-  // [한글 주석] 수집 날짜
-  document.getElementById('popup-date').textContent = '📅 방금 수집';
+  // [한글 주석] 수집 날짜 (방금 수집 - 언어별)
+  const _Tdate = window.LANG_UI; const _Ldate = window.currentLang || 'ko';
+  const _justCollected = { ko: '📅 방금 수집', en: '📅 Just collected', ru: '📅 Только что', zh: '📅 刚刚收集' };
+  document.getElementById('popup-date').textContent = _justCollected[_Ldate] || '📅 방금 수집';
 
   // [한글 주석] 희귀도 뱃지 (언어별 텍스트 적용)
   const ui = window.LANG_UI ? window.LANG_UI[lang] : null;
