@@ -103,12 +103,13 @@ function showCardChoicePopup(cards, onChoice) {
   if (existing) existing.remove();
 
   // [한글 주석] 희귀도별 색상 설정
+  const _Rc = window.LANG_UI; const _Lc = window.currentLang || 'ko';
   const rarityConfig = {
     common: {
       border: '#84ff00',
       glow: 'rgba(132,255,0,0.4)',
       bg: 'linear-gradient(135deg, #1a2e1a, #0f1c0f)',
-      label: '★ 일반',
+      label: '★ ' + (_Rc?.[_Lc]?.rarityCommon || '일반'),
       labelColor: '#84ff00',
       headerBg: '#1a3a1a'
     },
@@ -116,7 +117,7 @@ function showCardChoicePopup(cards, onChoice) {
       border: '#4a9eff',
       glow: 'rgba(74,158,255,0.4)',
       bg: 'linear-gradient(135deg, #1a1f3a, #0f1525)',
-      label: '★★ 희귀',
+      label: '★★ ' + (_Rc?.[_Lc]?.rarityRare || '희귀'),
       labelColor: '#4a9eff',
       headerBg: '#1a2a4a'
     },
@@ -124,7 +125,7 @@ function showCardChoicePopup(cards, onChoice) {
       border: '#ffd700',
       glow: 'rgba(255,215,0,0.5)',
       bg: 'linear-gradient(135deg, #2a1a0a, #1a0f05)',
-      label: '★★★ 전설',
+      label: '★★★ ' + (_Rc?.[_Lc]?.rarityEpic || '전설'),
       labelColor: '#ffd700',
       headerBg: '#3a2a0a'
     }
@@ -644,7 +645,7 @@ function showCardPopup(cardParam, isNew) {
 
     const legendText = document.createElement('div');
     legendText.className = 'epic-legendary-text';
-    legendText.textContent = '🎊 전설 카드 등장! 🎊';
+    legendText.textContent = '🎊 ' + ((window.LANG_UI?.[window.currentLang||'ko']?.rarityEpic) || '전설') + ' 카드 등장! 🎊';
     overlay.appendChild(legendText);
 
     spawnParticles(overlay, 8, 'gold', '✦');
@@ -851,9 +852,9 @@ function showNewCardEffect(card) {
 
   // [한글 주석] 희귀도 텍스트 - 별과 등급명 사이 줄바꿈
   const rarityText = {
-    epic:   '★★★<br>전설 NEW!',
-    rare:   '★★<br>희귀 NEW!',
-    common: '★<br>일반 NEW!'
+    epic:   '★★★<br>' + ((window.LANG_UI?.[window.currentLang||'ko']?.rarityEpic) || '전설') + ' NEW!',
+    rare:   '★★<br>' + ((window.LANG_UI?.[window.currentLang||'ko']?.rarityRare) || '희귀') + ' NEW!',
+    common: '★<br>' + ((window.LANG_UI?.[window.currentLang||'ko']?.rarityCommon) || '일반') + ' NEW!'
   }[card.rarity] || 'NEW!';
 
   effect.innerHTML = `

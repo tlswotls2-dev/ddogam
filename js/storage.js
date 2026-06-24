@@ -55,10 +55,9 @@ function saveCollection(cardId) {
       }
     }
 
-    // 도감을 위한 수집 날짜 저장
+    // 도감을 위한 수집 날짜 저장 (타임스탬프로 저장해서 언어별 표시 가능)
     const dates = getCollectionDates();
-    const dateString = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
-    dates[cardId] = dateString;
+    dates[cardId] = Date.now();
     localStorage.setItem('collectionDates', JSON.stringify(dates));
 
     // [한글 주석] WiFi 연결 시 자동 동기화를 위한 대기열 추가

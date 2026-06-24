@@ -407,7 +407,7 @@ function _showLevelQuizPopup(newLevel, questionCard, choices, triggerCardId) {
         <div>
           <div style="color:${rColor};font-size:11px;font-weight:700;margin-bottom:4px;" id="lq-question"></div>
           <div style="color:#fff;font-size:16px;font-weight:900;">
-            ${questionCard.name}
+            ${(window.currentLang && window.currentLang !== 'ko' && questionCard[`name_${window.currentLang}`]) ? questionCard[`name_${window.currentLang}`] : questionCard.name}
           </div>
         </div>
       </div>
@@ -432,7 +432,7 @@ function _showLevelQuizPopup(newLevel, questionCard, choices, triggerCardId) {
               transition:all 0.2s;
               line-height:1.4;
             "
-          >${['①', '②', '③', '④'][i]} ${c.short_desc}</button>
+          >${['①', '②', '③', '④'][i]} ${(window.currentLang && window.currentLang !== 'ko' && c[`short_desc_${window.currentLang}`]) ? c[`short_desc_${window.currentLang}`] : c.short_desc}</button>
         `).join('')}
       </div>
     </div>

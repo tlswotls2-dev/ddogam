@@ -370,10 +370,10 @@ function _renderBattleCard() {
           background:rgba(0,0,0,0.2);
         ">${imgHTML}</div>
         <div style="color:#fff;font-size:18px;font-weight:900;margin-bottom:6px;">
-          ${card.name}
+          ${(window.currentLang && window.currentLang !== 'ko' && card[`name_${window.currentLang}`]) ? card[`name_${window.currentLang}`] : card.name}
         </div>
         <div style="color:#d4c89c;font-size:12px;line-height:1.6;">
-          ${card.short_desc || ''}
+          ${(window.currentLang && window.currentLang !== 'ko' && card[`short_desc_${window.currentLang}`]) ? card[`short_desc_${window.currentLang}`] : (card.short_desc || '')}
         </div>
         <div style="color:#666;font-size:10px;margin-top:8px;">
           📍 ${card.habitat || ''}
@@ -397,7 +397,7 @@ function _renderBattleCard() {
         box-shadow:0 0 20px ${cfg.color}44;
       ">
         <div style="color:${cfg.color};font-size:14px;font-weight:900;margin-bottom:12px;">
-          ${card.name} ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleDetailLabel || '상세정보') : '상세정보'}
+          ${(window.currentLang && window.currentLang !== 'ko' && card[`name_${window.currentLang}`]) ? card[`name_${window.currentLang}`] : card.name} ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleDetailLabel || '상세정보') : '상세정보'}
         </div>
         <div style="
           color:#d4c89c;font-size:12px;
@@ -405,7 +405,7 @@ function _renderBattleCard() {
           background:rgba(0,0,0,0.2);
           border-radius:12px;padding:14px;
         ">
-          ${card.detail_desc || card.short_desc || ''}
+          ${(window.currentLang && window.currentLang !== 'ko' && card[`detail_desc_${window.currentLang}`]) ? card[`detail_desc_${window.currentLang}`] : (card.detail_desc || card.short_desc || '')}
         </div>
         <div style="color:#8db05c;font-size:11px;margin-top:12px;">
           ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleFlipHintBack || '🔄 뒤집기로 앞면 확인!') : '🔄 뒤집기로 앞면 확인!'}
