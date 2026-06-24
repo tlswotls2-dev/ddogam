@@ -152,9 +152,9 @@ function showCardChoicePopup(cards, onChoice) {
       color:#ffd700;font-size:18px;font-weight:900;
       text-align:center;
       text-shadow:0 0 20px rgba(255,215,0,0.5);
-    ">✨ 카드를 선택하세요! ✨</div>
+    ">✨ ${(window.LANG_UI?.[window.currentLang||'ko']?.cardChoiceTitle) || '카드를 선택하세요!'} ✨</div>
     <div style="color:#aaa;font-size:12px;text-align:center;margin-bottom:4px;">
-      1장을 골라 도감에 추가해요
+      ${(window.LANG_UI?.[window.currentLang||'ko']?.cardChoiceDesc) || '1장을 골라 도감에 추가해요'}
     </div>
     <div id="card-choice-row" style="
       display:flex;gap:10px;
@@ -239,7 +239,7 @@ function showCardChoicePopup(cards, onChoice) {
           -webkit-line-clamp:2;
           -webkit-box-orient:vertical;
           overflow:hidden;
-        ">탭해서 선택</div>
+        ">${(window.LANG_UI?.[window.currentLang||'ko']?.cardChoiceTap) || '탭해서 선택'}</div>
       </div>
     `;
 
@@ -265,7 +265,7 @@ function showCardChoicePopup(cards, onChoice) {
 
         // [한글 주석] 카드 이름/희귀도 공개
         if (header) {
-          header.textContent = c.name;
+          header.textContent = (window.currentLang && window.currentLang !== 'ko' && c[`name_${window.currentLang}`]) ? c[`name_${window.currentLang}`] : c.name;
           header.style.color = cf.labelColor;
         }
         if (footer) {
@@ -276,7 +276,7 @@ function showCardChoicePopup(cards, onChoice) {
           }
         }
         if (desc) {
-          desc.textContent = c.short_desc || c.habitat || '';
+          desc.textContent = (window.currentLang && window.currentLang !== 'ko' && c[`short_desc_${window.currentLang}`]) ? c[`short_desc_${window.currentLang}`] : (c.short_desc || c.habitat || '');
         }
 
         // [한글 주석] 선택 안 된 카드는 흐리게
@@ -877,7 +877,7 @@ function showNewCardEffect(card) {
         font-size: 16px;
         font-weight: 700;
         margin-top: 6px;
-      ">${card.name}</div>
+      ">${(window.currentLang && window.currentLang !== 'ko' && card[`name_${window.currentLang}`]) ? card[`name_${window.currentLang}`] : card.name}</div>
     </div>
   `;
 

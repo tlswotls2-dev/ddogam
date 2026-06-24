@@ -323,6 +323,9 @@ window.LANG_UI = {
     helpSettingsTitle: '⚙️ 설정',
     helpSettingsDesc: '• 언어 설정: 한국어/영어/러시아어/중국어 지원\n• 내 데이터 내보내기: QR코드로 다른 기기에 데이터 전송\n• 복주머니는 전송되지 않으니 먼저 열어두세요!',
     helpDetailCloseBtn: '확인!',
+    cardChoiceTitle: '카드를 선택하세요!',
+    cardChoiceDesc: '1장을 골라 도감에 추가해요',
+    cardChoiceTap: '탭해서 선택',
   },
   en: {
     langBtnLabel: 'English',
@@ -598,6 +601,9 @@ window.LANG_UI = {
     helpSettingsTitle: '⚙️ Settings',
     helpSettingsDesc: '• Language: Korean/English/Russian/Chinese\n• Export Data: Transfer via QR code to new device\n• Open all Lucky Bags before transferring!',
     helpDetailCloseBtn: 'OK!',
+    cardChoiceTitle: 'Choose a Card!',
+    cardChoiceDesc: 'Pick 1 to add to your collection',
+    cardChoiceTap: 'Tap to select',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -873,6 +879,9 @@ window.LANG_UI = {
     helpSettingsTitle: '⚙️ Настройки',
     helpSettingsDesc: '• Язык: Корейский/Английский/Русский/Китайский\n• Экспорт данных: QR-код для переноса на новое устройство\n• Сначала открой все мешочки перед переносом!',
     helpDetailCloseBtn: 'ОК!',
+    cardChoiceTitle: 'Выбери карточку!',
+    cardChoiceDesc: 'Выбери 1 для коллекции',
+    cardChoiceTap: 'Нажми для выбора',
   },
   zh: {
     langBtnLabel: '中文',
@@ -1148,6 +1157,9 @@ window.LANG_UI = {
     helpSettingsTitle: '⚙️ 设置',
     helpSettingsDesc: '• 语言设置：支持韩语/英语/俄语/中文\n• 导出数据：通过二维码将数据传输到新设备\n• 传输前请先打开所有福袋！',
     helpDetailCloseBtn: '确认！',
+    cardChoiceTitle: '选择一张卡片！',
+    cardChoiceDesc: '选择1张加入图鉴',
+    cardChoiceTap: '点击选择',
   }
 };
 

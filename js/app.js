@@ -208,7 +208,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const userInfoEl = document.getElementById('user-info-display');
         if (userInfoEl && userData.class && userData.number) {
             // [한글 주석] 반/번호 + 탐험가 빨간 하트 표시
-            userInfoEl.innerHTML = `${userData.class}반 ${userData.number}번 탐험가<span style="color:#ff4444;">♥</span>`;
+            const _TuI = window.LANG_UI; const _LuI = window.currentLang || 'ko';
+            const _explorerLabel = _TuI?.[_LuI]?.titleBadgeExplorer || '탐험가';
+            const _classLabel = _LuI === 'ko' ? `${userData.class}반 ${userData.number}번 ${_explorerLabel}` :
+                                _LuI === 'zh' ? `${userData.class}班 ${userData.number}号 ${_explorerLabel}` :
+                                `Class ${userData.class} No.${userData.number} ${_explorerLabel}`;
+            userInfoEl.innerHTML = `${_classLabel}<span style="color:#ff4444;">♥</span>`;
         }
 
         // 메인 화면 데이터 및 기능 초기화
