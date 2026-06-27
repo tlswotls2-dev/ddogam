@@ -202,6 +202,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof _updateMuteBtn === 'function') _updateMuteBtn();
 
         mainContainer.style.display = 'block'; // 메인 컨테이너 표시
+        // [한글 주석] 로그인 직후 1초 뒤 선생님 보상 확인
+        setTimeout(() => {
+          if (typeof checkTeacherReward === 'function') checkTeacherReward();
+        }, 1000);
 
         // [한글 주석] 우측 상단에 반/번호 표시
         const userData = JSON.parse(localStorage.getItem('userData') || '{}');
