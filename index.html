@@ -858,7 +858,7 @@
         <button onclick="hideHelpDetail()" id="help-back-btn" style="background:rgba(255,255,255,0.08);color:#d4c89c;border:1px solid #6b8e3d;border-radius:10px;padding:6px 12px;font-size:13px;cursor:pointer;">← 뒤로</button>
         <div style="color:#8db05c;font-size:15px;font-weight:900;" id="help-detail-title">📚 자세한 사용법</div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:14px;max-height:70vh;overflow-y:auto;">
+      <div style="display:flex;flex-direction:column;gap:14px;max-height:55vh;overflow-y:auto;">
         <div style="background:rgba(141,176,92,0.08);border:1px solid #6b8e3d;border-radius:14px;padding:14px;">
           <div style="color:#8db05c;font-size:13px;font-weight:900;margin-bottom:8px;" id="help-explore-title">👟 탐험 방법</div>
           <div style="color:#d4c89c;font-size:11px;line-height:1.8;" id="help-explore-desc">• 주황색 탐험! 버튼을 누르면 탐험 시작<br>• ⚠️ 걸을 때는 절대 스마트기기 화면을 보면서 걷지 마세요!<br>• 탐험 버튼을 누른 후 화면을 끄지 않고 주머니에 넣고 걸어요<br>• 걷다 보면 현재 위치 주변에서 랜덤으로 카드 등장<br>• 진동이 울리면 안전한 곳에 멈춰서 화면을 확인해요<br>• 30% 확률로 카드 3장 중 1장을 선택하는 이벤트 발생!</div>
@@ -958,7 +958,6 @@
         }
 
         #main-container,
-        #login-container,
         #avatar-customize-screen,
         #dodam-screen,
         #map-screen,
@@ -974,6 +973,19 @@
           transform: translate(-50%, -50%) scale(${scale.toFixed(3)}) !important;
           transform-origin: center center !important;
           overflow: hidden !important;
+        }
+
+        #login-container {
+          width: ${baseW}px !important;
+          max-width: ${baseW}px !important;
+          height: ${baseH}px !important;
+          min-height: ${baseH}px !important;
+          position: fixed !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) scale(${scale.toFixed(3)}) !important;
+          transform-origin: center center !important;
+          overflow-y: auto !important;
         }
 
         .app-container {
