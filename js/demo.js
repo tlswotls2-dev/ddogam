@@ -311,17 +311,41 @@ function showDemoBanner() {
       document.getElementById('main-container'),
       document.getElementById('login-container'),
       document.querySelector('.teacher-dashboard-screen'),
-      document.querySelector('#teacher-dashboard-screen')
+      document.querySelector('#teacher-dashboard-screen'),
+      document.getElementById('dodam-screen'),
+      document.getElementById('map-screen'),
+      document.getElementById('quiz-screen'),
+      document.getElementById('avatar-customize-screen'),
+      document.getElementById('chatbot-screen')
     ];
     targets.forEach(el => {
-      if (el) el.style.paddingTop = bannerH + 'px';
+      if (el) el.style.top = bannerH + 'px';
     });
-    // [한글 주석] 배너 나가기 버튼 클릭 시 padding 제거
+
+    // [한글 주석] 나중에 열리는 화면도 처리 (MutationObserver)
+    const observer = new MutationObserver(() => {
+      const lateTargets = [
+        document.getElementById('dodam-screen'),
+        document.getElementById('map-screen'),
+        document.getElementById('quiz-screen'),
+        document.getElementById('avatar-customize-screen'),
+        document.getElementById('chatbot-screen')
+      ];
+      lateTargets.forEach(el => {
+        if (el && el.style.top !== bannerH + 'px') {
+          el.style.top = bannerH + 'px';
+        }
+      });
+    });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+
+    // [한글 주석] 배너 나가기 버튼 클릭 시 top 제거
     const exitBtn = banner.querySelector('button');
     if (exitBtn) {
       const orig = exitBtn.onclick;
       exitBtn.onclick = function(e) {
-        targets.forEach(el => { if (el) el.style.paddingTop = ''; });
+        observer.disconnect();
+        targets.forEach(el => { if (el) el.style.top = ''; });
         if (orig) orig.call(this, e);
       };
     }
