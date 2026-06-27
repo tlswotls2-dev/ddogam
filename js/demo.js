@@ -362,6 +362,20 @@ function showDemoBanner() {
         top: ${bannerH}px !important;
         height: calc(100% - ${bannerH}px) !important;
       }
+      /* [한글 주석] 지도 컨테이너 높이 조정 */
+      #map-screen .map-container {
+        height: calc(100vh - ${bannerH}px - 60px) !important;
+      }
+      /* [한글 주석] 아이템 미리보기 영역 축소 */
+      #avatar-customize-screen .customize-preview-area {
+        flex: 0 0 25% !important;
+        min-height: 25% !important;
+        max-height: 25% !important;
+      }
+      #avatar-customize-screen .customize-avatar-box {
+        width: 80px !important;
+        height: 120px !important;
+      }
     `;
     document.head.appendChild(demoStyle);
 

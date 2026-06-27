@@ -313,21 +313,21 @@ function _renderStudyScreen() {
         background:rgba(255,255,255,0.05);
         border:1px solid #444;border-radius:${_s(12)};
         color:#aaa;font-size:${_s(13)};cursor:pointer;
-        min-height:${_s(44)};
+        min-height:${_s(44)};white-space:nowrap;
       ">${ts('battlePrev')}</button>
       <button onclick="battleFlipCard()" style="
         flex:1;padding:${_s(12)} ${_s(8)};
         background:rgba(141,176,92,0.1);
         border:1px solid #6b8e3d;border-radius:${_s(12)};
         color:#8db05c;font-size:${_s(13)};cursor:pointer;
-        min-height:${_s(44)};
+        min-height:${_s(44)};white-space:nowrap;
       ">${ts('battleFlip')}</button>
       <button onclick="battleNextCard()" style="
         flex:1;padding:${_s(12)} ${_s(8)};
         background:rgba(255,255,255,0.05);
         border:1px solid #444;border-radius:${_s(12)};
         color:#aaa;font-size:${_s(13)};cursor:pointer;
-        min-height:${_s(44)};
+        min-height:${_s(44)};white-space:nowrap;
       ">${ts('battleNext')}</button>
     </div>
   `;
