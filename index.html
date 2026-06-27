@@ -1054,7 +1054,34 @@
 
         #main-container .right-buttons {
           right: calc(14px * ${scaleRatio}) !important;
+          top: calc(380px * ${scaleRatio}) !important;
           gap: calc(10px * ${scaleRatio}) !important;
+        }
+
+        /* [한글 주석] 왼쪽 버튼들 (배틀, 일일시험, 도움말) */
+        #main-container #battle-mode-btn,
+        #main-container #daily-quiz-btn,
+        #main-container #help-btn {
+          width: calc(56px * ${scaleRatio}) !important;
+          height: calc(56px * ${scaleRatio}) !important;
+          font-size: calc(0.75rem * ${scaleRatio}) !important;
+          border-radius: calc(14px * ${scaleRatio}) !important;
+        }
+
+        /* [한글 주석] 설정 버튼 */
+        #main-container #settings-btn {
+          font-size: calc(0.75rem * ${scaleRatio}) !important;
+          padding: calc(10px * ${scaleRatio}) calc(16px * ${scaleRatio}) !important;
+          border-radius: calc(14px * ${scaleRatio}) !important;
+        }
+
+        /* [한글 주석] 아바타 */
+        #main-container .character-area {
+          bottom: calc(100px * ${scaleRatio}) !important;
+        }
+
+        #main-container .character {
+          font-size: calc(84px * ${scaleRatio}) !important;
         }
 
         /* [한글 주석] 로그인 화면 */
