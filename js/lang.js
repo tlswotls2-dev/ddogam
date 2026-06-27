@@ -326,6 +326,9 @@ window.LANG_UI = {
     cardChoiceTitle: '카드를 선택하세요!',
     cardChoiceDesc: '1장을 골라 도감에 추가해요',
     cardChoiceTap: '탭해서 선택',
+    bagOpenAll: '🎁 전체 열기',
+    battleAICorrect: 'AI 또감이 정답! ✓',
+    battleAIWrong: 'AI 또감이 오답 ✗',
   },
   en: {
     langBtnLabel: 'English',
@@ -604,6 +607,9 @@ window.LANG_UI = {
     cardChoiceTitle: 'Choose a Card!',
     cardChoiceDesc: 'Pick 1 to add to your collection',
     cardChoiceTap: 'Tap to select',
+    bagOpenAll: '🎁 Open All',
+    battleAICorrect: 'AI Ddogam Correct! ✓',
+    battleAIWrong: 'AI Ddogam Wrong ✗',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -882,6 +888,9 @@ window.LANG_UI = {
     cardChoiceTitle: 'Выбери карточку!',
     cardChoiceDesc: 'Выбери 1 для коллекции',
     cardChoiceTap: 'Нажми для выбора',
+    bagOpenAll: '🎁 Открыть все',
+    battleAICorrect: 'ИИ Ттогами верно! ✓',
+    battleAIWrong: 'ИИ Ттогами неверно ✗',
   },
   zh: {
     langBtnLabel: '中文',
@@ -1160,6 +1169,9 @@ window.LANG_UI = {
     cardChoiceTitle: '选择一张卡片！',
     cardChoiceDesc: '选择1张加入图鉴',
     cardChoiceTap: '点击选择',
+    bagOpenAll: '🎁 全部打开',
+    battleAICorrect: 'AI又感答对了! ✓',
+    battleAIWrong: 'AI又感答错了 ✗',
   }
 };
 
@@ -1379,6 +1391,10 @@ function applyUIText(langCode) {
 
   // [한글 주석] 도움말 번역 적용
   if (typeof applyHelpText === 'function') applyHelpText(langCode);
+
+  // [한글 주석] 전체열기 버튼 번역
+  const openAllText = document.getElementById('open-all-bags-text');
+  if (openAllText) openAllText.textContent = ui.bagOpenAll || '🎁 전체 열기';
 
   // [한글 주석] 아이템 화면 탭 이름
   const customizeTabLabels = {

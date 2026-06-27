@@ -205,13 +205,14 @@ function _renderAIBattleQ(overlay, state) {
     const txt  = document.getElementById('aib-ai-txt');
     const icon = document.getElementById('aib-ai-icon');
     if (!txt) return;
+    const _tai = window.LANG_UI?.[window.currentLang||'ko'];
     if (aiCorrect) {
       state.as++;
-      txt.textContent = 'AI 또감이 정답! ✓';
+      txt.textContent = _tai?.battleAICorrect || 'AI 또감이 정답! ✓';
       txt.style.color = '#84ff00';
       if (icon) icon.textContent = '✅';
     } else {
-      txt.textContent = 'AI 또감이 오답 ✗';
+      txt.textContent = _tai?.battleAIWrong || 'AI 또감이 오답 ✗';
       txt.style.color = '#ff8080';
       if (icon) icon.textContent = '❌';
     }

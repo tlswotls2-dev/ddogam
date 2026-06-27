@@ -346,10 +346,11 @@ function _renderBattleCard() {
   if (!card) return;
 
   const showBack = battleState.showingBack;
+  const _rl = window.LANG_UI?.[window.currentLang||'ko'];
   const rarityConfig = {
-    common: { color: '#8db05c', label: '★ 일반' },
-    rare: { color: '#4a9eff', label: '★★ 희귀' },
-    epic: { color: '#ffd700', label: '★★★ 전설' }
+    common: { color: '#8db05c', label: '★ ' + (_rl?.rarityCommon || '일반') },
+    rare: { color: '#4a9eff', label: '★★ ' + (_rl?.rarityRare || '희귀') },
+    epic: { color: '#ffd700', label: '★★★ ' + (_rl?.rarityEpic || '전설') }
   };
   const cfg = rarityConfig[card.rarity] || rarityConfig.common;
 
