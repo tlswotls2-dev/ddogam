@@ -963,14 +963,14 @@
       // [한글 주석] 모바일(480px 이하, 세로모드): 기본 레이아웃 유지
       if (w <= 480 && h > w) return;
 
-      // [한글 주석] 기준 앱 크기 (스마트폰 기준)
-      const baseW = 390;
-      const baseH = Math.round(baseW * 16 / 9); // 693px
-
-      // [한글 주석] 뷰포트에 맞는 스케일 계산 (너비/높이 중 작은 비율 사용)
-      const scaleByW = w / baseW;
-      const scaleByH = h / baseH;
-      const scale = Math.min(scaleByW, scaleByH);
+      // [한글 주석] 뷰포트에 맞는 앱 크기 계산 (9:16 비율 유지)
+      // 너비 기준으로 높이 계산, 높이 초과시 높이 기준으로 재계산
+      let appW = w;
+      let appH = Math.round(appW * 16 / 9);
+      if (appH > h) {
+        appH = h;
+        appW = Math.round(appH * 9 / 16);
+      }
 
       const style = document.createElement('style');
       style.id = 'tablet-layout-style';
@@ -984,51 +984,55 @@
           min-height: 100vh;
         }
 
-        #main-container,
+        #main-container {
+          width: ${appW}px !important;
+          max-width: ${appW}px !important;
+          height: ${appH}px !important;
+          min-height: ${appH}px !important;
+          position: fixed !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+          overflow: hidden !important;
+        }
+
+        #login-container {
+          width: ${appW}px !important;
+          max-width: ${appW}px !important;
+          height: ${appH}px !important;
+          min-height: ${appH}px !important;
+          position: fixed !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+          overflow-y: auto !important;
+        }
+
         #avatar-customize-screen,
         #dodam-screen,
         #map-screen,
         #quiz-screen,
         #teacher-dashboard-screen {
-          width: ${baseW}px !important;
-          max-width: ${baseW}px !important;
-          height: ${baseH}px !important;
-          min-height: ${baseH}px !important;
+          width: ${appW}px !important;
+          max-width: ${appW}px !important;
+          height: ${appH}px !important;
           position: fixed !important;
           top: 50% !important;
           left: 50% !important;
-          transform: translate(-50%, -50%) scale(${scale.toFixed(3)}) !important;
-          transform-origin: center center !important;
-          overflow: hidden !important;
-        }
-
-        #login-container {
-          width: ${baseW}px !important;
-          max-width: ${baseW}px !important;
-          height: ${baseH}px !important;
-          min-height: ${baseH}px !important;
-          position: fixed !important;
-          top: 50% !important;
-          left: 50% !important;
-          transform: translate(-50%, -50%) scale(${scale.toFixed(3)}) !important;
-          transform-origin: center center !important;
-          overflow-y: auto !important;
+          transform: translate(-50%, -50%) !important;
         }
 
         .app-container {
-          width: ${baseW}px !important;
-          max-width: ${baseW}px !important;
-          height: ${baseH}px !important;
+          width: ${appW}px !important;
+          max-width: ${appW}px !important;
           position: fixed !important;
           top: 50% !important;
           left: 50% !important;
-          transform: translate(-50%, -50%) scale(${scale.toFixed(3)}) !important;
-          transform-origin: center center !important;
+          transform: translate(-50%, -50%) !important;
         }
 
-        /* [한글 주석] 팝업/오버레이도 동일 스케일 적용 */
+        /* [한글 주석] 팝업/오버레이 앱 너비 기준 중앙 정렬 */
         #shared-card-overlay,
-        #exploration-overlay,
         #help-modal,
         #safety-overlay,
         #gender-select-screen,
@@ -1048,8 +1052,15 @@
         #category-unlock-overlay,
         #card-choice-overlay,
         #export-qr-overlay {
-          transform: scale(${scale.toFixed(3)}) !important;
-          transform-origin: center center !important;
+          position: fixed !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+          width: ${appW}px !important;
+          max-width: ${appW}px !important;
+          height: ${appH}px !important;
+          max-height: ${appH}px !important;
+          overflow: hidden !important;
         }
       `;
       document.head.appendChild(style);
