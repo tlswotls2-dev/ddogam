@@ -340,6 +340,12 @@ window.LANG_UI = {
     aiBattleThinking: 'AI 또감이 생각 중...',
     aiBattleQuestion: '이 카드의 설명은?',
     aiBattleDataLoading: '카드 데이터를 불러오는 중이에요! 잠시 후 다시 시도해주세요.',
+    battleQuizOf: '문제 중',
+    aiBattleResultWin: '대단해요! AI 또감이를 이겼어요! 🎉<br><span style="color:#ffd700;font-size:11px;">🎁 복주머니 1개 획득!</span>',
+    aiBattleResultDraw: 'AI 또감이와 비겼어요! 💪<br><span style="color:#4a9eff;font-size:11px;">🧩 복주머니 조각 1개 획득!</span>',
+    aiBattleResultLose: 'AI 또감이가 조금 더 빨랐어요.<br>카드를 더 읽고 다시 도전! 📖',
+    aiBattleNoLimit: 'AI 배틀은 일일 횟수 · 제한 없음',
+    aiBattleBack: '돌아가기',
   },
   en: {
     langBtnLabel: 'English',
@@ -632,6 +638,12 @@ window.LANG_UI = {
     aiBattleThinking: 'AI Ddogam is thinking...',
     aiBattleQuestion: 'What describes this card?',
     aiBattleDataLoading: 'Loading card data! Please try again in a moment.',
+    battleQuizOf: 'of',
+    aiBattleResultWin: 'Amazing! You beat AI Ddogam! 🎉<br><span style="color:#ffd700;font-size:11px;">🎁 1 Lucky Bag earned!</span>',
+    aiBattleResultDraw: 'You drew with AI Ddogam! 💪<br><span style="color:#4a9eff;font-size:11px;">🧩 1 Lucky Piece earned!</span>',
+    aiBattleResultLose: 'AI Ddogam was a little faster.<br>Read more cards and try again! 📖',
+    aiBattleNoLimit: 'AI battles have no daily limit',
+    aiBattleBack: 'Back',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -924,6 +936,12 @@ window.LANG_UI = {
     aiBattleThinking: 'ИИ Ттогами думает...',
     aiBattleQuestion: 'Что описывает эту карточку?',
     aiBattleDataLoading: 'Загрузка данных! Попробуйте ещё раз.',
+    battleQuizOf: 'из',
+    aiBattleResultWin: 'Отлично! Ты победил ИИ Ттогами! 🎉<br><span style="color:#ffd700;font-size:11px;">🎁 Получен 1 мешочек удачи!</span>',
+    aiBattleResultDraw: 'Ничья с ИИ Ттогами! 💪<br><span style="color:#4a9eff;font-size:11px;">🧩 Получен 1 осколок!</span>',
+    aiBattleResultLose: 'ИИ Ттогами был чуть быстрее.<br>Читай карточки и попробуй снова! 📖',
+    aiBattleNoLimit: 'Битвы с ИИ без дневного лимита',
+    aiBattleBack: 'Назад',
   },
   zh: {
     langBtnLabel: '中文',
@@ -1216,6 +1234,12 @@ window.LANG_UI = {
     aiBattleThinking: 'AI又感思考中...',
     aiBattleQuestion: '这张卡片的描述是？',
     aiBattleDataLoading: '正在加载卡片数据！请稍后重试。',
+    battleQuizOf: '题中',
+    aiBattleResultWin: '太棒了！你击败了AI又感！🎉<br><span style="color:#ffd700;font-size:11px;">🎁 获得1个福袋！</span>',
+    aiBattleResultDraw: '与AI又感平局！💪<br><span style="color:#4a9eff;font-size:11px;">🧩 获得1个碎片！</span>',
+    aiBattleResultLose: 'AI又感稍快一步。<br>多读卡片再来挑战！📖',
+    aiBattleNoLimit: 'AI对战无每日次数限制',
+    aiBattleBack: '返回',
   }
 };
 

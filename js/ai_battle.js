@@ -305,34 +305,34 @@ function _renderAIBattleResult(overlay, state) {
         ${win ? '🏆' : draw ? '🤝' : '😅'}
       </div>
       <div style="color:${win ? '#ffd700' : draw ? '#4a9eff' : '#ff8080'};font-size:22px;font-weight:700;margin-bottom:6px;">
-        ${win ? '승리!' : draw ? '무승부!' : '패배...'}
+        ${win ? _ait('battleWin') : draw ? _ait('battleDraw') : _ait('battleLose')}
       </div>
-      <div style="color:#555;font-size:12px;margin-bottom:22px;">vs 🤖 AI 또감이</div>
+      <div style="color:#555;font-size:12px;margin-bottom:22px;">vs 🤖 ${_ait('aiBattleOpponent')}</div>
 
       <div style="display:flex;gap:10px;margin-bottom:20px;">
         <div style="flex:1;background:rgba(132,255,0,0.08);border:${win ? '2' : '1'}px solid ${win ? '#84ff00' : 'rgba(132,255,0,0.25)'};border-radius:14px;padding:16px;">
-          <div style="color:#888;font-size:10px;margin-bottom:3px;">나</div>
+          <div style="color:#888;font-size:10px;margin-bottom:3px;">${_ait('aiBattleMe')}</div>
           <div style="color:#84ff00;font-size:28px;font-weight:700;">${state.ps}</div>
-          <div style="color:#555;font-size:10px;">${state.questions.length}문제 중</div>
+          <div style="color:#555;font-size:10px;">${state.questions.length} ${_ait('battleQuizOf') || '문제 중'}</div>
         </div>
         <div style="display:flex;align-items:center;color:#333;font-size:18px;font-weight:700;">:</div>
         <div style="flex:1;background:rgba(74,158,255,0.08);border:${!win && !draw ? '2' : '1'}px solid ${!win && !draw ? '#4a9eff' : 'rgba(74,158,255,0.25)'};border-radius:14px;padding:16px;">
-          <div style="color:#888;font-size:10px;margin-bottom:3px;">🤖 AI</div>
+          <div style="color:#888;font-size:10px;margin-bottom:3px;">${_ait('aiBattleAI')}</div>
           <div style="color:#4a9eff;font-size:28px;font-weight:700;">${state.as}</div>
-          <div style="color:#555;font-size:10px;">${state.questions.length}문제 중</div>
+          <div style="color:#555;font-size:10px;">${state.questions.length} ${_ait('battleQuizOf') || '문제 중'}</div>
         </div>
       </div>
 
       <div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:14px;margin-bottom:18px;color:#b0b8d0;font-size:12px;line-height:1.8;">
-        ${win  ? '대단해요! AI 또감이를 이겼어요! 🎉<br><span style="color:#ffd700;font-size:11px;">🎁 복주머니 1개 획득!</span>'
-               : draw ? 'AI 또감이와 비겼어요! 💪<br><span style="color:#4a9eff;font-size:11px;">🧩 복주머니 조각 1개 획득!</span>'
-               : 'AI 또감이가 조금 더 빨랐어요.<br>카드를 더 읽고 다시 도전! 📖'}
-        <br><span style="color:#444;font-size:10px;">AI 배틀은 일일 횟수 · 제한 없음</span>
+        ${win  ? _ait('aiBattleResultWin')
+               : draw ? _ait('aiBattleResultDraw')
+               : _ait('aiBattleResultLose')}
+        <br><span style="color:#444;font-size:10px;">${_ait('aiBattleNoLimit')}</span>
       </div>
 
       <button onclick="document.getElementById('ai-battle-overlay').remove(); if(typeof stopBGM==='function') stopBGM(); setTimeout(()=>{ if(typeof playMainBGM==='function') playMainBGM(); },300);"
         style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:13px;color:#c0c8e0;font-size:13px;font-weight:700;cursor:pointer;">
-        돌아가기
+        ${_ait('aiBattleBack')}
       </button>
     </div>`;
 
