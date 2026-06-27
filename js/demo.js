@@ -362,19 +362,41 @@ function showDemoBanner() {
         top: ${bannerH}px !important;
         height: calc(100% - ${bannerH}px) !important;
       }
-      /* [한글 주석] 지도 전체 높이 조정 */
+      /* [한글 주석] 지도 화면 자체 높이 축소 */
+      #map-screen {
+        height: calc(100vh - ${bannerH}px) !important;
+      }
       #map-screen .map-container {
-        height: calc(100vh - ${bannerH}px - 56px) !important;
+        flex: 1 !important;
+        min-height: 0 !important;
       }
       #map-screen .map-info-bar {
         bottom: 8px !important;
       }
-      /* [한글 주석] 아이템 목록 영역 축소해서 하단 버튼 보이게 */
+      /* [한글 주석] 아이템 꾸미기 화면 높이 축소 */
+      #avatar-customize-screen {
+        height: calc(100vh - ${bannerH}px) !important;
+      }
+      /* [한글 주석] 아이템 목록 flex로 남은 공간만 사용 */
+      #avatar-customize-screen .customize-body {
+        height: calc(100vh - ${bannerH}px - 56px) !important;
+        overflow: hidden !important;
+      }
+      #avatar-customize-screen .customize-items-area {
+        flex: 1 !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+      }
       #avatar-customize-screen .customize-item-list {
-        max-height: calc(100vh - ${bannerH}px - 280px) !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
       }
       #avatar-customize-screen .customize-footer {
         flex-shrink: 0 !important;
+        position: relative !important;
       }
     `;
     document.head.appendChild(demoStyle);
