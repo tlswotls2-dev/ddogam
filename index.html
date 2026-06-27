@@ -1098,20 +1098,35 @@
           bottom: calc(100px * ${scaleRatio}) !important;
         }
 
-        #main-container .character {
-          font-size: calc(84px * ${scaleRatio} * 1.5) !important;
-        }
-
         #main-container #main-character {
           transform: scale(1.5) !important;
           transform-origin: bottom center !important;
         }
 
-        /* [한글 주석] 칭호 우상단 위치 보정 */
+        /* [한글 주석] 레벨 뱃지 - 아바타 왼쪽 위 겹침 방지 */
+        #main-container #level-badge {
+          left: calc(-40px * ${scaleRatio}) !important;
+          top: calc(-16px * ${scaleRatio}) !important;
+          font-size: calc(11px * ${scaleRatio}) !important;
+          padding: calc(3px * ${scaleRatio}) calc(8px * ${scaleRatio}) !important;
+          z-index: 30 !important;
+        }
+
+        /* [한글 주석] 칭호 우상단으로 이동 */
         #main-container #level-special-badge {
-          top: 0px !important;
-          right: 0px !important;
+          top: calc(-20px * ${scaleRatio}) !important;
+          right: calc(-20px * ${scaleRatio}) !important;
           bottom: auto !important;
+          width: calc(44px * ${scaleRatio}) !important;
+          height: calc(44px * ${scaleRatio}) !important;
+        }
+
+        /* [한글 주석] 펫 1.5배 크게 */
+        #main-container .pet-display {
+          transform: scale(1.5) !important;
+          transform-origin: bottom right !important;
+          right: calc(-50px * ${scaleRatio}) !important;
+          bottom: calc(-10px * ${scaleRatio}) !important;
         }
 
         /* [한글 주석] 로그인 화면 */
