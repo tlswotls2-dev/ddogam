@@ -30,10 +30,27 @@
     padding: 6px 10px !important;
   }
 
-  /* [한글 주석] 학생 그리드 기본 리셋 */
+  /* [한글 주석] 학생 그리드 기본 리셋 - style.css 오버라이드 */
   .dashboard-student-grid {
     max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     padding: 0 12px !important;
+  }
+
+  @media (min-width: 900px) {
+    .dashboard-student-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+      padding: 0 16px !important;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .dashboard-student-grid {
+      grid-template-columns: repeat(5, 1fr) !important;
+      padding: 0 20px !important;
+    }
   }
 </style>
 <script>
