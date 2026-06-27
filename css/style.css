@@ -1798,11 +1798,13 @@ button:active {
 .exploration-overlay {
     box-sizing: border-box;
     overflow: hidden;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(20, 30, 20, 0.97);
     /* 어두운 숲 밀폐 오버레이 */
     z-index: 9000;

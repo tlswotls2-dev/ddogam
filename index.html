@@ -586,6 +586,42 @@
 
   </div>
 
+  <!-- [한글 주석] 탐험 모드 오버레이 -->
+  <div id="exploration-overlay" class="exploration-overlay" style="display: none;"
+    onclick="handleExplorationOverlayClick()">
+    <div id="explore-default-content" class="explore-content-wrapper">
+      <div class="explore-top" id="explore-top-text">🥾 탐험 중...</div>
+      <div class="explore-center">
+        <div class="explore-walk-scene">
+          <div class="explore-tree tree-far">🌲</div>
+          <div class="explore-tree tree-mid">🌳</div>
+          <div class="explore-tree tree-near">🌲</div>
+          <div class="explore-road"></div>
+          <div class="explore-avatar-walk" id="explore-avatar-walk"></div>
+          <div class="explore-footprint fp1">👣</div>
+          <div class="explore-footprint fp2">👣</div>
+          <div class="explore-footprint fp3">👣</div>
+        </div>
+        <div class="explore-safety-msg">
+          <div class="explore-safety-icon">⚠️</div>
+          <div class="explore-safety-text">
+            <span id="explore-safety-msg">👀 두눈은 화면에서 잠시 벗어나<br>두 발로 걸으며 자연을 느껴봐요!</span><br>
+            <span style="color:#d4a017;font-weight:700;" id="explore-safety-hint">
+              걷다 보면 신기한 카드가 나타날 거예요 🌿
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="explore-bottom">
+        <button class="explore-end-btn" onclick="event.stopPropagation(); stopExploration();">
+          탐험 종료
+        </button>
+      </div>
+    </div>
+    <div id="explore-discovery-content" class="explore-discovery-content" style="display: none;">
+      🎉 새로운 발견! 화면을 탭하세요!
+    </div>
+  </div>
 
   <!-- 🌟 지도 클러스터 상세 팝업 -->
   <div id="cluster-popup" class="cluster-popup" style="display:none;">
@@ -748,59 +784,6 @@
 
   <!-- [한글 주석] 챗봇 화면 제거됨 - 언어 선택 기능으로 교체 -->
   <!-- 탐험 모드 오버레이 (검정 80% 반투명 배경) -->
-  <div id="exploration-overlay" class="exploration-overlay" style="display: none;"
-    onclick="handleExplorationOverlayClick()">
-    <!-- 기본 탐험 중 표시되는 내용 -->
-    <div id="explore-default-content" class="explore-content-wrapper">
-
-      <!-- [한글 주석] 상단: 탐험 중 타이틀 -->
-      <div class="explore-top" id="explore-top-text">🥾 탐험 중...</div>
-
-      <!-- [한글 주석] 중앙: 걷는 아바타 애니메이션 -->
-      <div class="explore-center">
-
-        <!-- [한글 주석] 아바타 걷기 씬 -->
-        <div class="explore-walk-scene">
-          <!-- [한글 주석] 배경 나무들 -->
-          <div class="explore-tree tree-far">🌲</div>
-          <div class="explore-tree tree-mid">🌳</div>
-          <div class="explore-tree tree-near">🌲</div>
-          <!-- [한글 주석] 길 -->
-          <div class="explore-road"></div>
-          <!-- [한글 주석] 아바타 -->
-          <div class="explore-avatar-walk" id="explore-avatar-walk"></div>
-          <!-- [한글 주석] 발자국 -->
-          <div class="explore-footprint fp1">👣</div>
-          <div class="explore-footprint fp2">👣</div>
-          <div class="explore-footprint fp3">👣</div>
-        </div>
-
-        <!-- [한글 주석] 안내 문구 -->
-        <div class="explore-safety-msg">
-          <div class="explore-safety-icon">⚠️</div>
-          <div class="explore-safety-text">
-            <span id="explore-safety-msg">👀 두눈은 화면에서 잠시 벗어나<br>두 발로 걸으며 자연을 느껴봐요!</span><br>
-            <span style="color:#d4a017;font-weight:700;" id="explore-safety-hint">
-              걷다 보면 신기한 카드가 나타날 거예요 🌿
-            </span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- [한글 주석] 하단: 탐험 종료 버튼 -->
-      <div class="explore-bottom">
-        <button class="explore-end-btn" onclick="event.stopPropagation(); stopExploration();">
-          탐험 종료
-        </button>
-      </div>
-    </div>
-
-    <!-- 아이템 발견 시 표시되는 알림 (깜빡임 효과 적용 예정) -->
-    <div id="explore-discovery-content" class="explore-discovery-content" style="display: none;">
-      🎉 새로운 발견! 화면을 탭하세요!
-    </div>
-  </div>
 
 
   <!-- [한글 주석] 도움말 모달 -->
