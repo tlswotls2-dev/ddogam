@@ -8,6 +8,33 @@
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
+  /* [한글 주석] 노트북 최적화 (900px~1200px) */
+  @media (min-width: 900px) and (max-width: 1200px) {
+    .dashboard-header {
+      padding: 14px 20px !important;
+    }
+    .dashboard-title {
+      font-size: 1.1rem !important;
+      white-space: nowrap !important;
+    }
+    .dashboard-header-actions {
+      gap: 8px !important;
+      flex-wrap: nowrap !important;
+    }
+    .dashboard-btn {
+      font-size: 12px !important;
+      padding: 6px 10px !important;
+      white-space: nowrap !important;
+    }
+    .dashboard-stats-row {
+      grid-template-columns: repeat(5, 1fr) !important;
+    }
+    .dashboard-student-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+      padding: 0 16px !important;
+    }
+  }
+
   /* [한글 주석] 태블릿 전용 최적화 (600px~900px) */
   @media (min-width: 600px) and (max-width: 900px) {
     .dashboard-header {
