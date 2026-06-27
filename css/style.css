@@ -307,6 +307,7 @@ button:active {
     margin: 0 auto;
     border: 3px solid var(--border-color);
     box-shadow: 0 0 30px rgba(107, 142, 61, 0.25);
+    isolation: isolate;
 }
 
 /* 밤하늘 별 효과 (둥근 별로 세련되게 처리) */
