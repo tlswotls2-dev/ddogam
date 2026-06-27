@@ -986,9 +986,35 @@
           transform: translate(-50%, -50%) scale(${scale.toFixed(3)}) !important;
           transform-origin: center center !important;
         }
+
+        /* [한글 주석] 팝업/오버레이도 동일 스케일 적용 */
+        #shared-card-overlay,
+        #exploration-overlay,
+        #help-modal,
+        #safety-overlay,
+        #gender-select-screen,
+        #battle-overlay,
+        #battle-study-overlay,
+        #battle-quiz-overlay,
+        #battle-matched-overlay,
+        #battle-result-overlay,
+        #battle-wait-result-overlay,
+        #battle-fail-overlay,
+        #ai-transition-overlay,
+        #daily-quiz-overlay,
+        #daily-result-overlay,
+        #daily-done-overlay,
+        #ai-analysis-overlay,
+        #levelup-quiz-overlay,
+        #category-unlock-overlay,
+        #card-choice-overlay,
+        #export-qr-overlay {
+          transform: scale(${scale.toFixed(3)}) !important;
+          transform-origin: center center !important;
+        }
       `;
       document.head.appendChild(style);
-      console.log('[레이아웃] 적용됨 - 앱 크기:', appW, 'x', appH);
+      console.log('[레이아웃] 적용됨 - 앱 크기:', baseW, 'x', baseH, '스케일:', scale.toFixed(3));
     })();
   </script>
 
