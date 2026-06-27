@@ -936,14 +936,14 @@
       // [한글 주석] 모바일(480px 이하, 세로모드): 기본 레이아웃 유지
       if (w <= 480 && h > w) return;
 
-      // [한글 주석] 너비는 뷰포트 너비 그대로, 높이는 9:16 비율로
-      // 단, 높이가 뷰포트 넘으면 높이 기준으로 재계산
-      let appW = w;
-      let appH = Math.round(appW * 16 / 9);
-      if (appH > h) {
-        appH = h;
-        appW = Math.round(appH * 9 / 16);
-      }
+      // [한글 주석] 기준 앱 크기 (스마트폰 기준)
+      const baseW = 390;
+      const baseH = Math.round(baseW * 16 / 9); // 693px
+
+      // [한글 주석] 뷰포트에 맞는 스케일 계산 (너비/높이 중 작은 비율 사용)
+      const scaleByW = w / baseW;
+      const scaleByH = h / baseH;
+      const scale = Math.min(scaleByW, scaleByH);
 
       const style = document.createElement('style');
       style.id = 'tablet-layout-style';
@@ -964,25 +964,27 @@
         #map-screen,
         #quiz-screen,
         #teacher-dashboard-screen {
-          width: ${appW}px !important;
-          max-width: ${appW}px !important;
-          height: ${appH}px !important;
-          min-height: ${appH}px !important;
+          width: ${baseW}px !important;
+          max-width: ${baseW}px !important;
+          height: ${baseH}px !important;
+          min-height: ${baseH}px !important;
           position: fixed !important;
           top: 50% !important;
           left: 50% !important;
-          transform: translate(-50%, -50%) !important;
+          transform: translate(-50%, -50%) scale(${scale.toFixed(3)}) !important;
+          transform-origin: center center !important;
           overflow: hidden !important;
         }
 
         .app-container {
-          width: ${appW}px !important;
-          max-width: ${appW}px !important;
-          height: ${appH}px !important;
+          width: ${baseW}px !important;
+          max-width: ${baseW}px !important;
+          height: ${baseH}px !important;
           position: fixed !important;
           top: 50% !important;
           left: 50% !important;
-          transform: translate(-50%, -50%) !important;
+          transform: translate(-50%, -50%) scale(${scale.toFixed(3)}) !important;
+          transform-origin: center center !important;
         }
       `;
       document.head.appendChild(style);
