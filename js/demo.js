@@ -304,6 +304,28 @@ function showDemoBanner() {
     display:flex;align-items:center;justify-content:center;
     padding:6px 16px;gap:12px;
     box-shadow:0 2px 12px rgba(74,158,255,0.3);`;
+  // [한글 주석] 배너 높이만큼 콘텐츠 밀어내기
+  setTimeout(() => {
+    const bannerH = banner.getBoundingClientRect().height;
+    const targets = [
+      document.getElementById('main-container'),
+      document.getElementById('login-container'),
+      document.querySelector('.teacher-dashboard-screen'),
+      document.querySelector('#teacher-dashboard-screen')
+    ];
+    targets.forEach(el => {
+      if (el) el.style.paddingTop = bannerH + 'px';
+    });
+    // [한글 주석] 배너 나가기 버튼 클릭 시 padding 제거
+    const exitBtn = banner.querySelector('button');
+    if (exitBtn) {
+      const orig = exitBtn.onclick;
+      exitBtn.onclick = function(e) {
+        targets.forEach(el => { if (el) el.style.paddingTop = ''; });
+        if (orig) orig.call(this, e);
+      };
+    }
+  }, 100);
 
   banner.innerHTML = `
     <span style="font-size:13px;">🔍</span>
