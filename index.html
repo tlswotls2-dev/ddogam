@@ -1208,7 +1208,7 @@
           overflow-x: hidden !important;
         }
 
-        /* [한글 주석] 팝업 내부 컨텐츠 너비 확장 */
+        /* [한글 주석] 팝업 내부 컨텐츠 너비/높이 확장 */
         #battle-study-overlay > div,
         #battle-quiz-overlay > div,
         #battle-overlay > div,
@@ -1216,20 +1216,35 @@
         #levelup-quiz-overlay > div {
           max-width: calc(${appW}px - 32px) !important;
           width: 100% !important;
+          min-height: calc(${appH}px - 32px) !important;
+          max-height: calc(${appH}px - 32px) !important;
+          overflow-y: auto !important;
         }
 
-        /* [한글 주석] 도움말 내부 컨텐츠 너비 확장 */
-        #help-modal > div,
-        #help-modal > div > div {
+        /* [한글 주석] 도움말 내부 컨텐츠 너비/높이 확장 */
+        #help-modal > div {
           max-width: calc(${appW}px - 32px) !important;
           width: 100% !important;
+          min-height: calc(${appH}px - 32px) !important;
+          max-height: calc(${appH}px - 32px) !important;
+          overflow-y: auto !important;
         }
 
-        /* [한글 주석] 배틀 공부 화면 카드 영역 너비 확장 */
+        /* [한글 주석] 배틀 공부 화면 카드/버튼 영역 너비 확장 */
         #battle-study-overlay [style*="max-width:360px"],
         #battle-study-overlay [style*="max-width: 360px"] {
           max-width: calc(${appW}px - 32px) !important;
           width: 100% !important;
+        }
+
+        /* [한글 주석] 배틀/퀴즈 내부 폰트 크기 확대 */
+        #battle-study-overlay,
+        #battle-quiz-overlay,
+        #battle-overlay,
+        #daily-quiz-overlay,
+        #levelup-quiz-overlay,
+        #help-modal {
+          font-size: calc(1rem * ${scaleRatio}) !important;
         }
       `;
       document.head.appendChild(style);
