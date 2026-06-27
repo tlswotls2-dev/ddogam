@@ -929,58 +929,64 @@
   <script>
     // [한글 주석] 태블릿 감지 및 레이아웃 조정
     // [한글 주석] 안드로이드 태블릿은 CSS orientation 감지가 불안정하므로 JS로 직접 처리
-    (function applyTabletLayout() {
+    (function applyResponsiveLayout() {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const ua = navigator.userAgent.toLowerCase();
 
-      // [한글 주석] 태블릿 판단 기준: 너비 600px~1200px이고 세로 모드
-      const isTabletWidth = w >= 600 && w <= 1200;
-      const isPortrait = h > w;
-      const isAndroid = ua.includes('android');
-      const isTablet = isTabletWidth && isPortrait;
+      // [한글 주석] 모바일(480px 이하): 기본 레이아웃 유지
+      if (w <= 480) return;
 
-      if (isTablet) {
-        // [한글 주석] 태블릿 전용 CSS 동적 추가
-        const style = document.createElement('style');
-        style.id = 'tablet-layout-style';
-        style.textContent = `
-          /* [한글 주석] 태블릿 세로모드 전용 레이아웃 */
-          #main-container,
-          #login-container,
-          #avatar-customize-screen,
-          #dodam-screen,
-          #map-screen,
-          #quiz-screen,
-          #chatbot-screen,
-          #teacher-dashboard-screen {
-            max-width: 680px !important;
-            width: 92% !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            position: fixed !important;
-          }
+      // [한글 주석] 480px 초과 화면: 스마트폰 비율(9:16)로 중앙 고정
+      // 뷰포트 높이 기준으로 너비 계산 (9:16 비율)
+      const appH = h;
+      const appW = Math.min(Math.round(appH * 9 / 16), 480);
 
-          /* [한글 주석] 태블릿에서 앱 컨테이너 중앙 정렬 */
-          .app-container {
-            max-width: 680px !important;
-            width: 92% !important;
-            margin: 0 auto !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            position: fixed !important;
-          }
+      const style = document.createElement('style');
+      style.id = 'tablet-layout-style';
+      style.textContent = `
+        body {
+          background: #1a2e1a !important;
+          overflow: hidden;
+        }
 
-          /* [한글 주석] body 배경색 설정 (양옆 빈 공간) */
-          body {
-            background: #1a2e1a !important;
-          }
-        `;
-        document.head.appendChild(style);
-        console.log('[태블릿] 레이아웃 적용됨, 너비:', w);
-      }
+        #main-container,
+        #login-container,
+        #avatar-customize-screen,
+        #dodam-screen,
+        #map-screen,
+        #quiz-screen,
+        #teacher-dashboard-screen {
+          width: ${appW}px !important;
+          max-width: ${appW}px !important;
+          height: ${appH}px !important;
+          position: fixed !important;
+          top: 0 !important;
+          left: 50% !important;
+          transform: translateX(-50%) !important;
+        }
+
+        .app-container {
+          width: ${appW}px !important;
+          max-width: ${appW}px !important;
+          position: fixed !important;
+          top: 0 !important;
+          left: 50% !important;
+          transform: translateX(-50%) !important;
+        }
+
+        /* [한글 주석] 팝업/오버레이는 앱 너비 기준 중앙 정렬 */
+        #shared-card-overlay,
+        #exploration-overlay,
+        #help-modal,
+        #safety-overlay,
+        #gender-select-screen {
+          width: ${appW}px !important;
+          left: 50% !important;
+          transform: translateX(-50%) !important;
+        }
+      `;
+      document.head.appendChild(style);
+      console.log('[레이아웃] 적용됨 - 앱 크기:', appW, 'x', appH);
     })();
   </script>
 
