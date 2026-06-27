@@ -1796,6 +1796,8 @@ button:active {
    ========================================================== */
 /* 탐험 모드 오버레이 (어두운 숲 밀폐 오버레이) */
 .exploration-overlay {
+  box-sizing: border-box;
+  overflow: hidden;
     position: fixed;
     top: 0;
     left: 0;
