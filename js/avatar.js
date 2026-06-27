@@ -556,38 +556,24 @@ function renderLevelBadge() {
   const badgeEl = document.createElement('div');
   badgeEl.id = 'level-special-badge';
   badgeEl.title = badge.name;
-  /* [한글 주석] 칭호 위치 - 메인화면/미리보기 구분해서 적용 */
-  const _isPreview = !!document.querySelector('.customize-avatar-box');
-  const _parentEl = document.getElementById('main-character') || document.querySelector('.customize-avatar-box');
+  /* [한글 주석] 칭호 위치 - append 대상으로 메인/미리보기 구분 */
+  const _mainChar = document.getElementById('main-character');
+  const _parentEl = _mainChar || document.querySelector('.customize-avatar-box');
   const _parentH = _parentEl ? _parentEl.getBoundingClientRect().height : 150;
   const _badgeSize = Math.round(_parentH * 0.28);
-  if (_isPreview) {
-    // [한글 주석] 미리보기: 우측 하단 (아바타 발 근처)
-    badgeEl.style.cssText = `
-      position:absolute;
-      right:0px;
-      bottom:0px;
-      width:${_badgeSize}px;
-      height:${_badgeSize}px;
-      z-index:10;
-      filter:drop-shadow(0 2px 6px rgba(255,215,0,0.5));
-      animation:badgeFloat 2.5s ease-in-out infinite;
-      cursor:pointer;
-    `;
-  } else {
-    // [한글 주석] 메인화면: 우측 상단
-    badgeEl.style.cssText = `
-      position:absolute;
-      right:0px;
-      top:0px;
-      width:${_badgeSize}px;
-      height:${_badgeSize}px;
-      z-index:10;
-      filter:drop-shadow(0 2px 6px rgba(255,215,0,0.5));
-      animation:badgeFloat 2.5s ease-in-out infinite;
-      cursor:pointer;
-    `;
-  }
+  // [한글 주석] main-character가 있으면 메인화면, 없으면 미리보기
+  const _isMainScreen = !!_mainChar;
+  badgeEl.style.cssText = `
+    position:absolute;
+    right:0px;
+    top:0px;
+    width:${_badgeSize}px;
+    height:${_badgeSize}px;
+    z-index:10;
+    filter:drop-shadow(0 2px 6px rgba(255,215,0,0.5));
+    animation:badgeFloat 2.5s ease-in-out infinite;
+    cursor:pointer;
+  `;
   badgeEl.innerHTML = badge.svg;
   badgeEl.onclick = () => showItemToast([`${badge.name} 장착 중! 🎉`]);
 
