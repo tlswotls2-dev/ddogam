@@ -1059,13 +1059,31 @@
         }
 
         /* [한글 주석] 왼쪽 버튼들 (배틀, 일일시험, 도움말) */
-        #main-container #battle-mode-btn,
-        #main-container #daily-quiz-btn,
+        #main-container #battle-mode-btn {
+          width: calc(56px * ${scaleRatio}) !important;
+          height: calc(56px * ${scaleRatio}) !important;
+          font-size: calc(0.75rem * ${scaleRatio}) !important;
+          border-radius: calc(14px * ${scaleRatio}) !important;
+          bottom: calc(216px * ${scaleRatio}) !important;
+          left: calc(14px * ${scaleRatio}) !important;
+        }
+
+        #main-container #daily-quiz-btn {
+          width: calc(56px * ${scaleRatio}) !important;
+          height: calc(56px * ${scaleRatio}) !important;
+          font-size: calc(0.75rem * ${scaleRatio}) !important;
+          border-radius: calc(14px * ${scaleRatio}) !important;
+          bottom: calc(148px * ${scaleRatio}) !important;
+          left: calc(14px * ${scaleRatio}) !important;
+        }
+
         #main-container #help-btn {
           width: calc(56px * ${scaleRatio}) !important;
           height: calc(56px * ${scaleRatio}) !important;
           font-size: calc(0.75rem * ${scaleRatio}) !important;
           border-radius: calc(14px * ${scaleRatio}) !important;
+          bottom: calc(80px * ${scaleRatio}) !important;
+          left: calc(14px * ${scaleRatio}) !important;
         }
 
         /* [한글 주석] 설정 버튼 */
