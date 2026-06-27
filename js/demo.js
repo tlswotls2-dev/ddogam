@@ -330,8 +330,7 @@ function showDemoBanner() {
   `;
   exitFloatBtn.textContent = '🚪 체험 모드 나가기';
   exitFloatBtn.onclick = () => {
-    // [한글 주석] 기존 배너의 나가기 버튼 동작 실행
-    const origExitBtn = banner.querySelector('button[onclick*="exit"], button[onclick*="logout"], button');
+    const origExitBtn = banner.querySelector('button');
     if (origExitBtn) origExitBtn.click();
     else {
       localStorage.removeItem('demoMode');
@@ -340,55 +339,6 @@ function showDemoBanner() {
     }
   };
   document.body.appendChild(exitFloatBtn);
-
-  // [한글 주석] 배너 높이만큼 콘텐츠 밀어내기 (배너 숨겼으므로 0으로 처리)
-  setTimeout(() => {
-    const bannerH = 0;
-
-    // [한글 주석] CSS로 모든 화면 처리
-    const demoStyle = document.createElement('style');
-    demoStyle.id = 'demo-slide-style';
-    demoStyle.textContent = `
-      /* [한글 주석] 메인/로그인 */
-      #main-container, #login-container {
-        margin-top: ${bannerH}px !important;
-      }
-      #teacher-dashboard-screen {
-        padding-top: ${bannerH}px !important;
-      }
-      /* [한글 주석] 슬라이드 화면들 - top을 bannerH로, 높이 줄이기 */
-      #dodam-screen, #map-screen, #quiz-screen,
-      #avatar-customize-screen, #chatbot-screen {
-        top: ${bannerH}px !important;
-        height: calc(100vh - ${bannerH}px) !important;
-        max-height: calc(100vh - ${bannerH}px) !important;
-      }
-      #dodam-screen.slide-in,
-      #map-screen.slide-in,
-      #quiz-screen.slide-in,
-      #avatar-customize-screen.slide-in,
-      #chatbot-screen.slide-in {
-        transform: translateX(-50%) !important;
-      }
-      /* [한글 주석] 탐험 오버레이 */
-      #exploration-overlay {
-        top: ${bannerH}px !important;
-        height: calc(100% - ${bannerH}px) !important;
-      }
-    `;
-    document.head.appendChild(demoStyle);
-
-    // [한글 주석] 배너 나가기 버튼 클릭 시 원상복구
-    const exitBtn = banner.querySelector('button');
-    if (exitBtn) {
-      const orig = exitBtn.onclick;
-      exitBtn.onclick = function(e) {
-        const s = document.getElementById('demo-slide-style');
-        if (s) s.remove();
-        if (orig) orig.call(this, e);
-      };
-    }
-  }, 100);
 
   banner.innerHTML = `
     <span style="font-size:13px;">🔍</span>
