@@ -11,9 +11,13 @@ function _getAICorrectRate(playerLevel) {
 }
 
 // [한글 주석] AI 배틀 진입점 — allCardsData 기반으로 실제 배틀과 동일한 형식 사용
+// [한글 주석] AI 배틀 번역 함수 (전역)
+function _ait(k) {
+  const lang = window.currentLang || 'ko';
+  return window.LANG_UI?.[lang]?.[k] || window.LANG_UI?.ko?.[k] || '';
+}
+
 function startAIBattle(category) {
-  const _aiL = window.LANG_UI?.[window.currentLang||'ko'] || window.LANG_UI?.ko || {};
-  const _ait = k => _aiL[k] || window.LANG_UI?.ko?.[k] || '';
   const allCards = window.allCardsData || [];
   const catCards = allCards.filter(c => c.category === category && c.short_desc);
 
@@ -178,7 +182,7 @@ function _renderAIBattleQ(overlay, state) {
         <div style="width:70px;height:70px;flex-shrink:0;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">${imgHTML}</div>
         <div>
           <div style="color:${rColor};font-size:10px;font-weight:700;margin-bottom:3px;">${_ait('aiBattleQuestion')}</div>
-          <div style="color:#fff;font-size:16px;font-weight:900;">${card.name}</div>
+          <div style="color:#fff;font-size:16px;font-weight:900;">${(window.currentLang && window.currentLang !== 'ko' && card[`name_${window.currentLang}`]) ? card[`name_${window.currentLang}`] : card.name}</div>
         </div>
       </div>
 
@@ -187,7 +191,7 @@ function _renderAIBattleQ(overlay, state) {
         ${choices.map((c, i) => `
           <button class="aib-opt" data-idx="${i}" data-correct="${c.id === card.id}"
             style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;padding:11px 14px;color:#f0e6c8;font-size:12px;text-align:left;cursor:pointer;transition:all 0.15s;line-height:1.5;">
-            ${['①','②','③','④'][i]} ${c.short_desc}
+            ${['①','②','③','④'][i]} ${(window.currentLang && window.currentLang !== 'ko' && c[`short_desc_${window.currentLang}`]) ? c[`short_desc_${window.currentLang}`] : c.short_desc}
           </button>`).join('')}
       </div>
     </div>`;

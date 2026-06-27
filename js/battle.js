@@ -857,7 +857,7 @@ function _renderBattleQuiz() {
           <div style="color:${rColor};font-size:10px;font-weight:700;margin-bottom:3px;">
             ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleQuizQuestion || '이 카드의 설명은?') : '이 카드의 설명은?'}
           </div>
-          <div style="color:#fff;font-size:16px;font-weight:900;">${card.name}</div>
+          <div style="color:#fff;font-size:16px;font-weight:900;">${(window.currentLang && window.currentLang !== 'ko' && card[`name_${window.currentLang}`]) ? card[`name_${window.currentLang}`] : card.name}</div>
         </div>
       </div>
 
@@ -876,7 +876,7 @@ function _renderBattleQuiz() {
               text-align:left;cursor:pointer;
               line-height:1.4;transition:all 0.2s;
             "
-          >${['①', '②', '③', '④'][i]} ${c.short_desc}</button>
+          >${['①', '②', '③', '④'][i]} ${(window.currentLang && window.currentLang !== 'ko' && c[`short_desc_${window.currentLang}`]) ? c[`short_desc_${window.currentLang}`] : c.short_desc}</button>
         `).join('')}
       </div>
 
