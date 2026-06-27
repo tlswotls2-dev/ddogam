@@ -5,6 +5,15 @@
 // [한글 주석] 앱스스크립트 URL
 const BATTLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHFQhpwzADLC6JHfMdo4aJ6lUwXW4OFwfKOsQsTQjr07QFX3JJE27xrAJHZ1Zj-KI8/exec';
 
+// [한글 주석] 태블릿 크기 비례 함수 (전역)
+function _battleScale(px) {
+  const sr = window.innerWidth > 480
+    ? Math.min(window.innerWidth, Math.round(window.innerHeight * 9 / 16)) / 390
+    : 1;
+  return `${Math.round(px * sr)}px`;
+}
+const _s = _battleScale;
+
 // [한글 주석] 배틀 상태 관리
 let battleState = {
   phase: 'idle',        // idle / mode-select / studying / waiting / matched / quiz / result
@@ -68,12 +77,6 @@ function showBattleMode() {
   const T = window.LANG_UI;
   const L = window.currentLang || 'ko';
   const t = k => T?.[L]?.[k] || T?.ko?.[k] || '';
-
-  // [한글 주석] 태블릿 scale 비율 계산
-  const _sr2 = window.innerWidth > 480
-    ? (Math.min(window.innerWidth, Math.round(window.innerHeight * 9 / 16)) / 390).toFixed(3)
-    : 1;
-  const _s = (px) => `${Math.round(px * _sr2)}px`;
 
   overlay.innerHTML = `
     <div style="
@@ -261,12 +264,6 @@ function _renderStudyScreen() {
   const Ts = window.LANG_UI;
   const Ls = window.currentLang || 'ko';
   const ts = k => Ts?.[Ls]?.[k] || Ts?.ko?.[k] || '';
-
-  // [한글 주석] 태블릿 scale 비율 계산
-  const _sr = window.innerWidth > 480
-    ? (Math.min(window.innerWidth, Math.round(window.innerHeight * 9 / 16)) / 390).toFixed(3)
-    : 1;
-  const _s = (px) => `${Math.round(px * _sr)}px`;
 
   overlay.innerHTML = `
     <div style="
