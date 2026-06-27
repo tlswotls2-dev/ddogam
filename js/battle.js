@@ -69,6 +69,12 @@ function showBattleMode() {
   const L = window.currentLang || 'ko';
   const t = k => T?.[L]?.[k] || T?.ko?.[k] || '';
 
+  // [한글 주석] 태블릿 scale 비율 계산
+  const _sr2 = window.innerWidth > 480
+    ? (Math.min(window.innerWidth, Math.round(window.innerHeight * 9 / 16)) / 390).toFixed(3)
+    : 1;
+  const _s = (px) => `${Math.round(px * _sr2)}px`;
+
   overlay.innerHTML = `
     <div style="
       background:linear-gradient(135deg,#1e1010,#2c1a1a);
@@ -79,11 +85,11 @@ function showBattleMode() {
       box-shadow:0 0 40px rgba(139,58,58,0.4);
     ">
       <div style="text-align:center;margin-bottom:16px;">
-        <div style="font-size:32px;margin-bottom:6px;">⚔️</div>
-        <div style="color:#ff8080;font-size:18px;font-weight:900;margin-bottom:4px;">
+        <div style="font-size:${_s(32)};margin-bottom:${_s(6)};">⚔️</div>
+        <div style="color:#ff8080;font-size:${_s(18)};font-weight:900;margin-bottom:${_s(4)};">
           ${t('battleTitle')}
         </div>
-        <div style="color:#aaa;font-size:11px;line-height:1.6;">
+        <div style="color:#aaa;font-size:${_s(11)};line-height:1.6;">
           ${t('battleDesc1')}<br>
           ${t('battleDesc2')}<br>
           ${t('battleDesc3')}
@@ -115,10 +121,10 @@ function showBattleMode() {
             style="
               background:rgba(${cat === 'plant' ? '141,176,92' : cat === 'animal' ? '255,149,0' : '212,160,23'},0.1);
               border:1px solid ${catConfig[cat].border};
-              border-radius:14px;
-              padding:14px;
+              border-radius:${_s(14)};
+              padding:${_s(14)};
               color:${catConfig[cat].color};
-              font-size:14px;font-weight:700;
+              font-size:${_s(14)};font-weight:700;
               cursor:pointer;
               text-align:left;
             "
@@ -135,8 +141,8 @@ function showBattleMode() {
         width:100%;
         background:rgba(255,255,255,0.05);
         color:#aaa;border:1px solid #444;
-        border-radius:12px;padding:10px;
-        font-size:13px;cursor:pointer;
+        border-radius:${_s(12)};padding:${_s(10)};
+        font-size:${_s(13)};cursor:pointer;
       ">${t('battleClose')}</button>
     </div>
   `;
@@ -364,26 +370,26 @@ function _renderBattleCard() {
         text-align:center;
         box-shadow:0 0 20px ${cfg.color}44;
       ">
-        <div style="color:${cfg.color};font-size:11px;font-weight:700;margin-bottom:8px;">
+        <div style="color:${cfg.color};font-size:${_s(11)};font-weight:700;margin-bottom:${_s(8)};">
           ${cfg.label}
         </div>
         <div style="
-          width:120px;height:120px;
-          margin:0 auto 12px;
-          border-radius:14px;overflow:hidden;
+          width:${_s(120)};height:${_s(120)};
+          margin:0 auto ${_s(12)};
+          border-radius:${_s(14)};overflow:hidden;
           display:flex;align-items:center;justify-content:center;
           background:rgba(0,0,0,0.2);
         ">${imgHTML}</div>
-        <div style="color:#fff;font-size:18px;font-weight:900;margin-bottom:6px;">
+        <div style="color:#fff;font-size:${_s(18)};font-weight:900;margin-bottom:${_s(6)};">
           ${(window.currentLang && window.currentLang !== 'ko' && card[`name_${window.currentLang}`]) ? card[`name_${window.currentLang}`] : card.name}
         </div>
-        <div style="color:#d4c89c;font-size:12px;line-height:1.6;">
+        <div style="color:#d4c89c;font-size:${_s(12)};line-height:1.6;">
           ${(window.currentLang && window.currentLang !== 'ko' && card[`short_desc_${window.currentLang}`]) ? card[`short_desc_${window.currentLang}`] : (card.short_desc || '')}
         </div>
-        <div style="color:#666;font-size:10px;margin-top:8px;">
+        <div style="color:#666;font-size:${_s(10)};margin-top:${_s(8)};">
           📍 ${(window.currentLang && window.currentLang !== 'ko' && card[`habitat_${window.currentLang}`]) ? card[`habitat_${window.currentLang}`] : (card.habitat || '')}
         </div>
-        <div style="color:#8db05c;font-size:11px;margin-top:12px;">
+        <div style="color:#8db05c;font-size:${_s(11)};margin-top:${_s(12)};">
           ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleFlipHintFront || '🔄 뒤집기로 자세한 정보 확인!') : '🔄 뒤집기로 자세한 정보 확인!'}
         </div>
       </div>
@@ -401,18 +407,18 @@ function _renderBattleCard() {
         text-align:center;
         box-shadow:0 0 20px ${cfg.color}44;
       ">
-        <div style="color:${cfg.color};font-size:14px;font-weight:900;margin-bottom:12px;">
+        <div style="color:${cfg.color};font-size:${_s(14)};font-weight:900;margin-bottom:${_s(12)};">
           ${(window.currentLang && window.currentLang !== 'ko' && card[`name_${window.currentLang}`]) ? card[`name_${window.currentLang}`] : card.name} ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleDetailLabel || '상세정보') : '상세정보'}
         </div>
         <div style="
-          color:#d4c89c;font-size:12px;
+          color:#d4c89c;font-size:${_s(12)};
           line-height:1.8;text-align:left;
           background:rgba(0,0,0,0.2);
-          border-radius:12px;padding:14px;
+          border-radius:${_s(12)};padding:${_s(14)};
         ">
           ${(window.currentLang && window.currentLang !== 'ko' && card[`detail_desc_${window.currentLang}`]) ? card[`detail_desc_${window.currentLang}`] : (card.detail_desc || card.short_desc || '')}
         </div>
-        <div style="color:#8db05c;font-size:11px;margin-top:12px;">
+        <div style="color:#8db05c;font-size:${_s(11)};margin-top:${_s(12)};">
           ${typeof window.LANG_UI !== 'undefined' ? (window.LANG_UI?.[window.currentLang || 'ko']?.battleFlipHintBack || '🔄 뒤집기로 앞면 확인!') : '🔄 뒤집기로 앞면 확인!'}
         </div>
       </div>
