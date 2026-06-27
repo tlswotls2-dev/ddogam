@@ -936,9 +936,9 @@
       // [한글 주석] 모바일(480px 이하, 세로모드): 기본 레이아웃 유지
       if (w <= 480 && h > w) return;
 
-      // [한글 주석] 480px 초과 화면: 스마트폰 비율(9:16) 고정 크기로 중앙 배치
-      const appW = 390;
-      const appH = Math.round(appW * 16 / 9); // 693px
+      // [한글 주석] 높이 기준으로 9:16 비율 계산 (높이를 최대한 활용)
+      const appH = h;
+      const appW = Math.round(appH * 9 / 16);
 
       const style = document.createElement('style');
       style.id = 'tablet-layout-style';
