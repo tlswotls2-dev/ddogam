@@ -972,6 +972,9 @@
         appW = Math.round(appH * 9 / 16);
       }
 
+      // [한글 주석] 스마트폰 기준(390px) 대비 스케일 비율
+      const scaleRatio = (appW / 390).toFixed(3);
+
       const style = document.createElement('style');
       style.id = 'tablet-layout-style';
       style.textContent = `
@@ -982,6 +985,102 @@
           align-items: center;
           justify-content: center;
           min-height: 100vh;
+        }
+
+        /* [한글 주석] 로그인/홈화면 폰트 및 버튼 크기 비례 확대 */
+        #main-container .logo-small,
+        #main-container .badge,
+        #main-container .tab,
+        #main-container .tab-btn {
+          font-size: calc(1em * ${scaleRatio}) !important;
+        }
+
+        #main-container .side-btn,
+        #main-container .icon-btn {
+          width: calc(56px * ${scaleRatio}) !important;
+          height: calc(56px * ${scaleRatio}) !important;
+          font-size: calc(0.75rem * ${scaleRatio}) !important;
+          border-radius: calc(14px * ${scaleRatio}) !important;
+        }
+
+        #main-container .action-btn.btn-explore,
+        #main-container .explore-btn {
+          width: calc(68px * ${scaleRatio}) !important;
+          height: calc(68px * ${scaleRatio}) !important;
+          font-size: calc(0.75rem * ${scaleRatio}) !important;
+          border-radius: calc(16px * ${scaleRatio}) !important;
+        }
+
+        #main-container .character {
+          font-size: calc(84px * ${scaleRatio}) !important;
+        }
+
+        #main-container #level-badge {
+          font-size: calc(11px * ${scaleRatio}) !important;
+          padding: calc(3px * ${scaleRatio}) calc(8px * ${scaleRatio}) !important;
+        }
+
+        #main-container .status-card,
+        #main-container .collection-card {
+          padding: calc(16px * ${scaleRatio}) calc(14px * ${scaleRatio}) !important;
+          margin: calc(4px * ${scaleRatio}) calc(14px * ${scaleRatio}) calc(12px * ${scaleRatio}) !important;
+        }
+
+        #main-container .status-card h3 {
+          font-size: calc(1rem * ${scaleRatio}) !important;
+        }
+
+        #main-container .progress-text {
+          font-size: calc(0.85rem * ${scaleRatio}) !important;
+        }
+
+        #main-container .category-tabs {
+          padding: calc(12px * ${scaleRatio}) calc(14px * ${scaleRatio}) !important;
+          gap: calc(8px * ${scaleRatio}) !important;
+        }
+
+        #main-container .tab,
+        #main-container .tab-btn {
+          padding: calc(12px * ${scaleRatio}) calc(6px * ${scaleRatio}) !important;
+          font-size: calc(0.9rem * ${scaleRatio}) !important;
+          border-radius: calc(10px * ${scaleRatio}) !important;
+        }
+
+        #main-container .bottom-buttons {
+          bottom: calc(14px * ${scaleRatio}) !important;
+          left: calc(14px * ${scaleRatio}) !important;
+          right: calc(14px * ${scaleRatio}) !important;
+        }
+
+        #main-container .right-buttons {
+          right: calc(14px * ${scaleRatio}) !important;
+          gap: calc(10px * ${scaleRatio}) !important;
+        }
+
+        /* [한글 주석] 로그인 화면 */
+        .app-container .logo {
+          font-size: calc(3rem * ${scaleRatio}) !important;
+        }
+
+        .app-container .subtitle {
+          font-size: calc(0.95rem * ${scaleRatio}) !important;
+        }
+
+        .app-container .start-btn {
+          font-size: calc(1.3rem * ${scaleRatio}) !important;
+          padding: calc(16px * ${scaleRatio}) !important;
+          border-radius: calc(14px * ${scaleRatio}) !important;
+        }
+
+        .app-container .input-group label {
+          font-size: calc(0.9rem * ${scaleRatio}) !important;
+        }
+
+        .app-container .input-group input,
+        .app-container .input-group select {
+          font-size: calc(1.1rem * ${scaleRatio}) !important;
+          padding: calc(14px * ${scaleRatio}) !important;
+          border-radius: calc(12px * ${scaleRatio}) !important;
         }
 
         #main-container {
