@@ -1214,6 +1214,64 @@
           width: 100% !important;
         }
 
+        /* [한글 주석] 태블릿 아이템/꾸미기 화면 최적화 */
+        #avatar-customize-screen .customize-preview-area {
+          flex: 0 0 35% !important;
+          min-height: 35% !important;
+          max-height: 35% !important;
+        }
+
+        #avatar-customize-screen .customize-avatar-box {
+          width: calc(100px * ${scaleRatio}) !important;
+          height: calc(150px * ${scaleRatio}) !important;
+        }
+
+        #avatar-customize-screen .customize-slot-tabs {
+          padding: calc(8px * ${scaleRatio}) !important;
+          gap: calc(4px * ${scaleRatio}) !important;
+          flex-wrap: wrap !important;
+        }
+
+        #avatar-customize-screen .customize-slot-tab {
+          padding: calc(10px * ${scaleRatio}) calc(6px * ${scaleRatio}) !important;
+          font-size: calc(13px * ${scaleRatio}) !important;
+          min-width: calc(60px * ${scaleRatio}) !important;
+          flex: 1 1 calc(30% - 8px) !important;
+          border-radius: calc(8px * ${scaleRatio}) !important;
+        }
+
+        #avatar-customize-screen .customize-item {
+          padding: calc(12px * ${scaleRatio}) calc(14px * ${scaleRatio}) !important;
+          min-height: calc(70px * ${scaleRatio}) !important;
+          gap: calc(12px * ${scaleRatio}) !important;
+          border-radius: calc(12px * ${scaleRatio}) !important;
+        }
+
+        #avatar-customize-screen .customize-item-emoji {
+          font-size: calc(28px * ${scaleRatio}) !important;
+          width: calc(44px * ${scaleRatio}) !important;
+        }
+
+        #avatar-customize-screen .customize-item-name {
+          font-size: calc(15px * ${scaleRatio}) !important;
+        }
+
+        #avatar-customize-screen .customize-item-status,
+        #avatar-customize-screen .customize-item-cond {
+          font-size: calc(12px * ${scaleRatio}) !important;
+        }
+
+        #avatar-customize-screen .customize-done-btn {
+          font-size: calc(1.1rem * ${scaleRatio}) !important;
+          padding: calc(14px * ${scaleRatio}) !important;
+          border-radius: calc(12px * ${scaleRatio}) !important;
+        }
+
+        #avatar-customize-screen .customize-header .back-btn,
+        #avatar-customize-screen .customize-title {
+          font-size: calc(1.1rem * ${scaleRatio}) !important;
+        }
+
         #help-modal {
           font-size: calc(1rem * ${scaleRatio}) !important;
         }
