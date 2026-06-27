@@ -556,13 +556,17 @@ function renderLevelBadge() {
   const badgeEl = document.createElement('div');
   badgeEl.id = 'level-special-badge';
   badgeEl.title = badge.name;
-  /* [한글 주석] 칭호 위치 - 아바타 오른쪽 살짝 밖 */
+  /* [한글 주석] 칭호 위치 - 부모 크기에 비례해서 동적 계산 */
+  const _parentEl = document.getElementById('main-character') || document.querySelector('.customize-avatar-box');
+  const _parentH = _parentEl ? _parentEl.getBoundingClientRect().height : 150;
+  const _badgeBottom = Math.round(_parentH * 0.35);
+  const _badgeSize = Math.round(_parentH * 0.3);
   badgeEl.style.cssText = `
     position:absolute;
     right:1px;
-    bottom:56px;
-    width:44px;
-    height:52px;
+    bottom:${_badgeBottom}px;
+    width:${_badgeSize}px;
+    height:${_badgeSize}px;
     z-index:10;
     filter:drop-shadow(0 2px 6px rgba(255,215,0,0.5));
     animation:badgeFloat 2.5s ease-in-out infinite;
