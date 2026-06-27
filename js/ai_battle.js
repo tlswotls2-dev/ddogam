@@ -12,6 +12,8 @@ function _getAICorrectRate(playerLevel) {
 
 // [한글 주석] AI 배틀 진입점 — allCardsData 기반으로 실제 배틀과 동일한 형식 사용
 function startAIBattle(category) {
+  const _aiL = window.LANG_UI?.[window.currentLang||'ko'] || window.LANG_UI?.ko || {};
+  const _ait = k => _aiL[k] || window.LANG_UI?.ko?.[k] || '';
   const allCards = window.allCardsData || [];
   const catCards = allCards.filter(c => c.category === category && c.short_desc);
 
@@ -19,7 +21,7 @@ function startAIBattle(category) {
     // [한글 주석] 카드 데이터 미로드 시 잠시 후 재시도 안내
     const toast = document.createElement('div');
     toast.className = 'item-unlock-toast';
-    toast.textContent = '카드 데이터를 불러오는 중이에요! 잠시 후 다시 시도해주세요.';
+    toast.textContent = _ait('aiBattleDataLoading');
     document.body.appendChild(toast);
     setTimeout(() => toast.classList.add('show'), 10);
     setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 2500);
@@ -68,7 +70,7 @@ function _showAIBattleIntro(questions, aiRate, playerLevel) {
     <div style="max-width:340px;width:100%;padding-top:24px;display:flex;flex-direction:column;align-items:center;">
 
       <div style="color:#ffd700;font-size:13px;font-weight:700;letter-spacing:2px;margin-bottom:22px;">
-        ⚔️ AI 배틀
+        ${_ait('aiBattleTitle')}
       </div>
 
       <div style="display:flex;align-items:center;gap:18px;margin-bottom:24px;width:100%;">
@@ -86,24 +88,23 @@ function _showAIBattleIntro(questions, aiRate, playerLevel) {
           <div style="width:60px;height:60px;background:#0d1a30;border:2px solid #4a9eff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 6px;animation:aib-pulse 1.5s ease-in-out infinite;">
             🤖
           </div>
-          <div style="color:#4a9eff;font-size:13px;">AI 또감이</div>
+          <div style="color:#4a9eff;font-size:13px;">${_ait('aiBattleOpponent')}</div>
           <div style="background:rgba(74,158,255,0.15);border:1px solid #4a9eff;border-radius:5px;padding:1px 8px;color:#4a9eff;font-size:9px;display:inline-block;margin-top:3px;">
-            🤖 AI 플레이어
+            ${_ait('aiBattlePlayer')}
           </div>
         </div>
       </div>
 
       <div style="background:rgba(74,158,255,0.07);border:1px solid rgba(74,158,255,0.25);border-radius:14px;padding:14px;text-align:center;margin-bottom:22px;width:100%;">
-        <div style="color:#4a9eff;font-size:12px;font-weight:700;margin-bottom:5px;">🤖 AI와의 특별 배틀!</div>
+        <div style="color:#4a9eff;font-size:12px;font-weight:700;margin-bottom:5px;">${_ait('aiBattleSpecial')}</div>
         <div style="color:#b0b8d0;font-size:11px;line-height:1.8;">
-          5문제 중 더 많이 맞히면 이겨요<br>
-          AI 배틀은 일일 횟수에 포함되지 않아요
+          ${_ait('aiBattleDesc')}
         </div>
       </div>
 
       <button id="aib-start-btn"
         style="width:100%;background:linear-gradient(135deg,#0d1a30,#1a3060);border:2px solid #4a9eff;border-radius:14px;padding:15px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:1px;">
-        ⚔️ 배틀 시작!
+        ${_ait('aiBattleStart')}
       </button>
     </div>
     <style>
@@ -156,19 +157,19 @@ function _renderAIBattleQ(overlay, state) {
       <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.04);border-radius:12px;padding:10px 16px;margin-bottom:14px;">
         <div style="text-align:center;">
           <div style="color:#84ff00;font-size:22px;font-weight:700;">${state.ps}</div>
-          <div style="color:#555;font-size:10px;">나</div>
+          <div style="color:#555;font-size:10px;">${_ait('aiBattleMe')}</div>
         </div>
         <div style="color:#555;font-size:12px;">${state.qi + 1} / ${state.questions.length}</div>
         <div style="text-align:center;">
           <div style="color:#4a9eff;font-size:22px;font-weight:700;">${state.as}</div>
-          <div style="color:#555;font-size:10px;">🤖 AI</div>
+          <div style="color:#555;font-size:10px;">${_ait('aiBattleAI')}</div>
         </div>
       </div>
 
       <!-- [한글 주석] AI 상태 표시 -->
       <div id="aib-ai-status" style="display:flex;align-items:center;gap:8px;background:rgba(74,158,255,0.07);border:1px solid rgba(74,158,255,0.2);border-radius:9px;padding:8px 12px;margin-bottom:12px;">
         <span style="font-size:16px;">🤖</span>
-        <span id="aib-ai-txt" style="color:#4a9eff;font-size:11px;font-weight:700;">AI 또감이 생각 중...</span>
+        <span id="aib-ai-txt" style="color:#4a9eff;font-size:11px;font-weight:700;">${_ait('aiBattleThinking')}</span>
         <span id="aib-ai-icon" style="margin-left:auto;font-size:13px;">💭</span>
       </div>
 
@@ -176,7 +177,7 @@ function _renderAIBattleQ(overlay, state) {
       <div style="display:flex;align-items:center;gap:12px;background:rgba(0,0,0,0.3);border:1px solid ${rColor};border-radius:14px;padding:12px;margin-bottom:14px;">
         <div style="width:70px;height:70px;flex-shrink:0;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">${imgHTML}</div>
         <div>
-          <div style="color:${rColor};font-size:10px;font-weight:700;margin-bottom:3px;">이 카드의 설명은?</div>
+          <div style="color:${rColor};font-size:10px;font-weight:700;margin-bottom:3px;">${_ait('aiBattleQuestion')}</div>
           <div style="color:#fff;font-size:16px;font-weight:900;">${card.name}</div>
         </div>
       </div>
