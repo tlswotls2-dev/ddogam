@@ -220,7 +220,7 @@ function showSyncToast(message, type) {
  * [한글 주석] 선생님이 보낸 복주머니 보상 팝업을 즉시 표시하지 않고 대기열(가방)에 저장합니다.
  */
 function showRewardPopup(reward) {
-  // [한글 주석] 복주머니를 localStorage에 쌓기 (최대 99개)
+  // [한글 주석] 복주머니를 localStorage에 쌓기
   const bags = JSON.parse(localStorage.getItem('rewardBags') || '[]');
   bags.push({
     id: Date.now(),
@@ -228,15 +228,154 @@ function showRewardPopup(reward) {
     receivedAt: new Date().toLocaleString('ko-KR')
   });
   localStorage.setItem('rewardBags', JSON.stringify(bags));
-  
+
   // [한글 주석] 아이템 탭 뱃지 숫자 업데이트
   if (typeof updateRewardBadge === 'function') updateRewardBadge();
-  
+
   // [한글 주석] 진동 알림
-  if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-  
-  // [한글 주석] 토스트 팝업만 표시 (즉시 카드 공개 안 함)
-  showSyncToast('🎁 선생님의 복주머니가 도착했어요! 아이템-복주머니에서 확인하세요.', 'success');
+  if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 500]);
+
+  // [한글 주석] 기존 팝업 있으면 제거
+  const existing = document.getElementById('reward-arrive-popup');
+  if (existing) existing.remove();
+
+  // [한글 주석] 화려한 보상 도착 팝업
+  const popup = document.createElement('div');
+  popup.id = 'reward-arrive-popup';
+  popup.style.cssText = `
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 2147483647;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    animation: rewardFadeIn 0.4s ease;
+    backdrop-filter: blur(6px);
+  `;
+
+  const _T = window.LANG_UI; const _L = window.currentLang || 'ko';
+  const _t = k => _T?.[_L]?.[k] || _T?.ko?.[k] || '';
+
+  popup.innerHTML = `
+    <style>
+      @keyframes rewardFadeIn { from { opacity:0; } to { opacity:1; } }
+      @keyframes rewardBounce {
+        0%   { transform: scale(0.3) rotate(-10deg); opacity:0; }
+        60%  { transform: scale(1.15) rotate(3deg); opacity:1; }
+        80%  { transform: scale(0.95) rotate(-2deg); }
+        100% { transform: scale(1) rotate(0deg); }
+      }
+      @keyframes rewardShine {
+        0%   { left: -100%; }
+        100% { left: 200%; }
+      }
+      @keyframes rewardPulse {
+        0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.4), 0 0 60px rgba(255,215,0,0.2); }
+        50%       { box-shadow: 0 0 40px rgba(255,215,0,0.8), 0 0 100px rgba(255,215,0,0.4); }
+      }
+      @keyframes rewardFloat {
+        0%, 100% { transform: translateY(0px); }
+        50%       { transform: translateY(-8px); }
+      }
+      @keyframes rewardStar {
+        0%   { transform: scale(0) rotate(0deg); opacity:1; }
+        100% { transform: scale(1.5) rotate(180deg); opacity:0; }
+      }
+      #reward-arrive-card {
+        animation: rewardBounce 0.6s cubic-bezier(0.175,0.885,0.32,1.275) forwards,
+                   rewardPulse 2s ease-in-out 0.6s infinite;
+      }
+      #reward-bag-icon {
+        animation: rewardFloat 1.5s ease-in-out infinite;
+        display: inline-block;
+      }
+    </style>
+
+    <!-- [한글 주석] 파티클 별 효과 -->
+    <div style="position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;">
+      ${Array.from({length:12}).map((_,i) => `
+        <div style="
+          position:absolute;
+          left:${Math.random()*100}%;
+          top:${Math.random()*100}%;
+          font-size:${16+Math.random()*20}px;
+          animation: rewardStar ${0.8+Math.random()*1.2}s ease-out ${Math.random()*0.5}s forwards;
+          pointer-events:none;
+        ">${['⭐','✨','🌟','💫','🎊','🎉'][Math.floor(Math.random()*6)]}</div>
+      `).join('')}
+    </div>
+
+    <!-- [한글 주석] 메인 카드 -->
+    <div id="reward-arrive-card" style="
+      background: linear-gradient(135deg, #1a1000, #2a1f00, #1a1000);
+      border: 3px solid #ffd700;
+      border-radius: 28px;
+      padding: 32px 28px;
+      max-width: 300px;
+      width: 85%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    ">
+      <!-- [한글 주석] 빛나는 효과 -->
+      <div style="
+        position:absolute;
+        top:0; left:-100%;
+        width:60%; height:100%;
+        background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent);
+        animation: rewardShine 1.5s ease 0.6s 2;
+        pointer-events:none;
+        transform: skewX(-20deg);
+      "></div>
+
+      <!-- [한글 주석] 상단 라벨 -->
+      <div style="
+        background: linear-gradient(135deg, #ffd700, #ff9500);
+        color: #000;
+        font-size: 11px;
+        font-weight: 900;
+        padding: 4px 14px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-bottom: 16px;
+        letter-spacing: 1px;
+      ">🎁 ${_t('rewardArriveLabel') || '선생님의 선물 도착!'}</div>
+
+      <!-- [한글 주석] 복주머니 아이콘 -->
+      <div id="reward-bag-icon" style="font-size:72px;margin-bottom:12px;line-height:1;">🎁</div>
+
+      <!-- [한글 주석] 메시지 -->
+      <div style="color:#ffd700;font-size:20px;font-weight:900;margin-bottom:8px;">
+        ${_t('rewardArriveTitle') || '복주머니가 도착했어요!'}
+      </div>
+      <div style="color:#d4c89c;font-size:13px;line-height:1.7;margin-bottom:24px;">
+        ${_t('rewardArriveDesc') || '아이템 → 복주머니 탭에서<br>열어보세요! 🌟'}
+      </div>
+
+      <!-- [한글 주석] 확인 버튼 -->
+      <button onclick="document.getElementById('reward-arrive-popup').remove();" style="
+        width: 100%;
+        background: linear-gradient(135deg, #ffd700, #ff9500);
+        color: #000;
+        border: none;
+        border-radius: 14px;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 900;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+      ">✨ ${_t('rewardArriveBtn') || '확인!'}</button>
+    </div>
+  `;
+
+  document.body.appendChild(popup);
+
+  // [한글 주석] 10초 후 자동 닫기
+  setTimeout(() => {
+    const p = document.getElementById('reward-arrive-popup');
+    if (p) p.remove();
+  }, 10000);
 }
 
 // [한글 주석] 온라인 상태이고 Service Worker 활성화된 경우 이미지 캐시

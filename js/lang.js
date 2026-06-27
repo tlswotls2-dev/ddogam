@@ -346,6 +346,10 @@ window.LANG_UI = {
     aiBattleResultLose: 'AI 또감이가 조금 더 빨랐어요.<br>카드를 더 읽고 다시 도전! 📖',
     aiBattleNoLimit: 'AI 배틀은 일일 횟수 · 제한 없음',
     aiBattleBack: '돌아가기',
+    rewardArriveLabel: '선생님의 선물 도착!',
+    rewardArriveTitle: '복주머니가 도착했어요!',
+    rewardArriveDesc: '아이템 → 복주머니 탭에서<br>열어보세요! 🌟',
+    rewardArriveBtn: '확인!',
   },
   en: {
     langBtnLabel: 'English',
@@ -644,6 +648,10 @@ window.LANG_UI = {
     aiBattleResultLose: 'AI Ddogam was a little faster.<br>Read more cards and try again! 📖',
     aiBattleNoLimit: 'AI battles have no daily limit',
     aiBattleBack: 'Back',
+    rewardArriveLabel: 'Gift from Teacher!',
+    rewardArriveTitle: 'Lucky Bag has arrived!',
+    rewardArriveDesc: 'Check Items → Lucky Bag tab<br>to open it! 🌟',
+    rewardArriveBtn: 'OK!',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -942,6 +950,10 @@ window.LANG_UI = {
     aiBattleResultLose: 'ИИ Ттогами был чуть быстрее.<br>Читай карточки и попробуй снова! 📖',
     aiBattleNoLimit: 'Битвы с ИИ без дневного лимита',
     aiBattleBack: 'Назад',
+    rewardArriveLabel: 'Подарок от учителя!',
+    rewardArriveTitle: 'Мешочек удачи прибыл!',
+    rewardArriveDesc: 'Открой вкладку Вещи → Мешочек<br>и посмотри! 🌟',
+    rewardArriveBtn: 'ОК!',
   },
   zh: {
     langBtnLabel: '中文',
@@ -1240,6 +1252,10 @@ window.LANG_UI = {
     aiBattleResultLose: 'AI又感稍快一步。<br>多读卡片再来挑战！📖',
     aiBattleNoLimit: 'AI对战无每日次数限制',
     aiBattleBack: '返回',
+    rewardArriveLabel: '老师的礼物到了！',
+    rewardArriveTitle: '福袋已到达！',
+    rewardArriveDesc: '在道具 → 福袋标签<br>中查看吧！🌟',
+    rewardArriveBtn: '确认！',
   }
 };
 
