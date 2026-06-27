@@ -8,17 +8,19 @@
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
-  /* [한글 주석] 헤더 기본 스타일 */
+  /* [한글 주석] 헤더 공통 */
   .dashboard-header {
     flex-wrap: nowrap !important;
   }
   .dashboard-title {
     white-space: nowrap !important;
     flex-shrink: 0 !important;
+    font-size: 1.1rem !important;
   }
   .dashboard-header-actions {
     flex-wrap: nowrap !important;
     flex-shrink: 0 !important;
+    gap: 6px !important;
   }
   .dashboard-btn,
   .dashboard-refresh-btn,
@@ -26,6 +28,12 @@
     white-space: nowrap !important;
     font-size: 12px !important;
     padding: 6px 10px !important;
+  }
+
+  /* [한글 주석] 학생 그리드 기본 리셋 */
+  .dashboard-student-grid {
+    max-width: 100% !important;
+    padding: 0 12px !important;
   }
 </style>
 <script>
@@ -39,31 +47,31 @@
       // [한글 주석] 태블릿
       style.textContent = `
         .dashboard-header { padding: 10px 12px !important; gap: 6px !important; }
-        .dashboard-title { font-size: 0.9rem !important; }
+        .dashboard-title { font-size: 0.85rem !important; }
         .dashboard-btn, .dashboard-refresh-btn, .dashboard-logout-btn {
-          font-size: 11px !important; padding: 5px 8px !important;
+          font-size: 10px !important; padding: 4px 7px !important;
         }
-        .dashboard-stats-row { grid-template-columns: repeat(3, 1fr) !important; padding: 8px !important; }
-        .dashboard-student-grid { grid-template-columns: repeat(2, 1fr) !important; padding: 0 8px !important; }
-        .stat-label { font-size: 0.6rem !important; }
-        .stat-value { font-size: 0.8rem !important; }
-        .dsc-name { font-size: 0.85rem !important; }
-        .dsc-number { font-size: 0.7rem !important; padding: 2px 6px !important; }
-        .dsc-reward-btn { font-size: 0.7rem !important; padding: 5px !important; }
+        .dashboard-stats-row { grid-template-columns: repeat(3, 1fr) !important; padding: 8px !important; gap: 6px !important; }
+        .dashboard-student-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; padding: 0 8px !important; max-width: 100% !important; }
+        .stat-label { font-size: 0.58rem !important; white-space: nowrap !important; }
+        .stat-value { font-size: 0.78rem !important; }
+        .stat-icon { font-size: 1.1rem !important; }
+        .dsc-name { font-size: 0.82rem !important; }
+        .dsc-number { font-size: 0.68rem !important; padding: 2px 6px !important; }
+        .dsc-reward-btn { font-size: 0.68rem !important; padding: 4px !important; }
+        .dashboard-student-card { padding: 8px !important; }
       `;
-    } else if (w <= 1200) {
+    } else if (w <= 1280) {
       // [한글 주석] 노트북
       style.textContent = `
-        .dashboard-header { padding: 14px 20px !important; }
-        .dashboard-title { font-size: 1.1rem !important; }
         .dashboard-stats-row { grid-template-columns: repeat(5, 1fr) !important; }
-        .dashboard-student-grid { grid-template-columns: repeat(3, 1fr) !important; padding: 0 16px !important; }
+        .dashboard-student-grid { grid-template-columns: repeat(3, 1fr) !important; max-width: 100% !important; padding: 0 16px !important; }
       `;
     } else {
       // [한글 주석] 데스크탑
       style.textContent = `
         .dashboard-stats-row { grid-template-columns: repeat(5, 1fr) !important; }
-        .dashboard-student-grid { grid-template-columns: repeat(5, 1fr) !important; }
+        .dashboard-student-grid { grid-template-columns: repeat(5, 1fr) !important; max-width: 100% !important; }
       `;
     }
     if (!document.getElementById('dashboard-responsive-style')) {
