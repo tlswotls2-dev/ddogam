@@ -2720,14 +2720,30 @@ button:active {
     text-overflow: ellipsis;
 }
 
-/* [한글 주석] 학생 목록 그리드 (PC: 5열) */
+/* [한글 주석] 학생 목록 그리드 (반응형) */
 .dashboard-student-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    max-width: 1600px;
+    max-width: 100%;
+    width: 100%;
     margin: 0 auto 40px;
-    padding: 0 20px;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+    .dashboard-student-grid {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 0 16px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .dashboard-student-grid {
+        grid-template-columns: repeat(5, 1fr);
+        padding: 0 20px;
+    }
 }
 
 /* [한글 주석] 개별 학생 카드 - 패딩 축소 */
