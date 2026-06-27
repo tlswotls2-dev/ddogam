@@ -1182,8 +1182,7 @@
         #avatar-customize-screen,
         #dodam-screen,
         #map-screen,
-        #quiz-screen,
-        #teacher-dashboard-screen {
+        #quiz-screen {
           width: ${appW}px !important;
           max-width: ${appW}px !important;
           height: ${appH}px !important;
@@ -1191,6 +1190,17 @@
           top: 50% !important;
           left: 50% !important;
           transform: translate(-50%, -50%) !important;
+        }
+
+        /* [한글 주석] 교사 대시보드는 태블릿 레이아웃 제한 없음 */
+        #teacher-dashboard-screen {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: 100% !important;
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          transform: none !important;
         }
 
         .app-container {
