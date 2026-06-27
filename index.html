@@ -1093,13 +1093,25 @@
           border-radius: calc(14px * ${scaleRatio}) !important;
         }
 
-        /* [한글 주석] 아바타 */
+        /* [한글 주석] 아바타 - 태블릿에서 1.5배 크게 */
         #main-container .character-area {
           bottom: calc(100px * ${scaleRatio}) !important;
         }
 
         #main-container .character {
-          font-size: calc(84px * ${scaleRatio}) !important;
+          font-size: calc(84px * ${scaleRatio} * 1.5) !important;
+        }
+
+        #main-container #main-character {
+          transform: scale(1.5) !important;
+          transform-origin: bottom center !important;
+        }
+
+        /* [한글 주석] 칭호 우상단 위치 보정 */
+        #main-container #level-special-badge {
+          top: 0px !important;
+          right: 0px !important;
+          bottom: auto !important;
         }
 
         /* [한글 주석] 로그인 화면 */
