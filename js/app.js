@@ -441,8 +441,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const discoveryContent = document.getElementById('explore-discovery-content');
 
         if (overlay) {
+            // [한글 주석] 오버레이 크기 강제 고정 (태블릿 scale 대응)
+            overlay.style.position = 'absolute';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.maxWidth = '100%';
+            overlay.style.boxSizing = 'border-box';
             overlay.style.display = 'flex';
             defaultContent.style.display = 'flex';
+            defaultContent.style.width = '100%';
+            defaultContent.style.boxSizing = 'border-box';
             discoveryContent.style.display = 'none';
         }
 
