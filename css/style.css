@@ -1821,7 +1821,7 @@ button:active {
     align-items: center;
     height: 100%;
     width: 100%;
-    padding: 24px 24px;
+    padding: 20px 16px;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -1837,11 +1837,12 @@ button:active {
 .explore-center {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
     border: 2px solid var(--secondary-color);
     border-radius: 16px;
-    padding: 30px 20px;
-    width: 90%;
+    padding: 16px 14px;
+    width: 100%;
+    box-sizing: border-box;
     background-color: rgba(61, 82, 57, 0.6);
 }
 
