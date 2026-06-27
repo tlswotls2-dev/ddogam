@@ -936,9 +936,9 @@
       // [한글 주석] 모바일(480px 이하, 세로모드): 기본 레이아웃 유지
       if (w <= 480 && h > w) return;
 
-      // [한글 주석] 높이 기준으로 9:16 비율 계산 (높이를 최대한 활용)
-      const appH = h;
-      const appW = Math.round(appH * 9 / 16);
+      // [한글 주석] 너비의 60% 또는 최대 480px 중 작은 값으로 너비 결정
+      const appW = Math.min(Math.round(w * 0.6), 480);
+      const appH = Math.round(appW * 16 / 9);
 
       const style = document.createElement('style');
       style.id = 'tablet-layout-style';
