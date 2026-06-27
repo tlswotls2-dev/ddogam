@@ -1208,43 +1208,46 @@
           overflow-x: hidden !important;
         }
 
-        /* [한글 주석] 팝업 내부 컨텐츠 너비/높이 확장 */
-        #battle-study-overlay > div,
-        #battle-quiz-overlay > div,
-        #battle-overlay > div,
-        #daily-quiz-overlay > div,
-        #levelup-quiz-overlay > div {
-          max-width: calc(${appW}px - 32px) !important;
-          width: 100% !important;
-          min-height: calc(${appH}px - 32px) !important;
-          max-height: calc(${appH}px - 32px) !important;
-          overflow-y: auto !important;
-        }
-
-        /* [한글 주석] 도움말 내부 컨텐츠 너비/높이 확장 */
+        /* [한글 주석] 도움말 내부 컨텐츠 너비/폰트 확장 */
         #help-modal > div {
           max-width: calc(${appW}px - 32px) !important;
           width: 100% !important;
-          min-height: calc(${appH}px - 32px) !important;
-          max-height: calc(${appH}px - 32px) !important;
-          overflow-y: auto !important;
         }
 
-        /* [한글 주석] 배틀 공부 화면 카드/버튼 영역 너비 확장 */
-        #battle-study-overlay [style*="max-width:360px"],
-        #battle-study-overlay [style*="max-width: 360px"] {
-          max-width: calc(${appW}px - 32px) !important;
-          width: 100% !important;
-        }
-
-        /* [한글 주석] 배틀/퀴즈 내부 폰트 크기 확대 */
-        #battle-study-overlay,
-        #battle-quiz-overlay,
-        #battle-overlay,
-        #daily-quiz-overlay,
-        #levelup-quiz-overlay,
         #help-modal {
           font-size: calc(1rem * ${scaleRatio}) !important;
+        }
+
+        #help-modal button {
+          font-size: calc(0.9rem * ${scaleRatio}) !important;
+          padding: calc(10px * ${scaleRatio}) calc(16px * ${scaleRatio}) !important;
+          border-radius: calc(12px * ${scaleRatio}) !important;
+          min-height: calc(44px * ${scaleRatio}) !important;
+        }
+
+        #help-modal div[style*="font-size:18px"],
+        #help-modal div[style*="font-size: 18px"] {
+          font-size: calc(18px * ${scaleRatio}) !important;
+        }
+
+        #help-modal div[style*="font-size:13px"],
+        #help-modal div[style*="font-size: 13px"] {
+          font-size: calc(13px * ${scaleRatio}) !important;
+        }
+
+        #help-modal div[style*="font-size:11px"],
+        #help-modal div[style*="font-size: 11px"] {
+          font-size: calc(11px * ${scaleRatio}) !important;
+        }
+
+        #help-modal div[style*="font-size:15px"],
+        #help-modal div[style*="font-size: 15px"] {
+          font-size: calc(15px * ${scaleRatio}) !important;
+        }
+
+        #help-modal div[style*="padding:24px"],
+        #help-modal div[style*="padding: 24px"] {
+          padding: calc(24px * ${scaleRatio}) calc(20px * ${scaleRatio}) !important;
         }
       `;
       document.head.appendChild(style);

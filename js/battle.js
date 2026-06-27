@@ -256,20 +256,26 @@ function _renderStudyScreen() {
   const Ls = window.currentLang || 'ko';
   const ts = k => Ts?.[Ls]?.[k] || Ts?.ko?.[k] || '';
 
+  // [한글 주석] 태블릿 scale 비율 계산
+  const _sr = window.innerWidth > 480
+    ? (Math.min(window.innerWidth, Math.round(window.innerHeight * 9 / 16)) / 390).toFixed(3)
+    : 1;
+  const _s = (px) => `${Math.round(px * _sr)}px`;
+
   overlay.innerHTML = `
     <div style="
       width:100%;max-width:360px;
       display:flex;justify-content:space-between;
       align-items:center;margin-bottom:12px;
     ">
-      <div style="color:#8db05c;font-size:13px;font-weight:700;">
+      <div style="color:#8db05c;font-size:${_s(13)};font-weight:700;">
         ⚔️ ${catLabel} ${ts('battleReadyLabel')}
       </div>
       <button onclick="cancelBattle()" style="
         background:rgba(255,68,68,0.15);
-        border:1px solid #ff4444;border-radius:8px;
-        color:#ff4444;font-size:12px;padding:8px 14px;
-        cursor:pointer;min-height:36px;
+        border:1px solid #ff4444;border-radius:${_s(8)};
+        color:#ff4444;font-size:${_s(12)};padding:${_s(8)} ${_s(14)};
+        cursor:pointer;min-height:${_s(36)};
       ">${ts('battleGiveUp')}</button>
     </div>
 
@@ -285,12 +291,8 @@ function _renderStudyScreen() {
       <div style="color:#aaa;font-size:11px;margin-bottom:4px;">
         ${ts('battleStudyTimer')}
       </div>
-      <div id="battle-timer" style="
-        color:#ffd700;font-size:24px;font-weight:900;
-      ">1:00</div>
-      <div id="battle-timer-msg" style="
-        color:#8db05c;font-size:11px;margin-top:4px;
-      ">${ts('battleStudyMsg')}</div>
+      <div style="color:#ffd700;font-size:${_s(24)};font-weight:900;" id="battle-timer">1:00</div>
+      <div id="battle-timer-msg" style="color:#8db05c;font-size:${_s(11)};margin-top:${_s(4)};">${ts('battleStudyMsg')}</div>
     </div>
 
     <div id="battle-card-area" style="
@@ -304,25 +306,25 @@ function _renderStudyScreen() {
       flex-shrink:0;
     ">
       <button onclick="battlePrevCard()" style="
-        flex:1;padding:12px 8px;
+        flex:1;padding:${_s(12)} ${_s(8)};
         background:rgba(255,255,255,0.05);
-        border:1px solid #444;border-radius:12px;
-        color:#aaa;font-size:13px;cursor:pointer;
-        min-height:44px;
+        border:1px solid #444;border-radius:${_s(12)};
+        color:#aaa;font-size:${_s(13)};cursor:pointer;
+        min-height:${_s(44)};
       ">${ts('battlePrev')}</button>
       <button onclick="battleFlipCard()" style="
-        flex:1;padding:12px 8px;
+        flex:1;padding:${_s(12)} ${_s(8)};
         background:rgba(141,176,92,0.1);
-        border:1px solid #6b8e3d;border-radius:12px;
-        color:#8db05c;font-size:13px;cursor:pointer;
-        min-height:44px;
+        border:1px solid #6b8e3d;border-radius:${_s(12)};
+        color:#8db05c;font-size:${_s(13)};cursor:pointer;
+        min-height:${_s(44)};
       ">${ts('battleFlip')}</button>
       <button onclick="battleNextCard()" style="
-        flex:1;padding:12px 8px;
+        flex:1;padding:${_s(12)} ${_s(8)};
         background:rgba(255,255,255,0.05);
-        border:1px solid #444;border-radius:12px;
-        color:#aaa;font-size:13px;cursor:pointer;
-        min-height:44px;
+        border:1px solid #444;border-radius:${_s(12)};
+        color:#aaa;font-size:${_s(13)};cursor:pointer;
+        min-height:${_s(44)};
       ">${ts('battleNext')}</button>
     </div>
   `;
