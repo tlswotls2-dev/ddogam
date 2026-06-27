@@ -712,12 +712,14 @@ function renderCustomizeUI() {
     const titleBadge = LEVEL_BADGES.find(b => b.id === equippedTitleId);
     if (titleBadge) {
       const badgePreview = document.createElement('div');
+      const _cH = container.getBoundingClientRect().height || 120;
+      const _bSize = Math.round(_cH * 0.3);
       badgePreview.style.cssText = `
         position:absolute;
-        right:60px;
-        bottom:60px;
-        width:40px;
-        height:48px;
+        right:0px;
+        top:0px;
+        width:${_bSize}px;
+        height:${_bSize}px;
         z-index:10;
         filter:drop-shadow(0 2px 4px rgba(255,215,0,0.4));
       `;
