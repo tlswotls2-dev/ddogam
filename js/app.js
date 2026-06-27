@@ -444,6 +444,17 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.style.display = 'flex';
             defaultContent.style.display = 'flex';
             discoveryContent.style.display = 'none';
+            // [한글 주석] 태블릿/PC에서 앱 컨테이너 크기에 맞게 오버레이 조정
+            const mc = document.getElementById('main-container');
+            if (mc) {
+              const r = mc.getBoundingClientRect();
+              overlay.style.left = r.left + 'px';
+              overlay.style.top = r.top + 'px';
+              overlay.style.width = r.width + 'px';
+              overlay.style.height = r.height + 'px';
+              overlay.style.right = 'auto';
+              overlay.style.bottom = 'auto';
+            }
         }
 
         // 페도미터의 탐험 모드 시작 (걸음 측정 활성화 및 목표 설정)
