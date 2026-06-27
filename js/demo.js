@@ -334,14 +334,19 @@ function showDemoBanner() {
     }
     applySlideTop();
 
-    // [한글 주석] CSS로 슬라이드 화면 top 오프셋 추가
+    // [한글 주석] CSS로 슬라이드 화면 오프셋 추가
+    // transform: translate(-50%, -50%) 사용 중이므로 top 대신 translateY 보정
     const demoStyle = document.createElement('style');
     demoStyle.id = 'demo-slide-style';
     demoStyle.textContent = `
-      #dodam-screen, #map-screen, #quiz-screen,
-      #avatar-customize-screen, #chatbot-screen {
-        top: ${bannerH}px !important;
+      #dodam-screen.slide-in, #map-screen.slide-in, #quiz-screen.slide-in,
+      #avatar-customize-screen.slide-in, #chatbot-screen.slide-in {
+        transform: translate(-50%, calc(-50% + ${bannerH / 2}px)) !important;
         height: calc(100vh - ${bannerH}px) !important;
+      }
+      #exploration-overlay {
+        top: ${bannerH}px !important;
+        height: calc(100% - ${bannerH}px) !important;
       }
     `;
     document.head.appendChild(demoStyle);
