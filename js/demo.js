@@ -307,45 +307,53 @@ function showDemoBanner() {
   // [한글 주석] 배너 높이만큼 콘텐츠 밀어내기
   setTimeout(() => {
     const bannerH = banner.getBoundingClientRect().height;
-    const targets = [
+
+    // [한글 주석] 메인/로그인은 paddingTop으로 밀기
+    const padTargets = [
       document.getElementById('main-container'),
       document.getElementById('login-container'),
-      document.querySelector('.teacher-dashboard-screen'),
-      document.querySelector('#teacher-dashboard-screen'),
-      document.getElementById('dodam-screen'),
-      document.getElementById('map-screen'),
-      document.getElementById('quiz-screen'),
-      document.getElementById('avatar-customize-screen'),
-      document.getElementById('chatbot-screen')
+      document.querySelector('#teacher-dashboard-screen')
     ];
-    targets.forEach(el => {
-      if (el) el.style.top = bannerH + 'px';
+    padTargets.forEach(el => {
+      if (el) el.style.paddingTop = bannerH + 'px';
     });
 
-    // [한글 주석] 나중에 열리는 화면도 처리 (MutationObserver)
-    const observer = new MutationObserver(() => {
-      const lateTargets = [
-        document.getElementById('dodam-screen'),
-        document.getElementById('map-screen'),
-        document.getElementById('quiz-screen'),
-        document.getElementById('avatar-customize-screen'),
-        document.getElementById('chatbot-screen')
-      ];
-      lateTargets.forEach(el => {
-        if (el && el.style.top !== bannerH + 'px') {
-          el.style.top = bannerH + 'px';
+    // [한글 주석] 슬라이드 화면들은 top 값 조정 (기본 top:0 → bannerH)
+    const slideIds = ['dodam-screen','map-screen','quiz-screen','avatar-customize-screen','chatbot-screen'];
+    function applySlideTop() {
+      slideIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          // [한글 주석] slide-in 클래스 있을 때만 top 적용
+          const orig = el.style.top;
+          if (!orig || orig === '0px') {
+            el.style.top = bannerH + 'px';
+          }
         }
       });
-    });
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+    }
+    applySlideTop();
 
-    // [한글 주석] 배너 나가기 버튼 클릭 시 top 제거
+    // [한글 주석] CSS로 슬라이드 화면 top 오프셋 추가
+    const demoStyle = document.createElement('style');
+    demoStyle.id = 'demo-slide-style';
+    demoStyle.textContent = `
+      #dodam-screen, #map-screen, #quiz-screen,
+      #avatar-customize-screen, #chatbot-screen {
+        top: ${bannerH}px !important;
+        height: calc(100vh - ${bannerH}px) !important;
+      }
+    `;
+    document.head.appendChild(demoStyle);
+
+    // [한글 주석] 배너 나가기 버튼 클릭 시 원상복구
     const exitBtn = banner.querySelector('button');
     if (exitBtn) {
       const orig = exitBtn.onclick;
       exitBtn.onclick = function(e) {
-        observer.disconnect();
-        targets.forEach(el => { if (el) el.style.top = ''; });
+        padTargets.forEach(el => { if (el) el.style.paddingTop = ''; });
+        const s = document.getElementById('demo-slide-style');
+        if (s) s.remove();
         if (orig) orig.call(this, e);
       };
     }
