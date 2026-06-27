@@ -933,13 +933,12 @@
       const w = window.innerWidth;
       const h = window.innerHeight;
 
-      // [한글 주석] 모바일(480px 이하): 기본 레이아웃 유지
-      if (w <= 480) return;
+      // [한글 주석] 모바일(480px 이하, 세로모드): 기본 레이아웃 유지
+      if (w <= 480 && h > w) return;
 
-      // [한글 주석] 480px 초과 화면: 스마트폰 비율(9:16)로 중앙 고정
-      // 뷰포트 높이 기준으로 너비 계산 (9:16 비율)
-      const appH = h;
-      const appW = Math.min(Math.round(appH * 9 / 16), 480);
+      // [한글 주석] 480px 초과 화면: 스마트폰 비율(9:16) 고정 크기로 중앙 배치
+      const appW = 390;
+      const appH = Math.round(appW * 16 / 9); // 693px
 
       const style = document.createElement('style');
       style.id = 'tablet-layout-style';
@@ -947,6 +946,10 @@
         body {
           background: #1a2e1a !important;
           overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
         }
 
         #main-container,
@@ -959,30 +962,22 @@
           width: ${appW}px !important;
           max-width: ${appW}px !important;
           height: ${appH}px !important;
+          min-height: ${appH}px !important;
           position: fixed !important;
-          top: 0 !important;
+          top: 50% !important;
           left: 50% !important;
-          transform: translateX(-50%) !important;
+          transform: translate(-50%, -50%) !important;
+          overflow: hidden !important;
         }
 
         .app-container {
           width: ${appW}px !important;
           max-width: ${appW}px !important;
+          height: ${appH}px !important;
           position: fixed !important;
-          top: 0 !important;
+          top: 50% !important;
           left: 50% !important;
-          transform: translateX(-50%) !important;
-        }
-
-        /* [한글 주석] 팝업/오버레이는 앱 너비 기준 중앙 정렬 */
-        #shared-card-overlay,
-        #exploration-overlay,
-        #help-modal,
-        #safety-overlay,
-        #gender-select-screen {
-          width: ${appW}px !important;
-          left: 50% !important;
-          transform: translateX(-50%) !important;
+          transform: translate(-50%, -50%) !important;
         }
       `;
       document.head.appendChild(style);
