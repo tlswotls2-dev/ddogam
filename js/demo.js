@@ -304,9 +304,46 @@ function showDemoBanner() {
     display:flex;align-items:center;justify-content:center;
     padding:6px 16px;gap:12px;
     box-shadow:0 2px 12px rgba(74,158,255,0.3);`;
-  // [한글 주석] 배너 높이만큼 콘텐츠 밀어내기
+  // [한글 주석] 배너 숨기기
+  banner.style.display = 'none';
+
+  // [한글 주석] 하단 중앙 나가기 버튼 생성
+  if (document.getElementById('demo-exit-btn')) return;
+  const exitFloatBtn = document.createElement('button');
+  exitFloatBtn.id = 'demo-exit-btn';
+  exitFloatBtn.style.cssText = `
+    position:fixed;
+    bottom:12px;
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(13,26,48,0.85);
+    border:1px solid #4a9eff;
+    border-radius:20px;
+    color:#4a9eff;
+    font-size:12px;
+    font-weight:700;
+    padding:6px 16px;
+    cursor:pointer;
+    z-index:99997;
+    white-space:nowrap;
+    box-shadow:0 2px 8px rgba(74,158,255,0.3);
+  `;
+  exitFloatBtn.textContent = '🚪 체험 모드 나가기';
+  exitFloatBtn.onclick = () => {
+    // [한글 주석] 기존 배너의 나가기 버튼 동작 실행
+    const origExitBtn = banner.querySelector('button[onclick*="exit"], button[onclick*="logout"], button');
+    if (origExitBtn) origExitBtn.click();
+    else {
+      localStorage.removeItem('demoMode');
+      localStorage.removeItem('userData');
+      location.reload();
+    }
+  };
+  document.body.appendChild(exitFloatBtn);
+
+  // [한글 주석] 배너 높이만큼 콘텐츠 밀어내기 (배너 숨겼으므로 0으로 처리)
   setTimeout(() => {
-    const bannerH = banner.getBoundingClientRect().height;
+    const bannerH = 0;
 
     // [한글 주석] CSS로 모든 화면 처리
     const demoStyle = document.createElement('style');
