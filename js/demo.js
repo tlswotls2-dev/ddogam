@@ -308,95 +308,35 @@ function showDemoBanner() {
   setTimeout(() => {
     const bannerH = banner.getBoundingClientRect().height;
 
-    // [한글 주석] 메인/로그인은 paddingTop으로 밀기
-    const padTargets = [
-      document.getElementById('main-container'),
-      document.getElementById('login-container'),
-      document.querySelector('#teacher-dashboard-screen')
-    ];
-    padTargets.forEach(el => {
-      if (el) el.style.paddingTop = bannerH + 'px';
-    });
-
-    // [한글 주석] 슬라이드 화면들은 top 값 조정 (기본 top:0 → bannerH)
-    const slideIds = ['dodam-screen','map-screen','quiz-screen','avatar-customize-screen','chatbot-screen'];
-    function applySlideTop() {
-      slideIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          // [한글 주석] slide-in 클래스 있을 때만 top 적용
-          const orig = el.style.top;
-          if (!orig || orig === '0px') {
-            el.style.top = bannerH + 'px';
-          }
-        }
-      });
-    }
-    applySlideTop();
-
-    // [한글 주석] CSS로 슬라이드 화면 오프셋 추가
+    // [한글 주석] CSS로 모든 화면 처리
     const demoStyle = document.createElement('style');
     demoStyle.id = 'demo-slide-style';
     demoStyle.textContent = `
+      /* [한글 주석] 메인/로그인 */
+      #main-container, #login-container {
+        margin-top: ${bannerH}px !important;
+      }
+      #teacher-dashboard-screen {
+        padding-top: ${bannerH}px !important;
+      }
+      /* [한글 주석] 슬라이드 화면들 - top을 bannerH로, 높이 줄이기 */
       #dodam-screen, #map-screen, #quiz-screen,
       #avatar-customize-screen, #chatbot-screen {
         top: ${bannerH}px !important;
         height: calc(100vh - ${bannerH}px) !important;
+        max-height: calc(100vh - ${bannerH}px) !important;
       }
-      #dodam-screen.slide-in {
-        transform: translateX(-50%) !important;
-      }
-      #map-screen.slide-in {
-        transform: translateX(-50%) !important;
-      }
-      #quiz-screen.slide-in {
-        transform: translateX(-50%) !important;
-      }
-      #avatar-customize-screen.slide-in {
-        transform: translateX(-50%) !important;
-      }
+      #dodam-screen.slide-in,
+      #map-screen.slide-in,
+      #quiz-screen.slide-in,
+      #avatar-customize-screen.slide-in,
       #chatbot-screen.slide-in {
         transform: translateX(-50%) !important;
       }
+      /* [한글 주석] 탐험 오버레이 */
       #exploration-overlay {
         top: ${bannerH}px !important;
         height: calc(100% - ${bannerH}px) !important;
-      }
-      /* [한글 주석] 지도 화면 자체 높이 축소 */
-      #map-screen {
-        height: calc(100vh - ${bannerH}px) !important;
-      }
-      #map-screen .map-container {
-        flex: 1 !important;
-        min-height: 0 !important;
-      }
-      #map-screen .map-info-bar {
-        bottom: 8px !important;
-      }
-      /* [한글 주석] 아이템 꾸미기 화면 높이 축소 */
-      #avatar-customize-screen {
-        height: calc(100vh - ${bannerH}px) !important;
-      }
-      /* [한글 주석] 아이템 목록 flex로 남은 공간만 사용 */
-      #avatar-customize-screen .customize-body {
-        height: calc(100vh - ${bannerH}px - 56px) !important;
-        overflow: hidden !important;
-      }
-      #avatar-customize-screen .customize-items-area {
-        flex: 1 !important;
-        min-height: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        overflow: hidden !important;
-      }
-      #avatar-customize-screen .customize-item-list {
-        flex: 1 !important;
-        min-height: 0 !important;
-        overflow-y: auto !important;
-      }
-      #avatar-customize-screen .customize-footer {
-        flex-shrink: 0 !important;
-        position: relative !important;
       }
     `;
     document.head.appendChild(demoStyle);
@@ -406,7 +346,6 @@ function showDemoBanner() {
     if (exitBtn) {
       const orig = exitBtn.onclick;
       exitBtn.onclick = function(e) {
-        padTargets.forEach(el => { if (el) el.style.paddingTop = ''; });
         const s = document.getElementById('demo-slide-style');
         if (s) s.remove();
         if (orig) orig.call(this, e);
