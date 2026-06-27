@@ -3726,6 +3726,8 @@ button:active {
 
 /* [한글 주석] 탐험 걷기 씬 전체 */
 .explore-walk-scene {
+  overflow: hidden;
+  max-width: 100%;
     position: relative;
     width: 100%;
     height: 140px;

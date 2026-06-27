@@ -1186,13 +1186,13 @@ function showLangSelectPopup() {
     background:linear-gradient(135deg,#2c3e2d,#3d5239);
     border:1.5px solid #6b8e3d;
     border-radius:14px;
-    padding:8px;
+    padding:12px;
     z-index:99999;
     box-shadow:0 8px 24px rgba(0,0,0,0.5);
     display:flex;
     flex-direction:column;
-    gap:4px;
-    min-width:130px;
+    gap:8px;
+    min-width:180px;
   `;
 
   const langs = [
@@ -1211,9 +1211,9 @@ function showLangSelectPopup() {
       border-radius:8px;
       color:${isActive ? '#2c3e2d' : '#f0e6c8'};
       font-family:${LANG_FONTS[lang.code]};
-      font-size:13px;
+      font-size:15px;
       font-weight:${isActive ? '900' : '700'};
-      padding:8px 12px;
+      padding:10px 14px;
       text-align:left;
       cursor:pointer;
       width:100%;
@@ -1626,13 +1626,14 @@ function showSettingsPopup() {
     background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
     border:1.5px solid #6b8e3d;
     border-radius:16px;
-    padding:12px;
+    padding:16px;
     z-index:99999;
     box-shadow:0 8px 24px rgba(0,0,0,0.5);
     display:flex;
     flex-direction:column;
-    gap:8px;
-    min-width:200px;
+    gap:10px;
+    min-width:240px;
+    font-size:15px;
   `;
 
   popup.innerHTML = `

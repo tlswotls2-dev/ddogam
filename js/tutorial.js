@@ -60,12 +60,12 @@ const TUTORIAL_STEPS = [
     // [한글 주석] 4단계: 도움말 버튼 하이라이트 (클릭 차단, 팝업만 중앙)
     // [한글 주석] blockOthers: true가 설정되어 다른 영역 클릭이 차단됩니다.
     targetSelector: '#help-btn',
-    message: '❓ 도움말 버튼이에요!\n게임 방법을 자세히 알 수 있어요.',
+    message: '❓ 도움말 버튼이에요!\n게임 방법을 자세히 알 수 있어요.\n튜토리얼을 마치고 꼭 눌러보세요.',
     blockTarget: true,
     blockOthers: true,
     position: 'center-only',
     showSkip: false,
-    showPrev: false,
+    showPrev: true,
     showNext: true
   },
   {
@@ -331,6 +331,23 @@ function _nextTutorialStep() {
 // [한글 주석] 이전 단계
 function _prevTutorialStep() {
   if (_tutorialCurrentStep > 0) {
+    // [한글 주석] 4단계 → 3단계: 카드 상세팝업 다시 띄우기
+    if (_tutorialCurrentStep === 3) {
+      _removeTutorialOverlay();
+      // [한글 주석] 카드팝업이 없으면 다시 생성
+      if (!document.getElementById('tutorial-card-popup')) {
+        _spawnTutorialCard();
+      }
+      // [한글 주석] 상세 팝업이 없으면 다시 생성
+      setTimeout(() => {
+        if (!document.getElementById('tutorial-detail-area')) {
+          _tutorialShowDetail();
+        } else {
+          _showTutorialStep(2);
+        }
+      }, 150);
+      return;
+    }
     const cardPopup = document.getElementById('tutorial-card-popup');
     if (cardPopup) cardPopup.remove();
     const detailArea = document.getElementById('tutorial-detail-area');
