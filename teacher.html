@@ -8,20 +8,20 @@
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
-  /* [한글 주석] 태블릿 최적화 */
-  @media (max-width: 1024px) {
+  /* [한글 주석] 태블릿 전용 최적화 (600px~900px) */
+  @media (min-width: 600px) and (max-width: 900px) {
     .dashboard-header {
-      padding: 12px 16px !important;
-      gap: 8px !important;
+      padding: 10px 12px !important;
+      gap: 6px !important;
     }
 
     .dashboard-title {
-      font-size: 1rem !important;
+      font-size: 0.95rem !important;
       white-space: nowrap !important;
     }
 
     .dashboard-header-actions {
-      gap: 6px !important;
+      gap: 5px !important;
       flex-wrap: nowrap !important;
     }
 
@@ -34,36 +34,22 @@
     .dashboard-stats-row {
       grid-template-columns: repeat(3, 1fr) !important;
       gap: 6px !important;
-      padding: 8px !important;
+      padding: 8px 12px !important;
     }
 
     .dashboard-student-grid {
       grid-template-columns: repeat(2, 1fr) !important;
       gap: 8px !important;
-      padding: 0 8px !important;
+      padding: 0 12px !important;
     }
 
-    .stat-label {
-      font-size: 0.6rem !important;
-    }
+    .stat-icon { font-size: 1.2rem !important; }
+    .stat-label { font-size: 0.6rem !important; }
+    .stat-value { font-size: 0.8rem !important; }
 
-    .stat-value {
-      font-size: 0.85rem !important;
-    }
-
-    .dsc-name {
-      font-size: 0.9rem !important;
-    }
-
-    .dsc-number {
-      font-size: 0.75rem !important;
-      padding: 2px 8px !important;
-    }
-
-    .dsc-reward-btn {
-      font-size: 0.7rem !important;
-      padding: 5px !important;
-    }
+    .dsc-name { font-size: 0.9rem !important; }
+    .dsc-number { font-size: 0.72rem !important; padding: 2px 7px !important; }
+    .dsc-reward-btn { font-size: 0.7rem !important; padding: 5px !important; }
   }
   </style>
 </head>
