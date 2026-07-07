@@ -1478,8 +1478,8 @@
       const video = document.getElementById('intro-video');
       const skipBtn = document.getElementById('intro-skip-btn');
 
-      // [한글 주석] 건너뛰기 버튼 처음부터 바로 표시
-      if (skipBtn) skipBtn.style.display = 'block';
+      // [한글 주석] 건너뛰기 버튼 처음엔 숨김 - 영상 재생 시작 후 표시
+      if (skipBtn) skipBtn.style.display = 'none';
 
       // [한글 주석] 인트로 종료 처리 함수
       window.skipIntro = function () {
@@ -1582,7 +1582,7 @@
             letter-spacing:2px;
             opacity:0.8;
             font-family:'Noto Sans KR',sans-serif;
-          ">걷고 · 수집하고 · 배우고</div>
+          ">걷고 · 수집하며 · 배운다</div>
         </div>
 
         <!-- [한글 주석] 시작 버튼 -->
@@ -1596,6 +1596,9 @@
               v.muted = false;
               v.play().catch(() => { v.muted = true; v.play().catch(()=>{}); });
             }
+            // [한글 주석] 영상 재생 시작 후 건너뛰기 버튼 표시
+            const sb = document.getElementById('intro-skip-btn');
+            if (sb) sb.style.display = 'block';
           }, 500);
         " style="
           background:linear-gradient(135deg,#d4a017,#b3850e);
