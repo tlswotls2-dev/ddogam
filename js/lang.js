@@ -1915,12 +1915,13 @@ function showExportQR() {
       container.appendChild(img);
     }
   }, 100);
+}
 
-  window.showSettingsPopup = showSettingsPopup;
-  window.showExportQR = showExportQR;
-  window.checkRestoreFromURL = checkRestoreFromURL;
-  window.showLangSelectPopup = showLangSelectPopup;
-  window.selectLanguage = selectLanguage;
-  window.applyCardTranslation = applyCardTranslation;
-  window.initLang = initLang;
-  window.translateText = translateText;
+window.showSettingsPopup = showSettingsPopup;
+window.showExportQR = showExportQR;
+window.checkRestoreFromURL = checkRestoreFromURL;
+window.showLangSelectPopup = showLangSelectPopup;
+window.selectLanguage = selectLanguage;
+window.applyCardTranslation = applyCardTranslation;
+window.initLang = initLang;
+window.translateText = translateText;
