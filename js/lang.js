@@ -1749,7 +1749,7 @@ function showSettingsPopup() {
     ">${t('settingsLang')}: <span id="settings-lang-label" style="color:#8db05c;">${T?.[L]?.langBtnLabel || '한국어'}</span></button>
 
     <!-- [한글 주석] 오픈소스 및 콘텐츠 안내 -->
-    <button onclick="const el = document.getElementById('settings-popup'); if (el) el.remove(); showCopyrightPopup();" style="
+    <button onclick="showCopyrightPopup()" style="
       background:rgba(107,142,61,0.1);
       border:1px solid #6b8e3d;
       border-radius:10px;
@@ -1934,6 +1934,9 @@ function showExportQR() {
 function showCopyrightPopup() {
   const existing = document.getElementById('copyright-popup');
   if (existing) existing.remove();
+  // [한글 주석] 설정 팝업도 함께 닫기
+  const sp = document.getElementById('settings-popup');
+  if (sp) sp.remove();
 
   const popup = document.createElement('div');
   popup.id = 'copyright-popup';
