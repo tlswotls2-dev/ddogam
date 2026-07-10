@@ -1748,21 +1748,6 @@ function showSettingsPopup() {
       padding:10px 14px;text-align:left;cursor:pointer;width:100%;
     ">${t('settingsLang')}: <span id="settings-lang-label" style="color:#8db05c;">${T?.[L]?.langBtnLabel || '한국어'}</span></button>
 
-    <!-- [한글 주석] 오픈소스 및 콘텐츠 안내 -->
-    <button onclick="showCopyrightPopup()" style="
-      background:rgba(107,142,61,0.1);
-      border:1px solid #6b8e3d;
-      border-radius:10px;
-      color:#8db05c;
-      font-size:13px;
-      font-weight:700;
-      padding:10px 14px;
-      cursor:pointer;
-      text-align:left;
-      width:100%;
-      font-family:'Noto Sans KR',sans-serif;
-    ">📋 오픈소스 및 콘텐츠 안내</button>
-
     <!-- [한글 주석] 데이터 내보내기 -->
     <button onclick="showExportQR()" style="
       background:transparent;border:1px solid #6b8e3d;border-radius:10px;
