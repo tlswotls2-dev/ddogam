@@ -8,7 +8,7 @@
 window.currentLang = localStorage.getItem('selectedLang') || 'ko';
 
 // [한글 주석] 페이지 로드 즉시 해시 감지 (DOMContentLoaded 전에 실행)
-(function() {
+(function () {
   const hash = window.location.hash;
   if (hash.startsWith('#restore=')) {
     const encoded = hash.slice('#restore='.length);
@@ -33,7 +33,7 @@ window.currentLang = localStorage.getItem('selectedLang') || 'ko';
         // [한글 주석] reload는 팝업 확인 버튼에서 처리
         console.log('[복원] 성공:', cards.length, '개 카드, 레벨', data.l);
       }
-    } catch(e) {
+    } catch (e) {
       console.error('[복원] 실패:', e);
     }
   }
@@ -1406,8 +1406,8 @@ function applyUIText(langCode) {
       const badgeTpl = ui.tabExploringBadge || '{emoji} {name} 탐험 중';
       const catTarget = activeTab.getAttribute('data-target');
       const catName = catTarget === 'plant' ? ui.categoryPlant :
-                      catTarget === 'animal' ? ui.categoryAnimal :
-                      ui.categoryArtifact;
+        catTarget === 'animal' ? ui.categoryAnimal :
+          ui.categoryArtifact;
       const cleanName = catName.replace(/[^\uAC00-\uD7A3a-zA-Zа-яёА-ЯЁ\u4e00-\u9fff\s]/g, '').trim();
       currentBadge.textContent = badgeTpl.replace('{emoji}', emoji).replace('{name}', cleanName);
     }
@@ -1484,11 +1484,11 @@ function applyUIText(langCode) {
   const customizeTabLabels = {
     avatar: { ko: '🧒<br>아바타', en: '🧒<br>Avatar', ru: '🧒<br>Аватар', zh: '🧒<br>头像' },
     outfit: { ko: '👕<br>옷', en: '👕<br>Outfit', ru: '👕<br>Одежда', zh: '👕<br>服装' },
-    hat:    { ko: '🎩<br>모자', en: '🎩<br>Hat', ru: '🎩<br>Шляпа', zh: '🎩<br>帽子' },
-    glasses:{ ko: '👓<br>안경', en: '👓<br>Glasses', ru: '👓<br>Очки', zh: '👓<br>眼镜' },
-    earring:{ ko: '💚<br>귀걸이', en: '💚<br>Earring', ru: '💚<br>Серьги', zh: '💚<br>耳环' },
-    pet:    { ko: '🐾<br>펫', en: '🐾<br>Pet', ru: '🐾<br>Питомец', zh: '🐾<br>宠物' },
-    title:  { ko: '🏅<br>칭호', en: '🏅<br>Title', ru: '🏅<br>Звание', zh: '🏅<br>称号' },
+    hat: { ko: '🎩<br>모자', en: '🎩<br>Hat', ru: '🎩<br>Шляпа', zh: '🎩<br>帽子' },
+    glasses: { ko: '👓<br>안경', en: '👓<br>Glasses', ru: '👓<br>Очки', zh: '👓<br>眼镜' },
+    earring: { ko: '💚<br>귀걸이', en: '💚<br>Earring', ru: '💚<br>Серьги', zh: '💚<br>耳环' },
+    pet: { ko: '🐾<br>펫', en: '🐾<br>Pet', ru: '🐾<br>Питомец', zh: '🐾<br>宠物' },
+    title: { ko: '🏅<br>칭호', en: '🏅<br>Title', ru: '🏅<br>Звание', zh: '🏅<br>称号' },
     reward: { ko: '🎁<br>복주머니', en: '🎁<br>Lucky Bag', ru: '🎁<br>Мешочек', zh: '🎁<br>福袋' },
   };
   document.querySelectorAll('.customize-slot-tab').forEach(tab => {
@@ -1930,17 +1930,17 @@ function showExportQR() {
       container.appendChild(img);
     }
   }, 100);
-// [한글 주석] 저작권 안내 팝업
-function showCopyrightPopup() {
-  const existing = document.getElementById('copyright-popup');
-  if (existing) existing.remove();
-  // [한글 주석] 설정 팝업도 함께 닫기
-  const sp = document.getElementById('settings-popup');
-  if (sp) sp.remove();
+  // [한글 주석] 저작권 안내 팝업
+  function showCopyrightPopup() {
+    const existing = document.getElementById('copyright-popup');
+    if (existing) existing.remove();
+    // [한글 주석] 설정 팝업도 함께 닫기
+    const sp = document.getElementById('settings-popup');
+    if (sp) sp.remove();
 
-  const popup = document.createElement('div');
-  popup.id = 'copyright-popup';
-  popup.style.cssText = `
+    const popup = document.createElement('div');
+    popup.id = 'copyright-popup';
+    popup.style.cssText = `
     position:fixed;top:0;left:0;right:0;bottom:0;
     background:rgba(0,0,0,0.85);
     z-index:99999;
@@ -1949,7 +1949,7 @@ function showCopyrightPopup() {
     backdrop-filter:blur(4px);
   `;
 
-  popup.innerHTML = `
+    popup.innerHTML = `
     <div style="
       background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
       border:2px solid #6b8e3d;
@@ -1971,7 +1971,8 @@ function showCopyrightPopup() {
         이 앱은 다음의 자료를 활용하여 제작되었습니다.
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;max-height:60vh;overflow-y:auto;">
-        ${[
+        ${(function () {
+        var items = [
           ['🖼️', '카드 이미지', 'Google Gemini로 생성'],
           ['🎬', '오프닝 영상', 'Google Gemini로 생성'],
           ['🧍', '아바타', 'Cozy People (구매 라이선스)'],
@@ -1981,20 +1982,17 @@ function showCopyrightPopup() {
           ['🎵', '배경음악', 'Pixabay (Pixabay Content License)'],
           ['🔊', '효과음', '자체 제작 (Web Audio API)'],
           ['🎨', 'UI 디자인', '자체 제작 (HTML/CSS)'],
-        ].map(([icon, label, desc]) => `
-          <div style="
-            display:flex;align-items:flex-start;gap:10px;
-            background:rgba(141,176,92,0.06);
-            border:1px solid rgba(107,142,61,0.3);
-            border-radius:10px;padding:10px 12px;
-          ">
-            <div style="font-size:16px;flex-shrink:0;">${icon}</div>
-            <div>
-              <div style="color:#8db05c;font-size:11px;font-weight:700;">${label}</div>
-              <div style="color:#d4c89c;font-size:11px;margin-top:2px;">${desc}</div>
-            </div>
-          </div>
-        `).join('')}
+        ];
+        return items.map(function (item) {
+          var icon = item[0], label = item[1], desc = item[2];
+          return '<div style="display:flex;align-items:flex-start;gap:10px;background:rgba(141,176,92,0.06);border:1px solid rgba(107,142,61,0.3);border-radius:10px;padding:10px 12px;">'
+            + '<div style="font-size:16px;flex-shrink:0;">' + icon + '</div>'
+            + '<div>'
+            + '<div style="color:#8db05c;font-size:11px;font-weight:700;">' + label + '</div>'
+            + '<div style="color:#d4c89c;font-size:11px;margin-top:2px;">' + desc + '</div>'
+            + '</div></div>';
+        }).join('');
+      })()}
       </div>
       <button onclick="document.getElementById('copyright-popup').remove()" style="
         margin-top:16px;width:100%;
@@ -2005,15 +2003,15 @@ function showCopyrightPopup() {
     </div>
   `;
 
-  document.body.appendChild(popup);
-}
+    document.body.appendChild(popup);
+  }
 
-window.showCopyrightPopup = showCopyrightPopup;
-window.showSettingsPopup = showSettingsPopup;
-window.showExportQR = showExportQR;
-window.checkRestoreFromURL = checkRestoreFromURL;
-window.showLangSelectPopup = showLangSelectPopup;
-window.selectLanguage = selectLanguage;
-window.applyCardTranslation = applyCardTranslation;
-window.initLang = initLang;
-window.translateText = translateText;
+  window.showCopyrightPopup = showCopyrightPopup;
+  window.showSettingsPopup = showSettingsPopup;
+  window.showExportQR = showExportQR;
+  window.checkRestoreFromURL = checkRestoreFromURL;
+  window.showLangSelectPopup = showLangSelectPopup;
+  window.selectLanguage = selectLanguage;
+  window.applyCardTranslation = applyCardTranslation;
+  window.initLang = initLang;
+  window.translateText = translateText;
