@@ -350,6 +350,7 @@ window.LANG_UI = {
     rewardArriveTitle: '복주머니가 도착했어요!',
     rewardArriveDesc: '아이템 → 복주머니 탭에서<br>열어보세요! 🌟',
     rewardArriveBtn: '확인!',
+    settingsCopyright: '📋 오픈소스 및 콘텐츠 안내',
   },
   en: {
     langBtnLabel: 'English',
@@ -652,6 +653,7 @@ window.LANG_UI = {
     rewardArriveTitle: 'Lucky Bag has arrived!',
     rewardArriveDesc: 'Check Items → Lucky Bag tab<br>to open it! 🌟',
     rewardArriveBtn: 'OK!',
+    settingsCopyright: '📋 Open Source & Content Credits',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -954,6 +956,7 @@ window.LANG_UI = {
     rewardArriveTitle: 'Мешочек удачи прибыл!',
     rewardArriveDesc: 'Открой вкладку Вещи → Мешочек<br>и посмотри! 🌟',
     rewardArriveBtn: 'ОК!',
+    settingsCopyright: '📋 Открытые источники и контент',
   },
   zh: {
     langBtnLabel: '中文',
@@ -1256,6 +1259,7 @@ window.LANG_UI = {
     rewardArriveTitle: '福袋已到达！',
     rewardArriveDesc: '在道具 → 福袋标签<br>中查看吧！🌟',
     rewardArriveBtn: '确认！',
+    settingsCopyright: '📋 开源及内容说明',
   }
 };
 
@@ -1861,7 +1865,7 @@ function showSettingsPopup() {
       color:#8db05c;font-size:13px;font-weight:700;
       padding:10px 14px;text-align:left;cursor:pointer;width:100%;
       font-family:'Noto Sans KR',sans-serif;
-    ">📋 오픈소스 및 콘텐츠 안내</button>
+    ">${t('settingsCopyright')}</button>
 
     <!-- [한글 주석] 데이터 내보내기 -->
     <button onclick="showExportQR()" style="
