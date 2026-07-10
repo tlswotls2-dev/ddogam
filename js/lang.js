@@ -1930,47 +1930,7 @@ function showExportQR() {
       container.appendChild(img);
     }
   }, 100);
-  // [한글 주석] 저작권 안내 팝업
-  function showCopyrightPopup() {
-    var ep = document.getElementById('copyright-popup');
-    if (ep) ep.remove();
-    var sp = document.getElementById('settings-popup');
-    if (sp) sp.remove();
-    var popup = document.createElement('div');
-    popup.id = 'copyright-popup';
-    popup.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);';
-    var items = [
-      ['🖼️', '카드 이미지', 'Google Gemini로 생성'],
-      ['🎬', '오프닝 영상', 'Google Gemini로 생성'],
-      ['🧍', '아바타', 'Cozy People (구매 라이선스)'],
-      ['😊', '이모지', 'Google Noto Emoji (Apache 2.0)'],
-      ['🔤', '글꼴', 'Noto Sans KR (SIL Open Font License)'],
-      ['🗺️', '지도', 'Leaflet.js (BSD License)'],
-      ['🎵', '배경음악', 'Pixabay (Pixabay Content License)'],
-      ['🔊', '효과음', '자체 제작 (Web Audio API)'],
-      ['🎨', 'UI 디자인', '자체 제작 (HTML/CSS)']
-    ];
-    var rows = '';
-    for (var i = 0; i < items.length; i++) {
-      var icon = items[i][0], label = items[i][1], desc = items[i][2];
-      rows += '<div style="display:flex;align-items:flex-start;gap:10px;background:rgba(141,176,92,0.06);border:1px solid rgba(107,142,61,0.3);border-radius:10px;padding:10px 12px;margin-bottom:8px;">'
-        + '<div style="font-size:16px;flex-shrink:0;">' + icon + '</div>'
-        + '<div><div style="color:#8db05c;font-size:11px;font-weight:700;">' + label + '</div>'
-        + '<div style="color:#d4c89c;font-size:11px;margin-top:2px;">' + desc + '</div></div></div>';
-    }
-    popup.innerHTML = '<div style="background:linear-gradient(135deg,#1e2e1f,#2c3e2d);border:2px solid #6b8e3d;border-radius:24px;padding:24px 20px;max-width:320px;width:100%;box-shadow:0 0 40px rgba(141,176,92,0.2);">'
-      + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">'
-      + '<div style="color:#8db05c;font-size:15px;font-weight:900;">📋 오픈소스 및 콘텐츠 안내</div>'
-      + '<button onclick="document.getElementById(\'copyright-popup\').remove()" style="background:rgba(255,255,255,0.08);color:#888;border:1px solid #444;border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer;">✕</button>'
-      + '</div>'
-      + '<div style="color:#d4c89c;font-size:11px;line-height:1.6;margin-bottom:14px;">이 앱은 다음의 자료를 활용하여 제작되었습니다.</div>'
-      + '<div style="max-height:60vh;overflow-y:auto;">' + rows + '</div>'
-      + '<button onclick="document.getElementById(\'copyright-popup\').remove()" style="margin-top:16px;width:100%;background:linear-gradient(135deg,#6b8e3d,#4a6a2d);color:#f0e6c8;border:none;border-radius:12px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;">확인</button>'
-      + '</div>';
-    document.body.appendChild(popup);
-  }
 
-  window.showCopyrightPopup = showCopyrightPopup;
   window.showSettingsPopup = showSettingsPopup;
   window.showExportQR = showExportQR;
   window.checkRestoreFromURL = checkRestoreFromURL;
