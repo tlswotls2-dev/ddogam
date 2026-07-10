@@ -25,7 +25,7 @@ function initAudio() {
     // [한글 주석] 배경음 마스터 볼륨 (5배 상향)
     _bgmGain.gain.value = 0.9;
     _bgmGain.connect(_audioCtx.destination);
-  } catch(e) {
+  } catch (e) {
     console.log('[사운드] AudioContext 초기화 실패:', e);
   }
 }
@@ -163,7 +163,7 @@ function stopBGM() {
 
   _bgmPlaying = false;
   if (_bgmSource) {
-    try { _bgmSource.stop(); } catch(e) {}
+    try { _bgmSource.stop(); } catch (e) { }
     _bgmSource = null;
   }
 }
@@ -240,14 +240,14 @@ function playSfxCardGet() {
 function playSfxLevelUp() {
   if (_isMuted || !_audioCtx) return;
   const melody = [
-    {freq: 523.25, t: 0.0},
-    {freq: 659.25, t: 0.15},
-    {freq: 783.99, t: 0.30},
-    {freq: 1046.50, t: 0.45},
-    {freq: 783.99, t: 0.60},
-    {freq: 1046.50, t: 0.70},
+    { freq: 523.25, t: 0.0 },
+    { freq: 659.25, t: 0.15 },
+    { freq: 783.99, t: 0.30 },
+    { freq: 1046.50, t: 0.45 },
+    { freq: 783.99, t: 0.60 },
+    { freq: 1046.50, t: 0.70 },
   ];
-  melody.forEach(({freq, t}) => {
+  melody.forEach(({ freq, t }) => {
     const osc = _audioCtx.createOscillator();
     const gain = _audioCtx.createGain();
     osc.type = 'square';
@@ -264,7 +264,7 @@ function playSfxLevelUp() {
 // [한글 주석] 퀴즈 정답 효과음
 function playSfxCorrect() {
   if (_isMuted || !_audioCtx) return;
-  [{freq:523.25,t:0},{freq:659.25,t:0.12},{freq:783.99,t:0.24}].forEach(({freq,t}) => {
+  [{ freq: 523.25, t: 0 }, { freq: 659.25, t: 0.12 }, { freq: 783.99, t: 0.24 }].forEach(({ freq, t }) => {
     const osc = _audioCtx.createOscillator();
     const gain = _audioCtx.createGain();
     osc.type = 'sine';
@@ -281,7 +281,7 @@ function playSfxCorrect() {
 // [한글 주석] 퀴즈 오답 효과음
 function playSfxWrong() {
   if (_isMuted || !_audioCtx) return;
-  [{freq:220.00,t:0},{freq:196.00,t:0.15}].forEach(({freq,t}) => {
+  [{ freq: 220.00, t: 0 }, { freq: 196.00, t: 0.15 }].forEach(({ freq, t }) => {
     const osc = _audioCtx.createOscillator();
     const gain = _audioCtx.createGain();
     osc.type = 'sawtooth';
@@ -353,7 +353,7 @@ function playSfxClick() {
 // [한글 주석] 매칭 성공 효과음
 function playSfxMatched() {
   if (_isMuted || !_audioCtx) return;
-  [{freq:440,t:0},{freq:554.37,t:0.1},{freq:659.25,t:0.2},{freq:880,t:0.3}].forEach(({freq,t}) => {
+  [{ freq: 440, t: 0 }, { freq: 554.37, t: 0.1 }, { freq: 659.25, t: 0.2 }, { freq: 880, t: 0.3 }].forEach(({ freq, t }) => {
     const osc = _audioCtx.createOscillator();
     const gain = _audioCtx.createGain();
     osc.type = 'triangle';
@@ -371,10 +371,10 @@ function playSfxMatched() {
 function playSfxBattleWin() {
   if (_isMuted || !_audioCtx) return;
   const melody = [
-    {freq:523.25,t:0},{freq:659.25,t:0.1},{freq:783.99,t:0.2},
-    {freq:1046.50,t:0.35},{freq:783.99,t:0.5},{freq:1046.50,t:0.6},{freq:1318.51,t:0.75}
+    { freq: 523.25, t: 0 }, { freq: 659.25, t: 0.1 }, { freq: 783.99, t: 0.2 },
+    { freq: 1046.50, t: 0.35 }, { freq: 783.99, t: 0.5 }, { freq: 1046.50, t: 0.6 }, { freq: 1318.51, t: 0.75 }
   ];
-  melody.forEach(({freq,t}) => {
+  melody.forEach(({ freq, t }) => {
     const osc = _audioCtx.createOscillator();
     const gain = _audioCtx.createGain();
     osc.type = 'square';
