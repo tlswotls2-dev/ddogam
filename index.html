@@ -1513,8 +1513,8 @@
           ">다시 움직임으로, 도감 수집형 학습 플랫폼<br>(초3~6학년)</div>
         </div>
 
-        <!-- [한글 주석] 좌하단 오픈소스 안내 버튼 -->
-        <button onclick="if(typeof showCopyrightPopup==='function')showCopyrightPopup();" style="
+        <!-- [한글 주석] 좌하단 콘텐츠 안내 버튼 -->
+        <button id="intro-content-btn" onclick="if(typeof showCopyrightPopup==='function')showCopyrightPopup();" style="
           position:absolute;
           bottom:20px;
           left:20px;
@@ -1527,10 +1527,10 @@
           cursor:pointer;
           font-family:'Noto Sans KR',sans-serif;
           z-index:20;
-        ">📋 오픈소스 안내</button>
+        ">📋 콘텐츠 안내</button>
 
         <!-- [한글 주석] 우하단 사용방법 유튜브 버튼 -->
-        <button onclick="window.open('https://www.youtube.com/watch?v=JR_lLmc-fDw','_blank');" style="
+        <button id="intro-howto-btn" onclick="window.open('https://www.youtube.com/watch?v=JR_lLmc-fDw','_blank');" style="
           position:absolute;
           bottom:20px;
           right:20px;
@@ -1544,6 +1544,29 @@
           font-family:'Noto Sans KR',sans-serif;
           z-index:20;
         ">▶ 사용방법</button>
+
+        <script>
+          (function() {
+            // [한글 주석] 태블릿/PC에서만 인트로 버튼 크게
+            if (window.innerWidth > 480) {
+              var cb = document.getElementById('intro-content-btn');
+              var hb = document.getElementById('intro-howto-btn');
+              var scale = 'font-size:15px;padding:11px 20px;bottom:32px;';
+              if (cb) {
+                cb.style.fontSize = '15px';
+                cb.style.padding = '11px 20px';
+                cb.style.bottom = '32px';
+                cb.style.left = '32px';
+              }
+              if (hb) {
+                hb.style.fontSize = '15px';
+                hb.style.padding = '11px 20px';
+                hb.style.bottom = '32px';
+                hb.style.right = '32px';
+              }
+            }
+          })();
+        </script>
 
         <!-- [한글 주석] 시작 버튼 -->
         <button id="intro-tap-btn" onclick="
