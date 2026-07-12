@@ -1513,37 +1513,33 @@
           ">다시 움직임으로, 도감 수집형 학습 플랫폼<br>(초3~6학년)</div>
         </div>
 
-        <!-- [한글 주석] 좌하단 콘텐츠 안내 버튼 -->
-        <button id="intro-content-btn" onclick="if(typeof showCopyrightPopup==='function')showCopyrightPopup();" style="
-          position:absolute;
-          bottom:20px;
-          left:20px;
-          background:rgba(255,255,255,0.06);
-          border:1px solid rgba(107,142,61,0.4);
-          border-radius:20px;
-          color:#7a9a6b;
-          font-size:11px;
-          padding:7px 14px;
-          cursor:pointer;
-          font-family:'Noto Sans KR',sans-serif;
-          z-index:20;
-        ">📋 콘텐츠 안내</button>
+        <div style="display:flex;gap:10px;margin-top:20px;width:100%;max-width:280px;justify-content:center;">
+          <button id="intro-content-btn" onclick="if(typeof showCopyrightPopup==='function')showCopyrightPopup();" style="
+            flex:1;
+            background:rgba(255,255,255,0.06);
+            border:1px solid rgba(107,142,61,0.4);
+            border-radius:20px;
+            color:#7a9a6b;
+            font-size:12px;
+            padding:9px 12px;
+            cursor:pointer;
+            font-family:'Noto Sans KR',sans-serif;
+            white-space:nowrap;
+          ">📋 콘텐츠 안내</button>
 
-        <!-- [한글 주석] 우하단 사용방법 유튜브 버튼 -->
-        <button id="intro-howto-btn" onclick="window.open('https://www.youtube.com/watch?v=JR_lLmc-fDw','_blank');" style="
-          position:absolute;
-          bottom:20px;
-          right:20px;
-          background:rgba(255,68,68,0.1);
-          border:1px solid rgba(255,68,68,0.4);
-          border-radius:20px;
-          color:#ff8080;
-          font-size:11px;
-          padding:7px 14px;
-          cursor:pointer;
-          font-family:'Noto Sans KR',sans-serif;
-          z-index:20;
-        ">▶ 사용방법</button>
+          <button id="intro-howto-btn" onclick="window.open('https://www.youtube.com/watch?v=JR_lLmc-fDw','_blank');" style="
+            flex:1;
+            background:rgba(255,68,68,0.1);
+            border:1px solid rgba(255,68,68,0.4);
+            border-radius:20px;
+            color:#ff8080;
+            font-size:12px;
+            padding:9px 12px;
+            cursor:pointer;
+            font-family:'Noto Sans KR',sans-serif;
+            white-space:nowrap;
+          ">▶ 사용방법</button>
+        </div>
 
         <!-- [한글 주석] 시작 버튼 -->
         <button id="intro-tap-btn" onclick="
@@ -1592,15 +1588,11 @@
         var hbtn = document.getElementById('intro-howto-btn');
         if (cbtn) {
           cbtn.style.fontSize = '15px';
-          cbtn.style.padding = '11px 20px';
-          cbtn.style.bottom = '32px';
-          cbtn.style.left = '32px';
+          cbtn.style.padding = '12px 16px';
         }
         if (hbtn) {
           hbtn.style.fontSize = '15px';
-          hbtn.style.padding = '11px 20px';
-          hbtn.style.bottom = '32px';
-          hbtn.style.right = '32px';
+          hbtn.style.padding = '12px 16px';
         }
       }
 
