@@ -1265,7 +1265,7 @@
         }
       `;
       document.head.appendChild(style);
-      console.log('[레이아웃] 적용됨 - 앱 크기:', baseW, 'x', baseH, '스케일:', scale.toFixed(3));
+      console.log('[레이아웃] 적용됨 - 앱 크기:', appW, 'x', appH);
     })();
   </script>
 
@@ -1545,29 +1545,6 @@
           z-index:20;
         ">▶ 사용방법</button>
 
-        <script>
-          (function() {
-            // [한글 주석] 태블릿/PC에서만 인트로 버튼 크게
-            if (window.innerWidth > 480) {
-              var cb = document.getElementById('intro-content-btn');
-              var hb = document.getElementById('intro-howto-btn');
-              var scale = 'font-size:15px;padding:11px 20px;bottom:32px;';
-              if (cb) {
-                cb.style.fontSize = '15px';
-                cb.style.padding = '11px 20px';
-                cb.style.bottom = '32px';
-                cb.style.left = '32px';
-              }
-              if (hb) {
-                hb.style.fontSize = '15px';
-                hb.style.padding = '11px 20px';
-                hb.style.bottom = '32px';
-                hb.style.right = '32px';
-              }
-            }
-          })();
-        </script>
-
         <!-- [한글 주석] 시작 버튼 -->
         <button id="intro-tap-btn" onclick="
           document.getElementById('intro-start-screen').style.opacity='0';
@@ -1608,6 +1585,24 @@
       `;
 
       splash.appendChild(startScreen);
+
+      // [한글 주석] 태블릿/PC에서 인트로 버튼 크게
+      if (window.innerWidth > 480) {
+        var cbtn = document.getElementById('intro-content-btn');
+        var hbtn = document.getElementById('intro-howto-btn');
+        if (cbtn) {
+          cbtn.style.fontSize = '15px';
+          cbtn.style.padding = '11px 20px';
+          cbtn.style.bottom = '32px';
+          cbtn.style.left = '32px';
+        }
+        if (hbtn) {
+          hbtn.style.fontSize = '15px';
+          hbtn.style.padding = '11px 20px';
+          hbtn.style.bottom = '32px';
+          hbtn.style.right = '32px';
+        }
+      }
 
       // [한글 주석] 별 생성
       const starsBg = document.getElementById('intro-stars-bg');
