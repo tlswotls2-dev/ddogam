@@ -354,6 +354,7 @@ window.LANG_UI = {
     cardChoiceTimeoutNotice: '⏱ 10초 안에 선택하지 않으면 자동으로 선택돼요',
     explorationSummaryTitle: '이번 탐험 결과',
     explorationSummaryCount: '총 {n}장 수집!',
+    discoveryTimeoutNotice: '(10초 안에 탭하지 않으면 자동으로 수집돼요)',
   },
   en: {
     langBtnLabel: 'English',
@@ -660,6 +661,7 @@ window.LANG_UI = {
     cardChoiceTimeoutNotice: '⏱ Auto-selects if you don\'t choose within 10 seconds',
     explorationSummaryTitle: 'Exploration Results',
     explorationSummaryCount: '{n} cards collected!',
+    discoveryTimeoutNotice: '(Auto-collects if not tapped within 10s)',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -966,6 +968,7 @@ window.LANG_UI = {
     cardChoiceTimeoutNotice: '⏱ Автовыбор через 10 секунд, если не выберешь',
     explorationSummaryTitle: 'Результаты исследования',
     explorationSummaryCount: 'Собрано карточек: {n}!',
+    discoveryTimeoutNotice: '(Автосбор через 10 сек, если не нажать)',
   },
   zh: {
     langBtnLabel: '中文',
@@ -1272,6 +1275,7 @@ window.LANG_UI = {
     cardChoiceTimeoutNotice: '⏱ 10秒内未选择将自动选择',
     explorationSummaryTitle: '本次探索结果',
     explorationSummaryCount: '共收集{n}张！',
+    discoveryTimeoutNotice: '(10秒内未点击将自动收集)',
   }
 };
 
@@ -1445,7 +1449,9 @@ function applyUIText(langCode) {
   if (exploreEndBtn) exploreEndBtn.textContent = ui.stopExplore;
 
   const discoveryContent = document.getElementById('explore-discovery-content');
-  if (discoveryContent) discoveryContent.textContent = ui.newDiscovery;
+  if (discoveryContent) {
+    discoveryContent.innerHTML = ui.newDiscovery + '<div id="explore-discovery-timeout-notice" style="font-size:11px;font-weight:400;opacity:0.7;margin-top:8px;color:#d4c89c;">' + (ui.discoveryTimeoutNotice || '(10초 안에 탭하지 않으면 자동으로 수집돼요)') + '</div>';
+  }
 
   // [한글 주석] 탐험 화면 텍스트
   const exploreTopText = document.getElementById('explore-top-text');

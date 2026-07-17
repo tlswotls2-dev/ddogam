@@ -156,9 +156,7 @@ function showCardChoicePopup(cards, onChoice) {
     <div style="color:#aaa;font-size:12px;text-align:center;margin-bottom:4px;">
       ${(window.LANG_UI?.[window.currentLang||'ko']?.cardChoiceDesc) || '1장을 골라 도감에 추가해요'}
     </div>
-    <div id="card-choice-timeout-notice" style="color:#ff9500;font-size:11px;text-align:center;margin-bottom:4px;">
-      ${(window.LANG_UI?.[window.currentLang||'ko']?.cardChoiceTimeoutNotice) || '⏱ 10초 안에 선택하지 않으면 자동으로 선택돼요'}
-    </div>
+
     <div id="card-choice-row" style="
       display:flex;gap:10px;
       justify-content:center;
