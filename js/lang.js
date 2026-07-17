@@ -351,6 +351,7 @@ window.LANG_UI = {
     rewardArriveDesc: '아이템 → 복주머니 탭에서<br>열어보세요! 🌟',
     rewardArriveBtn: '확인!',
     settingsCopyright: '📋 오픈소스 및 콘텐츠 안내',
+    cardChoiceTimeoutNotice: '⏱ 10초 안에 선택하지 않으면 자동으로 선택돼요',
   },
   en: {
     langBtnLabel: 'English',
@@ -654,6 +655,7 @@ window.LANG_UI = {
     rewardArriveDesc: 'Check Items → Lucky Bag tab<br>to open it! 🌟',
     rewardArriveBtn: 'OK!',
     settingsCopyright: '📋 Open Source & Content Credits',
+    cardChoiceTimeoutNotice: '⏱ Auto-selects if you don\'t choose within 10 seconds',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -957,6 +959,7 @@ window.LANG_UI = {
     rewardArriveDesc: 'Открой вкладку Вещи → Мешочек<br>и посмотри! 🌟',
     rewardArriveBtn: 'ОК!',
     settingsCopyright: '📋 Открытые источники и контент',
+    cardChoiceTimeoutNotice: '⏱ Автовыбор через 10 секунд, если не выберешь',
   },
   zh: {
     langBtnLabel: '中文',
@@ -1260,6 +1263,7 @@ window.LANG_UI = {
     rewardArriveDesc: '在道具 → 福袋标签<br>中查看吧！🌟',
     rewardArriveBtn: '确认！',
     settingsCopyright: '📋 开源及内容说明',
+    cardChoiceTimeoutNotice: '⏱ 10秒内未选择将自动选择',
   }
 };
 

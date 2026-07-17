@@ -156,6 +156,9 @@ function showCardChoicePopup(cards, onChoice) {
     <div style="color:#aaa;font-size:12px;text-align:center;margin-bottom:4px;">
       ${(window.LANG_UI?.[window.currentLang||'ko']?.cardChoiceDesc) || '1장을 골라 도감에 추가해요'}
     </div>
+    <div id="card-choice-timeout-notice" style="color:#ff9500;font-size:11px;text-align:center;margin-bottom:4px;">
+      ${(window.LANG_UI?.[window.currentLang||'ko']?.cardChoiceTimeoutNotice) || '⏱ 10초 안에 선택하지 않으면 자동으로 선택돼요'}
+    </div>
     <div id="card-choice-row" style="
       display:flex;gap:10px;
       justify-content:center;
@@ -165,6 +168,16 @@ function showCardChoicePopup(cards, onChoice) {
 
   document.body.appendChild(overlay);
   const row = document.getElementById('card-choice-row');
+  // [한글 주석] 10초 타이머 - 시간 초과 시 랜덤 카드 자동 선택
+  const _choiceTimeoutTimer = setTimeout(() => {
+    if (overlay.dataset.choosing) return;
+    const cardEls = document.querySelectorAll('.choice-card');
+    if (cardEls.length > 0) {
+      const randomIdx = Math.floor(Math.random() * cardEls.length);
+      cardEls[randomIdx].click();
+    }
+  }, 10000);
+  overlay._choiceTimeoutTimer = _choiceTimeoutTimer;
 
   // [한글 주석] 카드 3장 생성 (각 카드마다 희귀도별 디자인 적용)
   cards.forEach((card, idx) => {
@@ -248,6 +261,11 @@ function showCardChoicePopup(cards, onChoice) {
       // [한글 주석] 이미 선택 중이면 무시
       if (overlay.dataset.choosing) return;
       overlay.dataset.choosing = 'true';
+      // [한글 주석] 자동선택 타이머 정리
+      if (overlay._choiceTimeoutTimer) {
+        clearTimeout(overlay._choiceTimeoutTimer);
+        overlay._choiceTimeoutTimer = null;
+      }
 
       // [한글 주석] 모든 카드 앞면 공개
       document.querySelectorAll('.choice-card').forEach((el, i) => {
@@ -376,6 +394,9 @@ function drawRandomItem() {
 
       // [한글 주석] 선택 팝업 표시 - 선택 완료 시 일반 획득 로직 실행
       showCardChoicePopup(choiceCards, (selectedCard) => {
+        // [한글 주석] 탐험 세션 배열에 기록
+        if (!window._explorationSessionCards) window._explorationSessionCards = [];
+        window._explorationSessionCards.push(selectedCard);
         // [한글 주석] 중복 카드 처리 - 이미 있으면 조합소로
         const cardResult = typeof addCardWithDuplicate === 'function'
           ? addCardWithDuplicate(selectedCard.id)
@@ -426,6 +447,9 @@ function drawRandomItem() {
     }
 
     // [한글 주석] 6. 결과 저장 및 팝업 띄우기 (일반 모드)
+    // [한글 주석] 탐험 세션 배열에 기록
+    if (!window._explorationSessionCards) window._explorationSessionCards = [];
+    window._explorationSessionCards.push(resultCard);
     // [한글 주석] 중복 카드 처리 - 이미 있으면 조합소로
     const cardResult = typeof addCardWithDuplicate === 'function'
       ? addCardWithDuplicate(resultCard.id)
@@ -493,6 +517,19 @@ function drawRandomItem() {
  * @param {boolean} isNew - 새로운 발견 여부
  */
 function showCardPopup(cardParam, isNew) {
+  // [한글 주석] 기존 자동닫힘 타이머 있으면 제거
+  if (window._cardPopupAutoCloseTimer) {
+    clearTimeout(window._cardPopupAutoCloseTimer);
+    window._cardPopupAutoCloseTimer = null;
+  }
+  // [한글 주석] 탐험 중일 때만 10초 자동닫힘 타이머 설정 (상세보기 누르면 취소됨)
+  const _exploreOverlay = document.getElementById('exploration-overlay');
+  if (_exploreOverlay && _exploreOverlay.style.display !== 'none') {
+    window._cardPopupAutoCloseTimer = setTimeout(() => {
+      window._cardPopupAutoCloseTimer = null;
+      if (typeof closeCardPopup === 'function') closeCardPopup();
+    }, 10000);
+  }
   // [한글 주석] 뒤로가기 스택에 추가
   if (typeof pushScreen === 'function') pushScreen('shared-card-overlay');
   // [한글 주석] 카드 출현 시 배경음 정지
@@ -721,6 +758,11 @@ function clearRarityEffects() {
  * 팝업을 닫을 때 남아있는 희귀도 이펙트 요소들도 깔끔하게 정리합니다.
  */
 function closeCardPopup() {
+    // [한글 주석] 자동닫힘 타이머 정리
+    if (window._cardPopupAutoCloseTimer) {
+        clearTimeout(window._cardPopupAutoCloseTimer);
+        window._cardPopupAutoCloseTimer = null;
+    }
     // [한글 주석] 이펙트 정리 (파티클, 전설 텍스트, 클래스 등)
     clearRarityEffects();
     
@@ -731,6 +773,10 @@ function closeCardPopup() {
       const exploreOverlay = document.getElementById('exploration-overlay');
       if (exploreOverlay && exploreOverlay.style.display !== 'none') {
         if (typeof playExploreBGM === 'function') playExploreBGM();
+        // [한글 주석] 탐험 중이면 다음 카드 발견을 위해 걸음 목표 재설정
+        if (typeof setNextItemTarget === 'function') {
+          setNextItemTarget();
+        }
       }
     }, 300);
     
@@ -744,6 +790,11 @@ function closeCardPopup() {
  * 카드를 뒷면으로 뒤집는 함수
  */
 function flipCard() {
+    // [한글 주석] 상세보기 누르면 자동닫힘 타이머 취소
+    if (window._cardPopupAutoCloseTimer) {
+        clearTimeout(window._cardPopupAutoCloseTimer);
+        window._cardPopupAutoCloseTimer = null;
+    }
     document.getElementById('flip-card-inner').classList.add('is-flipped');
 }
 

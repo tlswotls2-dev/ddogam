@@ -466,26 +466,109 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.stopExploration = function () {
+    // [한글 주석] 탐험 종료 시 실제 종료 처리 로직 (요약 팝업 이후 실행됨)
+    function _actuallyStopExploration() {
         // [한글 주석] 탐험 종료 시 뒤로가기 차단 해제
         if (window._explorationBackHandler) {
             window.removeEventListener('popstate', window._explorationBackHandler);
             window._explorationBackHandler = null;
         }
-
         // [한글 주석] 메인 배경음으로 복귀
         if (typeof stopBGM === 'function') stopBGM();
         setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 300);
-
         const overlay = document.getElementById('exploration-overlay');
         if (overlay) {
             overlay.style.display = 'none';
         }
-
         // 페도미터의 탐험 모드 종료 (걸음 측정 중단)
         if (typeof stopPedometerExploration === 'function') {
             stopPedometerExploration();
         }
+    }
+
+    // [한글 주석] 탐험 세션 요약 팝업 표시 후 실제 종료
+    window.stopExploration = function () {
+        const sessionCards = window._explorationSessionCards || [];
+        if (sessionCards.length === 0) {
+            // [한글 주석] 수집한 카드가 없으면 바로 종료
+            _actuallyStopExploration();
+            return;
+        }
+
+        // [한글 주석] 카드별 개수 집계
+        const countMap = {};
+        sessionCards.forEach(card => {
+            if (!countMap[card.id]) {
+                countMap[card.id] = { card: card, count: 0 };
+            }
+            countMap[card.id].count++;
+        });
+        const summaryList = Object.values(countMap).sort((a, b) => b.count - a.count);
+
+        const _Ts = window.LANG_UI; const _Ls = window.currentLang || 'ko';
+        const _ts = k => _Ts?.[_Ls]?.[k] || _Ts?.ko?.[k] || '';
+
+        const overlay = document.createElement('div');
+        overlay.id = 'exploration-summary-overlay';
+        overlay.style.cssText = `
+            position:fixed;top:0;left:0;right:0;bottom:0;
+            background:rgba(0,0,0,0.92);
+            z-index:99999;
+            display:flex;align-items:center;justify-content:center;
+            padding:20px;
+        `;
+
+        const rows = summaryList.map(item => {
+            const c = item.card;
+            const lang = window.currentLang || 'ko';
+            const name = (lang !== 'ko' && c[`name_${lang}`]) ? c[`name_${lang}`] : c.name;
+            const imgHTML = typeof getCardImageHTML === 'function'
+                ? getCardImageHTML(c, 40)
+                : `<div style="font-size:24px;">${c.emoji || ''}</div>`;
+            return `
+                <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border-radius:10px;padding:8px 12px;margin-bottom:6px;">
+                    <div style="width:40px;height:40px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);flex-shrink:0;">${imgHTML}</div>
+                    <div style="flex:1;color:#f0e6c8;font-size:13px;font-weight:700;">${name}</div>
+                    <div style="color:#ffd700;font-size:13px;font-weight:900;">×${item.count}</div>
+                </div>
+            `;
+        }).join('');
+
+        overlay.innerHTML = `
+            <div style="
+                background:linear-gradient(135deg,#1e2e1f,#2c3e2d);
+                border:2px solid #6b8e3d;
+                border-radius:24px;
+                padding:24px 20px;
+                max-width:340px;
+                width:100%;
+                max-height:80vh;
+                display:flex;
+                flex-direction:column;
+            ">
+                <div style="text-align:center;margin-bottom:16px;">
+                    <div style="font-size:36px;margin-bottom:8px;">🎒</div>
+                    <div style="color:#8db05c;font-size:17px;font-weight:900;">이번 탐험 결과</div>
+                    <div style="color:#d4c89c;font-size:12px;margin-top:4px;">총 ${sessionCards.length}장 수집!</div>
+                </div>
+                <div style="overflow-y:auto;flex:1;margin-bottom:16px;">
+                    ${rows}
+                </div>
+                <button id="exploration-summary-close-btn" style="
+                    width:100%;
+                    background:linear-gradient(135deg,#8db05c,#6b8e3d);
+                    color:#1e2e1f;border:none;border-radius:14px;
+                    padding:13px;font-size:15px;font-weight:900;cursor:pointer;
+                ">확인!</button>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+        document.getElementById('exploration-summary-close-btn').onclick = function () {
+            overlay.remove();
+            window._explorationSessionCards = [];
+            _actuallyStopExploration();
+        };
     };
 
     window.showItemDiscoveryNotification = function () {
@@ -604,6 +687,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 // 4. 아이템 발생 시 동작 (랜덤 아이템 뽑기 로직 호출)
                 () => {
+                    // [한글 주석] 탐험 세션 배열이 없으면 초기화 (탐험 시작 시점)
+                    if (!window._explorationSessionCards) {
+                        window._explorationSessionCards = [];
+                    }
                     // 즉시 아이템을 뽑지 않고 오버레이에 발견 알림 표시
                     if (typeof showItemDiscoveryNotification === 'function') {
                         showItemDiscoveryNotification();
