@@ -324,7 +324,7 @@ function showCardChoicePopup(cards, onChoice) {
 /**
  * [한글 주석] 랜덤으로 아이템 1개를 뽑는 메인 로직입니다. (걸음 수를 달성했을 때 호출됨)
  */
-function drawRandomItem() {
+function drawRandomItem(forceNormalMode) {
     // 데이터가 아직 로드되지 않았다면 무시 (초기화 보장)
     if (!window.allCardsData || window.allCardsData.length === 0) {
         console.warn("아직 카드 데이터가 로드되지 않았습니다.");
@@ -372,8 +372,8 @@ function drawRandomItem() {
     const randomIndex = Math.floor(Math.random() * weightedCards.length);
     const resultCard = weightedCards[randomIndex];
     
-    // [한글 주석] 30% 확률로 카드 3장 선택 모드 발동
-    const isChoiceMode = Math.random() < 0.30;
+    // [한글 주석] 30% 확률로 카드 3장 선택 모드 발동 (자동수집 시에는 강제로 비활성화)
+    const isChoiceMode = !forceNormalMode && Math.random() < 0.30;
 
     if (isChoiceMode) {
       // [한글 주석] 카드 3장 뽑기 (각각 독립적으로 가중 랜덤)
@@ -522,13 +522,13 @@ function showCardPopup(cardParam, isNew) {
     clearTimeout(window._cardPopupAutoCloseTimer);
     window._cardPopupAutoCloseTimer = null;
   }
-  // [한글 주석] 탐험 중일 때만 10초 자동닫힘 타이머 설정 (상세보기 누르면 취소됨)
-  const _exploreOverlay = document.getElementById('exploration-overlay');
-  if (_exploreOverlay && _exploreOverlay.style.display !== 'none') {
+  // [한글 주석] 자동수집(10초 미탭)으로 뽑힌 카드일 때만 3초 후 자동으로 팝업 닫기
+  if (window._isAutoCollectedCard) {
+    window._isAutoCollectedCard = false;
     window._cardPopupAutoCloseTimer = setTimeout(() => {
       window._cardPopupAutoCloseTimer = null;
       if (typeof closeCardPopup === 'function') closeCardPopup();
-    }, 10000);
+    }, 3000);
   }
   // [한글 주석] 뒤로가기 스택에 추가
   if (typeof pushScreen === 'function') pushScreen('shared-card-overlay');

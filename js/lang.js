@@ -352,6 +352,8 @@ window.LANG_UI = {
     rewardArriveBtn: '확인!',
     settingsCopyright: '📋 오픈소스 및 콘텐츠 안내',
     cardChoiceTimeoutNotice: '⏱ 10초 안에 선택하지 않으면 자동으로 선택돼요',
+    explorationSummaryTitle: '이번 탐험 결과',
+    explorationSummaryCount: '총 {n}장 수집!',
   },
   en: {
     langBtnLabel: 'English',
@@ -656,6 +658,8 @@ window.LANG_UI = {
     rewardArriveBtn: 'OK!',
     settingsCopyright: '📋 Open Source & Content Credits',
     cardChoiceTimeoutNotice: '⏱ Auto-selects if you don\'t choose within 10 seconds',
+    explorationSummaryTitle: 'Exploration Results',
+    explorationSummaryCount: '{n} cards collected!',
   },
   ru: {
     langBtnLabel: 'Русский',
@@ -960,6 +964,8 @@ window.LANG_UI = {
     rewardArriveBtn: 'ОК!',
     settingsCopyright: '📋 Открытые источники и контент',
     cardChoiceTimeoutNotice: '⏱ Автовыбор через 10 секунд, если не выберешь',
+    explorationSummaryTitle: 'Результаты исследования',
+    explorationSummaryCount: 'Собрано карточек: {n}!',
   },
   zh: {
     langBtnLabel: '中文',
@@ -1264,6 +1270,8 @@ window.LANG_UI = {
     rewardArriveBtn: '确认！',
     settingsCopyright: '📋 开源及内容说明',
     cardChoiceTimeoutNotice: '⏱ 10秒内未选择将自动选择',
+    explorationSummaryTitle: '本次探索结果',
+    explorationSummaryCount: '共收集{n}张！',
   }
 };
 

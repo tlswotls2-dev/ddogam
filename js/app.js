@@ -518,6 +518,20 @@ document.addEventListener('DOMContentLoaded', () => {
             padding:20px;
         `;
 
+        const _Tsum = window.LANG_UI; const _Lsum = window.currentLang || 'ko';
+        const _tsum = k => _Tsum?.[_Lsum]?.[k] || _Tsum?.ko?.[k] || '';
+        const _catLabels = {
+          plant: '🌱 ' + (_tsum('radarPlant') || '식물'),
+          animal: '🦊 ' + (_tsum('radarAnimal') || '동물'),
+          artifact: '🏺 ' + (_tsum('radarArtifact') || '유물')
+        };
+        const _rarityLabels = {
+          common: '★ ' + (_tsum('rarityCommon') || '일반'),
+          rare: '★★ ' + (_tsum('rarityRare') || '희귀'),
+          epic: '★★★ ' + (_tsum('rarityEpic') || '전설')
+        };
+        const _rarityColors = { common: '#84ff00', rare: '#4a9eff', epic: '#ffd700' };
+
         const rows = summaryList.map(item => {
             const c = item.card;
             const lang = window.currentLang || 'ko';
@@ -525,10 +539,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const imgHTML = typeof getCardImageHTML === 'function'
                 ? getCardImageHTML(c, 40)
                 : `<div style="font-size:24px;">${c.emoji || ''}</div>`;
+            const catLabel = _catLabels[c.category] || '';
+            const rarityLabel = _rarityLabels[c.rarity] || '';
+            const rarityColor = _rarityColors[c.rarity] || '#8db05c';
             return `
                 <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border-radius:10px;padding:8px 12px;margin-bottom:6px;">
                     <div style="width:40px;height:40px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);flex-shrink:0;">${imgHTML}</div>
-                    <div style="flex:1;color:#f0e6c8;font-size:13px;font-weight:700;">${name}</div>
+                    <div style="flex:1;">
+                        <div style="color:#f0e6c8;font-size:13px;font-weight:700;">${name}</div>
+                        <div style="display:flex;gap:6px;margin-top:2px;">
+                            <span style="color:#888;font-size:10px;">${catLabel}</span>
+                            <span style="color:${rarityColor};font-size:10px;font-weight:700;">${rarityLabel}</span>
+                        </div>
+                    </div>
                     <div style="color:#ffd700;font-size:13px;font-weight:900;">×${item.count}</div>
                 </div>
             `;
@@ -548,8 +571,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ">
                 <div style="text-align:center;margin-bottom:16px;">
                     <div style="font-size:36px;margin-bottom:8px;">🎒</div>
-                    <div style="color:#8db05c;font-size:17px;font-weight:900;">이번 탐험 결과</div>
-                    <div style="color:#d4c89c;font-size:12px;margin-top:4px;">총 ${sessionCards.length}장 수집!</div>
+                    <div style="color:#8db05c;font-size:17px;font-weight:900;">${_tsum('explorationSummaryTitle') || '이번 탐험 결과'}</div>
+                    <div style="color:#d4c89c;font-size:12px;margin-top:4px;">${(_tsum('explorationSummaryCount') || '총 {n}장 수집!').replace('{n}', sessionCards.length)}</div>
                 </div>
                 <div style="overflow-y:auto;flex:1;margin-bottom:16px;">
                     ${rows}
@@ -559,7 +582,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     background:linear-gradient(135deg,#8db05c,#6b8e3d);
                     color:#1e2e1f;border:none;border-radius:14px;
                     padding:13px;font-size:15px;font-weight:900;cursor:pointer;
-                ">확인!</button>
+                ">${_tsum('battleConfirm') || '확인!'}</button>
             </div>
         `;
 
@@ -589,10 +612,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => { if (typeof playSfxCardAppear === 'function') playSfxCardAppear(); }, 400);
                 setTimeout(() => { if (typeof playSfxCardAppear === 'function') playSfxCardAppear(); }, 800);
             }
+            // [한글 주석] 기존 자동수집 타이머 있으면 제거
+            if (window._discoveryAutoTapTimer) {
+                clearTimeout(window._discoveryAutoTapTimer);
+                window._discoveryAutoTapTimer = null;
+            }
+            // [한글 주석] 10초 안에 탭하지 않으면 자동으로 수집 (3장 선택 이벤트는 발생 안 함)
+            window._discoveryAutoTapTimer = setTimeout(() => {
+                window._discoveryAutoTapTimer = null;
+                if (discoveryContent.style.display === 'block') {
+                    defaultContent.style.display = 'flex';
+                    discoveryContent.style.display = 'none';
+                    // [한글 주석] 자동수집으로 뽑힌 카드임을 표시 (팝업 3초 자동닫힘용)
+                    window._isAutoCollectedCard = true;
+                    if (typeof drawRandomItem === 'function') {
+                        drawRandomItem(true); // [한글 주석] true = 강제 일반모드 (3장선택 스킵)
+                    }
+                }
+            }, 10000);
         }
     };
 
     window.handleExplorationOverlayClick = function () {
+        // [한글 주석] 자동수집 타이머 정리 (사용자가 직접 탭함)
+        if (window._discoveryAutoTapTimer) {
+            clearTimeout(window._discoveryAutoTapTimer);
+            window._discoveryAutoTapTimer = null;
+        }
         const discoveryContent = document.getElementById('explore-discovery-content');
 
         // 발견 알림이 떠있는 상태에서만 클릭 이벤트 처리
