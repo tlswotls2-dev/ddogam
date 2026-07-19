@@ -16,56 +16,56 @@ let markersLayer = null;       // 수집 마커들을 묶어서 관리하는 레
  * 지도 화면을 열고 슬라이드 애니메이션을 적용합니다.
  */
 function showMap() {
-  // [한글 주석] 위치 권한 안내 팝업을 먼저 확인했는지 체크
-  if (!sessionStorage.getItem('_locationPermissionNoticeShown')) {
-    _showLocationPermissionNotice(function() {
-      sessionStorage.setItem('_locationPermissionNoticeShown', '1');
-      _actuallyShowMap();
-    });
-    return;
-  }
-  _actuallyShowMap();
+    // [한글 주석] 위치 권한 안내 팝업을 먼저 확인했는지 체크
+    if (!sessionStorage.getItem('_locationPermissionNoticeShown')) {
+        _showLocationPermissionNotice(function () {
+            sessionStorage.setItem('_locationPermissionNoticeShown', '1');
+            _actuallyShowMap();
+        });
+        return;
+    }
+    _actuallyShowMap();
 }
 
 // [한글 주석] 위치 권한 안내 팝업
 function _showLocationPermissionNotice(onConfirm) {
-  var existing = document.getElementById('location-permission-overlay');
-  if (existing) existing.remove();
+    var existing = document.getElementById('location-permission-overlay');
+    if (existing) existing.remove();
 
-  var lang = window.currentLang || 'ko';
-  var texts = {
-    ko: { title: '📍 위치 권한 안내', desc: '이 앱은 카드 탐험을 위해\n위치 정보 접근 권한이 필요합니다.', btn: '확인' },
-    en: { title: '📍 Location Permission', desc: 'This app needs location access\nfor card exploration.', btn: 'OK' },
-    ru: { title: '📍 Доступ к геолокации', desc: 'Приложению нужен доступ к геолокации\nдля поиска карточек.', btn: 'ОК' },
-    zh: { title: '📍 位置权限说明', desc: '本应用需要位置权限\n以进行卡片探索。', btn: '确认' }
-  };
-  var data = texts[lang] || texts.ko;
+    var lang = window.currentLang || 'ko';
+    var texts = {
+        ko: { title: '📍 위치 권한 안내', desc: '지도에 수집 기록을 남기기 위해\n위치 정보 접근 권한이 필요합니다.', btn: '확인' },
+        en: { title: '📍 Location Permission', desc: 'This app needs location access\nfor card exploration.', btn: 'OK' },
+        ru: { title: '📍 Доступ к геолокации', desc: 'Приложению нужен доступ к геолокации\nдля поиска карточек.', btn: 'ОК' },
+        zh: { title: '📍 位置权限说明', desc: '本应用需要位置权限\n以进行卡片探索。', btn: '确认' }
+    };
+    var data = texts[lang] || texts.ko;
 
-  var overlay = document.createElement('div');
-  overlay.id = 'location-permission-overlay';
-  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
-  overlay.innerHTML = '<div style="background:linear-gradient(135deg,#1e2e1f,#2c3e2d);border:2px solid #6b8e3d;border-radius:24px;padding:28px 22px;max-width:300px;width:100%;text-align:center;">'
-    + '<div style="font-size:40px;margin-bottom:12px;">📍</div>'
-    + '<div style="color:#8db05c;font-size:16px;font-weight:900;margin-bottom:10px;">' + data.title + '</div>'
-    + '<div style="color:#d4c89c;font-size:13px;line-height:1.7;margin-bottom:22px;white-space:pre-line;">' + data.desc + '</div>'
-    + '<button id="location-permission-confirm-btn" style="width:100%;background:linear-gradient(135deg,#8db05c,#6b8e3d);color:#1e2e1f;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;">' + data.btn + '</button>'
-    + '</div>';
+    var overlay = document.createElement('div');
+    overlay.id = 'location-permission-overlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+    overlay.innerHTML = '<div style="background:linear-gradient(135deg,#1e2e1f,#2c3e2d);border:2px solid #6b8e3d;border-radius:24px;padding:28px 22px;max-width:300px;width:100%;text-align:center;">'
+        + '<div style="font-size:40px;margin-bottom:12px;">📍</div>'
+        + '<div style="color:#8db05c;font-size:16px;font-weight:900;margin-bottom:10px;">' + data.title + '</div>'
+        + '<div style="color:#d4c89c;font-size:13px;line-height:1.7;margin-bottom:22px;white-space:pre-line;">' + data.desc + '</div>'
+        + '<button id="location-permission-confirm-btn" style="width:100%;background:linear-gradient(135deg,#8db05c,#6b8e3d);color:#1e2e1f;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;">' + data.btn + '</button>'
+        + '</div>';
 
-  document.body.appendChild(overlay);
-  document.getElementById('location-permission-confirm-btn').onclick = function() {
-    overlay.remove();
-    if (onConfirm) onConfirm();
-  };
+    document.body.appendChild(overlay);
+    document.getElementById('location-permission-confirm-btn').onclick = function () {
+        overlay.remove();
+        if (onConfirm) onConfirm();
+    };
 }
 
 function _actuallyShowMap() {
-  // [한글 주석] 뒤로가기 스택에 추가
-  if (typeof pushScreen === 'function') pushScreen('map-screen');
+    // [한글 주석] 뒤로가기 스택에 추가
+    if (typeof pushScreen === 'function') pushScreen('map-screen');
     const mapScreen = document.getElementById('map-screen');
-    
+
     // 화면에 보이게(flex) 처리
     mapScreen.style.display = 'flex';
-    
+
     // 슬라이드 인 애니메이션 적용
     setTimeout(() => {
         mapScreen.classList.add('slide-in');
@@ -91,10 +91,10 @@ function _actuallyShowMap() {
  */
 function hideMap() {
     const mapScreen = document.getElementById('map-screen');
-    
+
     // 슬라이드 아웃 (클래스 제거)
     mapScreen.classList.remove('slide-in');
-    
+
     // 애니메이션 시간 후 화면 숨기기
     setTimeout(() => {
         mapScreen.style.display = 'none';
@@ -108,7 +108,7 @@ function hideMap() {
 function initMap() {
     // Leaflet 지도 생성 (map-container div에 바인딩)
     map = L.map('map-container').setView([DEFAULT_LAT, DEFAULT_LNG], DEFAULT_ZOOM);
-    
+
     // OpenStreetMap 타일 레이어 추가
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap',
@@ -170,7 +170,7 @@ function setUserMarker(lat, lng) {
     if (userMarker) {
         map.removeLayer(userMarker);
     }
-    
+
     // 파란 원형 마커 생성
     userMarker = L.circleMarker([lat, lng], {
         radius: 10,
@@ -180,7 +180,7 @@ function setUserMarker(lat, lng) {
         opacity: 1,
         fillOpacity: 0.8
     }).addTo(map);
-    
+
     const _T4 = window.LANG_UI; const _L4 = window.currentLang || 'ko';
     userMarker.bindPopup(_T4?.[_L4]?.mapMyLocation || '📍 내 위치').openPopup();
 }
@@ -195,12 +195,12 @@ function setUserMarker(lat, lng) {
 function addCollectionMarker(lat, lng, cardData) {
     // 지도가 초기화되지 않았으면 무시 (나중에 loadSavedMarkers로 복원됨)
     if (!map) return;
-    
+
     // 희귀도별 마커 색상 결정
     let markerColor = '#4caf50';  // 기본 초록 (common)
     if (cardData.rarity === 'rare') markerColor = '#2196F3';   // 파랑
     if (cardData.rarity === 'epic') markerColor = '#ffc107';   // 금색
-    
+
     // 커스텀 아이콘 생성 (div 기반)
     const customIcon = L.divIcon({
         className: 'custom-map-marker',
@@ -209,17 +209,17 @@ function addCollectionMarker(lat, lng, cardData) {
         iconAnchor: [18, 18], // 마커의 중심점
         popupAnchor: [0, -20] // 팝업이 뜨는 위치
     });
-    
+
     // 수집 날짜 가져오기
     const dates = typeof getCollectionDates === 'function' ? getCollectionDates() : {};
     const _T5 = window.LANG_UI; const _L5 = window.currentLang || 'ko';
     const dateStr = dates[cardData.id] || (_T5?.[_L5]?.mapDateUnknown || '날짜 정보 없음');
-    
+
     // 마커 생성 및 지도에 추가 (단일 추가 시에도 레이어 그룹에 포함시킴)
     const marker = L.marker([lat, lng], { icon: customIcon });
     if (markersLayer) marker.addTo(markersLayer);
     else marker.addTo(map);
-    
+
     // 마커 클릭 시 팝업에 카드 정보 표시
     marker.bindPopup(`
         <div style="text-align:center; font-family:'Jua',sans-serif;">
@@ -235,12 +235,12 @@ function addCollectionMarker(lat, lng, cardData) {
  */
 function getDistanceMeters(lat1, lng1, lat2, lng2) {
     const R = 6371000;
-    const dLat = (lat2-lat1) * Math.PI/180;
-    const dLng = (lng2-lng1) * Math.PI/180;
-    const a = Math.sin(dLat/2)*Math.sin(dLat/2) +
-      Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
-      Math.sin(dLng/2)*Math.sin(dLng/2);
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 /**
@@ -248,7 +248,7 @@ function getDistanceMeters(lat1, lng1, lat2, lng2) {
  */
 function loadSavedMarkers() {
     const locations = getCollectionLocations(); // storage.js 함수
-    
+
     // 카드 데이터가 아직 로드되지 않았으면 잠시 후 재시도
     if (!window.allCardsData || window.allCardsData.length === 0) {
         setTimeout(loadSavedMarkers, 500);
@@ -259,7 +259,7 @@ function loadSavedMarkers() {
     if (markersLayer) {
         markersLayer.clearLayers();
     }
-    
+
     // 1. 저장된 마커 데이터를 배열로 가공
     const dates = typeof getCollectionDates === 'function' ? getCollectionDates() : {};
     const markerDataList = [];
@@ -356,7 +356,7 @@ function loadSavedMarkers() {
             });
 
             const marker = L.marker([cluster.lat, cluster.lng], { icon: clusterIcon });
-            
+
             // 팝업 대신 커스텀 UI 열기
             marker.on('click', () => {
                 showClusterPopup(cluster);
@@ -372,21 +372,21 @@ function loadSavedMarkers() {
 function showClusterPopup(cluster) {
     const popupEl = document.getElementById('cluster-popup');
     if (!popupEl) return;
-    
+
     const _T7 = window.LANG_UI; const _L7 = window.currentLang || 'ko';
     document.querySelector('.cluster-popup-title').textContent =
-      (_T7?.[_L7]?.mapClusterTitle || '이 장소에서 {n}개 발견!').replace('{n}', cluster.items.length);
-    
+        (_T7?.[_L7]?.mapClusterTitle || '이 장소에서 {n}개 발견!').replace('{n}', cluster.items.length);
+
     const listEl = document.querySelector('.cluster-popup-list');
     listEl.innerHTML = ''; // 초기화
-    
+
     cluster.items.forEach(item => {
         const _T8 = window.LANG_UI; const _L8 = window.currentLang || 'ko';
         const rarityText = item.cardData.rarity === 'epic'
-          ? (_T8?.[_L8]?.mapRarityEpic || '전설')
-          : item.cardData.rarity === 'rare'
-          ? (_T8?.[_L8]?.mapRarityRare || '희귀')
-          : (_T8?.[_L8]?.mapRarityCommon || '일반');
+            ? (_T8?.[_L8]?.mapRarityEpic || '전설')
+            : item.cardData.rarity === 'rare'
+                ? (_T8?.[_L8]?.mapRarityRare || '희귀')
+                : (_T8?.[_L8]?.mapRarityCommon || '일반');
         const rarityClass = `badge-${item.cardData.rarity || 'common'}`;
 
         const listItem = document.createElement('div');
