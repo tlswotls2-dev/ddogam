@@ -16,6 +16,49 @@ let markersLayer = null;       // 수집 마커들을 묶어서 관리하는 레
  * 지도 화면을 열고 슬라이드 애니메이션을 적용합니다.
  */
 function showMap() {
+  // [한글 주석] 위치 권한 안내 팝업을 먼저 확인했는지 체크
+  if (!sessionStorage.getItem('_locationPermissionNoticeShown')) {
+    _showLocationPermissionNotice(function() {
+      sessionStorage.setItem('_locationPermissionNoticeShown', '1');
+      _actuallyShowMap();
+    });
+    return;
+  }
+  _actuallyShowMap();
+}
+
+// [한글 주석] 위치 권한 안내 팝업
+function _showLocationPermissionNotice(onConfirm) {
+  var existing = document.getElementById('location-permission-overlay');
+  if (existing) existing.remove();
+
+  var lang = window.currentLang || 'ko';
+  var texts = {
+    ko: { title: '📍 위치 권한 안내', desc: '이 앱은 카드 탐험을 위해\n위치 정보 접근 권한이 필요합니다.', btn: '확인' },
+    en: { title: '📍 Location Permission', desc: 'This app needs location access\nfor card exploration.', btn: 'OK' },
+    ru: { title: '📍 Доступ к геолокации', desc: 'Приложению нужен доступ к геолокации\nдля поиска карточек.', btn: 'ОК' },
+    zh: { title: '📍 位置权限说明', desc: '本应用需要位置权限\n以进行卡片探索。', btn: '确认' }
+  };
+  var data = texts[lang] || texts.ko;
+
+  var overlay = document.createElement('div');
+  overlay.id = 'location-permission-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  overlay.innerHTML = '<div style="background:linear-gradient(135deg,#1e2e1f,#2c3e2d);border:2px solid #6b8e3d;border-radius:24px;padding:28px 22px;max-width:300px;width:100%;text-align:center;">'
+    + '<div style="font-size:40px;margin-bottom:12px;">📍</div>'
+    + '<div style="color:#8db05c;font-size:16px;font-weight:900;margin-bottom:10px;">' + data.title + '</div>'
+    + '<div style="color:#d4c89c;font-size:13px;line-height:1.7;margin-bottom:22px;white-space:pre-line;">' + data.desc + '</div>'
+    + '<button id="location-permission-confirm-btn" style="width:100%;background:linear-gradient(135deg,#8db05c,#6b8e3d);color:#1e2e1f;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;">' + data.btn + '</button>'
+    + '</div>';
+
+  document.body.appendChild(overlay);
+  document.getElementById('location-permission-confirm-btn').onclick = function() {
+    overlay.remove();
+    if (onConfirm) onConfirm();
+  };
+}
+
+function _actuallyShowMap() {
   // [한글 주석] 뒤로가기 스택에 추가
   if (typeof pushScreen === 'function') pushScreen('map-screen');
     const mapScreen = document.getElementById('map-screen');

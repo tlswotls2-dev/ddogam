@@ -39,15 +39,15 @@ const matchHelp = content.match(helpModalRegex);
 if (matchHelp) {
     const helpIndex = content.indexOf(matchHelp[0]) + matchHelp[0].length;
     const endTag = '  </div><!-- [한글 주석] student-app-wrapper 닫는 태그 -->\n\n';
-    
+
     // Put everything outside!
-    content = content.substring(0, helpIndex) + 
-              endTag + 
-              scriptBlock1 + '\n' + 
-              teacherBlock + '\n' + 
-              safetyBlock + '\n' + 
-              scriptBlock2 + '\n' + 
-              content.substring(helpIndex);
+    content = content.substring(0, helpIndex) +
+        endTag +
+        scriptBlock1 + '\n' +
+        teacherBlock + '\n' +
+        safetyBlock + '\n' +
+        scriptBlock2 + '\n' +
+        content.substring(helpIndex);
 }
 
 fs.writeFileSync('index.html', content, 'utf8');
