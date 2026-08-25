@@ -89,23 +89,6 @@ function updateDailyActivityStats(totalStepsToday) {
     stats.entry.kcal = Math.round(totalStepsToday * KCAL_PER_STEP);
     stats.entry.meters = Math.round(totalStepsToday * METERS_PER_STEP);
     localStorage.setItem('dailyStats', JSON.stringify(stats.all));
-    updateDebugBadge(stats.entry);
-}
-
-// [한글 주석] 개발자 테스트 모드일 때만 화면 우측 상단에 오늘자 활동 데이터를 표시합니다.
-// 로고 5번 탭으로 켜지는 testmode.js의 localStorage 'devTestMode' 값을 확인합니다.
-function updateDebugBadge(entry) {
-    // [한글 주석] 임시 디버그용 - 확인 끝나면 이 함수 전체를 지워도 됩니다
-    var badge = document.getElementById('activity-debug-badge');
-    if (!badge) {
-        badge = document.createElement('div');
-        badge.id = 'activity-debug-badge';
-        badge.style.cssText = 'position:fixed;top:8px;right:8px;background:rgba(0,0,0,0.75);' +
-            'color:#84ff00;font-size:11px;padding:6px 10px;border-radius:8px;z-index:99999;' +
-            'font-family:monospace;line-height:1.5;pointer-events:none;white-space:pre;';
-        document.body.appendChild(badge);
-    }
-    badge.textContent = '걸음 ' + entry.steps + ' | ' + entry.kcal + 'kcal | ' + entry.meters + 'm | ' + entry.minutes + '분';
 }
 
 /**

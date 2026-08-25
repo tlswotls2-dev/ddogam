@@ -66,12 +66,20 @@ if (queue.length === 0) {
   if (!userData.class || !userData.number) return;
 
   const collection = JSON.parse(localStorage.getItem('userCollection') || '[]');
+  // [한글 주석] 오늘 날짜 기준 dailyStats 항목 가져오기 (신체활동 랭킹/기록용)
+  const todayKeyForSync = (() => {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  })();
+  const allDailyStats = JSON.parse(localStorage.getItem('dailyStats') || '{}');
+  const todayStats = allDailyStats[todayKeyForSync] || { steps: 0, kcal: 0, meters: 0, minutes: 0, cards: 0, quizCorrect: 0 };
   const payload = {
     type: 'sync',
     student: {
       class: userData.class,
       number: userData.number,
-      name: userData.name || ''
+      name: userData.name || '',
+      avatar: localStorage.getItem('selectedAvatar') || 'boy1_dodam'
     },
     events: [],
     totalCollection: {
@@ -83,6 +91,7 @@ if (queue.length === 0) {
       const pedData = JSON.parse(localStorage.getItem('pedometerData') || '{}');
       return pedData.steps || 0;
     })(),
+    todayActivity: todayStats,
     syncTime: new Date().toISOString()
   };
 
@@ -103,8 +112,17 @@ if (queue.length === 0) {
   const studentInfo = {
     class: userData.class || '',
     number: userData.number || '',
-    name: userData.name || ''
+    name: userData.name || '',
+    avatar: localStorage.getItem('selectedAvatar') || 'boy1_dodam'
   };
+
+  // [한글 주석] 오늘 날짜 기준 dailyStats 항목 가져오기 (신체활동 랭킹/기록용)
+  const todayKeyForQueueSync = (() => {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  })();
+  const allDailyStatsForQueue = JSON.parse(localStorage.getItem('dailyStats') || '{}');
+  const todayStatsForQueue = allDailyStatsForQueue[todayKeyForQueueSync] || { steps: 0, kcal: 0, meters: 0, minutes: 0, cards: 0, quizCorrect: 0 };
 
   const payload = {
     type: 'sync',
@@ -120,6 +138,7 @@ if (queue.length === 0) {
         const pedData = JSON.parse(localStorage.getItem('pedometerData') || '{}');
         return pedData.steps || 0;
     })(),
+    todayActivity: todayStatsForQueue,
     syncTime: new Date().toISOString()
   };
 
