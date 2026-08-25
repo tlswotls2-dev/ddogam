@@ -8,6 +8,10 @@
 const LEARNING_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHFQhpwzADLC6JHfMdo4aJ6lUwXW4OFwfKOsQsTQjr07QFX3JJE27xrAJHZ1Zj-KI8/exec';
 
 async function saveLearningToSheet(quizType, correct, level, category) {
+  // [한글 주석] 정답이면 오늘의 기록(dailyStats)에 반영 - 로그인 여부와 무관하게 로컬 통계는 항상 갱신
+  if (correct && typeof incrementDailyStatField === 'function') {
+    incrementDailyStatField('quizCorrect');
+  }
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
   if (!userData.class || !userData.number) return;
 

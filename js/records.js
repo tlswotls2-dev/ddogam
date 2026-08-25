@@ -230,7 +230,7 @@ function recordsRenderRankingContent(container) {
 
     html += '</tbody></table>'
         + '<div style="margin-top:10px;font-size:0.7rem;color:#777;text-align:center;">'
-        + '상위 5명 + 내 순위만 표시 · ' + cat.note + ' 기준<br>' + (window._recordsRankingData.updatedAt || '') + ' 갱신</div>';
+        + '상위 5명 + 내 순위만 표시 · ' + cat.note + ' 기준<br>약 1시간마다 갱신돼요</div>';
 
     container.innerHTML = html;
 }

@@ -1,6 +1,22 @@
 // js/collection.js
-
 // --- 랜덤 수집 확률 및 해금 조건 상수 모음 ---
+
+// [한글 주석] 오늘 날짜 문자열(YYYY-MM-DD) 반환 - pedometer.js와 동일한 형식으로 통일
+function getTodayDateKeyForStats() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+// [한글 주석] dailyStats의 오늘자 항목에서 특정 필드를 1 증가시킴 (cards, quizCorrect 등 공용으로 사용)
+function incrementDailyStatField(fieldName) {
+    const all = JSON.parse(localStorage.getItem('dailyStats') || '{}');
+    const key = getTodayDateKeyForStats();
+    if (!all[key]) {
+        all[key] = { steps: 0, kcal: 0, meters: 0, minutes: 0, cards: 0, quizCorrect: 0 };
+    }
+    all[key][fieldName] = (all[key][fieldName] || 0) + 1;
+    localStorage.setItem('dailyStats', JSON.stringify(all));
+}
 // [한글 주석] 희귀도별 등장 확률 (합계 100%)
 const RARITY_CHANCE = {
     common: 0.65, // [한글 주석] 일반 등급 등장 확률 (65%)
@@ -448,6 +464,8 @@ function drawRandomItem(forceNormalMode) {
     // [한글 주석] 탐험 세션 배열에 기록
     if (!window._explorationSessionCards) window._explorationSessionCards = [];
     window._explorationSessionCards.push(resultCard);
+    // [한글 주석] 오늘의 기록(dailyStats)에 카드 수집 수 반영
+    incrementDailyStatField('cards');
     // [한글 주석] 중복 카드 처리 - 이미 있으면 조합소로
     const cardResult = typeof addCardWithDuplicate === 'function'
       ? addCardWithDuplicate(resultCard.id)
