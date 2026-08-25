@@ -577,6 +577,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div style="overflow-y:auto;flex:1;margin-bottom:16px;">
                     ${rows}
                 </div>
+                ${(function() {
+                    const _allStats = JSON.parse(localStorage.getItem('dailyStats') || '{}');
+                    const _todayKey = (function() {
+                        const d = new Date();
+                        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                    })();
+                    const _today = _allStats[_todayKey] || { steps: 0, kcal: 0, meters: 0, minutes: 0 };
+                    const _km = (_today.meters / 1000).toFixed(2);
+                    return `
+                    <div style="background:rgba(132,255,0,0.08);border:1px solid #4a6b3a;border-radius:14px;padding:12px 10px;margin-bottom:16px;">
+                        <div style="color:#a8d878;font-size:12px;text-align:center;margin-bottom:8px;">🏃 오늘의 움직임</div>
+                        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
+                            <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:6px 2px;">
+                                <div style="color:#d4ffaa;font-size:15px;font-weight:900;">${_today.steps}</div>
+                                <div style="color:#a8d878;font-size:9px;">걸음</div>
+                            </div>
+                            <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:6px 2px;">
+                                <div style="color:#d4ffaa;font-size:15px;font-weight:900;">${_km}</div>
+                                <div style="color:#a8d878;font-size:9px;">km</div>
+                            </div>
+                            <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:6px 2px;">
+                                <div style="color:#d4ffaa;font-size:15px;font-weight:900;">${_today.kcal}</div>
+                                <div style="color:#a8d878;font-size:9px;">kcal</div>
+                            </div>
+                            <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:6px 2px;">
+                                <div style="color:#d4ffaa;font-size:15px;font-weight:900;">${_today.minutes}</div>
+                                <div style="color:#a8d878;font-size:9px;">활동분</div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                })()}
                 <button id="exploration-summary-close-btn" style="
                     width:100%;
                     background:linear-gradient(135deg,#8db05c,#6b8e3d);
