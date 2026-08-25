@@ -32,6 +32,65 @@ let onSafetyWarningCallback = null;
 let onSafetyWarningResolvedCallback = null;
 let onItemGeneratedCallback = null;
 
+// [한글 주석] 활동시간 측정용 변수 (실제로 걸음이 감지되는 구간만 활동시간으로 인정)
+let lastActiveMoment = 0; // 마지막으로 걸음이 감지된 시각
+let activityCheckTimer = null; // 60초마다 활동시간을 누적하는 타이머
+const ACTIVITY_CHECK_INTERVAL_MS = 60000; // 60초 단위로 활동시간 체크
+const ACTIVITY_TIMEOUT_MS = 60000; // 걸음이 이 시간 이상 끊기면 활동 중단으로 판단
+
+// [한글 주석] 학년 평균 체중(32kg) 기준 칼로리 계산 상수
+// 걷기 3.5MET, 아동 대사율 보정 1.3 적용 -> 걸음당 약 0.024kcal
+const KCAL_PER_STEP = 0.024;
+const METERS_PER_STEP = 0.55; // 3~6학년 평균 보폭(m)
+
+// [한글 주석] 오늘 날짜 문자열(YYYY-MM-DD)을 반환합니다.
+function getTodayDateKey() {
+    const d = new Date();
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return yyyy + '-' + mm + '-' + dd;
+}
+
+// [한글 주석] localStorage에서 오늘자 dailyStats 객체를 가져오거나 새로 만듭니다.
+function getTodayStatsEntry() {
+    const all = JSON.parse(localStorage.getItem('dailyStats') || '{}');
+    const key = getTodayDateKey();
+    if (!all[key]) {
+        all[key] = { steps: 0, kcal: 0, meters: 0, minutes: 0, cards: 0, quizCorrect: 0 };
+    }
+    return { all: all, key: key, entry: all[key] };
+}
+
+// [한글 주석] 걸음이 감지될 때마다 활동시간 누적 타이머를 관리합니다.
+function registerActivityMoment() {
+    lastActiveMoment = Date.now();
+    if (activityCheckTimer) return; // 이미 타이머가 돌고 있으면 새로 만들지 않음
+
+    activityCheckTimer = setInterval(() => {
+        const idleTime = Date.now() - lastActiveMoment;
+        if (idleTime >= ACTIVITY_TIMEOUT_MS) {
+            // [한글 주석] 60초 이상 걸음이 없으면 활동 중단으로 보고 타이머 종료
+            clearInterval(activityCheckTimer);
+            activityCheckTimer = null;
+            return;
+        }
+        // [한글 주석] 60초간 실제 활동이 있었으므로 1분을 활동시간에 누적
+        const stats = getTodayStatsEntry();
+        stats.entry.minutes += 1;
+        localStorage.setItem('dailyStats', JSON.stringify(stats.all));
+    }, ACTIVITY_CHECK_INTERVAL_MS);
+}
+
+// [한글 주석] 걸음 수 변화에 맞춰 오늘자 칼로리/거리/걸음수를 dailyStats에 반영합니다.
+function updateDailyActivityStats(totalStepsToday) {
+    const stats = getTodayStatsEntry();
+    stats.entry.steps = totalStepsToday;
+    stats.entry.kcal = Math.round(totalStepsToday * KCAL_PER_STEP);
+    stats.entry.meters = Math.round(totalStepsToday * METERS_PER_STEP);
+    localStorage.setItem('dailyStats', JSON.stringify(stats.all));
+}
+
 /**
  * 만보기(페도미터) 기능을 초기화하고 센서 감지를 시작합니다.
  */
