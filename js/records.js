@@ -68,7 +68,7 @@ function showRecordsScreen() {
 
 function recordsSwitchTab(tab) {
     recordsActiveTab = tab;
-    document.querySelectorAll('.records-tab-btn').forEach(function(btn) {
+    document.querySelectorAll('.records-tab-btn').forEach(function (btn) {
         if (btn.getAttribute('data-tab') === tab) {
             btn.style.background = '#3d5239';
             btn.style.border = '1px solid #6b8e3d';
@@ -138,10 +138,10 @@ function recordsBuildPeriodHTML() {
     let month = { steps: 0, kcal: 0, meters: 0, minutes: 0, cards: 0, quizCorrect: 0 };
     let total = { steps: 0, kcal: 0, meters: 0, minutes: 0, cards: 0, quizCorrect: 0 };
 
-    Object.keys(allStats).forEach(function(dateKey) {
+    Object.keys(allStats).forEach(function (dateKey) {
         const entry = allStats[dateKey];
         const entryDate = new Date(dateKey);
-        ['steps', 'kcal', 'meters', 'minutes', 'cards', 'quizCorrect'].forEach(function(field) {
+        ['steps', 'kcal', 'meters', 'minutes', 'cards', 'quizCorrect'].forEach(function (field) {
             const val = entry[field] || 0;
             total[field] += val;
             if (dateKey.indexOf(thisMonthKey) === 0) month[field] += val;
@@ -182,10 +182,10 @@ function recordsRenderRankingTab(container) {
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
     const url = SCRIPT_URL + '?type=getRanking&class=' + encodeURIComponent(userData.class) + '&number=' + encodeURIComponent(userData.number);
 
-    fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+    fetch(url).then(function (r) { return r.json(); }).then(function (data) {
         window._recordsRankingData = data;
         recordsRenderRankingContent(container);
-    }).catch(function(err) {
+    }).catch(function (err) {
         container.innerHTML = '<div style="text-align:center;color:#e88;padding:30px 0;">' + recordsT('recordsLoadFail') + '</div>';
     });
 }
@@ -203,7 +203,7 @@ function recordsRenderRankingContent(container) {
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
 
     let html = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">';
-    Object.keys(catConfig).forEach(function(key) {
+    Object.keys(catConfig).forEach(function (key) {
         const active = key === recordsActiveRankCategory;
         html += '<button onclick="recordsActiveRankCategory=\'' + key + '\';recordsRenderRankingContent(document.getElementById(\'records-tab-content\'))" style="'
             + 'padding:6px 12px;border-radius:999px;font-size:0.75rem;cursor:pointer;'
@@ -217,7 +217,7 @@ function recordsRenderRankingContent(container) {
         + '<td style="padding:6px 4px;"></td><td style="padding:6px 4px;"></td><td style="padding:6px 4px;text-align:right;">' + cat.label + '</td>'
         + '</tr></thead><tbody>';
 
-    cat.data.top5.forEach(function(item, idx) {
+    cat.data.top5.forEach(function (item, idx) {
         const isMe = item.number === String(userData.number);
         html += '<tr style="' + (isMe ? 'background:rgba(99,153,34,0.25);' : '') + 'border-top:1px solid #333;">'
             + '<td style="padding:8px 4px;color:' + (idx === 0 ? '#ffd24d' : '#ccc') + ';">' + (idx + 1) + '</td>'
@@ -225,7 +225,12 @@ function recordsRenderRankingContent(container) {
             + '<span style="width:24px;height:24px;border-radius:50%;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;background:#333;">'
             + (typeof getAvatarSVG === 'function' ? getAvatarSVG(item.avatar) : '')
             + '</span>'
-            + recordsT('rankClassLabel') + userData.class + recordsT('rankNumberLabel') + item.number + '</td>'
+            + (function () {
+                const lang = window.currentLang || 'ko';
+                if (lang === 'ko') return userData.class + '반 ' + item.number + '번';
+                if (lang === 'zh') return userData.class + '班' + item.number + '号';
+                return recordsT('rankClassLabel') + userData.class + ' ' + recordsT('rankNumberLabel') + item.number;
+            })() + '</td>'
             + '<td style="padding:8px 4px;text-align:right;color:#d4ffaa;">' + item.value + cat.unit + '</td>'
             + '</tr>';
     });
