@@ -99,12 +99,12 @@ function recordsBuildTodayHTML() {
 
     return ''
         + '<div style="background:#2c3e2d;border-radius:10px;padding:14px;margin-bottom:12px;">'
-        + '  <div style="color:#a8d878;font-size:0.85rem;margin-bottom:8px;">오늘의 움직임</div>'
+        + '  <div style="color:#a8d878;font-size:0.85rem;margin-bottom:10px;">오늘의 움직임</div>'
         + '  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;">'
-        + '    <div><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + today.steps + '</div><div style="color:#a8d878;font-size:0.7rem;">걸음</div></div>'
-        + '    <div><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + km + '</div><div style="color:#a8d878;font-size:0.7rem;">km</div></div>'
-        + '    <div><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + today.kcal + '</div><div style="color:#a8d878;font-size:0.7rem;">kcal</div></div>'
-        + '    <div><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + today.minutes + '</div><div style="color:#a8d878;font-size:0.7rem;">분</div></div>'
+        + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + today.steps + '</div><div style="color:#a8d878;font-size:0.7rem;">걸음</div></div>'
+        + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + km + '</div><div style="color:#a8d878;font-size:0.7rem;">km</div></div>'
+        + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + today.kcal + '</div><div style="color:#a8d878;font-size:0.7rem;">kcal</div></div>'
+        + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + today.minutes + '</div><div style="color:#a8d878;font-size:0.7rem;">분</div></div>'
         + '  </div>'
         + '</div>'
         + '<div style="margin-bottom:6px;display:flex;justify-content:space-between;color:#ccc;font-size:0.8rem;">'
@@ -147,15 +147,15 @@ function recordsBuildPeriodHTML() {
     function periodBlock(title, data) {
         return ''
             + '<div style="background:#2c3e2d;border-radius:10px;padding:14px;margin-bottom:10px;">'
-            + '  <div style="color:#a8d878;font-size:0.85rem;margin-bottom:8px;">' + title + '</div>'
-            + '  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center;margin-bottom:8px;">'
-            + '    <div><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + data.steps + '</div><div style="color:#a8d878;font-size:0.65rem;">걸음</div></div>'
-            + '    <div><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + data.kcal + '</div><div style="color:#a8d878;font-size:0.65rem;">kcal</div></div>'
-            + '    <div><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + data.minutes + '</div><div style="color:#a8d878;font-size:0.65rem;">활동분</div></div>'
+            + '  <div style="color:#a8d878;font-size:0.85rem;margin-bottom:10px;">' + title + '</div>'
+            + '  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center;margin-bottom:6px;">'
+            + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + data.steps + '</div><div style="color:#a8d878;font-size:0.65rem;">걸음</div></div>'
+            + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + data.kcal + '</div><div style="color:#a8d878;font-size:0.65rem;">kcal</div></div>'
+            + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + data.minutes + '</div><div style="color:#a8d878;font-size:0.65rem;">활동분</div></div>'
             + '  </div>'
             + '  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;text-align:center;">'
-            + '    <div><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + (data.cards || 0) + '</div><div style="color:#a8d878;font-size:0.65rem;">카드 수집</div></div>'
-            + '    <div><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + (data.quizCorrect || 0) + '</div><div style="color:#a8d878;font-size:0.65rem;">퀴즈 정답</div></div>'
+            + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + (data.cards || 0) + '</div><div style="color:#a8d878;font-size:0.65rem;">카드 수집</div></div>'
+            + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + (data.quizCorrect || 0) + '</div><div style="color:#a8d878;font-size:0.65rem;">퀴즈 정답</div></div>'
             + '  </div>'
             + '</div>';
     }
@@ -230,7 +230,7 @@ function recordsRenderRankingContent(container) {
 
     html += '</tbody></table>'
         + '<div style="margin-top:10px;font-size:0.7rem;color:#777;text-align:center;">'
-        + '상위 5명 + 내 순위만 표시 · 매주 월요일 초기화<br>' + (window._recordsRankingData.updatedAt || '') + ' 기준</div>';
+        + '상위 5명 + 내 순위만 표시 (누적)<br>' + (window._recordsRankingData.updatedAt || '') + ' 기준</div>';
 
     container.innerHTML = html;
 }
