@@ -177,7 +177,7 @@ function recordsRenderRankingTab(container) {
         return;
     }
 
-    container.innerHTML = '<div style="text-align:center;color:#999;padding:30px 0;">불러오는 중...</div>';
+    container.innerHTML = '<div style="text-align:center;color:#999;padding:30px 0;">' + recordsT('recordsLoading') + '</div>';
 
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
     const url = SCRIPT_URL + '?type=getRanking&class=' + encodeURIComponent(userData.class) + '&number=' + encodeURIComponent(userData.number);
@@ -186,7 +186,7 @@ function recordsRenderRankingTab(container) {
         window._recordsRankingData = data;
         recordsRenderRankingContent(container);
     }).catch(function(err) {
-        container.innerHTML = '<div style="text-align:center;color:#e88;padding:30px 0;">랭킹을 불러오지 못했어요.<br>인터넷 연결을 확인해주세요.</div>';
+        container.innerHTML = '<div style="text-align:center;color:#e88;padding:30px 0;">' + recordsT('recordsLoadFail') + '</div>';
     });
 }
 
@@ -225,7 +225,7 @@ function recordsRenderRankingContent(container) {
             + '<span style="width:24px;height:24px;border-radius:50%;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;background:#333;">'
             + (typeof getAvatarSVG === 'function' ? getAvatarSVG(item.avatar) : '')
             + '</span>'
-            + userData.class + '반 ' + item.number + '번</td>'
+            + recordsT('rankClassLabel') + userData.class + recordsT('rankNumberLabel') + item.number + '</td>'
             + '<td style="padding:8px 4px;text-align:right;color:#d4ffaa;">' + item.value + cat.unit + '</td>'
             + '</tr>';
     });
