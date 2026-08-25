@@ -587,16 +587,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     const _km = (_today.meters / 1000).toFixed(2);
                     const _badge = typeof getActivityIntensityBadge === 'function' ? getActivityIntensityBadge(_today.minutes) : { label: '', emoji: '', color: '#8db05c' };
                     const _conversionText = typeof getActivityConversionText === 'function' ? getActivityConversionText(_today.kcal) : '';
+                    const _Tact = window.LANG_UI; const _Lact = window.currentLang || 'ko';
+                    const _tact = k => _Tact?.[_Lact]?.[k] || _Tact?.ko?.[k] || '';
                     return `
                     <div style="background:rgba(132,255,0,0.08);border:1px solid #4a6b3a;border-radius:14px;padding:12px 10px;margin-bottom:16px;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                            <div style="color:#a8d878;font-size:12px;">🏃 오늘의 움직임</div>
+                            <div style="color:#a8d878;font-size:12px;">🏃 ${_tact('recordsTodayMovement')}</div>
                             <div style="background:${_badge.color}22;color:${_badge.color};font-size:10px;padding:2px 7px;border-radius:999px;">${_badge.emoji} ${_badge.label}</div>
                         </div>
                         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
                             <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:6px 2px;">
                                 <div style="color:#d4ffaa;font-size:15px;font-weight:900;">${_today.steps}</div>
-                                <div style="color:#a8d878;font-size:9px;">걸음</div>
+                                <div style="color:#a8d878;font-size:9px;">${_tact('recordsUnitSteps')}</div>
                             </div>
                             <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:6px 2px;">
                                 <div style="color:#d4ffaa;font-size:15px;font-weight:900;">${_km}</div>
@@ -604,11 +606,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:6px 2px;">
                                 <div style="color:#d4ffaa;font-size:15px;font-weight:900;">${_today.kcal}</div>
-                                <div style="color:#a8d878;font-size:9px;">kcal</div>
+                                <div style="color:#a8d878;font-size:9px;">${_tact('recordsUnitKcal')}</div>
                             </div>
                             <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:6px 2px;">
                                 <div style="color:#d4ffaa;font-size:15px;font-weight:900;">${_today.minutes}</div>
-                                <div style="color:#a8d878;font-size:9px;">활동분</div>
+                                <div style="color:#a8d878;font-size:9px;">${_tact('recordsUnitActivityMin')}</div>
                             </div>
                         </div>
                         ${_conversionText ? `<div style="text-align:center;color:#d4c89c;font-size:11px;margin-top:8px;">${_conversionText}</div>` : ''}
