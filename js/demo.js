@@ -233,6 +233,25 @@ function startStudentDemo() {
   localStorage.setItem('unlockedItems', JSON.stringify([]));
   localStorage.setItem('unlockedAvatars', JSON.stringify([]));
 
+  // [한글 주석] 기록 화면(오늘/기간별) 체험용 - 최근 10일치 dailyStats 예시 데이터 주입
+  const demoDailyStats = {};
+  for (let d = 0; d < 10; d++) {
+    const dateObj = new Date();
+    dateObj.setDate(dateObj.getDate() - d);
+    const dateKey = dateObj.getFullYear() + '-' + String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + String(dateObj.getDate()).padStart(2, '0');
+    // [한글 주석] 오늘(d=0)은 넉넉한 값, 과거로 갈수록 조금씩 변동 있게
+    const baseSteps = d === 0 ? 3200 : 1500 + Math.floor(Math.random() * 3000);
+    demoDailyStats[dateKey] = {
+      steps: baseSteps,
+      kcal: Math.round(baseSteps * 0.024),
+      meters: Math.round(baseSteps * 0.55),
+      minutes: Math.round(baseSteps / 110),
+      cards: d === 0 ? 6 : Math.floor(Math.random() * 8),
+      quizCorrect: d === 0 ? 4 : Math.floor(Math.random() * 5)
+    };
+  }
+  localStorage.setItem('dailyStats', JSON.stringify(demoDailyStats));
+
   // [한글 주석] 조합소 체험용 중복 카드 데이터 주입 (각 카드 3~5장씩)
   const demoDuplicates = {
     'plant_001': 4, 'plant_002': 3, 'plant_003': 5, 'plant_004': 3, 'plant_005': 4,
@@ -402,3 +421,26 @@ window.showDemoBanner = showDemoBanner;
 window.exitDemoMode = exitDemoMode;
 window.checkDemoModeBanner = checkDemoModeBanner;
 window._verifyDemoPassword = _verifyDemoPassword;
+
+// [한글 주석] 랭킹 화면 체험용 - DEMO_STUDENTS를 기반으로 4부문 랭킹 형태 데이터 생성
+function getDemoRankingData() {
+  function buildTop5(valueKey, fallback) {
+    const list = DEMO_STUDENTS.map(function(s) {
+      return { number: s.number, avatar: 'boy1_dodam', value: (fallback ? fallback(s) : s[valueKey]) || 0 };
+    });
+    list.sort(function(a, b) { return b.value - a.value; });
+    return {
+      top5: list.slice(0, 5),
+      myRank: 9,
+      myValue: list[8] ? list[8].value : 0,
+      total: list.length
+    };
+  }
+  return {
+    collection: buildTop5('total'),
+    steps: buildTop5('steps'),
+    quiz: buildTop5(null, function(s) { return s.todayCorrect * 3; }),
+    attendance: buildTop5(null, function(s) { return Math.floor(Math.random() * 10) + 1; }),
+    updatedAt: new Date().toLocaleString('ko-KR')
+  };
+}

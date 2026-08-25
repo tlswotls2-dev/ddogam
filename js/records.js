@@ -174,6 +174,13 @@ function recordsBuildPeriodHTML() {
 
 // [한글 주석] 랭킹 탭 - 서버에서 데이터를 받아온 후 그림
 function recordsRenderRankingTab(container) {
+    // [한글 주석] 체험 모드면 서버 호출 없이 예시 데이터 바로 사용
+    if (localStorage.getItem('demoMode') === 'true' && typeof getDemoRankingData === 'function') {
+        window._recordsRankingData = getDemoRankingData();
+        recordsRenderRankingContent(container);
+        return;
+    }
+
     container.innerHTML = '<div style="text-align:center;color:#999;padding:30px 0;">불러오는 중...</div>';
 
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
