@@ -97,15 +97,22 @@ function recordsBuildTodayHTML() {
     const pct = Math.min(100, Math.round((today.minutes / goalMinutes) * 100));
     const km = (today.meters / 1000).toFixed(2);
 
+    const badge = typeof getActivityIntensityBadge === 'function' ? getActivityIntensityBadge(today.minutes) : { label: '', emoji: '', color: '#8db05c' };
+    const conversionText = typeof getActivityConversionText === 'function' ? getActivityConversionText(today.kcal) : '';
+
     return ''
         + '<div style="background:#2c3e2d;border-radius:10px;padding:14px;margin-bottom:12px;">'
-        + '  <div style="color:#a8d878;font-size:0.85rem;margin-bottom:10px;">오늘의 움직임</div>'
-        + '  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;">'
+        + '  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">'
+        + '    <div style="color:#a8d878;font-size:0.85rem;">오늘의 움직임</div>'
+        + '    <div style="background:' + badge.color + '22;color:' + badge.color + ';font-size:0.7rem;padding:3px 8px;border-radius:999px;">' + badge.emoji + ' ' + badge.label + '</div>'
+        + '  </div>'
+        + '  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;margin-bottom:' + (conversionText ? '10px' : '0') + ';">'
         + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + today.steps + '</div><div style="color:#a8d878;font-size:0.7rem;">걸음</div></div>'
         + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + km + '</div><div style="color:#a8d878;font-size:0.7rem;">km</div></div>'
         + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + today.kcal + '</div><div style="color:#a8d878;font-size:0.7rem;">kcal</div></div>'
         + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + today.minutes + '</div><div style="color:#a8d878;font-size:0.7rem;">분</div></div>'
         + '  </div>'
+        + (conversionText ? '  <div style="text-align:center;color:#d4c89c;font-size:0.75rem;">' + conversionText + '</div>' : '')
         + '</div>'
         + '<div style="margin-bottom:6px;display:flex;justify-content:space-between;color:#ccc;font-size:0.8rem;">'
         + '  <span>하루 활동 목표 60분</span><span>' + today.minutes + ' / 60분</span>'
