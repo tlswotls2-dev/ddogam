@@ -185,10 +185,10 @@ function recordsRenderRankingContent(container) {
     const data = window._recordsRankingData;
     if (!data) return;
     const catConfig = {
-        collection: { label: '수집왕', unit: '장', data: data.collection },
-        steps: { label: '걸음왕', unit: '걸음', data: data.steps },
-        quiz: { label: '퀴즈왕', unit: '문제', data: data.quiz },
-        attendance: { label: '꾸준왕', unit: '일', data: data.attendance }
+        collection: { label: '수집왕', unit: '장', data: data.collection, note: '이번 주' },
+        steps: { label: '걸음왕', unit: '걸음', data: data.steps, note: '이번 주' },
+        quiz: { label: '퀴즈왕', unit: '문제', data: data.quiz, note: '이번 주' },
+        attendance: { label: '꾸준왕', unit: '일', data: data.attendance, note: '누적' }
     };
     const cat = catConfig[recordsActiveRankCategory];
 
