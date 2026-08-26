@@ -194,10 +194,10 @@ function recordsRenderRankingContent(container) {
     const data = window._recordsRankingData;
     if (!data) return;
     const catConfig = {
-        collection: { label: recordsT('rankCollection'), unit: recordsT('rankUnitCards'), data: data.collection, note: recordsT('rankNoteWeek') },
-        steps: { label: recordsT('rankSteps'), unit: recordsT('rankUnitSteps'), data: data.steps, note: recordsT('rankNoteWeek') },
-        quiz: { label: recordsT('rankQuiz'), unit: recordsT('rankUnitQuiz'), data: data.quiz, note: recordsT('rankNoteWeek') },
-        attendance: { label: recordsT('rankAttendance'), unit: recordsT('rankUnitDays'), data: data.attendance, note: recordsT('rankNoteTotal') }
+        collection: { label: recordsT('rankCollection'), unit: recordsT('rankUnitCards'), data: data.collection, note: recordsT('rankNoteWeek'), resetNote: recordsT('rankResetWeekly') },
+        steps: { label: recordsT('rankSteps'), unit: recordsT('rankUnitSteps'), data: data.steps, note: recordsT('rankNoteWeek'), resetNote: recordsT('rankResetWeekly') },
+        quiz: { label: recordsT('rankQuiz'), unit: recordsT('rankUnitQuiz'), data: data.quiz, note: recordsT('rankNoteWeek'), resetNote: recordsT('rankResetWeekly') },
+        attendance: { label: recordsT('rankAttendance'), unit: recordsT('rankUnitDays'), data: data.attendance, note: recordsT('rankNoteTotal'), resetNote: recordsT('rankResetQuarterly') }
     };
     const cat = catConfig[recordsActiveRankCategory];
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -245,7 +245,7 @@ function recordsRenderRankingContent(container) {
 
     html += '</tbody></table>'
         + '<div style="margin-top:10px;font-size:0.7rem;color:#777;text-align:center;">'
-        + recordsT('rankFooter') + ' · ' + cat.note + '<br>' + recordsT('rankRefreshNote') + '</div>';
+        + recordsT('rankFooter') + '<br>' + cat.resetNote + '<br>' + recordsT('rankRefreshNote') + '</div>';
 
     container.innerHTML = html;
 }
