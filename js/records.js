@@ -58,7 +58,7 @@ function showRecordsScreen() {
         + '  <div id="records-tab-buttons" style="display:flex;gap:6px;margin-bottom:16px;">'
         + '    <button onclick="recordsSwitchTab(\'today\')" class="records-tab-btn" data-tab="today" style="flex:1;padding:8px;border-radius:8px;border:1px solid #6b8e3d;background:#3d5239;color:#d4c89c;font-size:0.85rem;cursor:pointer;">' + recordsT('recordsTabToday') + '</button>'
         + '    <button onclick="recordsSwitchTab(\'period\')" class="records-tab-btn" data-tab="period" style="flex:1;padding:8px;border-radius:8px;border:1px solid #444;background:#222;color:#999;font-size:0.85rem;cursor:pointer;">' + recordsT('recordsTabPeriod') + '</button>'
-        + '    <button onclick="recordsSwitchTab(\'ranking\')" class="records-tab-btn" data-tab="ranking" style="flex:1;padding:8px;border-radius:8px;border:1px solid #444;background:#222;color:#999;font-size:0.85rem;cursor:pointer;">' + recordsT('recordsTabRanking') + '</button>'
+        + '    <button onclick="recordsSwitchTab(\'ranking\')" id="records-rank-tab-btn" data-tab="ranking" style="flex:1;padding:8px;border-radius:8px;border:1px solid #7a5a1a;background:#3d3320;color:#e8c468;font-size:0.85rem;cursor:pointer;">🏆 ' + recordsT('recordsTabRanking') + '</button>'
         + '  </div>'
         + '  <div id="records-tab-content"></div>'
         + '</div>';
@@ -81,6 +81,19 @@ function recordsSwitchTab(tab) {
             btn.style.color = '#999';
         }
     });
+    // [한글 주석] 랭킹 탭 버튼은 색상 체계가 달라서(금색) 별도로 활성/비활성 처리
+    const rankBtn = document.getElementById('records-rank-tab-btn');
+    if (rankBtn) {
+        if (tab === 'ranking') {
+            rankBtn.style.background = '#4a3d1a';
+            rankBtn.style.border = '1px solid #d4a017';
+            rankBtn.style.color = '#ffd24d';
+        } else {
+            rankBtn.style.background = '#3d3320';
+            rankBtn.style.border = '1px solid #7a5a1a';
+            rankBtn.style.color = '#e8c468';
+        }
+    }
     recordsRenderTab();
 }
 
@@ -206,7 +219,7 @@ function recordsRenderRankingUI(container) {
         const active = key === recordsActiveRankPeriod;
         html += '<button onclick="recordsActiveRankPeriod=\'' + key + '\';recordsRenderRankingUI(document.getElementById(\'records-tab-content\'))" style="'
             + 'flex:1;padding:8px;border-radius:8px;font-size:0.8rem;cursor:pointer;'
-            + (active ? 'background:#3d5239;border:1px solid #6b8e3d;color:#d4c89c;' : 'background:#222;border:1px solid #444;color:#999;')
+            + (active ? 'background:#4a3d1a;border:1px solid #d4a017;color:#ffd24d;' : 'background:#2a2418;border:1px solid #5a4a28;color:#a88a4a;')
             + '">' + periodConfig[key].label + '</button>';
     });
     html += '</div>';
