@@ -1,9 +1,11 @@
 // ==========================================
 // [한글 주석] 신체활동/랭킹 기록 화면 (records.js)
 // 오늘 / 기간별 / 랭킹 3개 탭으로 구성
+// 랭킹 탭은 기간(주간/월간/전체) 서브탭 + 부문(수집왕/퀴즈왕) 전환으로 구성
 // ==========================================
 
 let recordsActiveTab = 'today';
+let recordsActiveRankPeriod = 'week';
 let recordsActiveRankCategory = 'collection';
 
 function recordsT(key) {
@@ -39,12 +41,12 @@ function showRecordsScreen() {
     const overlay = document.createElement('div');
     overlay.id = 'records-overlay';
     overlay.style.cssText = `
-        position:fixed;top:0;left:0;right:0;bottom:0;
-        background:rgba(0,0,0,0.92);
-        z-index:99999;
-        display:flex;align-items:center;justify-content:center;
-        padding:20px;
-    `;
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.92);
+    z-index:99999;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+  `;
 
     overlay.innerHTML = ''
         + '<div style="background:#1a2818;border:1px solid #4a6b3a;border-radius:16px;'
@@ -170,10 +172,11 @@ function recordsBuildPeriodHTML() {
         + periodBlock(recordsT('recordsPeriodTotal'), total);
 }
 
+// [한글 주석] 랭킹 탭 - 서버(또는 체험모드 예시)에서 {week, month, total} 구조로 데이터를 받아옴
 function recordsRenderRankingTab(container) {
     if (localStorage.getItem('demoMode') === 'true' && typeof getDemoRankingData === 'function') {
         window._recordsRankingData = getDemoRankingData();
-        recordsRenderRankingContent(container);
+        recordsRenderRankingUI(container);
         return;
     }
 
@@ -184,20 +187,44 @@ function recordsRenderRankingTab(container) {
 
     fetch(url).then(function (r) { return r.json(); }).then(function (data) {
         window._recordsRankingData = data;
-        recordsRenderRankingContent(container);
+        recordsRenderRankingUI(container);
     }).catch(function (err) {
         container.innerHTML = '<div style="text-align:center;color:#e88;padding:30px 0;">' + recordsT('recordsLoadFail') + '</div>';
     });
 }
 
+// [한글 주석] 랭킹 탭의 뼈대(기간 서브탭 + 부문 버튼 + 표) 전체를 그림
+function recordsRenderRankingUI(container) {
+    const periodConfig = {
+        week: { label: recordsT('rankPeriodWeek'), resetNote: recordsT('rankResetWeeklyShort') },
+        month: { label: recordsT('rankPeriodMonth'), resetNote: recordsT('rankResetMonthlyShort') },
+        total: { label: recordsT('rankPeriodTotal'), resetNote: recordsT('rankResetTotalShort') }
+    };
+
+    let html = '<div style="display:flex;gap:6px;margin-bottom:10px;">';
+    Object.keys(periodConfig).forEach(function (key) {
+        const active = key === recordsActiveRankPeriod;
+        html += '<button onclick="recordsActiveRankPeriod=\'' + key + '\';recordsRenderRankingUI(document.getElementById(\'records-tab-content\'))" style="'
+            + 'flex:1;padding:8px;border-radius:8px;font-size:0.8rem;cursor:pointer;'
+            + (active ? 'background:#3d5239;border:1px solid #6b8e3d;color:#d4c89c;' : 'background:#222;border:1px solid #444;color:#999;')
+            + '">' + periodConfig[key].label + '</button>';
+    });
+    html += '</div>';
+    html += '<div style="text-align:center;color:#777;font-size:0.7rem;margin-bottom:12px;">' + periodConfig[recordsActiveRankPeriod].resetNote + '</div>';
+    html += '<div id="records-rank-body"></div>';
+
+    container.innerHTML = html;
+    recordsRenderRankingContent(document.getElementById('records-rank-body'));
+}
+
 function recordsRenderRankingContent(container) {
     const data = window._recordsRankingData;
-    if (!data) return;
+    if (!data || !data[recordsActiveRankPeriod]) return;
+    const periodData = data[recordsActiveRankPeriod];
+
     const catConfig = {
-        collection: { label: recordsT('rankCollection'), unit: recordsT('rankUnitCards'), data: data.collection, note: recordsT('rankNoteWeek'), resetNote: recordsT('rankResetWeekly') },
-        steps: { label: recordsT('rankSteps'), unit: recordsT('rankUnitSteps'), data: data.steps, note: recordsT('rankNoteWeek'), resetNote: recordsT('rankResetWeekly') },
-        quiz: { label: recordsT('rankQuiz'), unit: recordsT('rankUnitQuiz'), data: data.quiz, note: recordsT('rankNoteWeek'), resetNote: recordsT('rankResetWeekly') },
-        attendance: { label: recordsT('rankAttendance'), unit: recordsT('rankUnitDays'), data: data.attendance, note: recordsT('rankNoteTotal'), resetNote: recordsT('rankResetQuarterly') }
+        collection: { label: recordsT('rankCollection'), unit: recordsT('rankUnitCards'), data: periodData.collection },
+        quiz: { label: recordsT('rankQuiz'), unit: recordsT('rankUnitQuiz'), data: periodData.quiz }
     };
     const cat = catConfig[recordsActiveRankCategory];
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -205,7 +232,7 @@ function recordsRenderRankingContent(container) {
     let html = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">';
     Object.keys(catConfig).forEach(function (key) {
         const active = key === recordsActiveRankCategory;
-        html += '<button onclick="recordsActiveRankCategory=\'' + key + '\';recordsRenderRankingContent(document.getElementById(\'records-tab-content\'))" style="'
+        html += '<button onclick="recordsActiveRankCategory=\'' + key + '\';recordsRenderRankingContent(document.getElementById(\'records-rank-body\'))" style="'
             + 'padding:6px 12px;border-radius:999px;font-size:0.75rem;cursor:pointer;'
             + (active ? 'background:#3d5239;border:1px solid #6b8e3d;color:#d4c89c;' : 'background:#222;border:1px solid #444;color:#999;')
             + '">' + catConfig[key].label + '</button>';
@@ -230,7 +257,8 @@ function recordsRenderRankingContent(container) {
                 if (lang === 'ko') return userData.class + '반 ' + item.number + '번';
                 if (lang === 'zh') return userData.class + '班' + item.number + '号';
                 return recordsT('rankClassLabel') + userData.class + ' ' + recordsT('rankNumberLabel') + item.number;
-            })() + '</td>'
+            })()
+            + '</td>'
             + '<td style="padding:8px 4px;text-align:right;color:#d4ffaa;">' + item.value + cat.unit + '</td>'
             + '</tr>';
     });
@@ -245,7 +273,7 @@ function recordsRenderRankingContent(container) {
 
     html += '</tbody></table>'
         + '<div style="margin-top:10px;font-size:0.7rem;color:#777;text-align:center;">'
-        + recordsT('rankFooter') + '<br>' + cat.resetNote + '<br>' + recordsT('rankRefreshNote') + '</div>';
+        + recordsT('rankFooter') + '<br>' + recordsT('rankRefreshNote') + '</div>';
 
     container.innerHTML = html;
 }

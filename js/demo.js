@@ -424,9 +424,9 @@ window._verifyDemoPassword = _verifyDemoPassword;
 
 // [한글 주석] 랭킹 화면 체험용 - DEMO_STUDENTS를 기반으로 4부문 랭킹 형태 데이터 생성
 function getDemoRankingData() {
-  function buildTop5(valueKey, fallback) {
+  function buildTop5(valueFn) {
     const list = DEMO_STUDENTS.map(function(s) {
-      return { number: s.number, avatar: 'boy1_dodam', value: (fallback ? fallback(s) : s[valueKey]) || 0 };
+      return { number: s.number, avatar: 'boy1_dodam', value: valueFn(s) || 0 };
     });
     list.sort(function(a, b) { return b.value - a.value; });
     return {
@@ -436,11 +436,20 @@ function getDemoRankingData() {
       total: list.length
     };
   }
+  // [한글 주석] 체험용이라 주간/월간/전체 값에 그럴듯한 차이를 둠 (전체 >= 월간 >= 주간)
   return {
-    collection: buildTop5('total'),
-    steps: buildTop5('steps'),
-    quiz: buildTop5(null, function(s) { return s.todayCorrect * 3; }),
-    attendance: buildTop5(null, function(s) { return Math.floor(Math.random() * 10) + 1; }),
+    week: {
+      collection: buildTop5(function(s) { return Math.round(s.total * 0.15); }),
+      quiz: buildTop5(function(s) { return s.todayCorrect * 3; })
+    },
+    month: {
+      collection: buildTop5(function(s) { return Math.round(s.total * 0.4); }),
+      quiz: buildTop5(function(s) { return s.todayCorrect * 10; })
+    },
+    total: {
+      collection: buildTop5(function(s) { return s.total; }),
+      quiz: buildTop5(function(s) { return s.todayCorrect * 25; })
+    },
     updatedAt: new Date().toLocaleString('ko-KR')
   };
 }
