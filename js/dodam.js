@@ -21,7 +21,7 @@ function showDodam() {
         var progressHtml = '<div id="classDodamProgress" style="margin:8px 12px 12px 12px; padding:11px 13px; background:linear-gradient(135deg, rgba(141,176,92,0.22), rgba(212,160,23,0.12)); border:1.5px solid rgba(141,176,92,0.65); border-radius:10px; box-shadow:0 0 10px rgba(141,176,92,0.25);">'
           + '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">'
           + '    <span id="classDodamTitle" style="font-size:13px; font-weight:800; color:#a8d878; text-shadow:0 0 6px rgba(168,216,120,0.5);">✨🌿 협력의 꽃을 피우는 우리반 공동 도감</span>'
-          + '    <span id="classDodamCount" style="font-size:13px; font-weight:700; color:#8db05c;">불러오는 중...</span>'
+          + '    <span id="classDodamCount" style="font-size:13px; font-weight:700; color:#8db05c;">' + ((window.LANG_UI && window.LANG_UI[window.currentLang || 'ko'] && window.LANG_UI[window.currentLang || 'ko'].classDodamLoading) || '불러오는 중...') + '</span>'
           + '  </div>'
           + '  <div style="width:100%; height:8px; background:rgba(255,255,255,0.15); border-radius:4px; overflow:hidden; margin-bottom:8px;">'
           + '    <div id="classDodamBar" style="height:100%; width:0%; background:linear-gradient(90deg,#8db05c,#d4a017); border-radius:4px; transition:width 0.6s ease;"></div>'
@@ -68,9 +68,9 @@ function showClassDodamDetail() {
     + '  <button onclick="document.getElementById(\'class-dodam-detail-overlay\').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:#d4c89c;font-size:1.3rem;cursor:pointer;">✕</button>'
     + '  <h3 style="color:#d4c89c;margin:0 0 12px;font-size:1.05rem;">' + ((window.LANG_UI && window.LANG_UI[window.currentLang || 'ko'] && window.LANG_UI[window.currentLang || 'ko'].classDodamDetailTitle) || '🌿 우리 반 공동 도감') + '</h3>'
     + '  <div id="class-dodam-cat-tabs" style="display:flex;gap:6px;margin-bottom:12px;">'
-    + '    <button onclick="classDodamDetailCategory=\'plant\';renderClassDodamDetailGrid()" data-cat="plant" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#3d5239;border:1px solid #6b8e3d;color:#d4c89c;">🌱 식물</button>'
-    + '    <button onclick="classDodamDetailCategory=\'animal\';renderClassDodamDetailGrid()" data-cat="animal" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#222;border:1px solid #444;color:#999;">🦊 동물</button>'
-    + '    <button onclick="classDodamDetailCategory=\'artifact\';renderClassDodamDetailGrid()" data-cat="artifact" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#222;border:1px solid #444;color:#999;">🏺 유물</button>'
+    + '    <button onclick="classDodamDetailCategory=\'plant\';renderClassDodamDetailGrid()" data-cat="plant" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#3d5239;border:1px solid #6b8e3d;color:#d4c89c;">' + ((window.LANG_UI && window.LANG_UI[window.currentLang || 'ko'] && window.LANG_UI[window.currentLang || 'ko'].categoryPlant) || '🌱 식물') + '</button>'
+    + '    <button onclick="classDodamDetailCategory=\'animal\';renderClassDodamDetailGrid()" data-cat="animal" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#222;border:1px solid #444;color:#999;">' + ((window.LANG_UI && window.LANG_UI[window.currentLang || 'ko'] && window.LANG_UI[window.currentLang || 'ko'].categoryAnimal) || '🦊 동물') + '</button>'
+    + '    <button onclick="classDodamDetailCategory=\'artifact\';renderClassDodamDetailGrid()" data-cat="artifact" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#222;border:1px solid #444;color:#999;">' + ((window.LANG_UI && window.LANG_UI[window.currentLang || 'ko'] && window.LANG_UI[window.currentLang || 'ko'].categoryArtifact) || '🏺 유물') + '</button>'
     + '  </div>'
     + '  <div id="class-dodam-detail-grid" style="display:grid;grid-template-columns:repeat(8,1fr);gap:5px;"></div>'
     + '</div>';
@@ -924,7 +924,7 @@ async function loadClassDodamProgress() {
     countEl.textContent = coveredCount + '/' + totalCards + ' (' + pct + '%)';
     barEl.style.width = pct + '%';
   } catch (e) {
-    countEl.textContent = '불러오기 실패';
+    countEl.textContent = (window.LANG_UI && window.LANG_UI[window.currentLang || 'ko'] && window.LANG_UI[window.currentLang || 'ko'].classDodamLoadFail) || '불러오기 실패';
     console.error('classDodamProgress error:', e);
   }
 }
