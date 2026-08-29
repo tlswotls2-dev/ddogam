@@ -134,11 +134,11 @@ function recordsBuildTodayHTML() {
         + '<div style="height:10px;background:#222;border-radius:999px;overflow:hidden;margin-bottom:14px;">'
         + '  <div style="width:' + pct + '%;height:100%;background:#639922;border-radius:999px;"></div>'
         + '</div>'
-        + '<div style="background:#2c3e2d;border-radius:10px;padding:14px;">'
-        + '  <div style="color:#a8d878;font-size:0.85rem;margin-bottom:8px;">' + recordsT('recordsTodayKnowledge') + '</div>'
+        + '<div style="background:#20304a;border-radius:10px;padding:14px;">'
+        + '  <div style="color:#8ec3f0;font-size:0.85rem;margin-bottom:8px;">' + recordsT('recordsTodayKnowledge') + '</div>'
         + '  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;text-align:center;">'
-        + '    <div><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + (today.cards || 0) + '</div><div style="color:#a8d878;font-size:0.7rem;">' + recordsT('recordsUnitCards') + '</div></div>'
-        + '    <div><div style="color:#d4ffaa;font-size:1.2rem;font-weight:700;">' + (today.quizCorrect || 0) + '</div><div style="color:#a8d878;font-size:0.7rem;">' + recordsT('recordsUnitQuiz') + '</div></div>'
+        + '    <div style="background:#152238;border-radius:8px;padding:8px 4px;"><div style="color:#aad4ff;font-size:1.2rem;font-weight:700;">' + (today.cards || 0) + '</div><div style="color:#8ec3f0;font-size:0.7rem;">' + recordsT('recordsUnitCards') + '</div></div>'
+        + '    <div style="background:#152238;border-radius:8px;padding:8px 4px;"><div style="color:#aad4ff;font-size:1.2rem;font-weight:700;">' + (today.quizCorrect || 0) + '</div><div style="color:#8ec3f0;font-size:0.7rem;">' + recordsT('recordsUnitQuiz') + '</div></div>'
         + '  </div>'
         + '</div>';
 }
@@ -168,14 +168,14 @@ function recordsBuildPeriodHTML() {
         return ''
             + '<div style="background:#2c3e2d;border-radius:10px;padding:14px;margin-bottom:10px;">'
             + '  <div style="color:#a8d878;font-size:0.85rem;margin-bottom:10px;">' + title + '</div>'
-            + '  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center;margin-bottom:6px;">'
+            + '  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center;margin-bottom:8px;">'
             + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + data.steps + '</div><div style="color:#a8d878;font-size:0.65rem;">' + recordsT('recordsUnitSteps') + '</div></div>'
             + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + data.kcal + '</div><div style="color:#a8d878;font-size:0.65rem;">' + recordsT('recordsUnitKcal') + '</div></div>'
             + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + data.minutes + '</div><div style="color:#a8d878;font-size:0.65rem;">' + recordsT('recordsUnitActivityMin') + '</div></div>'
             + '  </div>'
             + '  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;text-align:center;">'
-            + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + (data.cards || 0) + '</div><div style="color:#a8d878;font-size:0.65rem;">' + recordsT('recordsUnitCards') + '</div></div>'
-            + '    <div style="background:#1a2818;border-radius:8px;padding:8px 4px;"><div style="color:#d4ffaa;font-size:1rem;font-weight:700;">' + (data.quizCorrect || 0) + '</div><div style="color:#a8d878;font-size:0.65rem;">' + recordsT('recordsUnitQuiz') + '</div></div>'
+            + '    <div style="background:#152238;border-radius:8px;padding:8px 4px;"><div style="color:#aad4ff;font-size:1rem;font-weight:700;">' + (data.cards || 0) + '</div><div style="color:#8ec3f0;font-size:0.65rem;">' + recordsT('recordsUnitCards') + '</div></div>'
+            + '    <div style="background:#152238;border-radius:8px;padding:8px 4px;"><div style="color:#aad4ff;font-size:1rem;font-weight:700;">' + (data.quizCorrect || 0) + '</div><div style="color:#8ec3f0;font-size:0.65rem;">' + recordsT('recordsUnitQuiz') + '</div></div>'
             + '  </div>'
             + '</div>';
     }
