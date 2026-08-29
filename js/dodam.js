@@ -143,10 +143,11 @@ function showClassDodamCardOwners(cardId) {
         return;
     }
 
-    // [한글 주석] 팝업 렌더링이 끝난 직후 플래그 해제 (다음 번 실제 카드 뽑기 때는 정상적으로 소리 남)
+    // [한글 주석] showCardPopup 내부에서 효과음이 0ms/400ms/800ms 세 번에 걸쳐 재생되므로
+    // 그 이후(900ms)에 플래그를 해제해야 세 번 모두 확실히 억제됨
     setTimeout(function () {
         window._suppressCardSfx = false;
-    }, 200);
+    }, 900);
 
     // [한글 주석] 팝업이 공동 도감 오버레이보다 항상 위에 뜨도록 z-index를 최상단으로 올림
     var cardOverlayEl = document.getElementById('shared-card-overlay');
