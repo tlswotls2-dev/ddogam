@@ -23,9 +23,10 @@ function showDodam() {
           + '    <span id="classDodamTitle" style="font-size:13px; font-weight:600; color:#8db05c;">🌿 우리 반 공동 도감</span>'
           + '    <span id="classDodamCount" style="font-size:13px; font-weight:700; color:#8db05c;">불러오는 중...</span>'
           + '  </div>'
-          + '  <div style="width:100%; height:8px; background:rgba(255,255,255,0.15); border-radius:4px; overflow:hidden;">'
+          + '  <div style="width:100%; height:8px; background:rgba(255,255,255,0.15); border-radius:4px; overflow:hidden; margin-bottom:8px;">'
           + '    <div id="classDodamBar" style="height:100%; width:0%; background:linear-gradient(90deg,#8db05c,#d4a017); border-radius:4px; transition:width 0.6s ease;"></div>'
           + '  </div>'
+          + '  <button id="classDodamDetailBtn" onclick="showClassDodamDetail()" style="width:100%; padding:7px; background:rgba(141,176,92,0.2); border:1px solid rgba(141,176,92,0.5); border-radius:8px; color:#8db05c; font-size:12px; font-weight:600; cursor:pointer;">📋 자세히 보기</button>'
           + '</div>';
         dodamTabs.insertAdjacentHTML('beforebegin', progressHtml);
       }
@@ -45,6 +46,88 @@ function showDodam() {
     }
   }
   _renderWhenReady();
+}
+
+// [한글 주석] 우리 반 공동 도감 상세보기 - 현재 선택된 카테고리 상태
+var classDodamDetailCategory = 'plant';
+
+// [한글 주석] 공동 도감 상세보기 화면을 엽니다 (카테고리별 1~100번 그리드, 보유자 표시)
+function showClassDodamDetail() {
+  var existing = document.getElementById('class-dodam-detail-overlay');
+  if (existing) existing.remove();
+  if (!window._classDodamCoverage) {
+    alert('아직 데이터를 불러오는 중이에요. 잠시 후 다시 눌러주세요.');
+    return;
+  }
+  var overlay = document.createElement('div');
+  overlay.id = 'class-dodam-detail-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;';
+
+  overlay.innerHTML = ''
+    + '<div style="background:#1a2818;border:1px solid #4a6b3a;border-radius:16px;width:100%;max-width:440px;max-height:85vh;overflow-y:auto;padding:18px;position:relative;">'
+    + '  <button onclick="document.getElementById(\'class-dodam-detail-overlay\').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:#d4c89c;font-size:1.3rem;cursor:pointer;">✕</button>'
+    + '  <h3 style="color:#d4c89c;margin:0 0 12px;font-size:1.05rem;">🌿 우리 반 공동 도감</h3>'
+    + '  <div id="class-dodam-cat-tabs" style="display:flex;gap:6px;margin-bottom:12px;">'
+    + '    <button onclick="classDodamDetailCategory=\'plant\';renderClassDodamDetailGrid()" data-cat="plant" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#3d5239;border:1px solid #6b8e3d;color:#d4c89c;">🌱 식물</button>'
+    + '    <button onclick="classDodamDetailCategory=\'animal\';renderClassDodamDetailGrid()" data-cat="animal" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#222;border:1px solid #444;color:#999;">🦊 동물</button>'
+    + '    <button onclick="classDodamDetailCategory=\'artifact\';renderClassDodamDetailGrid()" data-cat="artifact" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#222;border:1px solid #444;color:#999;">🏺 유물</button>'
+    + '  </div>'
+    + '  <div id="class-dodam-detail-grid" style="display:grid;grid-template-columns:repeat(8,1fr);gap:5px;"></div>'
+    + '</div>';
+
+  document.body.appendChild(overlay);
+  classDodamDetailCategory = 'plant';
+  renderClassDodamDetailGrid();
+}
+
+// [한글 주석] 선택된 카테고리의 1~100번 카드를 그리드로 그림 - 보유자 있으면 활성/숫자표시, 없으면 회색 비활성
+function renderClassDodamDetailGrid() {
+  var gridEl = document.getElementById('class-dodam-detail-grid');
+  if (!gridEl) return;
+
+  document.querySelectorAll('#class-dodam-cat-tabs button').forEach(function(btn) {
+    var isActive = btn.getAttribute('data-cat') === classDodamDetailCategory;
+    btn.style.background = isActive ? '#3d5239' : '#222';
+    btn.style.border = isActive ? '1px solid #6b8e3d' : '1px solid #444';
+    btn.style.color = isActive ? '#d4c89c' : '#999';
+  });
+
+  var coverage = window._classDodamCoverage || {};
+  var catColors = { plant: '#8db05c', animal: '#ff9500', artifact: '#d4a017' };
+  var color = catColors[classDodamDetailCategory] || '#8db05c';
+
+  var html = '';
+  for (var i = 1; i <= 100; i++) {
+    var num = String(i).padStart(3, '0');
+    var cardId = classDodamDetailCategory + '_' + num;
+    var owners = coverage[cardId];
+    var hasOwner = owners && owners.length > 0;
+
+    if (hasOwner) {
+      html += '<div onclick="showClassDodamCardOwners(\'' + cardId + '\')" style="'
+        + 'aspect-ratio:1;border-radius:6px;background:' + color + '33;border:1.5px solid ' + color + ';'
+        + 'display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:' + color + ';'
+        + 'cursor:pointer;">' + i + '</div>';
+    } else {
+      html += '<div style="'
+        + 'aspect-ratio:1;border-radius:6px;background:#1a1a1a;border:1px solid #333;'
+        + 'display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:#444;">' + i + '</div>';
+    }
+  }
+  gridEl.innerHTML = html;
+}
+
+// [한글 주석] 특정 카드를 누가 가지고 있는지 알림으로 보여줌
+function showClassDodamCardOwners(cardId) {
+  var coverage = window._classDodamCoverage || {};
+  var owners = coverage[cardId] || [];
+  var exactCard = window.allCardsData ? window.allCardsData.find(function(c) { return c.id === cardId; }) : null;
+  var cardName = exactCard ? exactCard.name : cardId;
+  if (owners.length === 0) {
+    alert(cardName + ': 아직 아무도 모으지 못했어요.');
+  } else {
+    alert(cardName + ' 보유자: ' + owners.join(', ') + '번');
+  }
 }
 
 /**
@@ -751,47 +834,34 @@ function showCraftResultPopup(card, isNew, resultRarity) {
 window.renderWorkshop = renderWorkshop;
 window.showCraftResultPopup = showCraftResultPopup;
 
+// [한글 주석] 우리 반 공동 도감 커버리지 데이터를 저장하는 전역 캐시 (상세보기에서도 재사용)
+window._classDodamCoverage = null;
+
 async function loadClassDodamProgress() {
   var countEl = document.getElementById('classDodamCount');
   var barEl = document.getElementById('classDodamBar');
   if (!countEl || !barEl) return;
 
   try {
-    var totalCollected = 0;
-    var totalCards = 300;
+    var totalCards = 300; // 식물100+동물100+유물100
 
     if (localStorage.getItem('demoMode') === 'true') {
-      var demoStudents = JSON.parse(localStorage.getItem('demoStudents') || '[]');
-      if (demoStudents && demoStudents.length > 0) {
-        demoStudents.forEach(function(s) {
-          totalCollected += (Number(s.plant) || 0);
-          totalCollected += (Number(s.animal) || 0);
-          totalCollected += (Number(s.artifact) || 0);
-        });
-      } else {
-        totalCollected = 152; // 폴백 예시 데이터
-      }
-      if (totalCollected > totalCards) totalCollected = totalCards;
+      // [한글 주석] 체험 모드 예시 - 그럴듯하게 220종 정도 커버된 것으로 표시
+      var demoCoverage = {};
+      var allIds = window.allCardsData ? window.allCardsData.map(function(c) { return c.id; }) : [];
+      allIds.slice(0, 220).forEach(function(id) { demoCoverage[id] = ['1', '5', '12']; });
+      window._classDodamCoverage = demoCoverage;
     } else {
       var userData = JSON.parse(localStorage.getItem('userData') || '{}');
-      if (userData.class) {
-        var S_URL = typeof SCRIPT_URL !== 'undefined' ? SCRIPT_URL : 'https://script.google.com/macros/s/AKfycbxHFQhpwzADLC6JHfMdo4aJ6lUwXW4OFwfKOsQsTQjr07QFX3JJE27xrAJHZ1Zj-KI8/exec';
-        var res = await fetch(S_URL + '?type=getStudents&class=' + encodeURIComponent(userData.class));
-        var data = await res.json();
-        var students = data.students || [];
-        if (students && students.length > 0) {
-          students.forEach(function(s) {
-            totalCollected += (Number(s.plant) || 0);
-            totalCollected += (Number(s.animal) || 0);
-            totalCollected += (Number(s.artifact) || 0);
-          });
-          if (totalCollected > totalCards) totalCollected = totalCards;
-        }
-      }
+      var url = SCRIPT_URL + '?type=getClassCardCoverage&class=' + encodeURIComponent(userData.class);
+      var res = await fetch(url);
+      var data = await res.json();
+      window._classDodamCoverage = data.coverage || {};
     }
 
-    var pct = Math.round((totalCollected / totalCards) * 100);
-    countEl.textContent = totalCollected + ' / ' + totalCards + ' (' + pct + '%)';
+    var coveredCount = Object.keys(window._classDodamCoverage).length;
+    var pct = Math.round((coveredCount / totalCards) * 100);
+    countEl.textContent = coveredCount + '/' + totalCards + ' (' + pct + '%)';
     barEl.style.width = pct + '%';
   } catch (e) {
     countEl.textContent = '불러오기 실패';
