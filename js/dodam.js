@@ -15,8 +15,29 @@ function showDodam() {
   // [한글 주석] 카드 데이터 로드 완료 후 렌더링 (비동기 대기)
   function _renderWhenReady() {
     if (window.allCardsData && window.allCardsData.length > 0) {
+      var dodamTabs = document.querySelector('.dodam-tabs');
+      var existing = document.getElementById('classDodamProgress');
+      if (dodamTabs && !existing) {
+        var progressHtml = '<div id="classDodamProgress" style="margin:8px 12px 12px 12px; padding:10px 12px; background:rgba(141,176,92,0.12); border:1px solid rgba(141,176,92,0.4); border-radius:10px;">'
+          + '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">'
+          + '    <span id="classDodamTitle" style="font-size:13px; font-weight:600; color:#8db05c;">🌿 우리 반 공동 도감</span>'
+          + '    <span id="classDodamCount" style="font-size:13px; font-weight:700; color:#8db05c;">불러오는 중...</span>'
+          + '  </div>'
+          + '  <div style="width:100%; height:8px; background:rgba(255,255,255,0.15); border-radius:4px; overflow:hidden;">'
+          + '    <div id="classDodamBar" style="height:100%; width:0%; background:linear-gradient(90deg,#8db05c,#d4a017); border-radius:4px; transition:width 0.6s ease;"></div>'
+          + '  </div>'
+          + '</div>';
+        dodamTabs.insertAdjacentHTML('beforebegin', progressHtml);
+      }
+      var _T = window.LANG_UI; var _L = window.currentLang || 'ko';
+      var titleEl = document.getElementById('classDodamTitle');
+      if (titleEl) {
+        titleEl.textContent = _T && _T[_L] && _T[_L].classDodamTitle ? _T[_L].classDodamTitle : '🌿 우리 반 공동 도감';
+      }
+
       renderDodamTabs();
       renderDodamGrid(currentDodamCategory);
+      if (typeof loadClassDodamProgress === 'function') loadClassDodamProgress();
     } else {
       // [한글 주석] 데이터 아직 없으면 로드 트리거 후 재시도
       if (typeof loadCardsData === 'function') loadCardsData();
@@ -729,3 +750,52 @@ function showCraftResultPopup(card, isNew, resultRarity) {
 
 window.renderWorkshop = renderWorkshop;
 window.showCraftResultPopup = showCraftResultPopup;
+
+async function loadClassDodamProgress() {
+  var countEl = document.getElementById('classDodamCount');
+  var barEl = document.getElementById('classDodamBar');
+  if (!countEl || !barEl) return;
+
+  try {
+    var totalCollected = 0;
+    var totalCards = 300;
+
+    if (localStorage.getItem('demoMode') === 'true') {
+      var demoStudents = JSON.parse(localStorage.getItem('demoStudents') || '[]');
+      if (demoStudents && demoStudents.length > 0) {
+        demoStudents.forEach(function(s) {
+          totalCollected += (Number(s.plant) || 0);
+          totalCollected += (Number(s.animal) || 0);
+          totalCollected += (Number(s.artifact) || 0);
+        });
+      } else {
+        totalCollected = 152; // 폴백 예시 데이터
+      }
+      if (totalCollected > totalCards) totalCollected = totalCards;
+    } else {
+      var userData = JSON.parse(localStorage.getItem('userData') || '{}');
+      if (userData.class) {
+        var S_URL = typeof SCRIPT_URL !== 'undefined' ? SCRIPT_URL : 'https://script.google.com/macros/s/AKfycbxHFQhpwzADLC6JHfMdo4aJ6lUwXW4OFwfKOsQsTQjr07QFX3JJE27xrAJHZ1Zj-KI8/exec';
+        var res = await fetch(S_URL + '?type=getStudents&class=' + encodeURIComponent(userData.class));
+        var data = await res.json();
+        var students = data.students || [];
+        if (students && students.length > 0) {
+          students.forEach(function(s) {
+            totalCollected += (Number(s.plant) || 0);
+            totalCollected += (Number(s.animal) || 0);
+            totalCollected += (Number(s.artifact) || 0);
+          });
+          if (totalCollected > totalCards) totalCollected = totalCards;
+        }
+      }
+    }
+
+    var pct = Math.round((totalCollected / totalCards) * 100);
+    countEl.textContent = totalCollected + ' / ' + totalCards + ' (' + pct + '%)';
+    barEl.style.width = pct + '%';
+  } catch (e) {
+    countEl.textContent = '불러오기 실패';
+    console.error('classDodamProgress error:', e);
+  }
+}
+
