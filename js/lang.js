@@ -251,7 +251,7 @@ window.LANG_UI = {
     dodamTabAnimalLocked: '🔒 동물',
     dodamTabArtifactLocked: '🔒 유물',
     dodamSummary: '{n} / {total} 수집',
-    classDodamTitle: '🌿 우리 반 공동 도감',
+    classDodamTitle: '✨🌿 협력의 꽃을 피우는 우리반 공동 도감',
     dodamUnknownDesc: '미발견',
     dodamDateDefault: '📅 최근 수집',
     workshopSummary: '중복 카드 조합소',
