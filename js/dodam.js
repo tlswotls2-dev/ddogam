@@ -93,8 +93,8 @@ function renderClassDodamDetailGrid() {
   });
 
   var coverage = window._classDodamCoverage || {};
-  var catColors = { plant: '#8db05c', animal: '#ff9500', artifact: '#d4a017' };
-  var color = catColors[classDodamDetailCategory] || '#8db05c';
+  // [한글 주석] 희귀도별 색상 - 일반(초록)/희귀(파랑)/전설(금색+은은한 발광)
+  var rarityColors = { common: '#8db05c', rare: '#4a9eff', epic: '#ffd700' };
 
   var html = '';
   for (var i = 1; i <= 100; i++) {
@@ -102,12 +102,16 @@ function renderClassDodamDetailGrid() {
     var cardId = classDodamDetailCategory + '_' + num;
     var owners = coverage[cardId];
     var hasOwner = owners && owners.length > 0;
+    var exactCard = window.allCardsData ? window.allCardsData.find(function(c) { return c.id === cardId; }) : null;
+    var rarity = exactCard ? exactCard.rarity : 'common';
+    var color = rarityColors[rarity] || rarityColors.common;
 
     if (hasOwner) {
+      var glowStyle = rarity === 'epic' ? ';box-shadow:0 0 8px ' + color + '99, inset 0 0 4px ' + color + '55' : '';
       html += '<div onclick="showClassDodamCardOwners(\'' + cardId + '\')" style="'
         + 'aspect-ratio:1;border-radius:6px;background:' + color + '33;border:1.5px solid ' + color + ';'
         + 'display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:' + color + ';'
-        + 'cursor:pointer;">' + i + '</div>';
+        + 'cursor:pointer;' + glowStyle + '">' + i + '</div>';
     } else {
       html += '<div onclick="showClassDodamCardOwners(\'' + cardId + '\')" style="'
         + 'aspect-ratio:1;border-radius:6px;background:#1a1a1a;border:1px solid #333;'
@@ -119,21 +123,50 @@ function renderClassDodamDetailGrid() {
 }
 
 // [한글 주석] 특정 카드를 누가 가지고 있는지 알림으로 보여줌
+// [한글 주석] 공동 도감 카드칸 클릭 시 - 기존 카드 상세 팝업(shared-card-overlay)을 재사용하되
+// 서식지 자리를 보유자 정보로 덮어쓰고, 미보유 카드는 이미지를 물음표로, 자세히 보기 버튼을 숨김
 function showClassDodamCardOwners(cardId) {
   var coverage = window._classDodamCoverage || {};
   var owners = coverage[cardId] || [];
+  var hasOwner = owners.length > 0;
   var exactCard = window.allCardsData ? window.allCardsData.find(function(c) { return c.id === cardId; }) : null;
-  var cardName = exactCard ? exactCard.name : cardId;
-  var rarityLabels = { common: '일반', rare: '희귀', epic: '전설' };
-  var rarityStars = { common: '★', rare: '★★', epic: '★★★' };
-  var rarity = exactCard ? exactCard.rarity : '';
-  var rarityText = rarity ? (rarityStars[rarity] || '') + ' ' + (rarityLabels[rarity] || rarity) : '';
+  if (!exactCard) return;
 
-  if (owners.length === 0) {
-    alert(cardName + ' (' + rarityText + ')\n아직 아무도 모으지 못했어요.');
+  // [한글 주석] 기존 카드 팝업을 그대로 열어서 이름/희귀도/카테고리/설명이 원래 로직대로 채워지게 함
+  if (typeof showCardPopup === 'function') {
+    showCardPopup(exactCard, false);
   } else {
-    alert(cardName + ' (' + rarityText + ')\n보유자: ' + owners.join(', ') + '번');
+    return;
   }
+
+  // [한글 주석] 팝업이 채워진 직후 미보유/보유 여부에 맞게 이미지·하단정보·버튼을 덮어씀
+  setTimeout(function() {
+    var popupEmojiEl = document.getElementById('popup-emoji');
+    var habitatEl = document.getElementById('popup-habitat');
+    var btnDetail = document.getElementById('btn-detail');
+    var userData = JSON.parse(localStorage.getItem('userData') || '{}');
+
+    if (!hasOwner) {
+      // [한글 주석] 미보유 카드 - 이미지를 물음표로, 자세히 보기 버튼 숨김
+      if (popupEmojiEl) {
+        popupEmojiEl.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;color:#666;">❓</div>';
+      }
+      if (habitatEl) {
+        habitatEl.textContent = '👥 아직 우리 반에 아무도 없어요';
+      }
+      if (btnDetail) {
+        btnDetail.style.display = 'none';
+      }
+    } else {
+      // [한글 주석] 보유 카드 - 서식지 자리에 보유자 목록 표시, 자세히 보기 버튼은 유지
+      if (habitatEl) {
+        habitatEl.textContent = '👥 ' + userData.class + '반 ' + owners.join(', ') + '번 보유';
+      }
+      if (btnDetail) {
+        btnDetail.style.display = '';
+      }
+    }
+  }, 50);
 }
 
 /**
