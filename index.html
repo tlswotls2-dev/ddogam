@@ -405,11 +405,11 @@
             </div>
           </div>
         </div>
-        <div class="explore-bottom">
-          <div id="demo-sim-notice" style="display:none;font-size:11px;color:#d4c89c;text-align:center;margin-bottom:6px;opacity:0.85;">
-            📍 실제로 움직일 수 없는 환경을 위한 체험용 기능이에요 (1초에 2걸음씩 자동 이동)
+        <div class="explore-bottom" style="display:flex;flex-direction:column;align-items:center;width:100%;">
+          <div id="demo-sim-notice" style="display:none;font-size:11px;color:#d4c89c;text-align:center;margin-bottom:6px;opacity:0.85;width:100%;max-width:320px;">
+            📍 체험 모드에서만 활성화되는 기능이에요 · 실제로 움직일 수 없는 환경을 위한 체험용 기능이에요 (1초에 2걸음씩 자동 이동)
           </div>
-          <button id="demo-sim-btn" style="display:none;width:100%;margin-bottom:8px;padding:10px;background:linear-gradient(135deg,#4a3d1a,#3d3320);border:1.5px solid #d4a017;border-radius:12px;color:#ffd24d;font-weight:700;font-size:0.9rem;cursor:pointer;"
+          <button id="demo-sim-btn" style="display:none;width:100%;max-width:320px;margin-bottom:8px;padding:10px;background:linear-gradient(135deg,#4a3d1a,#3d3320);border:1.5px solid #d4a017;border-radius:12px;color:#ffd24d;font-weight:700;font-size:0.9rem;cursor:pointer;box-sizing:border-box;"
             onclick="event.stopPropagation(); toggleDemoWalkSimulation();">
             🎬 걷기 시뮬레이션 시작
           </button>
