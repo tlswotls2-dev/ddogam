@@ -132,14 +132,16 @@ function showClassDodamCardOwners(cardId) {
     var exactCard = window.allCardsData ? window.allCardsData.find(function(c) { return c.id === cardId; }) : null;
     if (!exactCard) return;
 
-    // [한글 주석] 카드 효과음만 플래그로 억제 (BGM 정지는 그대로 두어도 무방 - 도감 열람 시 배경음 자체가 없을 확률이 높음)
+    // [한글 주석] 카드 효과음과 메인 BGM 정지를 모두 플래그로 억제 (도감 열람 중 배경음이 끊기지 않게)
     window._suppressCardSfx = true;
+    window._suppressBGMStop = true;
 
     // [한글 주석] 기존 카드 팝업을 그대로 열어서 이름/희귀도/카테고리/설명이 원래 로직대로 채워지게 함
     if (typeof showCardPopup === 'function') {
         showCardPopup(exactCard, false);
     } else {
         window._suppressCardSfx = false;
+        window._suppressBGMStop = false;
         return;
     }
 
@@ -147,6 +149,7 @@ function showClassDodamCardOwners(cardId) {
     // 그 이후(900ms)에 플래그를 해제해야 세 번 모두 확실히 억제됨
     setTimeout(function () {
         window._suppressCardSfx = false;
+        window._suppressBGMStop = false;
     }, 900);
 
     // [한글 주석] 팝업이 공동 도감 오버레이보다 항상 위에 뜨도록 z-index를 최상단으로 올림

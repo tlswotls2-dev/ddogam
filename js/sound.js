@@ -143,6 +143,7 @@ function _playNatureBGM() {
 
 // [한글 주석] 배경음 정지
 function stopBGM() {
+  if (window._suppressBGMStop) return;
   if (_loginAudio) {
     _loginAudio.pause();
     _loginAudio.currentTime = 0;
