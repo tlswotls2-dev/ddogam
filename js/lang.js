@@ -1630,7 +1630,20 @@ function selectLanguage(langCode) {
 function applyUIText(langCode) {
   const ui = LANG_UI[langCode];
   if (!ui) return;
-
+  // [한글 주석] 공동 도감 진행률바 - 제목/자세히보기 버튼 (숫자는 loadClassDodamProgress가 별도로 채움)
+  const classDodamTitleEl = document.getElementById('classDodamTitle');
+  if (classDodamTitleEl) classDodamTitleEl.textContent = ui.classDodamTitle;
+  const classDodamDetailBtnEl = document.getElementById('classDodamDetailBtn');
+  if (classDodamDetailBtnEl) classDodamDetailBtnEl.textContent = ui.classDodamDetailBtn;
+  // [한글 주석] 공동 도감 상세보기가 열려 있으면 제목/카테고리탭도 갱신
+  const classDodamDetailTitleEl = document.querySelector('#class-dodam-detail-overlay h3');
+  if (classDodamDetailTitleEl) classDodamDetailTitleEl.textContent = ui.classDodamDetailTitle;
+  const catTabPlant = document.querySelector('#class-dodam-cat-tabs button[data-cat="plant"]');
+  if (catTabPlant) catTabPlant.textContent = ui.categoryPlant;
+  const catTabAnimal = document.querySelector('#class-dodam-cat-tabs button[data-cat="animal"]');
+  if (catTabAnimal) catTabAnimal.textContent = ui.categoryAnimal;
+  const catTabArtifact = document.querySelector('#class-dodam-cat-tabs button[data-cat="artifact"]');
+  if (catTabArtifact) catTabArtifact.textContent = ui.categoryArtifact;
   // [한글 주석] 탐험 버튼
   const exploreBtn = document.querySelector('.action-btn.btn-explore');
   if (exploreBtn) exploreBtn.innerHTML = `👟<br>${ui.exploreBtn}`;
