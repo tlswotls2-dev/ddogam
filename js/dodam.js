@@ -26,7 +26,7 @@ function showDodam() {
           + '  <div style="width:100%; height:8px; background:rgba(255,255,255,0.15); border-radius:4px; overflow:hidden; margin-bottom:8px;">'
           + '    <div id="classDodamBar" style="height:100%; width:0%; background:linear-gradient(90deg,#8db05c,#d4a017); border-radius:4px; transition:width 0.6s ease;"></div>'
           + '  </div>'
-          + '  <button id="classDodamDetailBtn" onclick="showClassDodamDetail()" style="width:100%; padding:7px; background:rgba(141,176,92,0.2); border:1px solid rgba(141,176,92,0.5); border-radius:8px; color:#8db05c; font-size:12px; font-weight:600; cursor:pointer;">📋 자세히 보기</button>'
+          + '  <button id="classDodamDetailBtn" onclick="showClassDodamDetail()" style="width:100%; padding:7px; background:rgba(141,176,92,0.2); border:1px solid rgba(141,176,92,0.5); border-radius:8px; color:#8db05c; font-size:12px; font-weight:600; cursor:pointer;">' + ((window.LANG_UI && window.LANG_UI[window.currentLang || 'ko'] && window.LANG_UI[window.currentLang || 'ko'].classDodamDetailBtn) || '📋 자세히 보기') + '</button>'
           + '</div>';
         dodamTabs.insertAdjacentHTML('beforebegin', progressHtml);
       }
@@ -66,7 +66,7 @@ function showClassDodamDetail() {
   overlay.innerHTML = ''
     + '<div style="background:#1a2818;border:1px solid #4a6b3a;border-radius:16px;width:100%;max-width:440px;max-height:85vh;overflow-y:auto;padding:18px;position:relative;">'
     + '  <button onclick="document.getElementById(\'class-dodam-detail-overlay\').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:#d4c89c;font-size:1.3rem;cursor:pointer;">✕</button>'
-    + '  <h3 style="color:#d4c89c;margin:0 0 12px;font-size:1.05rem;">🌿 우리 반 공동 도감</h3>'
+    + '  <h3 style="color:#d4c89c;margin:0 0 12px;font-size:1.05rem;">' + ((window.LANG_UI && window.LANG_UI[window.currentLang || 'ko'] && window.LANG_UI[window.currentLang || 'ko'].classDodamDetailTitle) || '🌿 우리 반 공동 도감') + '</h3>'
     + '  <div id="class-dodam-cat-tabs" style="display:flex;gap:6px;margin-bottom:12px;">'
     + '    <button onclick="classDodamDetailCategory=\'plant\';renderClassDodamDetailGrid()" data-cat="plant" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#3d5239;border:1px solid #6b8e3d;color:#d4c89c;">🌱 식물</button>'
     + '    <button onclick="classDodamDetailCategory=\'animal\';renderClassDodamDetailGrid()" data-cat="animal" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#222;border:1px solid #444;color:#999;">🦊 동물</button>'
@@ -165,21 +165,23 @@ function showClassDodamCardOwners(cardId) {
         var btnDetail = document.getElementById('btn-detail');
         var userData = JSON.parse(localStorage.getItem('userData') || '{}');
 
+        var _ui2 = window.LANG_UI ? window.LANG_UI[window.currentLang || 'ko'] : null;
         if (!hasOwner) {
             // [한글 주석] 미보유 카드 - 이미지를 물음표로, 자세히 보기 버튼 숨김
             if (popupEmojiEl) {
                 popupEmojiEl.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;color:#666;">❓</div>';
             }
             if (habitatEl) {
-                habitatEl.textContent = '👥 아직 우리 반에 아무도 없어요';
+                habitatEl.textContent = (_ui2 && _ui2.classDodamNoOwner) || '👥 아직 우리 반에 아무도 없어요';
             }
             if (btnDetail) {
                 btnDetail.style.display = 'none';
             }
         } else {
             // [한글 주석] 보유 카드 - 서식지 자리에 보유자 목록 표시, 자세히 보기 버튼은 유지
+            var _ownedTemplate = (_ui2 && _ui2.classDodamOwnedBy) || '👥 {class}반 {numbers}번 보유';
             if (habitatEl) {
-                habitatEl.textContent = '👥 ' + userData.class + '반 ' + owners.join(', ') + '번 보유';
+                habitatEl.textContent = _ownedTemplate.replace('{class}', userData.class).replace('{numbers}', owners.join(', '));
             }
             if (btnDetail) {
                 btnDetail.style.display = '';

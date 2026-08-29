@@ -465,12 +465,21 @@ document.addEventListener('DOMContentLoaded', () => {
             startPedometerExploration();
         }
 
-        // [한글 주석] 체험 모드일 때만 시뮬레이션 버튼과 안내문구를 노출
+        // [한글 주석] 체험 모드일 때만 시뮬레이션 버튼과 안내문구를 노출 (다국어 텍스트 포함)
         var simBtn = document.getElementById('demo-sim-btn');
         var simNotice = document.getElementById('demo-sim-notice');
+        var _uiSim = window.LANG_UI ? window.LANG_UI[window.currentLang || 'ko'] : null;
         if (localStorage.getItem('demoMode') === 'true') {
-            if (simBtn) simBtn.style.display = 'block';
-            if (simNotice) simNotice.style.display = 'block';
+            if (simBtn) {
+                simBtn.style.display = 'block';
+                if (!window._demoWalkSimTimer) {
+                    simBtn.textContent = (_uiSim && _uiSim.demoSimStart) || '🎬 걷기 시뮬레이션 시작';
+                }
+            }
+            if (simNotice) {
+                simNotice.style.display = 'block';
+                simNotice.textContent = (_uiSim && _uiSim.demoSimNotice) || '📍 체험 모드에서만 활성화되는 기능이에요 · 실제로 움직일 수 없는 환경을 위한 체험용 기능이에요 (1초에 2걸음씩 자동 이동)';
+            }
         } else {
             if (simBtn) simBtn.style.display = 'none';
             if (simNotice) simNotice.style.display = 'none';
@@ -482,12 +491,13 @@ document.addEventListener('DOMContentLoaded', () => {
     window._demoWalkSimTimer = null;
     window.toggleDemoWalkSimulation = function () {
         var btn = document.getElementById('demo-sim-btn');
+        var _uiToggle = window.LANG_UI ? window.LANG_UI[window.currentLang || 'ko'] : null;
         if (window._demoWalkSimTimer) {
             // [한글 주석] 이미 실행 중이면 정지
             clearInterval(window._demoWalkSimTimer);
             window._demoWalkSimTimer = null;
             if (btn) {
-                btn.textContent = '🎬 걷기 시뮬레이션 시작';
+                btn.textContent = (_uiToggle && _uiToggle.demoSimStart) || '🎬 걷기 시뮬레이션 시작';
             }
         } else {
             // [한글 주석] 500ms마다 1걸음씩 = 초당 2걸음
@@ -497,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, 500);
             if (btn) {
-                btn.textContent = '⏸ 시뮬레이션 정지';
+                btn.textContent = (_uiToggle && _uiToggle.demoSimStop) || '⏸ 시뮬레이션 정지';
             }
         }
     };
@@ -509,7 +519,8 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(window._demoWalkSimTimer);
             window._demoWalkSimTimer = null;
             var simBtn = document.getElementById('demo-sim-btn');
-            if (simBtn) simBtn.textContent = '🎬 걷기 시뮬레이션 시작';
+            var _uiStop = window.LANG_UI ? window.LANG_UI[window.currentLang || 'ko'] : null;
+            if (simBtn) simBtn.textContent = (_uiStop && _uiStop.demoSimStart) || '🎬 걷기 시뮬레이션 시작';
         }
         // [한글 주석] 탐험 종료 시 뒤로가기 차단 해제
         if (window._explorationBackHandler) {
