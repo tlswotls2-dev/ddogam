@@ -132,24 +132,21 @@ function showClassDodamCardOwners(cardId) {
     var exactCard = window.allCardsData ? window.allCardsData.find(function(c) { return c.id === cardId; }) : null;
     if (!exactCard) return;
 
-    // [한글 주석] 효과음/BGM 정지 함수를 일시적으로 무력화해서 도감 열람 중에는 소리가 나지 않게 함
-    var _origPlaySfxCardAppear = window.playSfxCardAppear;
-    var _origStopBGM = window.stopBGM;
-    window.playSfxCardAppear = function () {};
-    window.stopBGM = function () {};
+    // [한글 주석] 카드 효과음만 플래그로 억제 (BGM 정지는 그대로 두어도 무방 - 도감 열람 시 배경음 자체가 없을 확률이 높음)
+    window._suppressCardSfx = true;
 
     // [한글 주석] 기존 카드 팝업을 그대로 열어서 이름/희귀도/카테고리/설명이 원래 로직대로 채워지게 함
     if (typeof showCardPopup === 'function') {
         showCardPopup(exactCard, false);
     } else {
-        window.playSfxCardAppear = _origPlaySfxCardAppear;
-        window.stopBGM = _origStopBGM;
+        window._suppressCardSfx = false;
         return;
     }
 
-    // [한글 주석] 원래 함수들을 즉시 복원 (다음 번 실제 카드 뽑기 때는 정상 작동해야 함)
-    window.playSfxCardAppear = _origPlaySfxCardAppear;
-    window.stopBGM = _origStopBGM;
+    // [한글 주석] 팝업 렌더링이 끝난 직후 플래그 해제 (다음 번 실제 카드 뽑기 때는 정상적으로 소리 남)
+    setTimeout(function () {
+        window._suppressCardSfx = false;
+    }, 200);
 
     // [한글 주석] 팝업이 공동 도감 오버레이보다 항상 위에 뜨도록 z-index를 최상단으로 올림
     var cardOverlayEl = document.getElementById('shared-card-overlay');

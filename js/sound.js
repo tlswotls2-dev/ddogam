@@ -200,6 +200,7 @@ function playBattleBGM() {
 
 // [한글 주석] 카드 출현 효과음 (반짝임)
 function playSfxCardAppear() {
+  if (window._suppressCardSfx) return;
   if (_isMuted || !_audioCtx) return;
   const freqs = [523.25, 659.25, 783.99, 1046.50];
   freqs.forEach((freq, i) => {
