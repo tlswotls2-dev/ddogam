@@ -18,9 +18,9 @@ function showDodam() {
       var dodamTabs = document.querySelector('.dodam-tabs');
       var existing = document.getElementById('classDodamProgress');
       if (dodamTabs && !existing) {
-        var progressHtml = '<div id="classDodamProgress" style="margin:8px 12px 12px 12px; padding:10px 12px; background:rgba(141,176,92,0.12); border:1px solid rgba(141,176,92,0.4); border-radius:10px;">'
+        var progressHtml = '<div id="classDodamProgress" style="margin:8px 12px 12px 12px; padding:11px 13px; background:linear-gradient(135deg, rgba(141,176,92,0.22), rgba(212,160,23,0.12)); border:1.5px solid rgba(141,176,92,0.65); border-radius:10px; box-shadow:0 0 10px rgba(141,176,92,0.25);">'
           + '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">'
-          + '    <span id="classDodamTitle" style="font-size:13px; font-weight:600; color:#8db05c;">🌿 우리 반 공동 도감</span>'
+          + '    <span id="classDodamTitle" style="font-size:13px; font-weight:800; color:#a8d878; text-shadow:0 0 6px rgba(168,216,120,0.5);">✨🌿 협력의 꽃을 피우는 우리반 공동 도감</span>'
           + '    <span id="classDodamCount" style="font-size:13px; font-weight:700; color:#8db05c;">불러오는 중...</span>'
           + '  </div>'
           + '  <div style="width:100%; height:8px; background:rgba(255,255,255,0.15); border-radius:4px; overflow:hidden; margin-bottom:8px;">'
@@ -33,7 +33,7 @@ function showDodam() {
       var _T = window.LANG_UI; var _L = window.currentLang || 'ko';
       var titleEl = document.getElementById('classDodamTitle');
       if (titleEl) {
-        titleEl.textContent = _T && _T[_L] && _T[_L].classDodamTitle ? _T[_L].classDodamTitle : '🌿 우리 반 공동 도감';
+        titleEl.textContent = _T && _T[_L] && _T[_L].classDodamTitle ? _T[_L].classDodamTitle : '✨🌿 협력의 꽃을 피우는 우리반 공동 도감';
       }
 
       renderDodamTabs();
