@@ -126,47 +126,65 @@ function renderClassDodamDetailGrid() {
 // [한글 주석] 공동 도감 카드칸 클릭 시 - 기존 카드 상세 팝업(shared-card-overlay)을 재사용하되
 // 서식지 자리를 보유자 정보로 덮어쓰고, 미보유 카드는 이미지를 물음표로, 자세히 보기 버튼을 숨김
 function showClassDodamCardOwners(cardId) {
-  var coverage = window._classDodamCoverage || {};
-  var owners = coverage[cardId] || [];
-  var hasOwner = owners.length > 0;
-  var exactCard = window.allCardsData ? window.allCardsData.find(function(c) { return c.id === cardId; }) : null;
-  if (!exactCard) return;
+    var coverage = window._classDodamCoverage || {};
+    var owners = coverage[cardId] || [];
+    var hasOwner = owners.length > 0;
+    var exactCard = window.allCardsData ? window.allCardsData.find(function(c) { return c.id === cardId; }) : null;
+    if (!exactCard) return;
 
-  // [한글 주석] 기존 카드 팝업을 그대로 열어서 이름/희귀도/카테고리/설명이 원래 로직대로 채워지게 함
-  if (typeof showCardPopup === 'function') {
-    showCardPopup(exactCard, false);
-  } else {
-    return;
-  }
+    // [한글 주석] 효과음/BGM 정지 함수를 일시적으로 무력화해서 도감 열람 중에는 소리가 나지 않게 함
+    var _origPlaySfxCardAppear = window.playSfxCardAppear;
+    var _origStopBGM = window.stopBGM;
+    window.playSfxCardAppear = function () {};
+    window.stopBGM = function () {};
 
-  // [한글 주석] 팝업이 채워진 직후 미보유/보유 여부에 맞게 이미지·하단정보·버튼을 덮어씀
-  setTimeout(function() {
-    var popupEmojiEl = document.getElementById('popup-emoji');
-    var habitatEl = document.getElementById('popup-habitat');
-    var btnDetail = document.getElementById('btn-detail');
-    var userData = JSON.parse(localStorage.getItem('userData') || '{}');
-
-    if (!hasOwner) {
-      // [한글 주석] 미보유 카드 - 이미지를 물음표로, 자세히 보기 버튼 숨김
-      if (popupEmojiEl) {
-        popupEmojiEl.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;color:#666;">❓</div>';
-      }
-      if (habitatEl) {
-        habitatEl.textContent = '👥 아직 우리 반에 아무도 없어요';
-      }
-      if (btnDetail) {
-        btnDetail.style.display = 'none';
-      }
+    // [한글 주석] 기존 카드 팝업을 그대로 열어서 이름/희귀도/카테고리/설명이 원래 로직대로 채워지게 함
+    if (typeof showCardPopup === 'function') {
+        showCardPopup(exactCard, false);
     } else {
-      // [한글 주석] 보유 카드 - 서식지 자리에 보유자 목록 표시, 자세히 보기 버튼은 유지
-      if (habitatEl) {
-        habitatEl.textContent = '👥 ' + userData.class + '반 ' + owners.join(', ') + '번 보유';
-      }
-      if (btnDetail) {
-        btnDetail.style.display = '';
-      }
+        window.playSfxCardAppear = _origPlaySfxCardAppear;
+        window.stopBGM = _origStopBGM;
+        return;
     }
-  }, 50);
+
+    // [한글 주석] 원래 함수들을 즉시 복원 (다음 번 실제 카드 뽑기 때는 정상 작동해야 함)
+    window.playSfxCardAppear = _origPlaySfxCardAppear;
+    window.stopBGM = _origStopBGM;
+
+    // [한글 주석] 팝업이 공동 도감 오버레이보다 항상 위에 뜨도록 z-index를 최상단으로 올림
+    var cardOverlayEl = document.getElementById('shared-card-overlay');
+    if (cardOverlayEl) {
+        cardOverlayEl.style.zIndex = '999999';
+    }
+
+    // [한글 주석] 팝업이 채워진 직후 미보유/보유 여부에 맞게 이미지·하단정보·버튼을 덮어씀
+    setTimeout(function() {
+        var popupEmojiEl = document.getElementById('popup-emoji');
+        var habitatEl = document.getElementById('popup-habitat');
+        var btnDetail = document.getElementById('btn-detail');
+        var userData = JSON.parse(localStorage.getItem('userData') || '{}');
+
+        if (!hasOwner) {
+            // [한글 주석] 미보유 카드 - 이미지를 물음표로, 자세히 보기 버튼 숨김
+            if (popupEmojiEl) {
+                popupEmojiEl.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;color:#666;">❓</div>';
+            }
+            if (habitatEl) {
+                habitatEl.textContent = '👥 아직 우리 반에 아무도 없어요';
+            }
+            if (btnDetail) {
+                btnDetail.style.display = 'none';
+            }
+        } else {
+            // [한글 주석] 보유 카드 - 서식지 자리에 보유자 목록 표시, 자세히 보기 버튼은 유지
+            if (habitatEl) {
+                habitatEl.textContent = '👥 ' + userData.class + '반 ' + owners.join(', ') + '번 보유';
+            }
+            if (btnDetail) {
+                btnDetail.style.display = '';
+            }
+        }
+    }, 50);
 }
 
 /**
