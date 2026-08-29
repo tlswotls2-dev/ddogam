@@ -464,10 +464,53 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof startPedometerExploration === 'function') {
             startPedometerExploration();
         }
+
+        // [한글 주석] 체험 모드일 때만 시뮬레이션 버튼과 안내문구를 노출
+        var simBtn = document.getElementById('demo-sim-btn');
+        var simNotice = document.getElementById('demo-sim-notice');
+        if (localStorage.getItem('demoMode') === 'true') {
+            if (simBtn) simBtn.style.display = 'block';
+            if (simNotice) simNotice.style.display = 'block';
+        } else {
+            if (simBtn) simBtn.style.display = 'none';
+            if (simNotice) simNotice.style.display = 'none';
+        }
+    };
+
+    // [한글 주석] 체험 모드 전용 - 실제로 움직이지 않아도 걸음을 자동 발생시키는 시뮬레이션
+    // 초당 2걸음(500ms 간격으로 1걸음씩) incrementStep()을 호출해 기존 걸음 감지 파이프라인을 그대로 재사용
+    window._demoWalkSimTimer = null;
+    window.toggleDemoWalkSimulation = function () {
+        var btn = document.getElementById('demo-sim-btn');
+        if (window._demoWalkSimTimer) {
+            // [한글 주석] 이미 실행 중이면 정지
+            clearInterval(window._demoWalkSimTimer);
+            window._demoWalkSimTimer = null;
+            if (btn) {
+                btn.textContent = '🎬 걷기 시뮬레이션 시작';
+            }
+        } else {
+            // [한글 주석] 500ms마다 1걸음씩 = 초당 2걸음
+            window._demoWalkSimTimer = setInterval(function () {
+                if (typeof incrementStep === 'function') {
+                    incrementStep();
+                }
+            }, 500);
+            if (btn) {
+                btn.textContent = '⏸ 시뮬레이션 정지';
+            }
+        }
     };
 
     // [한글 주석] 탐험 종료 시 실제 종료 처리 로직 (요약 팝업 이후 실행됨)
     function _actuallyStopExploration() {
+        // [한글 주석] 탐험 종료 시 걷기 시뮬레이션도 함께 정지
+        if (window._demoWalkSimTimer) {
+            clearInterval(window._demoWalkSimTimer);
+            window._demoWalkSimTimer = null;
+            var simBtn = document.getElementById('demo-sim-btn');
+            if (simBtn) simBtn.textContent = '🎬 걷기 시뮬레이션 시작';
+        }
         // [한글 주석] 탐험 종료 시 뒤로가기 차단 해제
         if (window._explorationBackHandler) {
             window.removeEventListener('popstate', window._explorationBackHandler);
