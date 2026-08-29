@@ -109,9 +109,10 @@ function renderClassDodamDetailGrid() {
         + 'display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:' + color + ';'
         + 'cursor:pointer;">' + i + '</div>';
     } else {
-      html += '<div style="'
+      html += '<div onclick="showClassDodamCardOwners(\'' + cardId + '\')" style="'
         + 'aspect-ratio:1;border-radius:6px;background:#1a1a1a;border:1px solid #333;'
-        + 'display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:#444;">' + i + '</div>';
+        + 'display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:#444;'
+        + 'cursor:pointer;">' + i + '</div>';
     }
   }
   gridEl.innerHTML = html;
@@ -123,10 +124,15 @@ function showClassDodamCardOwners(cardId) {
   var owners = coverage[cardId] || [];
   var exactCard = window.allCardsData ? window.allCardsData.find(function(c) { return c.id === cardId; }) : null;
   var cardName = exactCard ? exactCard.name : cardId;
+  var rarityLabels = { common: '일반', rare: '희귀', epic: '전설' };
+  var rarityStars = { common: '★', rare: '★★', epic: '★★★' };
+  var rarity = exactCard ? exactCard.rarity : '';
+  var rarityText = rarity ? (rarityStars[rarity] || '') + ' ' + (rarityLabels[rarity] || rarity) : '';
+
   if (owners.length === 0) {
-    alert(cardName + ': 아직 아무도 모으지 못했어요.');
+    alert(cardName + ' (' + rarityText + ')\n아직 아무도 모으지 못했어요.');
   } else {
-    alert(cardName + ' 보유자: ' + owners.join(', ') + '번');
+    alert(cardName + ' (' + rarityText + ')\n보유자: ' + owners.join(', ') + '번');
   }
 }
 
