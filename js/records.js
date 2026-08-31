@@ -51,7 +51,7 @@ function showRecordsScreen() {
     overlay.innerHTML = ''
         + '<div style="background:#1a2818;border:1px solid #4a6b3a;border-radius:16px;'
         + 'width:100%;max-width:420px;max-height:85vh;overflow-y:auto;padding:20px;position:relative;">'
-        + '  <button onclick="document.getElementById(\'records-overlay\').remove()" style="'
+        + '  <button onclick="hideRecordsScreen()" style="'
         + '    position:absolute;top:12px;right:12px;background:none;border:none;'
         + '    color:#d4c89c;font-size:1.4rem;cursor:pointer;">✕</button>'
         + '  <h2 style="color:#d4c89c;margin:0 0 16px;font-size:1.2rem;">📊 ' + recordsT('recordsTitle') + '</h2>'
@@ -64,8 +64,16 @@ function showRecordsScreen() {
         + '</div>';
 
     document.body.appendChild(overlay);
+    // [한글 주석] 뒤로가기 스택에 추가
+    if (typeof pushScreen === 'function') pushScreen('records-overlay');
     recordsActiveTab = 'today';
     recordsRenderTab();
+}
+
+// [한글 주석] 기록 화면 닫기 (뒤로가기/X버튼 공용)
+function hideRecordsScreen() {
+    const overlay = document.getElementById('records-overlay');
+    if (overlay) overlay.remove();
 }
 
 function recordsSwitchTab(tab) {

@@ -65,7 +65,7 @@ function showClassDodamDetail() {
 
   overlay.innerHTML = ''
     + '<div style="background:#1a2818;border:1px solid #4a6b3a;border-radius:16px;width:100%;max-width:440px;max-height:85vh;overflow-y:auto;padding:18px;position:relative;">'
-    + '  <button onclick="document.getElementById(\'class-dodam-detail-overlay\').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:#d4c89c;font-size:1.3rem;cursor:pointer;">✕</button>'
+    + '  <button onclick="hideClassDodamDetail()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:#d4c89c;font-size:1.3rem;cursor:pointer;">✕</button>'
     + '  <h3 style="color:#d4c89c;margin:0 0 12px;font-size:1.05rem;">' + ((window.LANG_UI && window.LANG_UI[window.currentLang || 'ko'] && window.LANG_UI[window.currentLang || 'ko'].classDodamDetailTitle) || '🌿 우리 반 공동 도감') + '</h3>'
     + '  <div id="class-dodam-cat-tabs" style="display:flex;gap:6px;margin-bottom:12px;">'
     + '    <button onclick="classDodamDetailCategory=\'plant\';renderClassDodamDetailGrid()" data-cat="plant" style="flex:1;padding:7px;border-radius:8px;font-size:0.8rem;cursor:pointer;background:#3d5239;border:1px solid #6b8e3d;color:#d4c89c;">' + ((window.LANG_UI && window.LANG_UI[window.currentLang || 'ko'] && window.LANG_UI[window.currentLang || 'ko'].categoryPlant) || '🌱 식물') + '</button>'
@@ -76,8 +76,16 @@ function showClassDodamDetail() {
     + '</div>';
 
   document.body.appendChild(overlay);
+  // [한글 주석] 뒤로가기 스택에 추가
+  if (typeof pushScreen === 'function') pushScreen('class-dodam-detail-overlay');
   classDodamDetailCategory = 'plant';
   renderClassDodamDetailGrid();
+}
+
+// [한글 주석] 공동 도감 상세보기 닫기 (뒤로가기/X버튼 공용)
+function hideClassDodamDetail() {
+  const overlay = document.getElementById('class-dodam-detail-overlay');
+  if (overlay) overlay.remove();
 }
 
 // [한글 주석] 선택된 카테고리의 1~100번 카드를 그리드로 그림 - 보유자 있으면 활성/숫자표시, 없으면 회색 비활성

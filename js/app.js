@@ -918,6 +918,14 @@ function handleBackButton() {
         'shared-card-overlay': () => { if (typeof closeCardPopup === 'function') closeCardPopup(); },
         'help-modal': () => { if (typeof hideHelpModal === 'function') hideHelpModal(); },
         'gender-select-screen': () => { const s = document.getElementById('gender-select-screen'); if (s) s.style.display = 'none'; },
+        // [한글 주석] 나의 기록 화면
+        'records-overlay': () => { if (typeof hideRecordsScreen === 'function') hideRecordsScreen(); },
+        // [한글 주석] 배틀 진입 화면 (공부/퀴즈 등 하위 단계는 별도 처리 안 함 - 진행 중 끊김 방지)
+        'battle-overlay': () => { if (typeof hideBattleMode === 'function') hideBattleMode(); },
+        // [한글 주석] 설정 팝업
+        'settings-popup': () => { if (typeof hideSettingsPopup === 'function') hideSettingsPopup(); },
+        // [한글 주석] 공동 도감 상세보기
+        'class-dodam-detail-overlay': () => { if (typeof hideClassDodamDetail === 'function') hideClassDodamDetail(); },
     };
 
     if (current && closeMap[current]) {

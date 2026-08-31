@@ -51,6 +51,9 @@ function showBattleMode() {
   const existing = document.getElementById('battle-overlay');
   if (existing) existing.remove();
 
+  // [한글 주석] 뒤로가기 스택에 추가
+  if (typeof pushScreen === 'function') pushScreen('battle-overlay');
+
   const unlockedCats = typeof getUnlockedCategories === 'function'
     ? getUnlockedCategories() : ['plant'];
 
@@ -199,6 +202,14 @@ function closeBattleOverlay() {
     setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 300);
   }
 
+  const overlay = document.getElementById('battle-overlay');
+  if (overlay) overlay.remove();
+}
+
+// [한글 주석] 배틀 진입 화면 닫기 (뒤로가기/X버튼 공용 - 기존 로직과 동일)
+function hideBattleMode() {
+  if (typeof stopBGM === 'function') stopBGM();
+  setTimeout(() => { if (typeof playMainBGM === 'function') playMainBGM(); }, 300);
   const overlay = document.getElementById('battle-overlay');
   if (overlay) overlay.remove();
 }

@@ -1627,6 +1627,12 @@ function selectLanguage(langCode) {
 }
 
 // [한글 주석] UI 고정 텍스트 일괄 교체
+// [한글 주석] 설정 팝업 닫기 (뒤로가기용)
+function hideSettingsPopup() {
+  const popup = document.getElementById('settings-popup');
+  if (popup) popup.remove();
+}
+
 function applyUIText(langCode) {
   const ui = LANG_UI[langCode];
   if (!ui) return;
@@ -2117,6 +2123,8 @@ window.applyHelpText = applyHelpText;
 function showSettingsPopup() {
   const existing = document.getElementById('settings-popup');
   if (existing) { existing.remove(); return; }
+  // [한글 주석] 뒤로가기 스택에 추가
+  if (typeof pushScreen === 'function') pushScreen('settings-popup');
 
   const T = window.LANG_UI; const L = window.currentLang || 'ko';
   const t = k => T?.[L]?.[k] || T?.ko?.[k] || '';

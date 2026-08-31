@@ -1174,6 +1174,8 @@ function _showFirstTimeAnalysis() {
 // [한글 주석] AI 분석 팝업 메인 함수 (일일시험 버튼에서 호출)
 // [한글 주석] 흐름: 오늘 완료 → 완료팝업 / 기록없음 → 첫시험 안내 / 기록있음 → 분석 후 시험 시작
 function showAIQuizAnalysis() {
+  // [한글 주석] 뒤로가기 스택에 추가 (닫기는 기존 closeQuiz/quiz-screen 매핑을 그대로 사용)
+  if (typeof pushScreen === 'function') pushScreen('quiz-screen');
   // [한글 주석] 오늘 이미 시험 봤으면 기존 완료 팝업 표시
   if (typeof isDailyQuizDone === 'function' && isDailyQuizDone()) {
     if (typeof _showDailyQuizDonePopup === 'function') _showDailyQuizDonePopup();
